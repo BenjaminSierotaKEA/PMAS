@@ -35,7 +35,7 @@ jobs:
         run: mvn test
 
       - name: Publish Test Report
-        f: success() #|| failure()
+        if: success() #|| failure()
         uses: scacap/action-surefire-report@v1
 
 
