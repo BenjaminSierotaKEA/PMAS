@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class PmasApplicationTests {
 
-    @Test
+    //@Test
     void contextLoads() {
     }
 

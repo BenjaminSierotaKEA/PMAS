@@ -8,6 +8,43 @@ on:
       - 'releases/*' # The release branches
 
 jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java version
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'microsoft'
+
+      - name: Build with Maven
+        #env:
+          #DEV_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+          #DEV_USERNAME: ${{ secrets.PROD_USERNAME }}
+          #DEV_PASSWORD: ${{ secrets.PROD_PASSWORD }}
+        run: mvn clean install -DskipTests
+
+      - name: Run Tests
+        run: mvn test
+
+      - name: Publish Test Report
+        if: success() || failure()
+        uses: scacap/action-surefire-report@v1
+
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-app
+          path: '${{ github.workspace }}/target/*.jar'
+
   qodana:
     runs-on: ubuntu-latest
     permissions:
