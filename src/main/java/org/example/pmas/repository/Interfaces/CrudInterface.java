@@ -1,4 +1,4 @@
-package org.example.pmas.repository;
+package org.example.pmas.repository.Interfaces;
 
 import java.util.List;
 

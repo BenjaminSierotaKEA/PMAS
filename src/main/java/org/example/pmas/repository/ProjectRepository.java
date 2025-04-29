@@ -1,10 +1,11 @@
 package org.example.pmas.repository;
 
+import org.example.pmas.repository.Interfaces.ProjectRepositoryInterface;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-public class ProjectRepository implements CrudInterface {
+public class ProjectRepository implements ProjectRepositoryInterface {
 
     private final JdbcTemplate jdbcTemplate;
 
