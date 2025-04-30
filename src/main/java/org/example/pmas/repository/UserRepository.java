@@ -1,6 +1,7 @@
 package org.example.pmas.repository;
 
-import org.example.pmas.repository.Interfaces.CrudInterface;
+import org.example.pmas.model.User;
+
 import org.example.pmas.repository.Interfaces.UserRepositoryInterface;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -16,19 +17,18 @@ public class UserRepository implements UserRepositoryInterface {
     }
 
 
-
     @Override
-    public Object create(Object object) {
+    public User create(User user) {
         return null;
     }
 
     @Override
-    public List<Object> readAll() {
+    public List<User> readAll() {
         return List.of();
     }
 
     @Override
-    public Object readSelected() {
+    public User readSelected() {
         return null;
     }
 

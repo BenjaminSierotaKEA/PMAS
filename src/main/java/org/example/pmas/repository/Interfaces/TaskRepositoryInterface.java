@@ -1,4 +1,6 @@
 package org.example.pmas.repository.Interfaces;
 
-public interface TaskRepositoryInterface extends CrudInterface {
+import org.example.pmas.model.Task;
+
+public interface TaskRepositoryInterface extends CrudInterface<Task> {
 }

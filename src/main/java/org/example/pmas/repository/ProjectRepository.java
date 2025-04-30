@@ -1,5 +1,6 @@
 package org.example.pmas.repository;
 
+import org.example.pmas.model.Project;
 import org.example.pmas.repository.Interfaces.ProjectRepositoryInterface;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -15,20 +16,18 @@ public class ProjectRepository implements ProjectRepositoryInterface {
     }
 
 
-
-
     @Override
-    public Object create(Object object) {
+    public Project create(Project project) {
         return null;
     }
 
     @Override
-    public List<Object> readAll() {
+    public List<Project> readAll() {
         return List.of();
     }
 
     @Override
-    public Object readSelected() {
+    public Project readSelected() {
         return null;
     }
 

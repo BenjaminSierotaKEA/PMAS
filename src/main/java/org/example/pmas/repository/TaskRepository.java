@@ -1,5 +1,6 @@
 package org.example.pmas.repository;
 
+import org.example.pmas.model.Task;
 import org.example.pmas.repository.Interfaces.CrudInterface;
 import org.example.pmas.repository.Interfaces.TaskRepositoryInterface;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,27 +17,18 @@ public class TaskRepository implements TaskRepositoryInterface {
     }
 
 
-
-
-
-
-
-
-
-
-
     @Override
-    public Object create(Object object) {
+    public Task create(Task task) {
         return null;
     }
 
     @Override
-    public List<Object> readAll() {
+    public List<Task> readAll() {
         return List.of();
     }
 
     @Override
-    public Object readSelected() {
+    public Task readSelected() {
         return null;
     }
 

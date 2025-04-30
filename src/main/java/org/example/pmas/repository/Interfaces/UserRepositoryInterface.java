@@ -1,4 +1,6 @@
 package org.example.pmas.repository.Interfaces;
 
-public interface UserRepositoryInterface extends CrudInterface {
+import org.example.pmas.model.User;
+
+public interface UserRepositoryInterface extends CrudInterface<User> {
 }

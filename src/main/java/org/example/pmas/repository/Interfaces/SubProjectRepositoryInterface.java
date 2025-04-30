@@ -1,4 +1,7 @@
 package org.example.pmas.repository.Interfaces;
 
-public interface SubProjectRepositoryInterface extends CrudInterface {
+
+import org.example.pmas.model.SubProject;
+
+public interface SubProjectRepositoryInterface extends CrudInterface<SubProject> {
 }

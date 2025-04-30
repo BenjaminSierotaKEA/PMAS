@@ -1,5 +1,6 @@
 package org.example.pmas.repository;
 
+import org.example.pmas.model.SubProject;
 import org.example.pmas.repository.Interfaces.SubProjectRepositoryInterface;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -16,24 +17,18 @@ public class SubProjectRepository implements SubProjectRepositoryInterface {
     }
 
 
-
-
-
-
-
-
     @Override
-    public Object create(Object object) {
+    public SubProject create(SubProject subProject) {
         return null;
     }
 
     @Override
-    public List<Object> readAll() {
+    public List<SubProject> readAll() {
         return List.of();
     }
 
     @Override
-    public Object readSelected() {
+    public SubProject readSelected() {
         return null;
     }
 

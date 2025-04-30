@@ -1,5 +1,8 @@
 package org.example.pmas.repository.Interfaces;
 
-public interface ProjectRepositoryInterface extends CrudInterface {
+import org.example.pmas.model.Project;
+
+
+public interface ProjectRepositoryInterface extends CrudInterface<Project> {
 
 }

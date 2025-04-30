@@ -2,13 +2,13 @@ package org.example.pmas.repository.Interfaces;
 
 import java.util.List;
 
-public interface CrudInterface {
+public interface CrudInterface<T> {
 
-public Object create(Object object);
+public T create(T t);
 
-public List<Object> readAll();
+public List<T> readAll();
 
-public Object readSelected();
+public T readSelected();
 
 public boolean delete(int id);
 
