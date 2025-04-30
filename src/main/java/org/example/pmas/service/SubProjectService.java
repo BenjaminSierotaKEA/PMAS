@@ -1,12 +1,12 @@
 package org.example.pmas.service;
 
-import org.example.pmas.repository.SubProjectRepository;
+import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 
 public class SubProjectService {
 
-    private final SubProjectRepository subProjectRepository;
+    private final ISubProjectRepository subProjectRepository;
 
-    public SubProjectService(SubProjectRepository subProjectRepository){
+    public SubProjectService(ISubProjectRepository subProjectRepository){
         this.subProjectRepository=subProjectRepository;
     }
 

@@ -2,12 +2,11 @@ package org.example.pmas.repository;
 
 import org.example.pmas.model.User;
 
-import org.example.pmas.repository.Interfaces.UserRepositoryInterface;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-public class UserRepository implements UserRepositoryInterface {
+public class UserRepository implements org.example.pmas.repository.Interfaces.IUserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

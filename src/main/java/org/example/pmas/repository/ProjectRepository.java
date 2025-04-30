@@ -1,12 +1,11 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.model.Project;
-import org.example.pmas.repository.Interfaces.ProjectRepositoryInterface;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-public class ProjectRepository implements ProjectRepositoryInterface {
+public class ProjectRepository implements org.example.pmas.repository.Interfaces.IProjectRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

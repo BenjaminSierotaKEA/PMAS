@@ -1,13 +1,11 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.model.Task;
-import org.example.pmas.repository.Interfaces.CrudInterface;
-import org.example.pmas.repository.Interfaces.TaskRepositoryInterface;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-public class TaskRepository implements TaskRepositoryInterface {
+public class TaskRepository implements org.example.pmas.repository.Interfaces.ITaskRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
