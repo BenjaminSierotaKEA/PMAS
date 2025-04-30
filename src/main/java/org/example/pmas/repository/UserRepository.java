@@ -2,11 +2,14 @@ package org.example.pmas.repository;
 
 import org.example.pmas.model.User;
 
+import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public class UserRepository implements org.example.pmas.repository.Interfaces.IUserRepository {
+@Repository
+public class UserRepository implements IUserRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -39,5 +42,10 @@ public class UserRepository implements org.example.pmas.repository.Interfaces.IU
     @Override
     public boolean update(Object oldObject, Object newObject) {
         return false;
+    }
+
+    @Override
+    public User getByEmail(String email) {
+        return null;
     }
 }
