@@ -4,7 +4,6 @@ import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;

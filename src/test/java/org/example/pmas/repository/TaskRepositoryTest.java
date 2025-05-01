@@ -1,7 +1,5 @@
 package org.example.pmas.repository;
 
-import org.example.pmas.model.Task;
-import org.example.pmas.modelBuilder.MockModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
