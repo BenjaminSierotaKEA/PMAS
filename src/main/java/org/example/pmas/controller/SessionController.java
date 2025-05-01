@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SessionController {
 
     private final SessionHandler sessionHandler;
-    private final int MAX_SESSION_LENGTH = 1800;
+
 
 
     public SessionController(SessionHandler sessionHandler) {
@@ -32,12 +32,10 @@ public class SessionController {
     @PostMapping("/login")
     public String login(@RequestParam String email,
                         @RequestParam String password,
-                        HttpSession session,
                         Model redirectAttribute) {
         boolean loginSucceed = sessionHandler.logIn(email,password);
+
         if(loginSucceed){
-            session.setAttribute("user", loginSucceed);
-            session.setMaxInactiveInterval(MAX_SESSION_LENGTH);
             return "redirect:/";
         }
         redirectAttribute.addAttribute("WrongCredentials", true);
