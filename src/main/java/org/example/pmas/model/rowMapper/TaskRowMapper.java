@@ -34,13 +34,13 @@ public class TaskRowMapper implements RowMapper<Task> {
 
         for (int i = 0; i < ids.length; i++) {
             User user = new User();
-            user.setId(Integer.parseInt(ids[i]));
+            user.setUserID(Integer.parseInt(ids[i]));
             user.setName(usernames[i]);
             users.add(user);
         }
         for (int i = 0; i < ids.length; i++) {
             User user = new User();
-            user.setId(Integer.parseInt(ids[i]));
+            user.setUserID(Integer.parseInt(ids[i]));
             user.setName(usernames[i]);
             users.add(user);
         }
