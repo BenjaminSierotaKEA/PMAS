@@ -1,31 +1,44 @@
 package org.example.pmas.model;
 
+
 import java.util.List;
 import java.util.Set;
 
 public class User {
-    private int id;
+
+    private int userID;
     private String name;
-    private String password;
     private String email;
+    private String password;
     private Role role;
     private String picture;
     private List<Task> tasks;
     private Set<Project> projects;
 
-    public User(){}
+    public User(int userID, String name, String email, String password, Role role, String picture) {
+        this.userID = userID;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.picture = picture;
+    }
 
-    public User(int id, String name){
-        this.id = id;
+    public User() {
+    }
+
+    public User(int userID, String name) {
+        this.userID = userID;
         this.name = name;
     }
 
-    public int getId() {
-        return id;
+
+    //-------------getters/setters-----------------
+    public int getUserID() {
+        return userID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public String getName() {
@@ -36,20 +49,20 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public Role getRole() {
@@ -60,12 +73,13 @@ public class User {
         this.role = role;
     }
 
-    public String getPicture() {
-        return picture;
+
+    public String getPassword() {
+        return password;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Task> getTasks() {
