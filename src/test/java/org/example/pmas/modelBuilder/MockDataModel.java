@@ -7,11 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 
 // This class can be used if the same model is used in multiple classes
-public class MockModel {
+public class MockDataModel {
 
     public static List<Task> tasksWithValues() {
         return List.of(new Task(1,
-                        "Mathias",
+                        "Amalie",
                         "Lav noget",
                         5.5,
                         4,
