@@ -1,5 +1,6 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.UserNotFoundException;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.dao.DataAccessException;
@@ -19,7 +20,7 @@ public class UserService {
         // controls if user exists.
         try {
             var user = userRepository.readSelected(userId);
-            if (user == null) throw new NullPointerException("Id not in database: " + userId);
+            if (user == null) throw new UserNotFoundException(userId);
 
             return user;
         } catch (DataAccessException dataAccessException) {
