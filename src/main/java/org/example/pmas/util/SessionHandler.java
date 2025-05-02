@@ -1,8 +1,9 @@
 package org.example.pmas.util;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.pmas.model.Role;
 import org.example.pmas.model.User;
-import org.example.pmas.repository.Role;
+
 import org.example.pmas.service.UserService;
 import org.springframework.stereotype.Component;
 

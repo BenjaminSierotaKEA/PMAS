@@ -1,6 +1,6 @@
 package org.example.pmas.model;
 
-import org.example.pmas.repository.Role;
+
 
 import java.util.List;
 import java.util.Set;
