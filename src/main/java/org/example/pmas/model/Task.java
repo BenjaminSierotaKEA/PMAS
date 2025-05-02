@@ -1,5 +1,6 @@
 package org.example.pmas.model;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public class Task {
@@ -9,13 +10,14 @@ public class Task {
     private double timeBudget;
     private double timeTaken;
     private boolean completed;
+    private LocalDate deadline;
     private SubProject subProject;
     private Set<User> users;
 
     public Task() {}
 
     public Task(int id, String name, String description, double timeBudget,
-                double timeTaken, boolean completed, SubProject subProject,
+                double timeTaken, boolean completed, LocalDate deadline, SubProject subProject,
                 Set<User> users) {
         this.id = id;
         this.name = name;
@@ -23,8 +25,18 @@ public class Task {
         this.timeBudget = timeBudget;
         this.timeTaken = timeTaken;
         this.completed = completed;
+        this.deadline = deadline;
         this.subProject = subProject;
         this.users = users;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+
+        if(!(other instanceof Task)) return false;
+
+        return id == ((Task) other).id;
     }
 
     public int getId() {
@@ -91,12 +103,11 @@ public class Task {
         this.users = users;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (this == other) return true;
+    public LocalDate getDeadline() {
+        return deadline;
+    }
 
-        if(!(other instanceof Task)) return false;
-
-        return id == ((Task) other).id;
+    public void setDeadline(LocalDate deadline) {
+        this.deadline = deadline;
     }
 }

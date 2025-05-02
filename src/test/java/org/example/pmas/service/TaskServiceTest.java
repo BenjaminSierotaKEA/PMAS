@@ -1,11 +1,13 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.WrongInputException;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,10 +27,12 @@ class TaskServiceTest {
     private TaskService taskService;
 
     private List<Task> tasks;
+    private Task task;
 
     @BeforeEach
     void setUp() {
         tasks = MockDataModel.tasksWithValues();
+        task = MockDataModel.taskWithValue();
     }
 
     @Test
@@ -44,7 +48,6 @@ class TaskServiceTest {
         assertEquals(tasks, result);
         verify(taskRepository).readAll();
     }
-
     @Test
     void readAll_without_values() {
         // Arrange
@@ -56,5 +59,39 @@ class TaskServiceTest {
         // Assert
         assertNull(result);
         verify(taskRepository).readAll();
+    }
+
+    @Test
+    void readSelected_with_values() {
+        // Arrange
+        when(taskRepository.readSelected(1)).thenReturn(task);
+
+        // Act
+        var result = taskService.readSelected(1);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(task, result);
+        verify(taskRepository).readSelected(1);
+    }
+    @Test
+    void readSelected_without_values() {
+        // Arrange
+        when(taskRepository.readSelected(1)).thenReturn(null);
+
+        // Act
+        // Executable is an interface and i need to override that method.
+        Executable executable = new Executable() {
+            @Override
+            public void execute() {
+                // executes this task
+                taskService.readSelected(1);
+            }
+        };
+
+        // Assert
+        var result = assertThrows(WrongInputException.class, executable);
+        assertEquals("Task blev ikke fundet", result.getMessage());
+        verify(taskRepository).readSelected(1);
     }
 }

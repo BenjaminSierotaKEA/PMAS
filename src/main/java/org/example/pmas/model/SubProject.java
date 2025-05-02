@@ -13,6 +13,13 @@ public class SubProject {
     private int projectID;
     private List<Task> tasks;
 
+    public SubProject(){}
+
+    public SubProject(int id, String name){
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
