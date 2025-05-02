@@ -43,6 +43,10 @@
                th:field="*{completed}" value="false"/>
     </fieldset>
 
+    <label for="deadline">Deadline:</label>
+    <input type="text" id="deadline" name="deadline"
+    th:value="${task.deadline}"
+    th:field="*{deadline}"/> <br>
 
     <input type="text" hidden name="id" th:value="${task.subProject.id}"/>
     <label for="subProjectName">Tilhørende opgave kategori:</label>

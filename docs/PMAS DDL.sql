@@ -14,7 +14,7 @@ CREATE TABLE projects
     name        VARCHAR(200) UNIQUE NOT NULL,
     description VARCHAR(200),
     timeBudget  INT                 NOT NULL,
-    deadline    TIME                NOT NULL,
+    deadline    DATE                NOT NULL,
     PRIMARY KEY (id)
 
 );
@@ -43,7 +43,7 @@ CREATE TABLE tasks
     timeBudget   INT                 NOT NULL,
     completed    BOOL,
     timeTaken    INT,
-    deadline     TIME,
+    deadline     DATE,
     subProjectID INT                 NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (subProjectID) REFERENCES subprojects (id) ON DELETE CASCADE

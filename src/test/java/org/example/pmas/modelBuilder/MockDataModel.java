@@ -4,6 +4,7 @@ import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,7 @@ public class MockDataModel {
         return new Task(1,"Create Mockups","Create mockup screens for new website design.",
                 40,0.0,
                 false,
+                LocalDate.now(),
                 new SubProject(1, "UI Overhaul"),
                 Set.of(new User(1, "Rebecca Black")));
     }
@@ -26,6 +28,7 @@ public class MockDataModel {
                         5.5,
                         4,
                         true,
+                        LocalDate.now(),
                         new SubProject(),
                         new HashSet<>()),
                 new Task(2,
@@ -34,6 +37,7 @@ public class MockDataModel {
                         5.5,
                         0.0,
                         false,
+                        LocalDate.now(),
                         new SubProject(),
                         new HashSet<>()
                 ));

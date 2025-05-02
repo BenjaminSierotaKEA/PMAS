@@ -1,6 +1,5 @@
 package org.example.pmas.controller;
 
-import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.service.TaskService;
@@ -11,7 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.HashSet;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -42,7 +40,7 @@ class TaskControllerTest {
     void readAll() throws Exception {
         when(taskService.readAll()).thenReturn(tasks);
 
-        mvc.perform(get("/task"))
+        mvc.perform(get("/tasks"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task"))
                 .andExpect(model().attributeExists("tasks"));

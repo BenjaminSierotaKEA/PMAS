@@ -27,12 +27,7 @@ public class TaskRepository implements ITaskRepository {
     public List<Task> readAll() throws ConnectionException {
         String sql =
                 "SELECT " +
-                        "t.id, " +
-                        "t.name, " +
-                        "t.completed, " +
-                        "t.description, " +
-                        "t.timeBudget, " +
-                        "t.timeTaken, " +
+                        "t.*, " +
                         "GROUP_CONCAT(u.id) AS user_ids, " +
                         "GROUP_CONCAT(u.name) AS user_names " +
                         "FROM tasks t " +
@@ -46,12 +41,7 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public Task readSelected(int id) throws ConnectionException {
         String sql = " SELECT " +
-                "t.id, " +
-                "t.name, " +
-                "t.completed, " +
-                "t.description, " +
-                "t.timeBudget, " +
-                "t.timeTaken, " +
+                "t.*, " +
                 "sp.id as subproject_id, " +
                 "sp.name as subproject_name, " +
                 "GROUP_CONCAT(u.id) as user_ids, " +

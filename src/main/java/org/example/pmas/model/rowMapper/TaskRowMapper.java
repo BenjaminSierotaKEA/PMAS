@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ public class TaskRowMapper implements RowMapper<Task> {
         task.setName(rs.getString("name"));
         task.setDescription(rs.getString("description"));
         task.setCompleted(rs.getBoolean("completed"));
+        task.setDeadline(rs.getDate("deadline").toLocalDate());
         task.setUsers(mapUsers(rs));
 
         // If subproject is in query

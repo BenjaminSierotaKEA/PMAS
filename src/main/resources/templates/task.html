@@ -14,6 +14,7 @@
         <th>Beskrivelse</th>
         <th>Tids allokering</th>
         <th>Brugt tid</th>
+        <th>Deadline</th>
         <th>Tildelt</th>
         <th>Opdater</th>
         <th>Slet</th>
@@ -24,6 +25,7 @@
         <td th:text="${task.description}"></td>
         <td th:text="${task.timeBudget}"></td>
         <td th:text="${task.timeTaken}"></td>
+        <td th:text="${task.deadline}"></td>
         <td>
         <span th:each="user, iterStat : ${task.users}">
             <span th:text="${user.name}"></span>
