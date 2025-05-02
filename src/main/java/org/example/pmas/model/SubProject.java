@@ -10,6 +10,7 @@ public class SubProject {
     private double timeTaken;
     private boolean completed;
     private Project project;
+    private int projectID;
     private List<Task> tasks;
 
     public SubProject(){}
@@ -81,5 +82,9 @@ public class SubProject {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public void setProjectID(int projectID) {
+        this.projectID = projectID;
     }
 }
