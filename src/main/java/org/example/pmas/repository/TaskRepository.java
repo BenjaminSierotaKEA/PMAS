@@ -44,7 +44,7 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public Task readSelected() {
+    public Task readSelected(int id) {
         return null;
     }
 
