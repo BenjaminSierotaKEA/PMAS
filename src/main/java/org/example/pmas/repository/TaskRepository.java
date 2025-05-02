@@ -52,6 +52,7 @@ public class TaskRepository implements ITaskRepository {
                 "t.description, " +
                 "t.timeBudget, " +
                 "t.timeTaken, " +
+                "sp.id as subproject_id, " +
                 "sp.name as subproject_name, " +
                 "GROUP_CONCAT(u.id) as user_ids, " +
                 "GROUP_CONCAT(u.name) as user_names " +

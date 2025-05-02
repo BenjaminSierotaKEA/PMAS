@@ -22,7 +22,7 @@ public class TaskService {
     }
 
     public Task readSelected(int id){
-        var Task = taskRepository.readSelected();
+        var Task = taskRepository.readSelected(id);
         if(Task == null) throw new WrongInputException("Task blev ikke fundet");
 
         return Task;

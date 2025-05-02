@@ -21,10 +21,20 @@ public class TaskRowMapper implements RowMapper<Task> {
         task.setUsers(mapUsers(rs));
 
         // If subproject is in query
-        if(rs.findColumn("subproject_name") > 0)
+        if (hasColumn(rs,"subproject_name"))
             task.setSubProject(mapSubproject(rs));
 
         return task;
+    }
+
+    // If needed, this method can check for a specific column.
+    private boolean hasColumn(ResultSet rs, String columnName) {
+        // findColumn throws if not exist. That's why try catch
+        try {
+            return rs.findColumn(columnName) > 0;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     // Return users or null
@@ -50,8 +60,10 @@ public class TaskRowMapper implements RowMapper<Task> {
         return users;
     }
 
+    // maps SubProject only by name.
     private SubProject mapSubproject(ResultSet rs) throws SQLException {
         SubProject subproject = new SubProject();
+        subproject.setId(rs.getInt("subproject_id"));
         subproject.setName(rs.getString("subproject_name"));
 
         return subproject;
