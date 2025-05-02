@@ -1,10 +1,13 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.model.Project;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class ProjectRepository implements org.example.pmas.repository.Interfaces.IProjectRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -17,6 +20,13 @@ public class ProjectRepository implements org.example.pmas.repository.Interfaces
 
     @Override
     public Project create(Project project) {
+        System.out.println("Hello from the create in the repo");
+        String sql = "INSERT INTO projects(name, description, timeBudget, deadline) VALUES(?,?,?,?)";
+        try{
+            jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getTimeBudget(), project.getDeadline());
+        }catch(DataAccessException e){
+            throw new RuntimeException("Couldnt add " + project.getName(), e);
+        }
         return null;
     }
 

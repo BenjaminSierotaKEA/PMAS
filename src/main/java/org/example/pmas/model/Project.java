@@ -1,6 +1,8 @@
 
 package org.example.pmas.model;
 
+import java.time.LocalDateTime;
+
 public class Project {
     private int id;
     private String name;
@@ -8,6 +10,16 @@ public class Project {
     private String description;
     private final int descriptionMaxLength = 200;
     private int timeBudget;
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
+    }
+
+    private LocalDateTime deadline;
 
 
     public Project(int id, String name, String description, int timeBudget){
@@ -18,6 +30,13 @@ public class Project {
         this.timeBudget = timeBudget;
 
 
+    }
+
+    public Project(){
+        this.id = - 1;
+        setName("nothing");
+        setDescription("nothing");
+        this.timeBudget = -1;
     }
 
 
