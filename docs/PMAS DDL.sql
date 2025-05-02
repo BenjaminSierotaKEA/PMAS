@@ -66,6 +66,7 @@ CREATE TABLE users(
 
 /* many to many relation tables:*/
 
+/*
 DROP TABLE IF EXISTS projectssubprojects;
 CREATE TABLE projectsubprojects(
                                    projectid INT NOT NULL,
@@ -74,6 +75,8 @@ CREATE TABLE projectsubprojects(
                                    FOREIGN KEY(projectid) REFERENCES projects(id) ON DELETE CASCADE,
                                    FOREIGN KEY(subprojectid) REFERENCES subprojects(id) ON DELETE CASCADE
 );
+
+ */
 
 DROP TABLE IF EXISTS userprojects;
 CREATE TABLE userprojects(
