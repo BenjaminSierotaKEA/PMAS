@@ -97,7 +97,7 @@ DROP TABLE IF EXISTS usertasks;
 CREATE TABLE usertasks(
                           userid INT NOT NULL,
                           taskid INT NOT NULL,
-                            PRIMARY KEY (userid, taskid)
+                            PRIMARY KEY (userid, taskid),
                           FOREIGN KEY(userid) REFERENCES users(id) ON DELETE CASCADE,
                           FOREIGN KEY(taskid) REFERENCES tasks(id) ON DELETE CASCADE
 );
