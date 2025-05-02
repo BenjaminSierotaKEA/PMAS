@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,7 +53,7 @@ public class TaskRowMapper implements RowMapper<Task> {
         // adds a user to users
         for (int i = 0; i < ids.length; i++) {
             User user = new User();
-            user.setId(Integer.parseInt(ids[i]));
+            user.setUserID(Integer.parseInt(ids[i]));
             user.setName(usernames[i]);
             users.add(user);
         }
