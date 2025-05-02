@@ -31,10 +31,10 @@ VALUES ('Create Mockups', 'Create mockup screens for new website design.', 40, f
        ('Build Profile Screen', 'Create profile page design for app.', 50, false, NULL, 3);
 
 -- Populate projectsubprojects
-INSERT INTO projectsubprojects (projectid, subprojectid)
-VALUES (1, 1),
-       (2, 2),
-       (2, 3);
+-- INSERT INTO projectsubprojects (projectid, subprojectid)
+-- VALUES (1, 1),
+--        (2, 2),
+--        (2, 3);
 
 -- Populate userprojects
 INSERT INTO userprojects (projectid, userid)

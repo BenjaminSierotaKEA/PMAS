@@ -14,7 +14,7 @@ CREATE TABLE projects
     name        VARCHAR(200) UNIQUE NOT NULL,
     description VARCHAR(200),
     timeBudget  INT                 NOT NULL,
-    deadline    TIME,
+    deadline    TIME                NOT NULL,
     PRIMARY KEY (id)
 
 );
