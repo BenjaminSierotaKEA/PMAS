@@ -12,23 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-// runs this script before every method
+@Transactional
+@Rollback
 @Sql(
         executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
         scripts = {"classpath:h2init.sql"}
 )
-
-@Transactional
-// rolls the database back after a run
-@Rollback
 class TaskRepositoryTest {
     @Autowired
-    private TaskRepository taskRepository;
-
-    @BeforeEach
-    void setUp() {
-
-    }
+    TaskRepository taskRepository;
 
     @Test
     void readAll_with_values() {
