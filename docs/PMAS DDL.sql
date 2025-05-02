@@ -70,6 +70,7 @@ DROP TABLE IF EXISTS projectssubprojects;
 CREATE TABLE projectsubprojects(
                                    projectid INT NOT NULL,
                                    subprojectid INT NOT NULL,
+                                    PRIMARY KEY (projectid, subprojectid),
                                    FOREIGN KEY(projectid) REFERENCES projects(id) ON DELETE CASCADE,
                                    FOREIGN KEY(subprojectid) REFERENCES subprojects(id) ON DELETE CASCADE
 );
@@ -78,6 +79,7 @@ DROP TABLE IF EXISTS userprojects;
 CREATE TABLE userprojects(
                              projectid INT NOT NULL,
                              userid INT NOT NULL,
+                            PRIMARY KEY (projectid, userid),
                              FOREIGN KEY(projectid) REFERENCES projects(id) ON DELETE CASCADE,
                              FOREIGN KEY(userid) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -86,6 +88,7 @@ DROP TABLE IF EXISTS subprojectstasks;
 CREATE TABLE subprojecttasks(
                                 subprojectid INT NOT NULL,
                                 taskid INT NOT NULL,
+                                PRIMARY KEY (subprojectid, taskid),
                                 FOREIGN KEY(subprojectid) REFERENCES subprojects(id) ON DELETE CASCADE,
                                 FOREIGN KEY(taskid) REFERENCES tasks(id) ON DELETE CASCADE
 );
@@ -94,6 +97,7 @@ DROP TABLE IF EXISTS usertasks;
 CREATE TABLE usertasks(
                           userid INT NOT NULL,
                           taskid INT NOT NULL,
+                            PRIMARY KEY (userid, taskid)
                           FOREIGN KEY(userid) REFERENCES users(id) ON DELETE CASCADE,
                           FOREIGN KEY(taskid) REFERENCES tasks(id) ON DELETE CASCADE
 );
