@@ -27,7 +27,7 @@ public class SubProjectRepository implements org.example.pmas.repository.Interfa
     }
 
     @Override
-    public SubProject readSelected() {
+    public SubProject readSelected(int id) {
         return null;
     }
 

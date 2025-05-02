@@ -26,7 +26,7 @@ public class ProjectRepository implements org.example.pmas.repository.Interfaces
     }
 
     @Override
-    public Project readSelected() {
+    public Project readSelected(int id) {
         return null;
     }
 

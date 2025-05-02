@@ -27,7 +27,7 @@ public class UserRepository implements org.example.pmas.repository.Interfaces.IU
     }
 
     @Override
-    public User readSelected() {
+    public User readSelected(int id) {
         return null;
     }
 
