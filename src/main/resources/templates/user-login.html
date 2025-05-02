@@ -9,8 +9,8 @@
 <h1>Login page</h1>
 
 <form th:action="@{/session/login}" method="post" >
-  <div class="button-container">
-    <div class="grid-container">
+
+
       <p th:if="${wrongCredentials}" class="error">Wrong password or email</p>
       <div>
         <label for="email">Email:</label>
@@ -20,12 +20,11 @@
       <div><label for="password">Password:</label>
         <input id="password" name="password" type="password" required>
       </div>
-    </div>
-  </div>
+
   <div>
     <button type="submit">Login</button>
     <a th:href="@{'/'}">
-      <button type="button">Fortryd</button>
+      <button type="button">Cancel</button>
     </a>
   </div>
 </form>

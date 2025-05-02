@@ -1,11 +1,12 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.model.Project;
+import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-public class ProjectRepository implements org.example.pmas.repository.Interfaces.IProjectRepository {
+public class ProjectRepository implements IProjectRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -26,7 +27,7 @@ public class ProjectRepository implements org.example.pmas.repository.Interfaces
     }
 
     @Override
-    public Project readSelected() {
+    public Project readSelected(int id) {
         return null;
     }
 

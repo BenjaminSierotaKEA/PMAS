@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:text="${user.name}">USER NAME</div>
+<div th:text="${user.role}">USER ROLE</div>
+<div th:text="${user.email}">USER EMAIL</div>
+
+<!--
+<div th:if ="${user.tasks.isEmpty()}">No tasks currently waiting for you!</div>
+<div th:unless ="${user.tasks.isEmpty()}">
+    <div th:each ="task : ${tasks.task}">
+        <div th:text="${task.name}"></div>
+        <div th:text="${task.timeBudget}"></div>
+        <div th:text="${task.status}"></div>
+        <div th:text="${task.subproject}"></div>
+    </div>
+</div>
+-->
+</body>
+</html>

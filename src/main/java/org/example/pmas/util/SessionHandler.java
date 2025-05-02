@@ -18,7 +18,7 @@ public class SessionHandler {
     }
 
     //Checks if session is from a user
-    public User getCurrentUser(HttpSession session){
+    public User getCurrentUser(){
         var user = session.getAttribute("user");
         if (user instanceof User){
             return (User) user;
@@ -30,12 +30,12 @@ public class SessionHandler {
 
     //log-in checker
     public boolean isLoggedIn() {
-        return getCurrentUser(session) != null;
+        return getCurrentUser() != null;
     }
 
     //gets the users role, used to determine READ/WRITE rights
     public Role getUserRole(){
-        var user = getCurrentUser(session);
+        var user = getCurrentUser();
 
         return user.getRole();
     }
@@ -62,7 +62,7 @@ public class SessionHandler {
 
     //check the userID of the sessionUser against the ID from the DB
     public boolean isUserOwner(int ownerID){
-        var user = getCurrentUser(session);
+        var user = getCurrentUser();
 
         return user != null && user.getUserID() == ownerID;
     }

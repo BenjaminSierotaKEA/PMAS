@@ -15,6 +15,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public User getUser(int userId) {
+        // controls if user exists.
+        try {
+            var user = userRepository.readSelected(userId);
+            if (user == null) throw new NullPointerException("Id not in database: " + userId);
+
+            return user;
+        } catch (DataAccessException dataAccessException) {
+            return null;
+        }
+    }
+
 
     public User logIn(String email, String password) {
         try {

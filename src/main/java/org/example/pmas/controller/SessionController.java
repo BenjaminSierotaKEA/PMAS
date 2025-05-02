@@ -2,14 +2,12 @@ package org.example.pmas.controller;
 
 
 import jakarta.servlet.http.HttpSession;
+import org.example.pmas.model.User;
 import org.example.pmas.service.UserService;
 import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("session")
@@ -32,16 +30,26 @@ public class SessionController {
     @PostMapping("/login")
     public String login(@RequestParam String email,
                         @RequestParam String password,
-                        Model redirectAttribute) {
+                        Model model) {
         boolean loginSucceed = sessionHandler.logIn(email,password);
 
         if(loginSucceed){
-            return "redirect:/";
+            User user = sessionHandler.getCurrentUser();
+            return "redirect:/session/"+user.getUserID()+"/user";
         }
-        redirectAttribute.addAttribute("WrongCredentials", true);
+        model.addAttribute("wrongCredentials", true);
         return "user-login";
 
 
+    }
+
+    @GetMapping("/{id}/user")
+    public String userByID(@PathVariable("id") int id, Model model) {
+        if (id <= 0) throw new IllegalArgumentException("Id can't be lower than 0");
+
+        model.addAttribute("user", sessionHandler.getCurrentUser());
+
+        return "user-page";
     }
 
 

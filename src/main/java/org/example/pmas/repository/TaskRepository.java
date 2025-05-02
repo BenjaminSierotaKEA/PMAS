@@ -1,11 +1,12 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.model.Task;
+import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
-public class TaskRepository implements org.example.pmas.repository.Interfaces.ITaskRepository {
+public class TaskRepository implements ITaskRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -26,7 +27,7 @@ public class TaskRepository implements org.example.pmas.repository.Interfaces.IT
     }
 
     @Override
-    public Task readSelected() {
+    public Task readSelected(int id) {
         return null;
     }
 

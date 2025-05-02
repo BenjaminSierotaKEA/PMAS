@@ -33,8 +33,15 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public User readSelected() {
-        return null;
+    public User readSelected(int id) throws DataAccessException {
+        String sql = "SELECT users.id, users.name, users.email, users.password" +
+                "users.role, users.picture" +
+                "FROM users" +
+                "LEFT JOIN project ON users.id = project.id" +
+                "where users.id = ?" +
+                "GROUP BY users.id";
+
+        return jdbcTemplate.queryForObject(sql, new UserRowMapper(), id);
     }
 
     @Override
@@ -50,8 +57,7 @@ public class UserRepository implements IUserRepository {
     @Override
     @Transactional
     public User getByEmail(String email) throws DataAccessException {
-        String sql = "SELECT * FROM users" +
-                "WHERE email = ?";
+        String sql = "SELECT * FROM users WHERE LOWER(email) = LOWER(?)";
 
         return jdbcTemplate.queryForObject(sql,
                 new UserRowMapper(),

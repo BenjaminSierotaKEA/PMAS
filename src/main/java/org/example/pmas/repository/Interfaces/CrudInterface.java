@@ -8,7 +8,7 @@ public T create(T t);
 
 public List<T> readAll();
 
-public T readSelected();
+public T readSelected(int id);
 
 public boolean delete(int id);
 
