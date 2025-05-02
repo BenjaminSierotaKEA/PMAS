@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Selected Task</title>
+</head>
+<body>
+<form th:action="@{/tasks}" th:method="post" th:object="${task}">
+    <input type="text" hidden name="id"
+           th:value="${task.id}"
+           th:field="*{id}"/> <br>
+
+    <label for="name">Navn:</label>
+    <input type="text" id="name" name="name"
+           th:value="${task.name}"
+           th:field="*{name}"/> <br>
+
+    <label for="description">Beskrivelse:</label>
+    <input type="text" id="description" name="description"
+           th:value="${task.description}"
+           th:field="*{description}"/> <br>
+
+    <label for="timeBudget">Tidsallokering:</label>
+    <input type="text" id="timeBudget" name="timeBudget"
+           th:value="${task.timeBudget}"
+           th:field="*{timeBudget}"/> <br>
+
+    <label for="timeTaken">Faktiske tid:</label>
+    <input type="text" id="timeTaken" name="timeTaken"
+           th:value="${task.timeTaken}"
+           th:field="*{timeTaken}"/> <br>
+
+    <fieldset>
+        <legend>Opgave status</legend>
+
+        <label for="yes">Færdig</label>
+        <input type="radio" id="yes" name="completed"
+               th:field="*{completed}" value="true"/>
+
+        <label for="no">Ikke færdig</label>
+        <input type="radio" id="no" name="completed"
+               th:field="*{completed}" value="false"/>
+    </fieldset>
+
+    <label for="deadline">Deadline:</label>
+    <input type="text" id="deadline" name="deadline"
+    th:value="${task.deadline}"
+    th:field="*{deadline}"/> <br>
+
+    <input type="text" hidden name="id" th:value="${task.subProject.id}"/>
+    <label for="subProjectName">Tilhørende opgave kategori:</label>
+    <input type="text" id="subProjectName" name="subProjectName"
+           th:value="${task.subProject.name}" readonly/> <br>
+
+    <label for="users">Tildelt:</label>
+    <ul name="users" id="users">
+        <li th:each="user : ${task.users}" th:text="${user.name}"></li>
+    </ul>
+
+    <button type="submit">Opdater</button>
+</form>
+</body>
+</html>

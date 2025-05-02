@@ -27,12 +27,7 @@ public class TaskRepository implements ITaskRepository {
     public List<Task> readAll() throws ConnectionException {
         String sql =
                 "SELECT " +
-                        "t.id, " +
-                        "t.name, " +
-                        "t.completed, " +
-                        "t.description, " +
-                        "t.timeBudget, " +
-                        "t.timeTaken, " +
+                        "t.*, " +
                         "GROUP_CONCAT(u.id) AS user_ids, " +
                         "GROUP_CONCAT(u.name) AS user_names " +
                         "FROM tasks t " +
@@ -44,8 +39,24 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public Task readSelected(int id) {
-        return null;
+    public Task readSelected(int id) throws ConnectionException {
+        String sql = " SELECT " +
+                "t.*, " +
+                "sp.id as subproject_id, " +
+                "sp.name as subproject_name, " +
+                "GROUP_CONCAT(u.id) as user_ids, " +
+                "GROUP_CONCAT(u.name) as user_names " +
+                "FROM tasks t " +
+                "JOIN usertasks ut ON t.id = ut.taskid " +
+                "JOIN users u ON ut.userid = u.id " +
+                "JOIN subprojects sp ON sp.id = t.id " +
+                "WHERE t.id = ? " +
+                "GROUP BY t.id, t.name, t.completed, t.description, t.timeBudget, t.timeTaken";
+
+        List<Task> task = jdbcTemplate.query(sql, new TaskRowMapper(), id);
+        return  task.isEmpty()
+                ? null
+                : task.getFirst();
     }
 
     @Override
