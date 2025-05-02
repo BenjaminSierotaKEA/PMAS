@@ -13,6 +13,13 @@ public class User {
     private List<Task> tasks;
     private Set<Project> projects;
 
+    public User(){}
+
+    public User(int id, String name){
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

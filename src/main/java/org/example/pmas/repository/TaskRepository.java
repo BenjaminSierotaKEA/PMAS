@@ -63,7 +63,10 @@ public class TaskRepository implements ITaskRepository {
                 "WHERE t.id = ? " +
                 "GROUP BY t.id, t.name, t.completed, t.description, t.timeBudget, t.timeTaken";
 
-        return jdbcTemplate.queryForObject(sql, new TaskRowMapper(), id);
+        List<Task> task = jdbcTemplate.query(sql, new TaskRowMapper(), id);
+        return  task.isEmpty()
+                ? null
+                : task.getFirst();
     }
 
     @Override
