@@ -26,6 +26,7 @@ public class User {
     public User() {
     }
 
+    // Midlertidig indtil jeg kan hente alle users fra repo.
     public User(int userID){
         this.userID = userID;
     }

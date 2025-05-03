@@ -49,6 +49,7 @@ public class TaskController {
 
     @PostMapping("create")
     public String createTask(@ModelAttribute Task task,
+                             // Kan være denne kan fjernes, når det bliver et object af users
                              @RequestParam(name="userIds", required = false) List<Integer> userIDs,
                              Model model){
         if(task == null || task.getSubProject().getId() <= 0)
