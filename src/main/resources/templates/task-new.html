@@ -58,9 +58,8 @@
         <legend>Vælg brugere</legend>
         <div th:each="user : ${users}">
             <label>
-                <input type="checkbox"
-                       th:value="${user.userID}"
-                       th:field="*{users}" />
+                <input type="checkbox" name="userIds"
+                       th:value="${user.userID}"/>
                 <span th:text="${user.name}"></span>
             </label><br>
         </div>

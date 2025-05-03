@@ -48,10 +48,13 @@ public class TaskController {
     }
 
     @PostMapping("create")
-    public String createTask(@ModelAttribute Task task, Model model){
-        if(task == null || task.getSubProject().getId() <= 0) throw new IllegalArgumentException("Du skal udfylde obligatoriske felter");
+    public String createTask(@ModelAttribute Task task,
+                             @RequestParam(name="userIds", required = false) List<Integer> userIDs,
+                             Model model){
+        if(task == null || task.getSubProject().getId() <= 0)
+            model.addAttribute("error", "Du skal udfylde alle obligatoriske felter");
 
-        boolean success = taskService.create(task);
+        boolean success = taskService.create(task,userIDs);
         if (!success) {
             model.addAttribute("error", "Opgaven kunne ikke oprettes.");
             return "task-new";

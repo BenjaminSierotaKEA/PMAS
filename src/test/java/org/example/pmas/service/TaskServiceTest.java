@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,11 +30,13 @@ class TaskServiceTest {
 
     private List<Task> tasks;
     private Task task;
+    List<Integer> userIDs;
 
     @BeforeEach
     void setUp() {
         tasks = MockDataModel.tasksWithValues();
         task = MockDataModel.taskWithValue();
+        userIDs = new ArrayList<>(List.of(1,2,3));
     }
 
     @Test
@@ -101,8 +104,9 @@ class TaskServiceTest {
         // Arrange
         when(taskRepository.create(any(Task.class))).thenReturn(task);
 
+
         // Act
-        boolean expected = taskService.create(task);
+        boolean expected = taskService.create(task,userIDs);
 
         // Assert
         verify(taskRepository).create(task);
@@ -114,7 +118,7 @@ class TaskServiceTest {
         when(taskRepository.create(any(Task.class))).thenReturn(null);
 
         // Act
-        boolean expected = taskService.create(task);
+        boolean expected = taskService.create(task,userIDs);
 
         // assert
         verify(taskRepository).create(task);
