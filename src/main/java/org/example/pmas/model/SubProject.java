@@ -20,6 +20,15 @@ public class SubProject {
         this.name = name;
     }
 
+    public SubProject(String name, String description, double timeBudget, double timeTaken, boolean completed, int projectID) {
+        this.name = name;
+        this.description = description;
+        this.timeBudget = timeBudget;
+        this.timeTaken = timeTaken;
+        this.completed = completed;
+        this.projectID = projectID;
+    }
+
     public int getId() {
         return id;
     }
@@ -86,5 +95,9 @@ public class SubProject {
 
     public void setProjectID(int projectID) {
         this.projectID = projectID;
+    }
+
+    public int getProjectID() {
+        return projectID;
     }
 }

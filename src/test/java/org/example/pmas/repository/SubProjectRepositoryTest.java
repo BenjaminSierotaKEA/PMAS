@@ -59,4 +59,13 @@ public class SubProjectRepositoryTest {
 
         assertEquals(sizeBefore - 1, sizeAfter);
     }
+
+    @Test
+    public void shouldCreateASubProject() {
+        int sizeBefore = subProjectRepository.readAll().size();
+        subProjectRepository.create(new SubProject("UI Overhauls", "Update the UI/UX of the website.", 200, 200, false, 1));
+        int sizeAfter = subProjectRepository.readAll().size();
+
+        assertEquals(sizeBefore + 1, sizeAfter);
+    }
 }

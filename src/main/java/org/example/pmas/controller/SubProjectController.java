@@ -1,9 +1,7 @@
 package org.example.pmas.controller;
 
 import org.example.pmas.model.SubProject;
-import org.example.pmas.model.Task;
 import org.example.pmas.service.SubProjectService;
-import org.example.pmas.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +14,8 @@ public class SubProjectController {
 
     private final SubProjectService subprojectService;
 
-    public SubProjectController(SubProjectService subProjectService, TaskService taskService){
-        this.subprojectService=subProjectService;
+    public SubProjectController(SubProjectService subProjectService) {
+        this.subprojectService = subProjectService;
     }
 
     @GetMapping
@@ -48,7 +46,18 @@ public class SubProjectController {
         return "redirect:/project/" + projectID + "/subprojects";
     }
 
+    @GetMapping("/add/{projectID}")
+    public String addSubProject(@PathVariable int projectID, Model model) {
+        SubProject subproject = new SubProject();
+        subproject.setProjectID(projectID);
 
+        model.addAttribute("subproject", subproject);
+        return "add-subproject";
+    }
 
-
+    @PostMapping("/save")
+    public String saveSubProject(@ModelAttribute("subproject") SubProject subproject) {
+        subprojectService.create(subproject);
+        return "redirect:/project/" + subproject.getProjectID();
+    }
 }

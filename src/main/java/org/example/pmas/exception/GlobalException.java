@@ -24,4 +24,16 @@ public class GlobalException {
         model.addAttribute("message", e.getMessage());
         return "errorpage";
     }
+
+    @ExceptionHandler(SubProjectNotFoundException.class)
+    public String handleSubProjectNotFoundException(SubProjectNotFoundException e, Model model) {
+        model.addAttribute("message", e.getMessage());
+        return "errorpage";
+    }
+
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public String handleProjectNotFoundException(ProjectNotFoundException e, Model model) {
+        model.addAttribute("message", e.getMessage());
+        return "errorpage";
+    }
 }
