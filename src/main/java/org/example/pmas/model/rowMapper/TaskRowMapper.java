@@ -19,10 +19,12 @@ public class TaskRowMapper implements RowMapper<Task> {
         task.setDescription(rs.getString("description"));
         task.setCompleted(rs.getBoolean("completed"));
         task.setDeadline(rs.getDate("deadline").toLocalDate());
-        task.setUsers(mapUsers(rs));
+
+        if (rs.getString("user_names") != null && rs.getString("user_ids") != null)
+            task.setUsers(mapUsers(rs));
 
         // If subproject is in query
-        if (hasColumn(rs,"subproject_name"))
+        if (hasColumn(rs, "subproject_name"))
             task.setSubProject(mapSubproject(rs));
 
         return task;

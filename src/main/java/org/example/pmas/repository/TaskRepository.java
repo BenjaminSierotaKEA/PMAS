@@ -57,7 +57,8 @@ public class TaskRepository implements ITaskRepository {
         // Doesn't add automatic
         if (task.getUsers() != null) {
             for (User user : task.getUsers()) {
-                jdbcTemplate.update("INSERT INTO usertasks (userid, taskid) VALUES (?, ?)",
+                jdbcTemplate.update("INSERT INTO usertasks (userid, taskid) " +
+                                "VALUES (?, ?)",
                         user.getUserID(), task.getId());
             }
         }
@@ -73,8 +74,8 @@ public class TaskRepository implements ITaskRepository {
                         "GROUP_CONCAT(u.id) AS user_ids, " +
                         "GROUP_CONCAT(u.name) AS user_names " +
                         "FROM tasks t " +
-                        "JOIN usertasks ut ON t.id = ut.taskid " +
-                        "JOIN users u ON ut.userid = u.id " +
+                        "LEFT JOIN usertasks ut ON t.id = ut.taskid " +
+                        "LEFT JOIN users u ON ut.userid = u.id " +
                         "GROUP BY t.id, t.name, t.completed, t.description, t.timeBudget, t.timeTaken";
 
         return jdbcTemplate.query(sql, new TaskRowMapper());
@@ -89,9 +90,9 @@ public class TaskRepository implements ITaskRepository {
                 "GROUP_CONCAT(u.id) as user_ids, " +
                 "GROUP_CONCAT(u.name) as user_names " +
                 "FROM tasks t " +
-                "JOIN usertasks ut ON t.id = ut.taskid " +
-                "JOIN users u ON ut.userid = u.id " +
-                "JOIN subprojects sp ON sp.id = t.id " +
+                "LEFT JOIN usertasks ut ON t.id = ut.taskid " +
+                "LEFT JOIN users u ON ut.userid = u.id " +
+                "LEFT JOIN subprojects sp ON sp.id = t.id " +
                 "WHERE t.id = ? " +
                 "GROUP BY t.id, t.name, t.completed, t.description, t.timeBudget, t.timeTaken";
 
