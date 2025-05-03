@@ -96,15 +96,15 @@ CREATE TABLE userprojects
     FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS subprojectstasks;
-CREATE TABLE subprojecttasks
-(
-    subprojectid INT,
-    taskid       INT,
-    PRIMARY KEY (subprojectid, taskid),
-    FOREIGN KEY (subprojectid) REFERENCES subprojects (id) ON DELETE CASCADE,
-    FOREIGN KEY (taskid) REFERENCES tasks (id) ON DELETE CASCADE
-);
+-- DROP TABLE IF EXISTS subprojectstasks;
+-- CREATE TABLE subprojecttasks
+-- (
+--     subprojectid INT,
+--     taskid       INT,
+--     PRIMARY KEY (subprojectid, taskid),
+--     FOREIGN KEY (subprojectid) REFERENCES subprojects (id) ON DELETE CASCADE,
+--     FOREIGN KEY (taskid) REFERENCES tasks (id) ON DELETE CASCADE
+-- );
 
 DROP TABLE IF EXISTS usertasks;
 CREATE TABLE usertasks

@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -93,5 +94,30 @@ class TaskServiceTest {
         var result = assertThrows(WrongInputException.class, executable);
         assertEquals("Task blev ikke fundet", result.getMessage());
         verify(taskRepository).readSelected(1);
+    }
+
+    @Test
+    void create_with_values(){
+        // Arrange
+        when(taskRepository.create(any(Task.class))).thenReturn(task);
+
+        // Act
+        boolean expected = taskService.create(task);
+
+        // Assert
+        verify(taskRepository).create(task);
+        assertTrue(expected);
+    }
+    @Test
+    void create_without_values(){
+        // Arrange
+        when(taskRepository.create(any(Task.class))).thenReturn(null);
+
+        // Act
+        boolean expected = taskService.create(task);
+
+        // assert
+        verify(taskRepository).create(task);
+        assertFalse(expected);
     }
 }

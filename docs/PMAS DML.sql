@@ -38,10 +38,10 @@ VALUES (1, 1),
        (2, 3);
 
 -- Populate subprojecttasks
-INSERT INTO subprojecttasks (subprojectid, taskid)
-VALUES (1, 1),
-       (2, 2),
-       (3, 3);
+-- INSERT INTO subprojecttasks (subprojectid, taskid)
+-- VALUES (1, 1),
+--        (2, 2),
+--        (3, 3);
 
 -- Populate usertasks
 INSERT INTO usertasks (userid, taskid)
