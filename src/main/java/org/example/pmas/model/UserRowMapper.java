@@ -18,7 +18,23 @@ public class UserRowMapper implements RowMapper<User> {
         user.setPassword(rs.getString("password"));
         user.setPicture(rs.getString("picture"));
 
+        int roleId = rs.getInt("role");
+        user.setRole(roleSetter(roleId));
+
+
         return user;
 
     }
+
+    private Role roleSetter(int roleNumber) {
+        return switch (roleNumber) {
+            case 1 -> new Role(1, "Admin");
+            case 2 -> new Role(2, "Project Manager");
+            case 3 -> new Role(3, "Employee");
+            default -> throw new IllegalArgumentException("Unknown role number: " + roleNumber);
+        };
+    }
+
+
+
 }

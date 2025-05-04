@@ -23,6 +23,13 @@ public class User {
         this.picture = picture;
     }
 
+    public User( String name, String email, String password, Role role, String picture) {
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.picture = picture;
+    }
+
     public User() {
     }
 
@@ -34,6 +41,16 @@ public class User {
         this.userID = userID;
         this.name = name;
     }
+
+    public User(int userID,String name, String email, String password, String picture, Role role) {
+        this.userID = userID;
+        this.name = name;
+        this.email=email;
+        this.password = password;
+        this.picture = picture;
+        this.role = role;
+    }
+
 
     //-------------getters/setters-----------------
     public int getUserID() {
@@ -99,5 +116,11 @@ public class User {
 
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
+    }
+
+
+    @Override
+    public String toString(){
+      return  "userID" + " " + userID + " " + "name" + name;
     }
 }
