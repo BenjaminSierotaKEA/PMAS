@@ -54,10 +54,10 @@ public class TaskService {
         return subProjectRepository.readAll();
     }
 
-    public boolean delete(int id){
+    public void delete(int id){
         var task = taskRepository.readSelected(id);
         if(task == null) throw new WrongInputException("Der noget galt med id.");
 
-        return taskRepository.delete(id);
+        taskRepository.delete(id);
     }
 }

@@ -112,8 +112,6 @@ class TaskControllerTest {
     @Test
     void deleteTask() throws Exception {
         // Arrange
-        when(taskService.delete(any(Integer.class)))
-                .thenReturn(true);
 
         // Act & Assert
         mvc.perform(post("/tasks/{id}/delete", 1)

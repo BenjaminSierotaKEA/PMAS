@@ -94,7 +94,7 @@ class TaskServiceTest {
 
         // Assert
         var result = assertThrows(WrongInputException.class, executable);
-        assertEquals("Noget gik galt. Id findes ikke.", result.getMessage());
+        assertEquals("Der er noget galt med id.", result.getMessage());
         verify(taskRepository, times(1)).readSelected(1);
     }
 
@@ -131,12 +131,11 @@ class TaskServiceTest {
         when(taskRepository.readSelected(1)).thenReturn(task);
 
         // Act
-        boolean expected = taskService.delete(1);
+        taskService.delete(1);
 
         // Assert
         verify(taskRepository, times(1)).delete(1);
         verify(taskRepository, times(1)).readSelected(1);
-        assertTrue(expected);
     }
     @Test
     void delete_without_value(){
@@ -153,7 +152,8 @@ class TaskServiceTest {
         };
 
         // Assert
-        assertThrows(WrongInputException.class, executable);
+        var result = assertThrows(WrongInputException.class, executable);
+        assertEquals("Der noget galt med id.", result.getMessage());
         verify(taskRepository, times(1)).readSelected(taskId);
         verify(taskRepository, never()).delete(anyInt());
     }

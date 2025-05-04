@@ -78,13 +78,10 @@ public class TaskController {
     }
 
     @PostMapping("{id}/delete")
-    public String deleteTask(@PathVariable int id, Model model){
+    public String deleteTask(@PathVariable int id){
         if(id <= 0) throw new IllegalArgumentException("Noget galt med id.");
 
-        // Succes is set based on the result of delete.
-        boolean succes = taskService.delete(id);
-        if(!succes) model.addAttribute("error", "Der skete en fejl under sletning.");
-
+        taskService.delete(id);
         return "redirect:/tasks";
     }
 }
