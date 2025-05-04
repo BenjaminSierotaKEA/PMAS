@@ -95,7 +95,7 @@ class TaskServiceTest {
 
         // Assert
         var result = assertThrows(WrongInputException.class, executable);
-        assertEquals("Task blev ikke fundet", result.getMessage());
+        assertEquals("Noget gik galt. Id findes ikke.", result.getMessage());
         verify(taskRepository).readSelected(1);
     }
 

@@ -4,7 +4,6 @@ import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.modelBuilder.MockDataModel;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -85,7 +84,7 @@ class TaskRepositoryTest {
     void create_with_value(){
         // Arrange
         var task = new Task("test","test",
-                40,
+                Double.valueOf(40),
                 0.0,
                 false,
                 LocalDate.of(2021, 1, 1),

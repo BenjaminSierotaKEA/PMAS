@@ -26,8 +26,7 @@ public class User {
     public User() {
     }
 
-    // Midlertidig indtil jeg kan hente alle users fra repo.
-    public User(int userID){
+    public User(int userID) {
         this.userID = userID;
     }
 
@@ -35,7 +34,6 @@ public class User {
         this.userID = userID;
         this.name = name;
     }
-
 
     //-------------getters/setters-----------------
     public int getUserID() {

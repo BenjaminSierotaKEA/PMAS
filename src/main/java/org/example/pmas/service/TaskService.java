@@ -29,6 +29,7 @@ public class TaskService {
         Task createdTask = taskRepository.create(task);
         return createdTask != null && createdTask.getId() > 0;
     }
+
     private Set<User> userIDToUser(List<Integer> userIDs){
         Set<User> users = new HashSet<>();
 

@@ -14,7 +14,7 @@ public class MockDataModel {
 
     public static Task taskWithValue(){
         return new Task(1,"Create Mockups","Create mockup screens for new website design.",
-                40,0.0,
+                40.0,0.0,
                 false,
                 LocalDate.now(),
                 new SubProject(1, "UI Overhaul"),
@@ -26,7 +26,7 @@ public class MockDataModel {
                         "Amalie",
                         "Lav noget",
                         5.5,
-                        4,
+                        4.0,
                         true,
                         LocalDate.now(),
                         new SubProject(),
@@ -41,5 +41,5 @@ public class MockDataModel {
                         new SubProject(),
                         new HashSet<>()
                 ));
-    };
+    }
 }

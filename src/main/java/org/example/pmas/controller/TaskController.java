@@ -1,5 +1,6 @@
 package org.example.pmas.controller;
 
+import org.example.pmas.model.Role;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.service.TaskService;
@@ -29,7 +30,14 @@ public class TaskController {
 
     @GetMapping("{id}/task")
     public String readSelected(@PathVariable int id, Model model) {
-        if(id < 0) throw new IllegalArgumentException("Id skal være positivt");
+        if (id < 0) throw new IllegalArgumentException("Id skal være positivt");
+
+        model.addAttribute("subprojects", taskService.getAllSubproject());
+        model.addAttribute("users", List.of(
+                new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
+                new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
+                new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg")
+        ));
 
         model.addAttribute("task", taskService.readSelected(id));
         return "task-selected";
@@ -40,21 +48,23 @@ public class TaskController {
         model.addAttribute("task", new Task());
         model.addAttribute("subprojects", taskService.getAllSubproject());
         model.addAttribute("users", List.of(
-                new User(1,"Rebecca black"),
-                new User(2,"John Smith"),
-                new User(3,"CharlieXcX")
-                ));
+                new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
+                new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
+                new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg")
+        ));
         return "task-new";
     }
 
     @PostMapping("create")
     public String createTask(@ModelAttribute Task task,
-                             @RequestParam(name="userIds", required = false) List<Integer> userIDs,
-                             Model model){
-        if(task == null || task.getSubProject().getId() <= 0)
+                             @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
+                             Model model) {
+        if (task == null || task.getSubProject().getId() <= 0){
             model.addAttribute("error", "Du skal udfylde alle obligatoriske felter");
+            return "task-new";
+        }
 
-        boolean success = taskService.create(task,userIDs);
+        boolean success = taskService.create(task, userIDs);
         if (!success) {
             model.addAttribute("error", "Opgaven kunne ikke oprettes.");
             return "task-new";

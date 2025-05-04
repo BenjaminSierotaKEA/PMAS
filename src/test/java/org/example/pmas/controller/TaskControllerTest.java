@@ -2,6 +2,7 @@ package org.example.pmas.controller;
 
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
+import org.example.pmas.model.User;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -81,5 +82,30 @@ class TaskControllerTest {
                 .andExpect(view().name("task-new"));
 
         verify(taskService).getAllSubproject();
+    }
+
+    @Test
+    void createTask() throws Exception {
+        // Arrange
+        when(taskService.create(any(Task.class),
+                any(List.class)))
+                .thenReturn(true);
+
+        // Act & Assert
+        mvc.perform(post("/tasks/create")
+                        .param("id", String.valueOf(1))
+                        .param("name", task.getName())
+                        .param("description", task.getDescription())
+                        .param("timeBudget", String.valueOf(task.getTimeBudget()))
+                        .param("timeTaken", String.valueOf(task.getTimeTaken()))
+                        .param("completed", String.valueOf(task.isCompleted()))
+                        .param("deadline", String.valueOf(task.getDeadline()))
+                        .param("subProject.id", "1")
+                        .param("userIds", "1", "2"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/tasks"));
+
+        verify(taskService, times(1))
+                .create(any(Task.class), any(List.class));
     }
 }

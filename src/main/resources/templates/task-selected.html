@@ -8,27 +8,22 @@
 <body>
 <form th:action="@{/tasks}" th:method="post" th:object="${task}">
     <input type="text" hidden name="id"
-           th:value="${task.id}"
            th:field="*{id}"/> <br>
 
-    <label for="name">Navn:</label>
+    <label for="name">*Navn:</label><br>
     <input type="text" id="name" name="name"
-           th:value="${task.name}"
            th:field="*{name}"/> <br>
 
-    <label for="description">Beskrivelse:</label>
+    <label for="description">*Beskrivelse:</label><br>
     <textarea id="description" name="description" rows="4" cols="50"
-           th:value="${task.description}"
            th:field="*{description}"></textarea> <br>
 
-    <label for="timeBudget">Tidsallokering:</label>
-    <input type="text" id="timeBudget" name="timeBudget"
-           th:value="${task.timeBudget}"
+    <label for="timeBudget">*Tidsallokering:</label><br>
+    <input type="number" id="timeBudget" name="timeBudget" step="0.1"
            th:field="*{timeBudget}"/> <br>
 
-    <label for="timeTaken">Faktiske tid:</label>
-    <input type="text" id="timeTaken" name="timeTaken"
-           th:value="${task.timeTaken}"
+    <label for="timeTaken">Faktiske tid:</label><br>
+    <input type="number" id="timeTaken" name="timeTaken" step="0.1"
            th:field="*{timeTaken}"/> <br>
 
     <fieldset>
@@ -43,22 +38,24 @@
                th:field="*{completed}" value="false"/>
     </fieldset>
 
-    <label for="deadline">Deadline:</label>
+    <label for="deadline">Deadline:</label><br>
     <input type="date" id="deadline" name="deadline"
            th:field="*{deadline}"/> <br>
 
-    <input type="text" hidden name="id" th:value="${task.subProject.id}"/>
-    <label for="subProjectName">Tilhørende opgave kategori:</label>
-    <input type="text" id="subProjectName" name="subProjectName"
-           th:value="${task.subProject.name}" readonly/> <br>
+    <label for="subproject">*Project kategori:</label><br>
+    <select name="subproject" id="subproject" th:field="*{subProject.id}" required>
+        <option th:each="subproject : ${subprojects}"
+                th:value="${subproject.id}"
+                th:text="${subproject.name}">
+        </option>
+    </select><br>
 
     <fieldset>
-        <legend>Vælg brugere</legend>
-        <div th:each="user : ${task.users}">
+        <legend>Vælg brugere:</legend><br>
+        <div th:each="user : ${users}">
             <label>
                 <input type="checkbox" name="userIds"
-                       th:value="${user.userID}"
-                       th:checked="${task.users.contains(user)}" />
+                       th:checked="${task.users != null and task.users.contains(user)}" />
                 <span th:text="${user.name}"></span>
             </label><br>
         </div>
