@@ -26,11 +26,14 @@ public class User {
     public User() {
     }
 
+    public User(int userID) {
+        this.userID = userID;
+    }
+
     public User(int userID, String name) {
         this.userID = userID;
         this.name = name;
     }
-
 
     //-------------getters/setters-----------------
     public int getUserID() {

@@ -74,15 +74,15 @@ CREATE TABLE USERPROJECTS
     FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS SUBPROJECTTASKS CASCADE;
-CREATE TABLE SUBPROJECTTASKS
-(
-    subprojectid INT,
-    taskid       INT,
-    PRIMARY KEY (subprojectid, taskid),
-    FOREIGN KEY (subprojectid) REFERENCES subprojects (id) ON DELETE CASCADE,
-    FOREIGN KEY (taskid) REFERENCES tasks (id) ON DELETE CASCADE
-);
+-- DROP TABLE IF EXISTS SUBPROJECTTASKS CASCADE;
+-- CREATE TABLE SUBPROJECTTASKS
+-- (
+--     subprojectid INT,
+--     taskid       INT,
+--     PRIMARY KEY (subprojectid, taskid),
+--     FOREIGN KEY (subprojectid) REFERENCES subprojects (id) ON DELETE CASCADE,
+--     FOREIGN KEY (taskid) REFERENCES tasks (id) ON DELETE CASCADE
+-- );
 
 DROP TABLE IF EXISTS USERTASKS CASCADE;
 CREATE TABLE USERTASKS
@@ -131,10 +131,10 @@ VALUES (1, 1),
        (2, 3);
 
 -- Populate subprojecttasks
-INSERT INTO SUBPROJECTTASKS (subprojectid, taskid)
-VALUES (1, 1),
-       (2, 2),
-       (3, 3);
+-- INSERT INTO SUBPROJECTTASKS (subprojectid, taskid)
+-- VALUES (1, 1),
+--        (2, 2),
+--        (3, 3);
 
 -- Populate usertasks
 INSERT INTO USERTASKS (userid, taskid)

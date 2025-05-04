@@ -12,9 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -28,11 +30,13 @@ class TaskServiceTest {
 
     private List<Task> tasks;
     private Task task;
+    List<Integer> userIDs;
 
     @BeforeEach
     void setUp() {
         tasks = MockDataModel.tasksWithValues();
         task = MockDataModel.taskWithValue();
+        userIDs = new ArrayList<>(List.of(1,2,3));
     }
 
     @Test
@@ -91,7 +95,33 @@ class TaskServiceTest {
 
         // Assert
         var result = assertThrows(WrongInputException.class, executable);
-        assertEquals("Task blev ikke fundet", result.getMessage());
+        assertEquals("Noget gik galt. Id findes ikke.", result.getMessage());
         verify(taskRepository).readSelected(1);
+    }
+
+    @Test
+    void create_with_values(){
+        // Arrange
+        when(taskRepository.create(any(Task.class))).thenReturn(task);
+
+
+        // Act
+        boolean expected = taskService.create(task,userIDs);
+
+        // Assert
+        verify(taskRepository).create(task);
+        assertTrue(expected);
+    }
+    @Test
+    void create_without_values(){
+        // Arrange
+        when(taskRepository.create(any(Task.class))).thenReturn(null);
+
+        // Act
+        boolean expected = taskService.create(task,userIDs);
+
+        // assert
+        verify(taskRepository).create(task);
+        assertFalse(expected);
     }
 }
