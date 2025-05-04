@@ -30,7 +30,7 @@ public class TaskController {
 
     @GetMapping("{id}/task")
     public String readSelected(@PathVariable int id, Model model) {
-        if (id < 0) throw new IllegalArgumentException("Id skal være positivt");
+        if (id < 0) throw new IllegalArgumentException("Noget galt med id");
 
         model.addAttribute("subprojects", taskService.getAllSubproject());
         model.addAttribute("users", List.of(
@@ -59,7 +59,7 @@ public class TaskController {
     public String createTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
                              Model model) {
-        if (task == null) throw new IllegalArgumentException("Fejl. Opgaven er null");
+        if (task == null) throw new IllegalArgumentException("Fejl. Noget galt med opgaven du opretter.");
 
         // Give user a message
         if (task.getSubProject().getId() <= 0){
@@ -74,6 +74,14 @@ public class TaskController {
             return "task-new";
         }
 
+        return "redirect:/tasks";
+    }
+
+    @PostMapping("{id}/delete")
+    public String deleteTask(@PathVariable int id){
+        if(id <= 0) throw new IllegalArgumentException("Noget galt med id.");
+
+        taskService.delete(id);
         return "redirect:/tasks";
     }
 }
