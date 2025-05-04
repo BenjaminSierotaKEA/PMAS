@@ -1,5 +1,6 @@
 package org.example.pmas.controller;
 
+import org.example.pmas.model.Role;
 import org.example.pmas.model.User;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.service.UserService;
@@ -33,9 +34,9 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         users = List.of(new User(1,
-                "Jacob","email@email.com","password", 1, "jacob.jpg"));
+                "Jacob","email@email.com","password", new Role(1, "Admin"), "jacob.jpg"));
         user = new User(1,
-                "Jacob","email@email.com","password", 1, "jacob.jpg");
+                "Jacob","email@email.com","password", new Role(1, "Admin"), "jacob.jpg");
 
     }
 

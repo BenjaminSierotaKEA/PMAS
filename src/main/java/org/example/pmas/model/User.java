@@ -10,12 +10,12 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private int role;
+    private Role role;
     private String picture;
     private List<Task> tasks;
     private Set<Project> projects;
 
-    public User(int userID, String name, String email, String password, int role, String picture) {
+    public User(int userID, String name, String email, String password, Role role, String picture) {
         this.userID = userID;
         this.name = name;
         this.email = email;
@@ -23,7 +23,7 @@ public class User {
         this.picture = picture;
     }
 
-    public User( String name, String email, String password, int role, String picture) {
+    public User( String name, String email, String password, Role role, String picture) {
         this.name = name;
         this.email = email;
         this.role = role;
@@ -42,7 +42,7 @@ public class User {
         this.name = name;
     }
 
-    public User(int userID,String name, String email, String password, String picture, int role) {
+    public User(int userID,String name, String email, String password, String picture, Role role) {
         this.userID = userID;
         this.name = name;
         this.email=email;
@@ -50,6 +50,7 @@ public class User {
         this.picture = picture;
         this.role = role;
     }
+
 
     //-------------getters/setters-----------------
     public int getUserID() {
@@ -84,11 +85,11 @@ public class User {
         this.picture = picture;
     }
 
-    public int getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(int role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
