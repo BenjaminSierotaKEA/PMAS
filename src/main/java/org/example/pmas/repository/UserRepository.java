@@ -50,7 +50,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
+    public boolean update(User newObject) {
         return false;
     }
 

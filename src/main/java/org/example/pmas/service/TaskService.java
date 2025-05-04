@@ -23,41 +23,56 @@ public class TaskService {
     }
 
     public boolean create(Task task, List<Integer> userIDs) {
-        if(userIDs != null)
-            task.setUsers(userIDToUser(userIDs));
-
         Task createdTask = taskRepository.create(task);
-        return createdTask != null && createdTask.getId() > 0;
-    }
+        if (createdTask == null) return false;
 
-    private Set<User> userIDToUser(List<Integer> userIDs){
-        Set<User> users = new HashSet<>();
-
-        for (Integer userID : userIDs) {
-            users.add(new User(userID));
-        }
-        return users;
+        // Adds user and task to junction table
+        return taskRepository.addUserToTask(createdTask.getId(), userIDs);
     }
 
     public List<Task> readAll() {
         return taskRepository.readAll();
     }
 
-    public Task readSelected(int id){
+    public Task readSelected(int id) {
+        // gets task and check if it exists.
         var task = taskRepository.readSelected(id);
-        if(task == null) throw new WrongInputException("Der er noget galt med id.");
+        if (task == null) throw new WrongInputException("Der er noget galt med id.");
 
         return task;
     }
 
-    public List<SubProject> getAllSubproject(){
+    public List<SubProject> getAllSubproject() {
         return subProjectRepository.readAll();
     }
 
-    public void delete(int id){
+    public void delete(int id) {
+        // check if id exist.
         var task = taskRepository.readSelected(id);
-        if(task == null) throw new WrongInputException("Der noget galt med id.");
+        if (task == null) throw new WrongInputException("Der noget galt med id.");
 
         taskRepository.delete(id);
+    }
+
+    public boolean update(Task task, List<Integer> userIDs) {
+        // Check if id exist.
+        var old = taskRepository.readSelected(task.getId());
+        if (old == null) throw new WrongInputException("Der er noget galt med id.");
+
+        boolean succes = taskRepository.update(task);
+        if (!succes) return false;
+
+        // Adds users to the junction table
+        return taskRepository.addUserToTask(task.getId(), userIDs);
+    }
+
+    private Set<User> userIDToUser(List<Integer> userIDs) {
+        Set<User> users = new HashSet<>();
+
+        // adds user only with id
+        for (Integer userID : userIDs) {
+            users.add(new User(userID));
+        }
+        return users;
     }
 }

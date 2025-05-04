@@ -83,7 +83,7 @@ public class SubProjectRepository implements ISubProjectRepository {
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
+    public boolean update(SubProject newObject) {
         return false;
     }
 

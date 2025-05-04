@@ -6,7 +6,7 @@
     <title>Selected Task</title>
 </head>
 <body>
-<form th:action="@{/tasks}" th:method="post" th:object="${task}">
+<form th:action="@{/tasks/update}" th:method="post" th:object="${task}">
     <input type="text" hidden name="id"
            th:field="*{id}"/> <br>
 
@@ -16,7 +16,7 @@
 
     <label for="description">*Beskrivelse:</label><br>
     <textarea id="description" name="description" rows="4" cols="50"
-           th:field="*{description}"></textarea> <br>
+              th:field="*{description}"></textarea> <br>
 
     <label for="timeBudget">*Tidsallokering:</label><br>
     <input type="number" id="timeBudget" name="timeBudget" step="0.1"
@@ -51,11 +51,13 @@
     </select><br>
 
     <fieldset>
-        <legend>Vælg brugere:</legend><br>
+        <legend>Vælg brugere:</legend>
+        <br>
         <div th:each="user : ${users}">
             <label>
                 <input type="checkbox" name="userIds"
-                       th:checked="${task.users != null and task.users.contains(user)}" />
+                       th:checked="${task.users != null and task.users.contains(user)}"
+                       th:value="${user.userID}"/>
                 <span th:text="${user.name}"></span>
             </label><br>
         </div>

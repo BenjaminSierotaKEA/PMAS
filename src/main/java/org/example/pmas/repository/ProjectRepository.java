@@ -39,7 +39,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
+    public boolean update(Project newObject) {
         return false;
     }
 
