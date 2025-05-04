@@ -1,62 +1,94 @@
 package org.example.pmas.service;
 
 import org.example.pmas.model.User;
+import org.example.pmas.modelBuilder.MockDataModel;
+import org.example.pmas.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
-@Transactional
-@Rollback // Ensures database changes are rolled back after each test
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Autowired
+    @Mock
+    private UserRepository userRepository;
+
+    @InjectMocks
     private UserService userService;
+
+    private List<User> users;
+    private User user;
+    List<Integer> userIDs;
+
+
+
+    @BeforeEach
+    void setUp() {
+        users = MockDataModel.usersWithValues();
+        user = MockDataModel.userWithValues();
+        user.setPassword("password");
+        userIDs = new ArrayList<>(List.of(1,2,3));
+    }
+
 
     @Test
     void getAll() {
-        // arrange (nothing to set up, using existing data from h2Init)
+        // Arrange
+        when(userRepository.readAll()).thenReturn(users);
 
-        // act
-        List<User> users = userService.getAll();
+        // Act
+        List<User> result = userService.getAll();
 
-        // assert
-        assertThat(users).isNotEmpty();
-        assertThat(users).extracting(User::getName)
-                .contains("Rebecca Black", "John Smith", "CharlieXcX");
+        // Assert
+        assertNotNull(result);
+        assertEquals(users, result);
+        verify(userRepository, times(1)).readAll();
     }
 
     @Test
     void getUser() {
-        // arrange (we know user with ID 1 is Rebecca Black)
+        // Arrange
+        when(userRepository.readSelected(1)).thenReturn(user);
 
-        // act
-        User user = userService.getUser(1);
+        // Act
+        User result = userService.getUser(1);
 
-        // assert
-        assertThat(user).isNotNull();
-        assertThat(user.getName()).isEqualTo("Rebecca Black");
-        assertThat(user.getEmail()).isEqualTo("Rebecca@example.com");
+        // Assert
+        assertNotNull(result);
+        assertEquals(user, result);
+        verify(userRepository, times(1)).readSelected(1);
     }
 
     @Test
-    void logIn() {
-        // arrange
-        String email = "Rebecca@example.com";
-        String password = "password123";
+    void logIn_validCredentials_returnsUser() {
+        // Arrange
+        String email = "email";
+        String password = "password";
+        when(userRepository.getByEmail(email)).thenReturn(user);
 
-        // act
-        User user = userService.logIn(email, password);
+        // Act
+        User result = userService.logIn(email,password);
 
-        // assert
-        assertThat(user).isNotNull();
-        assertThat(user.getName()).isEqualTo("Rebecca Black");
+        // Assert
+        assertNotNull(result);
+        assertEquals(user, result);
+        verify(userRepository, times(1)).getByEmail(email);
     }
+
 }
