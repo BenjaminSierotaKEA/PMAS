@@ -17,9 +17,9 @@
            th:field="*{name}"/> <br>
 
     <label for="description">Beskrivelse:</label>
-    <input type="text" id="description" name="description"
+    <textarea id="description" name="description" rows="4" cols="50"
            th:value="${task.description}"
-           th:field="*{description}"/> <br>
+           th:field="*{description}"></textarea> <br>
 
     <label for="timeBudget">Tidsallokering:</label>
     <input type="text" id="timeBudget" name="timeBudget"
@@ -44,8 +44,7 @@
     </fieldset>
 
     <label for="deadline">Deadline:</label>
-    <input type="text" id="deadline" name="deadline"
-           th:value="${task.deadline}"
+    <input type="date" id="deadline" name="deadline"
            th:field="*{deadline}"/> <br>
 
     <input type="text" hidden name="id" th:value="${task.subProject.id}"/>

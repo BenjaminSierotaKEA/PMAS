@@ -32,8 +32,8 @@ public class TaskService {
     private Set<User> userIDToUser(List<Integer> userIDs){
         Set<User> users = new HashSet<>();
 
-        for(int i = 0; i < userIDs.size(); i++){
-            users.add(new User(userIDs.get(i)));
+        for (Integer userID : userIDs) {
+            users.add(new User(userID));
         }
         return users;
     }
