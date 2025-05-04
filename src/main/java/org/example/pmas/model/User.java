@@ -33,6 +33,10 @@ public class User {
     public User() {
     }
 
+    public User(int userID) {
+        this.userID = userID;
+    }
+
     public User(int userID, String name) {
         this.userID = userID;
         this.name = name;
@@ -46,7 +50,6 @@ public class User {
         this.picture = picture;
         this.role = role;
     }
-
 
     //-------------getters/setters-----------------
     public int getUserID() {

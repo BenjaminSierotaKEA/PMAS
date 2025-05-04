@@ -3,27 +3,31 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Selected Task</title>
+    <title>add task</title>
 </head>
 <body>
-<form th:action="@{/tasks}" th:method="post" th:object="${task}">
-    <input type="text" hidden name="id"
-           th:field="*{id}"/> <br>
 
+<p th:if="${error}" th:text="${error}"></p>
+<form th:action="@{/tasks/create}" th:method="post" th:object="${task}">
     <label for="name">*Navn:</label><br>
-    <input type="text" id="name" name="name"
+    <input type="text" id="name" name="name" required placeholder="Navn"
            th:field="*{name}"/> <br>
 
     <label for="description">*Beskrivelse:</label><br>
-    <textarea id="description" name="description" rows="4" cols="50"
-           th:field="*{description}"></textarea> <br>
+    <textarea id="description" name="description" required placeholder="Beskrivelse"
+              rows="4" cols="50"
+              th:field="*{description}"></textarea> <br>
 
+    <!-- step allow you to add decimal numbers -->
     <label for="timeBudget">*Tidsallokering:</label><br>
-    <input type="number" id="timeBudget" name="timeBudget" step="0.1"
+    <input type="number" id="timeBudget" name="timeBudget" value=""
+           required step="0.1"
            th:field="*{timeBudget}"/> <br>
 
+    <!-- step allow you to add decimal numbers -->
     <label for="timeTaken">Faktiske tid:</label><br>
-    <input type="number" id="timeTaken" name="timeTaken" step="0.1"
+    <input type="number" id="timeTaken" name="timeTaken" value=""
+           step="0.1" required
            th:field="*{timeTaken}"/> <br>
 
     <fieldset>
@@ -44,6 +48,7 @@
 
     <label for="subproject">*Project kategori:</label><br>
     <select name="subproject" id="subproject" th:field="*{subProject.id}" required>
+        <option value="0" selected>Vælg en kategori:</option><br>
         <option th:each="subproject : ${subprojects}"
                 th:value="${subproject.id}"
                 th:text="${subproject.name}">
@@ -51,11 +56,11 @@
     </select><br>
 
     <fieldset>
-        <legend>Vælg brugere:</legend><br>
+        <legend>Vælg brugere</legend>
         <div th:each="user : ${users}">
             <label>
                 <input type="checkbox" name="userIds"
-                       th:checked="${task.users != null and task.users.contains(user)}" />
+                       th:value="${user.userID}"/>
                 <span th:text="${user.name}"></span>
             </label><br>
         </div>
@@ -64,5 +69,6 @@
 
     <button type="submit">Opdater</button>
 </form>
+
 </body>
 </html>

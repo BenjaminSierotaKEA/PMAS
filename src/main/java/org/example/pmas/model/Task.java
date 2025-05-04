@@ -30,6 +30,19 @@ public class Task {
         this.users = users;
     }
 
+    public Task(String name, String description, double timeBudget,
+                double timeTaken, boolean completed, LocalDate deadline, SubProject subProject,
+                Set<User> users) {
+        this.name = name;
+        this.description = description;
+        this.timeBudget = timeBudget;
+        this.timeTaken = timeTaken;
+        this.completed = completed;
+        this.deadline = deadline;
+        this.subProject = subProject;
+        this.users = users;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
