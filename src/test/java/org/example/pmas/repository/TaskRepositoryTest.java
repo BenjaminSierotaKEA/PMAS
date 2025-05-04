@@ -100,4 +100,29 @@ class TaskRepositoryTest {
         // Assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    void delete_with_data(){
+        // Arrange
+        int taskToDelete = 1;
+
+        // Act
+        boolean actual = taskRepository.delete(taskToDelete);
+
+        // Assert
+        assertTrue(actual);
+        assertNull(taskRepository.readSelected(taskToDelete));
+    }
+    @Test
+    void delete_with_wrong_data(){
+        // Arrange
+        int taskToDelete = 5;
+
+        // Act
+        boolean actual = taskRepository.delete(taskToDelete);
+
+        // Assert
+        assertFalse(actual);
+        assertNull(taskRepository.readSelected(taskToDelete));
+    }
 }

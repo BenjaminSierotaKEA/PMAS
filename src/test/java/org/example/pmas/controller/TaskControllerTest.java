@@ -108,4 +108,18 @@ class TaskControllerTest {
         verify(taskService, times(1))
                 .create(any(Task.class), any(List.class));
     }
+
+    @Test
+    void deleteTask() throws Exception {
+        // Arrange
+
+        // Act & Assert
+        mvc.perform(post("/tasks/{id}/delete", 1)
+                        .param("id", String.valueOf(1)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/tasks"));
+
+        verify(taskService, times(1))
+                .delete(any(Integer.class));
+    }
 }
