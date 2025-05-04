@@ -104,7 +104,8 @@ public class TaskRepository implements ITaskRepository {
 
     @Override
     public boolean delete(int id) {
-        return false;
+        String sql = "DELETE FROM tasks WHERE id = ?";
+        return jdbcTemplate.update(sql, id) > 0;
     }
 
     @Override

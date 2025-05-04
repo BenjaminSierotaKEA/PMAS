@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Du er i task</h1>
-<a href="/tasks/new">Opret ny opgave</a>
+<a th:href="@{/tasks/new}">Opret ny opgave</a>
 <table>
     <tr>
         <th>Opgave</th>
@@ -35,7 +35,9 @@
         </span>
         </td>
         <td><a th:href="@{/tasks/{id}/task(id=${task.id})}">Opdater</a></td>
-        <td><a th:href="@{/tasks/{id}/delete(id=${task.id})}">Slet(Virker ikke endnu)</a></td>
+        <td>
+            <form th:action="@{/tasks/{id}/delete(id=${task.id})}"
+            th:method="post"></form></td>
     </tr>
 </table>
 </body>

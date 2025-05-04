@@ -17,8 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TaskServiceTest {
@@ -50,7 +49,7 @@ class TaskServiceTest {
         // Assert
         assertNotNull(result);
         assertEquals(tasks, result);
-        verify(taskRepository).readAll();
+        verify(taskRepository, times(1)).readAll();
     }
     @Test
     void readAll_without_values() {
@@ -62,7 +61,7 @@ class TaskServiceTest {
 
         // Assert
         assertNull(result);
-        verify(taskRepository).readAll();
+        verify(taskRepository, times(1)).readAll();
     }
 
     @Test
@@ -76,7 +75,7 @@ class TaskServiceTest {
         // Assert
         assertNotNull(result);
         assertEquals(task, result);
-        verify(taskRepository).readSelected(1);
+        verify(taskRepository, times(1)).readSelected(1);
     }
     @Test
     void readSelected_without_values() {
@@ -96,7 +95,7 @@ class TaskServiceTest {
         // Assert
         var result = assertThrows(WrongInputException.class, executable);
         assertEquals("Noget gik galt. Id findes ikke.", result.getMessage());
-        verify(taskRepository).readSelected(1);
+        verify(taskRepository, times(1)).readSelected(1);
     }
 
     @Test
@@ -109,7 +108,7 @@ class TaskServiceTest {
         boolean expected = taskService.create(task,userIDs);
 
         // Assert
-        verify(taskRepository).create(task);
+        verify(taskRepository, times(1)).create(task);
         assertTrue(expected);
     }
     @Test
@@ -121,7 +120,41 @@ class TaskServiceTest {
         boolean expected = taskService.create(task,userIDs);
 
         // assert
-        verify(taskRepository).create(task);
+        verify(taskRepository, times(1)).create(task);
         assertFalse(expected);
+    }
+
+    @Test
+    void delete_with_value(){
+        // Arrange
+        when(taskRepository.delete(1)).thenReturn(true);
+        when(taskRepository.readSelected(1)).thenReturn(task);
+
+        // Act
+        boolean expected = taskService.delete(1);
+
+        // Assert
+        verify(taskRepository, times(1)).delete(1);
+        verify(taskRepository, times(1)).readSelected(1);
+        assertTrue(expected);
+    }
+    @Test
+    void delete_without_value(){
+        // Arrange
+        int taskId = 1;
+        when(taskRepository.readSelected(taskId)).thenReturn(null);
+
+        // Act
+        Executable executable = new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                taskService.delete(1);
+            }
+        };
+
+        // Assert
+        assertThrows(WrongInputException.class, executable);
+        verify(taskRepository, times(1)).readSelected(taskId);
+        verify(taskRepository, never()).delete(anyInt());
     }
 }

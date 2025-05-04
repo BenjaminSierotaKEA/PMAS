@@ -44,13 +44,20 @@ public class TaskService {
     }
 
     public Task readSelected(int id){
-        var Task = taskRepository.readSelected(id);
-        if(Task == null) throw new WrongInputException("Noget gik galt. Id findes ikke.");
+        var task = taskRepository.readSelected(id);
+        if(task == null) throw new WrongInputException("Der er noget galt med id.");
 
-        return Task;
+        return task;
     }
 
     public List<SubProject> getAllSubproject(){
         return subProjectRepository.readAll();
+    }
+
+    public boolean delete(int id){
+        var task = taskRepository.readSelected(id);
+        if(task == null) throw new WrongInputException("Der noget galt med id.");
+
+        return taskRepository.delete(id);
     }
 }
