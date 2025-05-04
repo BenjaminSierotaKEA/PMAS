@@ -59,14 +59,18 @@ public class TaskController {
     public String createTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
                              Model model) {
-        if (task == null || task.getSubProject().getId() <= 0){
-            model.addAttribute("error", "Du skal udfylde alle obligatoriske felter");
+        if (task == null) throw new IllegalArgumentException("Fejl. Opgaven er null");
+
+        // Give user a message
+        if (task.getSubProject().getId() <= 0){
+            model.addAttribute("error", "Udfylde alle obligatoriske felter");
             return "task-new";
         }
 
+        // If not success
         boolean success = taskService.create(task, userIDs);
         if (!success) {
-            model.addAttribute("error", "Opgaven kunne ikke oprettes.");
+            model.addAttribute("error", "Udfyld alle obligatoriske felter");
             return "task-new";
         }
 
