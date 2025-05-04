@@ -10,13 +10,20 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private Role role;
+    private int role;
     private String picture;
     private List<Task> tasks;
     private Set<Project> projects;
 
-    public User(int userID, String name, String email, String password, Role role, String picture) {
+    public User(int userID, String name, String email, String password, int role, String picture) {
         this.userID = userID;
+        this.name = name;
+        this.email = email;
+        this.role = role;
+        this.picture = picture;
+    }
+
+    public User( String name, String email, String password, int role, String picture) {
         this.name = name;
         this.email = email;
         this.role = role;
@@ -29,6 +36,15 @@ public class User {
     public User(int userID, String name) {
         this.userID = userID;
         this.name = name;
+    }
+
+    public User(int userID,String name, String email, String password, String picture, int role) {
+        this.userID = userID;
+        this.name = name;
+        this.email=email;
+        this.password = password;
+        this.picture = picture;
+        this.role = role;
     }
 
 
@@ -65,11 +81,11 @@ public class User {
         this.picture = picture;
     }
 
-    public Role getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(int role) {
         this.role = role;
     }
 
@@ -96,5 +112,11 @@ public class User {
 
     public void setProjects(Set<Project> projects) {
         this.projects = projects;
+    }
+
+
+    @Override
+    public String toString(){
+      return  "userID" + " " + userID + " " + "name" + name;
     }
 }

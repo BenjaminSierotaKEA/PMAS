@@ -35,7 +35,7 @@ public class SessionHandler {
     }
 
     //gets the users role, used to determine READ/WRITE rights
-    public Role getUserRole(){
+    public int getUserRole(){
         var user = getCurrentUser();
 
         return user.getRole();
