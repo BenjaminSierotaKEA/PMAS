@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:ls="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>View tasks</title>
@@ -36,8 +36,10 @@
         </td>
         <td><a th:href="@{/tasks/{id}/task(id=${task.id})}">Opdater</a></td>
         <td>
-            <form th:action="@{/tasks/{id}/delete(id=${task.id})}"
-            th:method="post"></form></td>
+            <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post">
+               <button type="submit">Slet</button>
+            </form>
+        </td>
     </tr>
 </table>
 </body>
