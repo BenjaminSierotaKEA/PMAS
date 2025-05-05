@@ -62,7 +62,7 @@ public class SubProjectControllerTest {
     void createSubProject_shouldRenderCreateSubProjectForm() throws Exception {
         int projectID = 1;
 
-        mvc.perform(get("/subprojects/{projectID}/add", projectID))
+        mvc.perform(get("/projects/{projectID}/subprojects/create", projectID))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subproject-new"))
                 .andExpect(model().attributeExists("subproject"));
@@ -75,9 +75,11 @@ public class SubProjectControllerTest {
 
         when(subprojectService.create(newSubProject)).thenReturn(newSubProject);
 
-        mvc.perform(post("/subprojects/save").flashAttr("subproject", newSubProject))
+        mvc.perform(post("/projects/save")
+                        .param("projectID","4")
+                        .flashAttr("subproject", newSubProject))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/subprojectsall"));
+                .andExpect(redirectedUrl("/projects/4/subprojects"));
         verify(subprojectService).create(newSubProject);
     }
 
@@ -88,9 +90,9 @@ public class SubProjectControllerTest {
         int idToDelete = subproject.getId();
         //int projectID = subproject.getProjectID();
 
-        mvc.perform(post("/subprojects/{subprojectID}/delete",idToDelete))
+        mvc.perform(post("/projects/{subprojectID}/delete",idToDelete))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/subprojectsall"));
+                .andExpect(redirectedUrl("/projects"));
 
         verify(subprojectService).delete(idToDelete);
     }
