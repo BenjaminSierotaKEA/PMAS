@@ -56,6 +56,14 @@ public class MockDataModel {
         );
     }
 
+    public static List<SubProject> subprojectsWithValues(){
+        return List.of(
+                new SubProject(1,"SubProject1", "SubProject1Desc"),
+                new SubProject(2,"SubProject2", "SubProject2Desc"),
+                new SubProject(3,"SubProject3", "SubProject3Desc")
+        );
+    }
+
 
 
 }

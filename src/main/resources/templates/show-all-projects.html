@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Projects</title>
+</head>
+<body>
+<!--This is the ugly test version of the page,
+make this according to the styled mockup later-->
+
+<div>
+    <form  th:action="@{/projects/create-project-form}" method="get">
+        <button type="submit">Create Project</button>
+    </form>
+</div>
+    <table>
+        <tr th:each="project :${projects}" >
+            <th th:text="${project.name}"></th>
+            <th th:text="${project.description}"></th>
+            <th th:text="${project.timeBudget}"></th>
+            <th th:text="${project.deadline}"></th>
+            <th>
+                <form th:object="${project}" th:action="@{/projects/{projectID}/update-form(projectID=${project.id})}"
+                      method="get">
+                    <button type="submit">Edit Project</button>
+                </form>
+                <form role="form" action="#" method="post" th:action="@{/projects/delete-project}" th:object="${project}">
+                    <input type="number" name="id" th:value="${project.id}" hidden readonly>
+                    <button type="submit">DELETE PROJECT</button>
+                </form>
+            </th>
+        </tr>
+
+    </table>
+
+
+
+</body>
+</html>
