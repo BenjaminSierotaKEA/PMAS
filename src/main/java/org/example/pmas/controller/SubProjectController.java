@@ -1,13 +1,63 @@
 package org.example.pmas.controller;
 
+import org.example.pmas.model.SubProject;
 import org.example.pmas.service.SubProjectService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@Controller
+@RequestMapping("subprojects")
 public class SubProjectController {
 
-    private final SubProjectService subProjectService;
+    private final SubProjectService subprojectService;
 
-    public SubProjectController(SubProjectService subProjectService){
-        this.subProjectService=subProjectService;
+    public SubProjectController(SubProjectService subProjectService) {
+        this.subprojectService = subProjectService;
     }
 
+    @GetMapping
+    public String readAll(Model model) {
+        model.addAttribute("subprojects", subprojectService.readAll());
+        return "all-subprojects";
+    }
+
+    @GetMapping("/subproject/{id}")
+    public String getSubProject(@PathVariable int id, Model model) {
+        SubProject subproject = subprojectService.readSelected(id);
+        model.addAttribute("subproject", subproject);
+        return "subproject";
+    }
+
+    @GetMapping("/project/{projectId}/subprojects")
+    public String getSubProjectsByProjectID(@PathVariable int projectId, Model model) {
+        List<SubProject> subproject = subprojectService.getSubProjectsByProjectID(projectId);
+
+        model.addAttribute("subproject", subproject);
+        return "project-subprojects";
+    }
+
+    @PostMapping("/subprojects/{subprojectID}/delete")
+    public String deleteSubProject(@PathVariable int subprojectID) {
+        int projectID = subprojectService.getProjectIDBySubProjectID(subprojectID);
+        subprojectService.delete(subprojectID);
+        return "redirect:/project/" + projectID + "/subprojects";
+    }
+
+    @GetMapping("/add/{projectID}")
+    public String addSubProject(@PathVariable int projectID, Model model) {
+        SubProject subproject = new SubProject();
+        subproject.setProjectID(projectID);
+
+        model.addAttribute("subproject", subproject);
+        return "add-subproject";
+    }
+
+    @PostMapping("/save")
+    public String saveSubProject(@ModelAttribute("subproject") SubProject subproject) {
+        subprojectService.create(subproject);
+        return "redirect:/project/" + subproject.getProjectID();
+    }
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View tasks</title>
+</head>
+<body>
+<h1>Du er i task</h1>
+<a th:href="@{/tasks/new}">Opret ny opgave</a>
+<table>
+    <tr>
+        <th>Opgave</th>
+        <th>Status</th>
+        <th>Beskrivelse</th>
+        <th>Tids allokering</th>
+        <th>Brugt tid</th>
+        <th>Deadline</th>
+        <th>Tildelt</th>
+        <th>Opdater</th>
+        <th>Slet</th>
+    </tr>
+    <tr th:each="task : ${tasks}">
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.completed}"></td>
+        <td th:text="${task.description}"></td>
+        <td th:text="${task.timeBudget}"></td>
+        <td th:text="${task.timeTaken}"></td>
+        <td th:text="${task.deadline}"></td>
+        <td>
+        <span th:each="user, iterStat : ${task.users}">
+            <span th:text="${user.name}"></span>
+            <!-- Places a comma if not last -->
+            <span th:if="${!iterStat.last}">, </span>
+        </span>
+        </td>
+        <td><a th:href="@{/tasks/{id}/task(id=${task.id})}">Opdater</a></td>
+        <td>
+            <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post"
+                  onsubmit="return confirm('Er du sikker på, at du vil slette denne opgave?');">
+               <button type="submit">Slet</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

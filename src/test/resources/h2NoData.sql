@@ -1,14 +1,5 @@
-DROP
-DATABASE IF EXISTS PMASDatabase;
-
-CREATE
-DATABASE PMASDatabase;
-
-USE
-PMASDatabase;
-
-DROP TABLE IF EXISTS projects;
-CREATE TABLE projects
+DROP TABLE IF EXISTS PROJECTS CASCADE;
+CREATE TABLE PROJECTS
 (
     id          INT AUTO_INCREMENT,
     name        VARCHAR(200) UNIQUE NOT NULL,
@@ -19,8 +10,8 @@ CREATE TABLE projects
 
 );
 
-DROP TABLE IF EXISTS subprojects;
-CREATE TABLE subprojects
+DROP TABLE IF EXISTS SUBPROJECTS CASCADE;
+CREATE TABLE SUBPROJECTS
 (
     id          INT AUTO_INCREMENT,
     name        VARCHAR(200) UNIQUE NOT NULL,
@@ -34,8 +25,8 @@ CREATE TABLE subprojects
 
 );
 
-DROP TABLE IF EXISTS tasks;
-CREATE TABLE tasks
+DROP TABLE IF EXISTS TASKS CASCADE;
+CREATE TABLE TASKS
 (
     id           INT AUTO_INCREMENT,
     name         VARCHAR(200) UNIQUE NOT NULL,
@@ -49,16 +40,16 @@ CREATE TABLE tasks
     FOREIGN KEY (subProjectID) REFERENCES subprojects (id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS roles;
-CREATE TABLE roles
+DROP TABLE IF EXISTS ROLES CASCADE;
+CREATE TABLE ROLES
 (
     id   INT AUTO_INCREMENT,
     name VARCHAR(30) UNIQUE NOT NULL,
     PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS users;
-CREATE TABLE users
+DROP TABLE IF EXISTS USERS CASCADE;
+CREATE TABLE USERS
 (
     id       INT AUTO_INCREMENT,
     name     VARCHAR(200) UNIQUE NOT NULL,
@@ -70,24 +61,9 @@ CREATE TABLE users
     FOREIGN KEY (role) REFERENCES roles (id)
 );
 
-
-
 /* many to many relation tables:*/
-
-/*
-DROP TABLE IF EXISTS projectssubprojects;
-CREATE TABLE projectsubprojects(
-                                   projectid INT NOT NULL,
-                                   subprojectid INT NOT NULL,
-                                    PRIMARY KEY (projectid, subprojectid),
-                                   FOREIGN KEY(projectid) REFERENCES projects(id) ON DELETE CASCADE,
-                                   FOREIGN KEY(subprojectid) REFERENCES subprojects(id) ON DELETE CASCADE
-);
-
- */
-
-DROP TABLE IF EXISTS userprojects;
-CREATE TABLE userprojects
+DROP TABLE IF EXISTS USERPROJECTS CASCADE;
+CREATE TABLE USERPROJECTS
 (
     projectid INT,
     userid    INT,
@@ -96,8 +72,8 @@ CREATE TABLE userprojects
     FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE
 );
 
--- DROP TABLE IF EXISTS subprojectstasks;
--- CREATE TABLE subprojecttasks
+-- DROP TABLE IF EXISTS SUBPROJECTTASKS CASCADE;
+-- CREATE TABLE SUBPROJECTTASKS
 -- (
 --     subprojectid INT,
 --     taskid       INT,
@@ -106,8 +82,8 @@ CREATE TABLE userprojects
 --     FOREIGN KEY (taskid) REFERENCES tasks (id) ON DELETE CASCADE
 -- );
 
-DROP TABLE IF EXISTS usertasks;
-CREATE TABLE usertasks
+DROP TABLE IF EXISTS USERTASKS CASCADE;
+CREATE TABLE USERTASKS
 (
     userid INT,
     taskid INT,
@@ -115,5 +91,3 @@ CREATE TABLE usertasks
     FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (taskid) REFERENCES tasks (id) ON DELETE CASCADE
 );
-
-
