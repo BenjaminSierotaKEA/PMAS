@@ -69,10 +69,8 @@ class TaskControllerTest {
     @Test
     void getCreateTaskPage() throws Exception {
         // Arrange
-        List<SubProject> subProjects = List.of(
-                new SubProject(1, "UI Overhaul"),
-                new SubProject(2, "Backend Overhaul"));
-        when(taskService.getAllSubproject()).thenReturn(subProjects);
+        List<SubProject> subprojects = MockDataModel.subprojectsWithValues();
+        when(taskService.getAllSubproject()).thenReturn(subprojects);
 
         // Act & Assert
         mvc.perform(get("/tasks/new"))
