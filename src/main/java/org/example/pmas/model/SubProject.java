@@ -1,6 +1,7 @@
 package org.example.pmas.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SubProject {
     private int id;
@@ -105,5 +106,17 @@ public class SubProject {
 
     public int getProjectID() {
         return projectID;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof SubProject)) return false;
+        return id == ((SubProject) other).id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
