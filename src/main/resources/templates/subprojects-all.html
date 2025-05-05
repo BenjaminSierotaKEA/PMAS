@@ -6,7 +6,8 @@
     <title>View SubProjects</title>
 </head>
 <body>
-<a th:href="@{/{projectID}/create}">Opret et nyt subprojekt</a>
+<a th:href="@{/projects/{projectId}/subprojects/create(projectId=${projectId})}">Opret et nyt subprojekt</a>
+
 <table class="table">
     <thead>
     <tr>

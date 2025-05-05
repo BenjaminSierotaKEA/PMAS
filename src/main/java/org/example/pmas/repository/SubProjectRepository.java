@@ -39,7 +39,7 @@ public class SubProjectRepository implements ISubProjectRepository {
     }
 
     public List<SubProject> getSubProjectsByProjectID(int projectId){
-        String sql = "SELECT * FROM subprojects WHERE projectsID = ?";
+        String sql = "SELECT * FROM subprojects WHERE projectID = ?";
         return jdbcTemplate.query(sql, new SubProjectRowMapper(), projectId);
     }
 
