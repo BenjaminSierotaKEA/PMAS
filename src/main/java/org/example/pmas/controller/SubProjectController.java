@@ -64,6 +64,6 @@ public class SubProjectController {
     @PostMapping("/update")
     public String updateSubProject(@ModelAttribute("subproject") SubProject subproject) {
         subprojectService.updateSubProject(subproject);
-        return "redirect:/subprojects/" + subproject.getId();
+        return "redirect:/" + subproject.getId();
     }
 }

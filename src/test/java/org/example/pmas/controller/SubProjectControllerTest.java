@@ -36,7 +36,7 @@ public class SubProjectControllerTest {
     void shouldReturnAllSubProjects() throws Exception {
         when(subprojectService.readAll()).thenReturn(subprojects);
 
-        mvc.perform(get("/subprojects"))
+        mvc.perform(get("/projects"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subprojects-all"))
                 .andExpect(model().attributeExists("subprojects"));
@@ -49,7 +49,7 @@ public class SubProjectControllerTest {
         SubProject subproject = subprojects.getFirst();
         when(subprojectService.readSelected(1)).thenReturn(subproject);
 
-        mvc.perform(get("/subprojects/1"))
+        mvc.perform(get("/projects/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subproject-selected"))
                 .andExpect(model().attributeExists("subproject"))
@@ -102,7 +102,7 @@ public class SubProjectControllerTest {
         SubProject subproject = subprojects.getFirst();
         when(subprojectService.readSelected(1)).thenReturn(subproject);
 
-        mvc.perform(get("/subprojects/{subprojectID}/edit",subproject.getId()))
+        mvc.perform(get("/projects/{subprojectID}/edit",subproject.getId()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subproject-edit-form"))
                 .andExpect(model().attributeExists("subproject"));
@@ -112,9 +112,10 @@ public class SubProjectControllerTest {
     void updateSubProject_shouldRedirectBackToSubProject() throws Exception {
         SubProject subproject = subprojects.getFirst();
 
-        mvc.perform(post("/subprojects/update").flashAttr("subproject", subproject))
+        mvc.perform(post("/projects/update")
+                        .flashAttr("subproject", subproject))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/subprojects/" + subproject.getId()));
+                .andExpect(redirectedUrl("/" + subproject.getId()));
 
         verify(subprojectService).updateSubProject(subproject);
     }
