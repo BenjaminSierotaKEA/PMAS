@@ -102,4 +102,16 @@ public class SubProjectRepository implements ISubProjectRepository {
         //null safe way to check if result is true. Uses boolean object(true) to compare.
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
     }
+
+    public int updateSubProject(SubProject subproject) {
+        String sql ="UPDATE subprojects SET name = ?, description = ?, timeBudget = ?, timeTaken = ?, completed = ? WHERE id = ?";
+        return jdbcTemplate.update(sql,
+                subproject.getName(),
+                subproject.getDescription(),
+                subproject.getTimeBudget(),
+                subproject.getTimeTaken(),
+                subproject.isCompleted(),
+                subproject.getId());
+
+    }
 }
