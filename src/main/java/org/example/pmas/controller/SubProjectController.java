@@ -43,7 +43,7 @@ public class SubProjectController {
     public String deleteSubProject(@PathVariable int subprojectID) {
         //int projectID = subprojectService.getProjectIDBySubProjectID(subprojectID);
         subprojectService.delete(subprojectID);
-        return "redirect:/subprojectsall";
+        return "redirect:/subprojects";
     }
 
     @GetMapping("/{projectID}/add")
