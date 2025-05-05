@@ -1,6 +1,7 @@
 package org.example.pmas.service;
 
 import org.example.pmas.exception.UserNotFoundException;
+import org.example.pmas.exception.WrongInputException;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.dao.DataAccessException;
@@ -72,4 +73,11 @@ public class UserService {
     }
 
 
+    public void delete(int id) {
+        var user = userRepository.readSelected(id);
+        if(user == null) throw new WrongInputException("Id not correct.");
+
+        userRepository.delete(id);
+
+    }
 }
