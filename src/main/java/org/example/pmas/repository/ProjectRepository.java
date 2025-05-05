@@ -55,7 +55,7 @@ public class ProjectRepository implements org.example.pmas.repository.Interfaces
 
     @Override
     public boolean delete(int id) {
-        String sql = "DELETE * FROM projects where id = ?";
+        String sql = "DELETE FROM projects where projects.id = ?";
         try{
             jdbcTemplate.update(sql, id);
             return true;

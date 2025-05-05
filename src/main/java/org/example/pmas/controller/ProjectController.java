@@ -42,6 +42,14 @@ public class ProjectController {
         List<Project> projects = projectService.readAll();
         model.addAttribute("projects", projects);
 
+        //debug
+        String idsdebug = "";
+        for(int i = 0; i < projects.size(); i++){
+            idsdebug = idsdebug + " " + projects.get(i).getId();
+        }
+        System.out.println(idsdebug);
+
+
         return "show-all-projects";
     }
 
@@ -70,6 +78,13 @@ public class ProjectController {
         projectService.updateProject(project, project);
 
 
+        return "redirect:see-all";
+    }
+
+    @PostMapping("delete-project")
+    public String deleteProject(@ModelAttribute Project project, Model model){
+        System.out.println("Deleting project id: " + project.getId());
+        projectService.deleteProject(project.getId());
         return "redirect:see-all";
     }
 
