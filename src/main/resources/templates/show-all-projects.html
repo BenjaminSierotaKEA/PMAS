@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Projects</title>
+</head>
+<body>
+<!--This is the ugly test version of the page,
+make this according to the styled mockup later-->
+
+    <table>
+        <tr th:each="project :${projects}" >
+            <th th:text="${project.name}"></th>
+            <th th:text="${project.description}"></th>
+            <th th:text="${project.timeBudget}"></th>
+            <th th:text="${project.deadline}"></th>
+        </tr>
+
+    </table>
+
+
+
+</body>
+</html>

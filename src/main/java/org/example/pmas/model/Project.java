@@ -10,6 +10,8 @@ public class Project {
     private String description;
     private final int descriptionMaxLength = 200;
     private int timeBudget;
+    private LocalDateTime deadline;
+
 
     public LocalDateTime getDeadline() {
         return deadline;
@@ -18,9 +20,6 @@ public class Project {
     public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
-
-    private LocalDateTime deadline;
-
 
     public Project(int id, String name, String description, int timeBudget){
         this.id = id;
