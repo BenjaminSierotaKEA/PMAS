@@ -11,6 +11,8 @@ import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,5 +158,60 @@ class TaskServiceTest {
         assertEquals("Der noget galt med id.", result.getMessage());
         verify(taskRepository, times(1)).readSelected(taskId);
         verify(taskRepository, never()).delete(anyInt());
+    }
+
+    @Test
+    void update_with_values() {
+        Task task = new Task();
+        task.setId(1);
+
+        when(taskRepository.readSelected(1)).thenReturn(task);
+        when(taskRepository.update(task)).thenReturn(true);
+        when(taskRepository.addUserToTask(1, List.of(2, 3))).thenReturn(true);
+
+        boolean result = taskService.update(task, List.of(2, 3));
+
+        assertTrue(result);
+
+        verify(taskRepository).readSelected(1);
+        verify(taskRepository).update(task);
+        verify(taskRepository).addUserToTask(1, List.of(2, 3));
+    }
+    @Test
+    void update_return_false() {
+        // Arrange
+        Task task = new Task();
+        task.setId(1);
+        when(taskRepository.readSelected(1)).thenReturn(task);
+        when(taskRepository.update(task)).thenReturn(false);
+
+        // Act
+        boolean result = taskService.update(task, List.of(2, 3));
+
+        // Assert
+        assertFalse(result);
+        verify(taskRepository).readSelected(1);
+        verify(taskRepository).update(task);
+        verifyNoMoreInteractions(taskRepository);
+    }
+    @Test
+    void update_should_throw() {
+        // Arrange
+        Task task = new Task();
+        task.setId(1);
+        when(taskRepository.readSelected(1)).thenReturn(null);
+
+        // Act
+        Executable executable = new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                taskService.update(task, List.of(2, 3));
+            }
+        };
+
+        // Assert
+        assertThrows(WrongInputException.class, executable);
+        verify(taskRepository).readSelected(1);
+        verifyNoMoreInteractions(taskRepository);
     }
 }

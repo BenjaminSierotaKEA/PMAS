@@ -33,7 +33,6 @@ public class TaskController {
         if (id < 0) throw new IllegalArgumentException("Noget galt med id");
 
         addSubProjectUsersToModel(model);
-
         model.addAttribute("task", taskService.readSelected(id));
         return "task-selected";
     }
@@ -51,8 +50,6 @@ public class TaskController {
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
                              Model model) {
         if (task == null) throw new IllegalArgumentException("Fejl. Noget galt med opgaven du opretter.");
-
-        // Give user a message
         if (task.getSubProject().getId() <= 0) {
             model.addAttribute("error", "Udfylde alle obligatoriske felter");
             model.addAttribute("task", task);
@@ -81,14 +78,25 @@ public class TaskController {
 
     @PostMapping("update")
     public String updateTask(@ModelAttribute Task task,
-                             @RequestParam(name = "userIds", required = false) List<Integer> userIDs) {
+                             @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
+                             Model model) {
         if (task == null) throw new IllegalArgumentException("Noget gik galt med opgaven du har opdateret.");
+        if (task.getSubProject().getId() <= 0) {
+            model.addAttribute("error", "Udfylde alle obligatoriske felter");
+            model.addAttribute("task", task);
+            addSubProjectUsersToModel(model);
+            return "redirect:/tasks/" + task.getId() + "/task";
+        }
 
-        taskService.update(task, userIDs);
+        boolean succes = taskService.update(task, userIDs);
+        if (!succes) {
+            model.addAttribute("error", "Udfyld alle obligatoriske felter");
+            addSubProjectUsersToModel(model);
+            return "redirect:/tasks/" + task.getId() + "/task";
+        }
 
         return "redirect:/tasks";
     }
-
 
     private void addSubProjectUsersToModel(Model model) {
         model.addAttribute("subprojects", taskService.getAllSubproject());

@@ -35,7 +35,7 @@ public class TaskService {
     }
 
     public Task readSelected(int id) {
-        // gets task and check if it exists.
+        // gets the task and check if it exists.
         var task = taskRepository.readSelected(id);
         if (task == null) throw new WrongInputException("Der er noget galt med id.");
 
@@ -64,15 +64,5 @@ public class TaskService {
 
         // Adds users to the junction table
         return taskRepository.addUserToTask(task.getId(), userIDs);
-    }
-
-    private Set<User> userIDToUser(List<Integer> userIDs) {
-        Set<User> users = new HashSet<>();
-
-        // adds user only with id
-        for (Integer userID : userIDs) {
-            users.add(new User(userID));
-        }
-        return users;
     }
 }

@@ -6,6 +6,7 @@
     <title>Selected Task</title>
 </head>
 <body>
+<p th:if="${error}" th:text="${error}"></p>
 <form th:action="@{/tasks/update}" th:method="post" th:object="${task}">
     <input type="text" hidden name="id"
            th:field="*{id}"/> <br>
