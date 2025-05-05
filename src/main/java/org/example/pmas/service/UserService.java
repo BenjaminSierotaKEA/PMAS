@@ -1,6 +1,7 @@
 package org.example.pmas.service;
 
 import org.example.pmas.exception.UserNotFoundException;
+import org.example.pmas.exception.WrongInputException;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.dao.DataAccessException;
@@ -47,7 +48,6 @@ public class UserService {
         try {
             return userRepository.readSelected(userId);
         } catch (DataAccessException dataAccessException) {
-            System.out.println("User not found for ID: " + userId);
             return null;
         }
     }
@@ -72,4 +72,22 @@ public class UserService {
     }
 
 
+    public void delete(int id) {
+        var user = userRepository.readSelected(id);
+        if(user == null) throw new WrongInputException("Id not correct.");
+
+        userRepository.delete(id);
+
+    }
+
+    public boolean updateUser(Object oldUser, Object newUser){
+        try {
+          return userRepository.update(oldUser,newUser);
+        }catch (DataAccessException dataAccessException){
+            dataAccessException.getMessage();
+        }catch (IllegalArgumentException illegalArgumentException){
+            illegalArgumentException.getMessage();
+        }
+        return false;
+    }
 }

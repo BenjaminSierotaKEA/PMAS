@@ -68,13 +68,32 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public boolean delete(int id) {
-        return false;
+        String sql = "DELETE FROM users WHERE id = ?";
+        return jdbcTemplate.update(sql, id) > 0;
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
-        return false;
+    @Transactional
+    public boolean update(Object oldUser, Object newUser) throws DataAccessException {
+        if (!(oldUser instanceof User) || !(newUser instanceof User)) {
+            throw new IllegalArgumentException("Both parameters must be of type User");
+        }
+
+        User updatedUser = (User) newUser;
+
+        String sql = "UPDATE users SET name = ?, email = ?, password = ?, role = ? WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(sql,
+                updatedUser.getName(),
+                updatedUser.getEmail(),
+                updatedUser.getPassword(),
+                updatedUser.getRole().getId(),
+                updatedUser.getUserID()
+        );
+
+        return rowsAffected > 0;
     }
+
 
     @Override
     @Transactional
