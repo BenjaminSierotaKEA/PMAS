@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,5 +45,17 @@ public class SubProjectServiceTest {
         assertEquals(actualSubProjects.size(), subprojects.size());
 
         verify(subprojectRepository).readAll();
+    }
+
+    @Test
+    void getSubProject() {
+        when(subprojectRepository.readSelected(1)).thenReturn(subprojects.getFirst());
+
+        SubProject result = subprojectService.readSelected(1);
+
+        assertNotNull(result);
+        assertEquals(subprojects.getFirst(), result);
+
+        verify(subprojectRepository).readSelected(1);
     }
 }
