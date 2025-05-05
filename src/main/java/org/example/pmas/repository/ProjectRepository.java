@@ -21,7 +21,7 @@ public class ProjectRepository implements org.example.pmas.repository.Interfaces
     @Override
     public Project create(Project project) {
         System.out.println("Hello from the create in the repo");
-        String sql = "INSERT INTO projects(name, description, timeBudget, deadline) VALUES(?,?,?,?)";
+        String sql = "USE pmasdatabase; INSERT INTO projects(name, description, timeBudget, deadline) VALUES(?,?,?,?)";
         try{
             jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getTimeBudget(), project.getDeadline());
         }catch(DataAccessException e){
