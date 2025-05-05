@@ -48,6 +48,9 @@ public class SubProjectService {
     }
 
     public boolean delete(int id) {
+        if(!subprojectRepository.doesSubProjectExist(id)) {
+            throw new SubProjectNotFoundException(id);
+        }
         return subprojectRepository.delete(id);
     }
 }
