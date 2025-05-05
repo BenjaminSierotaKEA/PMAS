@@ -21,14 +21,14 @@ public class SubProjectController {
     @GetMapping
     public String readAll(Model model) {
         model.addAttribute("subprojects", subprojectService.readAll());
-        return "all-subprojects";
+        return "subprojects-all";
     }
 
-    @GetMapping("/subproject/{id}")
+    @GetMapping("/{id}")
     public String getSubProject(@PathVariable int id, Model model) {
         SubProject subproject = subprojectService.readSelected(id);
         model.addAttribute("subproject", subproject);
-        return "subproject";
+        return "subproject-selected";
     }
 
     @GetMapping("/project/{projectId}/subprojects")
@@ -36,28 +36,28 @@ public class SubProjectController {
         List<SubProject> subproject = subprojectService.getSubProjectsByProjectID(projectId);
 
         model.addAttribute("subproject", subproject);
-        return "project-subprojects";
+        return "project-subprojects-selected";
     }
 
-    @PostMapping("/subprojects/{subprojectID}/delete")
+    @PostMapping("/{subprojectID}/delete")
     public String deleteSubProject(@PathVariable int subprojectID) {
         int projectID = subprojectService.getProjectIDBySubProjectID(subprojectID);
         subprojectService.delete(subprojectID);
-        return "redirect:/project/" + projectID + "/subprojects";
+        return "redirect:/subprojectsall";
     }
 
     @GetMapping("/add/{projectID}")
-    public String addSubProject(@PathVariable int projectID, Model model) {
+    public String createSubProject(@PathVariable int projectID, Model model) {
         SubProject subproject = new SubProject();
         subproject.setProjectID(projectID);
 
         model.addAttribute("subproject", subproject);
-        return "add-subproject";
+        return "subproject-new";
     }
 
     @PostMapping("/save")
     public String saveSubProject(@ModelAttribute("subproject") SubProject subproject) {
         subprojectService.create(subproject);
-        return "redirect:/project/" + subproject.getProjectID();
+        return "redirect:/subprojectsall";
     }
 }
