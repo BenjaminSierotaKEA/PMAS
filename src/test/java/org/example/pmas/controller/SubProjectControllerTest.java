@@ -28,7 +28,7 @@ public class SubProjectControllerTest {
     private SubProjectService subprojectService;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         subprojects = MockDataModel.subprojectsWithValues();
     }
 
@@ -86,7 +86,7 @@ public class SubProjectControllerTest {
     void delete_shouldRedirectToProjectList() throws Exception {
         SubProject subproject = subprojects.getFirst();
         int idToDelete = subproject.getId();
-        int projectID = subproject.getProjectID();
+        //int projectID = subproject.getProjectID();
 
         mvc.perform(post("/subprojects/{subprojectID}/delete",idToDelete))
                 .andExpect(status().is3xxRedirection())
