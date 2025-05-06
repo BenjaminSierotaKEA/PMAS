@@ -1,6 +1,7 @@
 package org.example.pmas.service;
 
-import org.example.pmas.exception.WrongInputException;
+import org.example.pmas.exception.JunctionTableException;
+import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
@@ -26,12 +27,13 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
-    public boolean create(Task task, List<Integer> userIDs) {
+    public void create(Task task, List<Integer> userIDs) {
         Task createdTask = taskRepository.create(task);
-        if (createdTask == null) return false;
+        if (createdTask == null) throw new NotFoundException(task.getId());
 
         // Adds user and task to junction table
-        return addUserToTask(createdTask.getId(), userIDs);
+        var succes = addUserToTask(createdTask.getId(), userIDs);
+        if(succes) throw new NotFoundException(task.getId());
     }
 
     public List<Task> readAll() {
@@ -41,7 +43,7 @@ public class TaskService {
     public Task readSelected(int id) {
         // gets the task and check if it exists.
         var task = taskRepository.readSelected(id);
-        if (task == null) throw new WrongInputException("Der er noget galt med id.");
+        if (task == null) throw new NotFoundException(id);
 
         return task;
     }
@@ -53,21 +55,22 @@ public class TaskService {
     public void delete(int id) {
         // check if id exist.
         var task = taskRepository.readSelected(id);
-        if (task == null) throw new WrongInputException("Der noget galt med id.");
+        if (task == null) throw new NotFoundException(id);
 
         taskRepository.delete(id);
     }
 
-    public boolean update(Task task, List<Integer> userIDs) {
+    public void update(Task task, List<Integer> userIDs) {
         // Check if id exist.
         var old = taskRepository.readSelected(task.getId());
-        if (old == null) throw new WrongInputException("Der er noget galt med id.");
+        if (old == null) throw new NotFoundException(task.getId());
 
         boolean succes = taskRepository.update(task);
-        if (!succes) return false;
+        if (succes) throw new NotFoundException("Id:" + task.getId() + " Kunne ikke opdatere task");
 
         // Adds users to the junction table
-        return addUserToTask(task.getId(), userIDs);
+        boolean junctionTable = addUserToTask(task.getId(), userIDs);
+        if(junctionTable) throw new JunctionTableException("Id:" + task.getId() + " Kunne ikke opdatere users");
     }
 
     private boolean addUserToTask(int taskId, List<Integer> newUserIds) {

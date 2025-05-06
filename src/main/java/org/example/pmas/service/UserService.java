@@ -1,7 +1,6 @@
 package org.example.pmas.service;
 
-import org.example.pmas.exception.UserNotFoundException;
-import org.example.pmas.exception.WrongInputException;
+import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.dao.DataAccessException;
@@ -23,7 +22,7 @@ public class UserService {
         try {
             //checks the return results of the method
             var user = userRepository.create(newUser);
-            if (user == null) throw new UserNotFoundException(newUser.getUserID());
+            if (user == null) throw new NotFoundException(newUser.getUserID());
             //returns the method
             return userRepository.create(newUser);
 
@@ -74,7 +73,7 @@ public class UserService {
 
     public void delete(int id) {
         var user = userRepository.readSelected(id);
-        if(user == null) throw new WrongInputException("Id not correct.");
+        if(user == null) throw new NotFoundException(id);
 
         userRepository.delete(id);
 
@@ -84,7 +83,7 @@ public class UserService {
         User oldUser = userRepository.readSelected(id);
 
         if(oldUser == null){
-            throw new UserNotFoundException(id);
+            throw new NotFoundException(id);
         }
 
         try {
