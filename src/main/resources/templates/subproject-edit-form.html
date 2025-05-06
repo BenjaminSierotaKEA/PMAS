@@ -11,10 +11,10 @@
 </div>
 <div>
     <div>
-        <form role="form" action="#" method="post" th:action="@{/subprojects/update}"
+        <form method="post" th:action="@{/projects/update}"
               th:object="${subproject}">
             <input type="number" th:field="*{id}" readonly hidden>
-            <input hidden readonly type="number" th:field="*{id}">
+            <input hidden readonly type="number" th:field="*{projectID}">
 
             <label>Navn</label>
             <input type="text" th:field="*{name}"/>
@@ -34,7 +34,7 @@
             <input type="checkbox" th:field="*{completed}">
     </div>
     <div class="button-container">
-        <button type="submit">Update Wish</button>
+        <button type="submit">Opdatere</button>
     </div>
     </form>
 </div>

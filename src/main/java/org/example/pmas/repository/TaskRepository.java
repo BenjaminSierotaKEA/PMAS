@@ -1,7 +1,10 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.exception.ConnectionException;
+import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
+import org.example.pmas.model.User;
+import org.example.pmas.model.rowMapper.SubProjectRowMapper;
 import org.example.pmas.model.rowMapper.TaskRowMapper;
 import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.springframework.dao.DataAccessException;
@@ -97,7 +100,7 @@ public class TaskRepository implements ITaskRepository {
                 "LEFT JOIN subprojects sp ON sp.id = t.id " +
                 "WHERE t.id = ? " + "GROUP BY t.id";
 
-        List<Task> task = new ArrayList<>();
+        List<Task> task;
         try {
             task = jdbcTemplate.query(sql, new TaskRowMapper(), id);
         } catch (DataAccessException e) {
@@ -216,5 +219,10 @@ public class TaskRepository implements ITaskRepository {
         Set<Integer> result = new HashSet<>(baseList);
         result.removeAll(subtractList);
         return result;
+    }
+
+    public List<Task> getTasksBySubProjectID(int subprojectId){
+        String sql = "SELECT * FROM tasks WHERE subProjectID = ?";
+        return jdbcTemplate.query(sql, new TaskRowMapper(), subprojectId);
     }
 }
