@@ -35,6 +35,20 @@ public class User {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+
+        if(!(other instanceof User)) return false;
+
+        return userID == ((User) other).userID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(userID);
+    }
+
     //-------------getters/setters-----------------
     public int getUserID() {
         return userID;

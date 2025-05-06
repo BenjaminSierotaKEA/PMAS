@@ -20,7 +20,7 @@
               th:field="*{description}"></textarea> <br>
 
     <label for="timeBudget">*Tidsallokering:</label><br>
-    <input type="number" id="timeBudget" name="timeBudget" step="0.1"
+    <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1"
            th:field="*{timeBudget}"/> <br>
 
     <label for="timeTaken">Faktiske tid:</label><br>

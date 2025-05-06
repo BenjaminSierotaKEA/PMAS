@@ -133,9 +133,17 @@ public class TaskRepository implements ITaskRepository {
                 "WHERE id = ?";
 
         try {
-            return jdbcTemplate.update(sql, newObject.getName(), newObject.getDescription(), newObject.getTimeBudget(), newObject.getTimeTaken(), newObject.isCompleted(), newObject.getDeadline(), newObject.getSubProject().getId(), newObject.getId()) > 0;
-        } catch (DataAccessException e) {
-            throw new ConnectionException("Fejl: kunne ikke opdatere opgaven.", e);
+            return jdbcTemplate.update(sql,
+                    newObject.getName(),
+                    newObject.getDescription(),
+                    newObject.getTimeBudget(),
+                    newObject.getTimeTaken(),
+                    newObject.isCompleted(),
+                    newObject.getDeadline(),
+                    newObject.getSubProject().getId(),
+                    newObject.getId()) > 0;
+        } catch (NullPointerException e) {
+            throw new ConnectionException("Fejl: kunne ikke opdatere opgaven.");
         }
     }
 
