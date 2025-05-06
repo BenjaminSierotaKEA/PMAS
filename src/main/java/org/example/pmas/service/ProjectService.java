@@ -35,8 +35,8 @@ public class ProjectService {
         return projectRepository.readSelected(id);
     }
 
-    public boolean updateProject(Project oldProject, Project newProject){
-        return projectRepository.update(oldProject, newProject);
+    public boolean updateProject(Project newProject){
+        return projectRepository.update(newProject);
     }
 
     public boolean deleteProject(int id){

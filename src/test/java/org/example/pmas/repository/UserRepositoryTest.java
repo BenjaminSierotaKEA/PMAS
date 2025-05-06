@@ -86,7 +86,7 @@ class UserRepositoryTest {
         updatedUser.setUserID(oldUser.getUserID());
 
         // Act
-        boolean result = userRepository.update(oldUser, updatedUser);
+        boolean result = userRepository.update(updatedUser);
         User fetchedUser = userRepository.readSelected(updatedUser.getUserID());
 
         // Assert

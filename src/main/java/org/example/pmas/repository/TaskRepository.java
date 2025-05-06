@@ -109,7 +109,7 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
+    public boolean update(Task newTask) {
         return false;
     }
 }
