@@ -98,7 +98,7 @@ public class SubProjectRepository implements ISubProjectRepository {
     }
 
     public boolean doesSubProjectExist(int id) {
-        String sql = "SELECT EXISTS (SELECT 1 FROM projects WHERE id = ?)";
+        String sql = "SELECT EXISTS (SELECT 1 FROM subprojects WHERE id = ?)";
         //null safe way to check if result is true. Uses boolean object(true) to compare.
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
     }
