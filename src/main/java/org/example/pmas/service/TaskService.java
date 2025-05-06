@@ -89,7 +89,7 @@ public class TaskService {
     private Set<Integer> differenceOrEmpty(List<Integer> baseList, List<Integer> subtractList) {
         // We've to check null and isEmpty or else either update or create won't work.
         if (subtractList == null || subtractList.isEmpty()) subtractList = Collections.emptyList();
-        if (baseList == null || subtractList.isEmpty()) baseList = Collections.emptyList();
+        if (baseList == null || baseList.isEmpty()) baseList = Collections.emptyList();
 
         Set<Integer> result = new HashSet<>(baseList);
         result.removeAll(subtractList);

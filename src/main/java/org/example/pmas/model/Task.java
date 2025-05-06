@@ -7,14 +7,15 @@ public class Task {
     private int id;
     private String name;
     private String description;
-    private double timeBudget;
+    private Double timeBudget;
     private double timeTaken;
     private boolean completed;
     private LocalDate deadline;
     private SubProject subProject;
     private Set<User> users;
 
-    public Task() {}
+    public Task() {
+    }
 
     public Task(int id, String name, String description, double timeBudget,
                 double timeTaken, boolean completed, LocalDate deadline, SubProject subProject,
@@ -47,7 +48,7 @@ public class Task {
     public boolean equals(Object other) {
         if (this == other) return true;
 
-        if(!(other instanceof Task)) return false;
+        if (!(other instanceof Task)) return false;
 
         return id == ((Task) other).id;
     }
@@ -69,7 +70,7 @@ public class Task {
         return description;
     }
 
-    public double getTimeBudget() {
+    public Double getTimeBudget() {
         return timeBudget;
     }
 

@@ -29,7 +29,9 @@ public class TaskRepository implements ITaskRepository {
     @Transactional
     @Override
     public Task create(Task task) {
-        String sql = "INSERT INTO tasks (name, description, timeBudget, timeTaken, completed, deadline, subprojectID) " + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tasks " +
+                "(name, description, timeBudget, timeTaken, completed, deadline, subprojectID) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         // Object for id
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -152,7 +154,11 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public List<Integer> getCurrentUserIdsFromUserTasks(int taskId) {
         try {
-            return jdbcTemplate.queryForList("SELECT userid FROM usertasks WHERE taskid = ?", Integer.class, taskId);
+            return jdbcTemplate.queryForList("SELECT userid " +
+                            "FROM usertasks " +
+                            "WHERE taskid = ?",
+                    Integer.class,
+                    taskId);
         } catch (DataAccessException e) {
             throw new ConnectionException("Fejl: kunne ikke hente brugerid'er til opgaven.", e);
         }
@@ -184,7 +190,8 @@ public class TaskRepository implements ITaskRepository {
         int count = 0;
         for (Integer userId : userIds) {
             try {
-                jdbcTemplate.update("DELETE FROM usertasks WHERE userid = ? AND taskid = ?",
+                jdbcTemplate.update("DELETE FROM usertasks " +
+                                "WHERE userid = ? AND taskid = ?",
                         userId,
                         taskId);
             } catch (DataAccessException e) {
@@ -198,8 +205,15 @@ public class TaskRepository implements ITaskRepository {
 
     @Transactional
     @Override
-    public List<Task> getTasksBySubProjectID(int subprojectId){
-        String sql = "SELECT * FROM tasks WHERE subProjectID = ?";
-        return jdbcTemplate.query(sql, new TaskRowMapper(), subprojectId);
+    public List<Task> getTasksBySubProjectID(int subprojectId) {
+        String sql = "SELECT * FROM tasks " +
+                "WHERE subProjectID = ?";
+        try {
+            return jdbcTemplate.query(sql,
+                    new TaskRowMapper(),
+                    subprojectId);
+        }catch (DataAccessException e){
+            throw new ConnectionException("Database fejl: kunne ikke hente opgaver til subprojektet.", e);
+        }
     }
 }

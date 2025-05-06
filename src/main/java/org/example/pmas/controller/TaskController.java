@@ -49,19 +49,18 @@ public class TaskController {
     public String createTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
                              Model model) {
-        if (task == null) throw new IllegalArgumentException("Fejl. Noget galt med opgaven du opretter.");
-        if (task.getSubProject().getId() <= 0) {
+        if (task == null || task.getSubProject().getId() <= 0) {
             model.addAttribute("task", task);
             model.addAttribute("subprojects", taskService.getAllSubproject());
             model.addAttribute("users", taskService.getAllUsers());
-            model.addAttribute("error", "Udfylde alle obligatoriske felter");
+            model.addAttribute("error", "Obligatorisk felt her.");
             return "task-new";
         }
 
         // If not success
         boolean success = taskService.create(task, userIDs);
-        if (!success) {
-            model.addAttribute("error", "Udfyld alle obligatoriske felter");
+        if (success) {
+            model.addAttribute("error", "Obligatorisk felt her.");
             return "task-new";
         }
 
@@ -81,12 +80,11 @@ public class TaskController {
     public String updateTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
                              Model model) {
-        if (task == null) throw new IllegalArgumentException("Noget gik galt med opgaven du har opdateret.");
-        if (task.getSubProject().getId() <= 0) {
+        if (task == null && task.getSubProject().getId() <= 0) {
             model.addAttribute("task", task);
             model.addAttribute("subprojects", taskService.getAllSubproject());
             model.addAttribute("users", taskService.getAllUsers() );
-            model.addAttribute("error", "Udfylde alle obligatoriske felter");
+            model.addAttribute("error", "Obligatorisk felt her.");
             return "redirect:/tasks/" + task.getId() + "/task";
         }
 
@@ -94,7 +92,7 @@ public class TaskController {
         if (!succes) {
             model.addAttribute("subprojects", taskService.getAllSubproject());
             model.addAttribute("users", taskService.getAllUsers() );
-            model.addAttribute("error", "Udfyld alle obligatoriske felter");
+            model.addAttribute("error", "Obligatorisk felt her.");
             return "redirect:/tasks/" + task.getId() + "/task";
         }
 
