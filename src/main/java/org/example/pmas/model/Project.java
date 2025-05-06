@@ -1,7 +1,7 @@
 
 package org.example.pmas.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Project {
     private int id;
@@ -10,23 +10,24 @@ public class Project {
     private String description;
     private final int descriptionMaxLength = 200;
     private int timeBudget;
-    private LocalDateTime deadline;
+    private LocalDate deadline;
 
 
-    public LocalDateTime getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(LocalDateTime deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 
-    public Project(int id, String name, String description, int timeBudget){
+    public Project(int id, String name, String description, int timeBudget, LocalDate deadline){
         this.id = id;
         //we trim the length of the name and description to the max of what the database allows
         setName(name);
         setDescription(description);
         this.timeBudget = timeBudget;
+        this.deadline = deadline;
 
 
     }
