@@ -131,7 +131,7 @@ class ProjectRepositoryTest {
         updateProject.setTimeBudget(69420);
         updateProject.setDeadline(now);
         //Act
-        repository.update(updateProject, updateProject);
+        repository.update(updateProject);
         Project foundProject = repository.readSelected(1);
         //Assert
         assertEquals(updateProject, foundProject);
