@@ -81,4 +81,21 @@ public class Project {
     public void setTimeBudget(int timeBudget) {
         this.timeBudget = timeBudget;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Project)) {
+            return false;
+        }
+        Project otherProject = (Project) other;
+        return this.getId() == otherProject.getId()
+                && this.getName().equals(otherProject.getName())
+                && this.getDescription().equals(otherProject.getDescription())
+                && this.timeBudget == otherProject.timeBudget
+                && this.deadline.equals(otherProject.deadline);
+
+    }
 }
