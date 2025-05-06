@@ -1,5 +1,6 @@
 package org.example.pmas.modelBuilder;
 
+import org.example.pmas.model.Role;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
@@ -42,4 +43,27 @@ public class MockDataModel {
                         new HashSet<>()
                 ));
     }
+
+    public static User userWithValues(){
+        return new User(1,"jacob", "email", "password", new Role(), "jacob.jpg");
+    }
+
+    public static List<User> usersWithValues(){
+        return List.of(
+                new User(1,"jacob", "email", "password", new Role(), "jacob.jpg" ),
+                new User(1,"Peter", "email", "password", new Role(), "peter.jpg" ),
+                new User(1,"Sune", "email", "password", new Role(), "sune.jpg" )
+        );
+    }
+
+    public static List<SubProject> subprojectsWithValues(){
+        return List.of(
+                new SubProject(1,"SubProject1", "SubProject1Desc"),
+                new SubProject(2,"SubProject2", "SubProject2Desc"),
+                new SubProject(3,"SubProject3", "SubProject3Desc")
+        );
+    }
+
+
+
 }

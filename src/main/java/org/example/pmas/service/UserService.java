@@ -1,10 +1,13 @@
 package org.example.pmas.service;
 
 import org.example.pmas.exception.UserNotFoundException;
+import org.example.pmas.exception.WrongInputException;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -16,13 +19,34 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User getUser(int userId) {
-        // controls if user exists.
+    public User createUser(User newUser){
         try {
-            var user = userRepository.readSelected(userId);
-            if (user == null) throw new UserNotFoundException(userId);
+            //checks the return results of the method
+            var user = userRepository.create(newUser);
+            if (user == null) throw new UserNotFoundException(newUser.getUserID());
+            //returns the method
+            return userRepository.create(newUser);
 
-            return user;
+            //error handling, if failing to reach DB
+        }catch (DataAccessException dataAccessException){
+            return null;
+        }
+
+    }
+
+    public List<User> getAll(){
+        try{
+            return userRepository.readAll();
+        }catch (DataAccessException dataAccessException) {
+            return null;
+        }
+    }
+
+
+
+    public User getUser(int userId) {
+        try {
+            return userRepository.readSelected(userId);
         } catch (DataAccessException dataAccessException) {
             return null;
         }
@@ -48,4 +72,32 @@ public class UserService {
     }
 
 
+    public void delete(int id) {
+        var user = userRepository.readSelected(id);
+        if(user == null) throw new WrongInputException("Id not correct.");
+
+        userRepository.delete(id);
+
+    }
+
+    public boolean updateUser(int id, User newUser){
+        User oldUser = userRepository.readSelected(id);
+
+        if(oldUser == null){
+            throw new UserNotFoundException(id);
+        }
+
+        try {
+          return userRepository.update(newUser);
+        }catch (DataAccessException dataAccessException){
+            dataAccessException.getMessage();
+        }catch (IllegalArgumentException illegalArgumentException){
+            illegalArgumentException.getMessage();
+        }
+        return false;
+    }
+
+    public User checkEmail(String email) {
+        return userRepository.getByEmail(email);
+    }
 }

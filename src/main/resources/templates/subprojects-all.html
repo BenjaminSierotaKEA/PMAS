@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>View SubProjects</title>
+</head>
+<body>
+<a th:href="@{/projects/{projectId}/subprojects/create(projectId=${projectId})}">Opret et nyt subprojekt</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Navn</th>
+        <th scope="col">Beskrivelse</th>
+        <th scope="col">TidsBudget</th>
+        <th scope="col">BrugtTid</th>
+        <th scope="col">Fuldført</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="subproject: ${subprojects}">
+        <td th:text="${subproject.getName()}"></td>
+        <td th:text="${subproject.getDescription()}"></td>
+        <td th:text="${subproject.getTimeBudget()}"></td>
+        <td th:text="${subproject.getTimeTaken()}"></td>
+        <td th:text="${subproject.isCompleted()}"></td>
+        <td>
+            <form th:action="@{/subprojects/{id}/delete(id=${subproject.id})}" method="post">
+                <button type="submit">Slet</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

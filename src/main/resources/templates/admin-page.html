@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table>
+  <thead>
+  <tr>
+    <th>User ID</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Role</th>
+    <th>Options</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="user : ${users}">
+    <td th:text="${user.userID}">1</td>
+    <td th:text="${user.name}">John Doe</td>
+    <td th:text="${user.email}">john@example.com</td>
+    <td th:text="${user.role}">ADMIN</td>
+    <td>
+      <form th:action="@{/{id}/delete(id=${user.userID})}" method="post">
+        <button type="submit">Delete</button>
+      </form>
+
+    <form th:action="@{/{id}/update(id=${user.userID})}" method="get">
+      <button type="submit">Update</button>
+    </form>
+
+      <form th:action="@{/{id}/user(id=${user.userID})}" method="get">
+        <button type="submit">View</button>
+      </form>
+
+  </tr>
+  </tbody>
+
+  <a href="user-form">
+    <button type="submit">Add User</button>
+  </a>
+
+</table>
+
+</body>
+</html>

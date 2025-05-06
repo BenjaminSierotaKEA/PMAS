@@ -103,8 +103,9 @@ public class TaskRepository implements ITaskRepository {
         } catch (DataAccessException e) {
             throw new ConnectionException("Database fejl: kunne ikke hente opgaven.", e);
         }
-
-        return task.isEmpty() ? null : task.getFirst();
+        return task.isEmpty()
+                ? null
+                : task.getFirst();
     }
 
     @Transactional

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update your project!</title>
+</head>
+<body>
+    <h1>Update your project information:</h1>
+    <form role="form" action="#" method="post" th:action="@{/projects/update-project}" th:object="${project}">
+        <input hidden type="number" th:field="*{id}">
+        <label>Project Name:</label>
+        <input type="text" th:field="*{name}">
+        <label>Description:</label>
+        <input type="text" th:field="*{description}">
+        <label>Time Budget:</label>
+        <input type="number" th:field="*{timeBudget}">
+        <label>Deadline:</label>
+        <input type="datetime-local" th:field="*{deadline}">
+        <button type="submit">Submit</button>
+
+    </form>
+
+
+</body>
+</html>

@@ -2,7 +2,6 @@ package org.example.pmas.controller;
 
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
-import org.example.pmas.model.User;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
@@ -69,10 +68,8 @@ class TaskControllerTest {
     @Test
     void getCreateTaskPage() throws Exception {
         // Arrange
-        List<SubProject> subProjects = List.of(
-                new SubProject(1, "UI Overhaul"),
-                new SubProject(2, "Backend Overhaul"));
-        when(taskService.getAllSubproject()).thenReturn(subProjects);
+        List<SubProject> subprojects = MockDataModel.subprojectsWithValues();
+        when(taskService.getAllSubproject()).thenReturn(subprojects);
 
         // Act & Assert
         mvc.perform(get("/tasks/new"))
