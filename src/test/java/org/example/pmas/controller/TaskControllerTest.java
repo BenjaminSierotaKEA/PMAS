@@ -84,9 +84,6 @@ class TaskControllerTest {
     @Test
     void createTask() throws Exception {
         // Arrange
-        when(taskService.create(any(Task.class),
-                any(List.class)))
-                .thenReturn(true);
 
         // Act & Assert
         mvc.perform(post("/tasks/create")
@@ -123,9 +120,6 @@ class TaskControllerTest {
     @Test
     void updateTask() throws Exception {
         // Arrange
-        when(taskService.update(
-                any(Task.class), any(List.class)))
-                .thenReturn(true);
 
         // Act & Assert
         mvc.perform(post("/tasks/update")

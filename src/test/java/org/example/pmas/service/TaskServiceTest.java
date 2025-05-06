@@ -1,5 +1,7 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.JunctionTableException;
+import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.repository.TaskRepository;
@@ -34,7 +36,7 @@ class TaskServiceTest {
     void setUp() {
         tasks = MockDataModel.tasksWithValues();
         task = MockDataModel.taskWithValue();
-        userIDs = new ArrayList<>(List.of(1,2,3));
+        userIDs = new ArrayList<>(List.of(1, 2, 3));
     }
 
     @Test
@@ -50,6 +52,7 @@ class TaskServiceTest {
         assertEquals(tasks, result);
         verify(taskRepository, times(1)).readAll();
     }
+
     @Test
     void readAll_without_values() {
         // Arrange
@@ -76,6 +79,7 @@ class TaskServiceTest {
         assertEquals(task, result);
         verify(taskRepository, times(1)).readSelected(1);
     }
+
     @Test
     void readSelected_without_values() {
         // Arrange
@@ -92,39 +96,42 @@ class TaskServiceTest {
         };
 
         // Assert
-        var result = assertThrows(WrongInputException.class, executable);
-        assertEquals("Der er noget galt med id.", result.getMessage());
+        assertThrows(NotFoundException.class, executable);
         verify(taskRepository, times(1)).readSelected(1);
     }
 
     @Test
-    void create_with_values(){
+    void create_with_values() {
         // Arrange
         when(taskRepository.create(any(Task.class))).thenReturn(task);
 
-
         // Act
-        boolean expected = taskService.create(task,userIDs);
+        taskService.create(task, userIDs);
 
         // Assert
         verify(taskRepository, times(1)).create(task);
-        assertTrue(expected);
     }
+
     @Test
-    void create_without_values(){
+    void create_without_values() {
         // Arrange
         when(taskRepository.create(any(Task.class))).thenReturn(null);
 
         // Act
-        boolean expected = taskService.create(task,userIDs);
-
+        Executable executable = new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                taskService.create(task, userIDs);
+            }
+        };
         // assert
+        assertThrows(NotFoundException.class, executable);
         verify(taskRepository, times(1)).create(task);
-        assertFalse(expected);
+        verifyNoMoreInteractions(taskRepository);
     }
 
     @Test
-    void delete_with_value(){
+    void delete_with_value() {
         // Arrange
         when(taskRepository.delete(1)).thenReturn(true);
         when(taskRepository.readSelected(1)).thenReturn(task);
@@ -136,8 +143,9 @@ class TaskServiceTest {
         verify(taskRepository, times(1)).delete(1);
         verify(taskRepository, times(1)).readSelected(1);
     }
+
     @Test
-    void delete_without_value(){
+    void delete_without_value() {
         // Arrange
         int taskId = 1;
         when(taskRepository.readSelected(taskId)).thenReturn(null);
@@ -151,46 +159,54 @@ class TaskServiceTest {
         };
 
         // Assert
-        var result = assertThrows(WrongInputException.class, executable);
-        assertEquals("Der noget galt med id.", result.getMessage());
+        var result = assertThrows(NotFoundException.class, executable);
+        assertEquals("id: " + 1 + " blev ikke fundet", result.getMessage());
         verify(taskRepository, times(1)).readSelected(taskId);
         verify(taskRepository, never()).delete(anyInt());
     }
 
     @Test
     void update_with_values() {
-        Task task = new Task();
-        task.setId(1);
-
-        when(taskRepository.readSelected(1)).thenReturn(task);
-        when(taskRepository.update(task)).thenReturn(true);
-
-        boolean result = taskService.update(task, List.of(2, 3));
-
-        assertTrue(result);
-
-        verify(taskRepository).readSelected(1);
-        verify(taskRepository).update(task);
-    }
-    @Test
-    void update_return_false() {
         // Arrange
         Task task = new Task();
         task.setId(1);
         when(taskRepository.readSelected(1)).thenReturn(task);
-        when(taskRepository.update(task)).thenReturn(false);
+        when(taskRepository.update(task)).thenReturn(true);
 
         // Act
-        boolean result = taskService.update(task, List.of(2, 3));
+        taskService.update(task, List.of(2, 3));
 
         // Assert
-        assertFalse(result);
+        verify(taskRepository).readSelected(1);
+        verify(taskRepository).update(task);
+    }
+
+    @Test
+    void update_throw_when_update_returns_false() {
+        // Arrange
+        Task task = new Task();
+        task.setId(1);
+
+        when(taskRepository.readSelected(1)).thenReturn(task);
+        when(taskRepository.update(task)).thenReturn(false);
+
+        // Act & Assert
+        Executable executable = new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                taskService.update(task, List.of(2, 3));
+            }
+        };
+
+        assertThrows(NotFoundException.class, executable);
         verify(taskRepository).readSelected(1);
         verify(taskRepository).update(task);
         verifyNoMoreInteractions(taskRepository);
     }
+
+
     @Test
-    void update_should_throw() {
+    void update_should_throw_after_readSelected() {
         // Arrange
         Task task = new Task();
         task.setId(1);
@@ -200,12 +216,12 @@ class TaskServiceTest {
         Executable executable = new Executable() {
             @Override
             public void execute() throws Throwable {
-                taskService.update(task, List.of(2, 3));
+                taskService.readSelected(1);
             }
         };
 
         // Assert
-        assertThrows(WrongInputException.class, executable);
+        assertThrows(NotFoundException.class, executable);
         verify(taskRepository).readSelected(1);
         verifyNoMoreInteractions(taskRepository);
     }

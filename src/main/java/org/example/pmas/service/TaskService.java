@@ -31,9 +31,9 @@ public class TaskService {
         Task createdTask = taskRepository.create(task);
         if (createdTask == null) throw new NotFoundException(task.getId());
 
-        // Adds user and task to junction table
-        var succes = addUserToTask(createdTask.getId(), userIDs);
-        if(succes) throw new NotFoundException(task.getId());
+        // Adds user and task to junction table if any
+        if (userIDs != null && !userIDs.isEmpty())
+            addUserToTask(createdTask.getId(), userIDs);
     }
 
     public List<Task> readAll() {
@@ -66,14 +66,14 @@ public class TaskService {
         if (old == null) throw new NotFoundException(task.getId());
 
         boolean succes = taskRepository.update(task);
-        if (succes) throw new NotFoundException("Id:" + task.getId() + " Kunne ikke opdatere task");
+        if (!succes) throw new NotFoundException("Id:" + task.getId() + " Kunne ikke opdatere task");
 
-        // Adds users to the junction table
-        boolean junctionTable = addUserToTask(task.getId(), userIDs);
-        if(junctionTable) throw new JunctionTableException("Id:" + task.getId() + " Kunne ikke opdatere users");
+        // Adds users to the junction table if any
+        if (userIDs != null && !userIDs.isEmpty())
+            addUserToTask(task.getId(), userIDs);
     }
 
-    private boolean addUserToTask(int taskId, List<Integer> newUserIds) {
+    void addUserToTask(int taskId, List<Integer> newUserIds) {
         // Fetch users for comparison
         List<Integer> currentUserIds = taskRepository.getCurrentUserIdsFromUserTasks(taskId);
 
@@ -82,11 +82,10 @@ public class TaskService {
         Set<Integer> toRemove = differenceOrEmpty(currentUserIds, newUserIds);
 
         // Add/Remove if needed
-        int added = taskRepository.addUsersToUserTasks(taskId, toAdd);
-        int removed = taskRepository.removeUsersFromUserTasks(taskId, toRemove);
-
-        return added == 0 && removed == 0;
+        taskRepository.addUsersToUserTasks(taskId, toAdd);
+        taskRepository.removeUsersFromUserTasks(taskId, toRemove);
     }
+
     // if no users added to the list. it will throw and error.
     // this will avoid error
     private Set<Integer> differenceOrEmpty(List<Integer> baseList, List<Integer> subtractList) {
@@ -99,7 +98,7 @@ public class TaskService {
         return result;
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.readAll();
     }
 }
