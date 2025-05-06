@@ -1,8 +1,6 @@
 package org.example.pmas.controller;
 
-import org.example.pmas.model.Role;
 import org.example.pmas.model.Task;
-import org.example.pmas.model.User;
 import org.example.pmas.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,12 +31,7 @@ public class TaskController {
         if (id < 0) throw new IllegalArgumentException("Noget galt med id");
 
         model.addAttribute("subprojects", taskService.getAllSubproject());
-        model.addAttribute("users", List.of(
-                new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
-                new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
-                new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg")
-        ));
-
+        model.addAttribute("users", taskService.getAllUsers());
         model.addAttribute("task", taskService.readSelected(id));
         return "task-selected";
     }
@@ -47,11 +40,8 @@ public class TaskController {
     public String getCreateTaskPage(Model model) {
         model.addAttribute("task", new Task());
         model.addAttribute("subprojects", taskService.getAllSubproject());
-        model.addAttribute("users", List.of(
-                new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
-                new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
-                new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg")
-        ));
+        model.addAttribute("users", taskService.getAllUsers());
+
         return "task-new";
     }
 
@@ -60,9 +50,10 @@ public class TaskController {
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
                              Model model) {
         if (task == null) throw new IllegalArgumentException("Fejl. Noget galt med opgaven du opretter.");
-
-        // Give user a message
-        if (task.getSubProject().getId() <= 0){
+        if (task.getSubProject().getId() <= 0) {
+            model.addAttribute("task", task);
+            model.addAttribute("subprojects", taskService.getAllSubproject());
+            model.addAttribute("users", taskService.getAllUsers());
             model.addAttribute("error", "Udfylde alle obligatoriske felter");
             return "task-new";
         }
@@ -78,10 +69,35 @@ public class TaskController {
     }
 
     @PostMapping("{id}/delete")
-    public String deleteTask(@PathVariable int id){
-        if(id <= 0) throw new IllegalArgumentException("Noget galt med id.");
+    public String deleteTask(@PathVariable int id) {
+        if (id <= 0) throw new IllegalArgumentException("Noget galt med id.");
 
         taskService.delete(id);
+
+        return "redirect:/tasks";
+    }
+
+    @PostMapping("update")
+    public String updateTask(@ModelAttribute Task task,
+                             @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
+                             Model model) {
+        if (task == null) throw new IllegalArgumentException("Noget gik galt med opgaven du har opdateret.");
+        if (task.getSubProject().getId() <= 0) {
+            model.addAttribute("task", task);
+            model.addAttribute("subprojects", taskService.getAllSubproject());
+            model.addAttribute("users", taskService.getAllUsers() );
+            model.addAttribute("error", "Udfylde alle obligatoriske felter");
+            return "redirect:/tasks/" + task.getId() + "/task";
+        }
+
+        boolean succes = taskService.update(task, userIDs);
+        if (!succes) {
+            model.addAttribute("subprojects", taskService.getAllSubproject());
+            model.addAttribute("users", taskService.getAllUsers() );
+            model.addAttribute("error", "Udfyld alle obligatoriske felter");
+            return "redirect:/tasks/" + task.getId() + "/task";
+        }
+
         return "redirect:/tasks";
     }
 }
