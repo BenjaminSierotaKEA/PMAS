@@ -90,4 +90,8 @@ public class UserService {
         }
         return false;
     }
+
+    public User checkEmail(String email) {
+        return userRepository.getByEmail(email);
+    }
 }
