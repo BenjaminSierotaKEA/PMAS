@@ -20,7 +20,10 @@
     </thead>
     <tbody>
     <tr th:each="subproject: ${subprojects}">
-        <td th:text="${subproject.name}"></td>
+        <td>
+            <a th:href="@{/projects/{subprojectId}/tasks(subprojectId=${subproject.id})}"
+               th:text="${subproject.name}"></a>
+        </td>
         <td th:text="${subproject.description}"></td>
         <td th:text="${subproject.timeBudget}"></td>
         <td th:text="${subproject.timeTaken}"></td>
