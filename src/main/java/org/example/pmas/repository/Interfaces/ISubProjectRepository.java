@@ -9,5 +9,4 @@ public interface ISubProjectRepository extends CrudInterface<SubProject> {
     List<SubProject> getSubProjectsByProjectID(int projectId);
     int getProjectIDBySubProjectID(int subProjectId);
     boolean doesSubProjectExist(int projectId);
-    int updateSubProject(SubProject subproject);
 }

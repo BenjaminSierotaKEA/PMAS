@@ -74,21 +74,16 @@ public class UserRepository implements IUserRepository {
 
     @Override
     @Transactional
-    public boolean update(Object oldUser, Object newUser) throws DataAccessException {
-        if (!(oldUser instanceof User) || !(newUser instanceof User)) {
-            throw new IllegalArgumentException("Both parameters must be of type User");
-        }
-
-        User updatedUser = (User) newUser;
+    public boolean update(User newUser) throws DataAccessException {
 
         String sql = "UPDATE users SET name = ?, email = ?, password = ?, role = ? WHERE id = ?";
 
         int rowsAffected = jdbcTemplate.update(sql,
-                updatedUser.getName(),
-                updatedUser.getEmail(),
-                updatedUser.getPassword(),
-                updatedUser.getRole().getId(),
-                updatedUser.getUserID()
+                newUser.getName(),
+                newUser.getEmail(),
+                newUser.getPassword(),
+                newUser.getRole().getId(),
+                newUser.getUserID()
         );
 
         return rowsAffected > 0;
