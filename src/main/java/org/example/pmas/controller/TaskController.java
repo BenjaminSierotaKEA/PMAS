@@ -32,7 +32,12 @@ public class TaskController {
     public String readSelected(@PathVariable int id, Model model) {
         if (id < 0) throw new IllegalArgumentException("Noget galt med id");
 
-        addSubProjectUsersToModel(model);
+        model.addAttribute("subprojects", taskService.getAllSubproject());
+        model.addAttribute("users", List.of(
+                new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
+                new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
+                new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg"))
+        );
         model.addAttribute("task", taskService.readSelected(id));
         return "task-selected";
     }
@@ -40,7 +45,12 @@ public class TaskController {
     @GetMapping("new")
     public String getCreateTaskPage(Model model) {
         model.addAttribute("task", new Task());
-        addSubProjectUsersToModel(model);
+        model.addAttribute("subprojects", taskService.getAllSubproject());
+        model.addAttribute("users", List.of(
+                new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
+                new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
+                new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg"))
+        );
 
         return "task-new";
     }
@@ -53,7 +63,12 @@ public class TaskController {
         if (task.getSubProject().getId() <= 0) {
             model.addAttribute("error", "Udfylde alle obligatoriske felter");
             model.addAttribute("task", task);
-            addSubProjectUsersToModel(model);
+            model.addAttribute("subprojects", taskService.getAllSubproject());
+            model.addAttribute("users", List.of(
+                    new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
+                    new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
+                    new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg"))
+            );
             return "task-new";
         }
 
@@ -84,26 +99,27 @@ public class TaskController {
         if (task.getSubProject().getId() <= 0) {
             model.addAttribute("error", "Udfylde alle obligatoriske felter");
             model.addAttribute("task", task);
-            addSubProjectUsersToModel(model);
+            model.addAttribute("subprojects", taskService.getAllSubproject());
+            model.addAttribute("users", List.of(
+                    new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
+                    new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
+                    new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg"))
+            );
             return "redirect:/tasks/" + task.getId() + "/task";
         }
 
         boolean succes = taskService.update(task, userIDs);
         if (!succes) {
             model.addAttribute("error", "Udfyld alle obligatoriske felter");
-            addSubProjectUsersToModel(model);
+            model.addAttribute("subprojects", taskService.getAllSubproject());
+            model.addAttribute("users", List.of(
+                    new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
+                    new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
+                    new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg"))
+            );
             return "redirect:/tasks/" + task.getId() + "/task";
         }
 
         return "redirect:/tasks";
-    }
-
-    private void addSubProjectUsersToModel(Model model) {
-        model.addAttribute("subprojects", taskService.getAllSubproject());
-        model.addAttribute("users", List.of(
-                new User(1, "Rebecca black", "Rebecca@example.com", "password123", new Role(), "Rebecca.jpg"),
-                new User(2, "John Smith", "John@example.com", "password123", new Role(), "John.jpg"),
-                new User(3, "CharlieXcX", "charlie@example.com", "password123", new Role(), "Charlie.jpg"))
-        );
     }
 }

@@ -1,10 +1,7 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.exception.ConnectionException;
-import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
-import org.example.pmas.model.User;
-import org.example.pmas.model.rowMapper.SubProjectRowMapper;
 import org.example.pmas.model.rowMapper.TaskRowMapper;
 import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.springframework.dao.DataAccessException;
