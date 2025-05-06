@@ -1,6 +1,7 @@
 package org.example.pmas.controller;
 
 import org.example.pmas.model.Project;
+import org.example.pmas.model.SubProject;
 import org.example.pmas.service.ProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,7 +68,7 @@ public class ProjectController {
         //until i figure out how to send both the old project and the new project,
         //we just send the new project twice. all we need from the old project is
         //the id, which should be the same as the new project no matter what.
-        projectService.updateProject(project, project);
+        projectService.updateProject(project);
 
 
         return "redirect:see-all";
@@ -77,6 +78,15 @@ public class ProjectController {
     public String deleteProject(@ModelAttribute Project project, Model model){
         projectService.deleteProject(project.getId());
         return "redirect:see-all";
+    }
+
+    @GetMapping("/{projectId}/subprojects")
+    public String viewSubProjects(@PathVariable int projectId, Model model) {
+        List<SubProject> subprojects = projectService.getSubProjectsByProjectID(projectId);
+
+        model.addAttribute("subprojects", subprojects);
+        model.addAttribute("projectId", projectId);
+        return "subprojects-all";
     }
 
 }

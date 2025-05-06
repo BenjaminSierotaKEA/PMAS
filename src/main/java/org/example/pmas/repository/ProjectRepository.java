@@ -65,10 +65,8 @@ public class ProjectRepository implements org.example.pmas.repository.Interfaces
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
+    public boolean update(Project newProject) {
 
-        Project oldProject = (Project) oldObject;
-        Project newProject = (Project) newObject;
 
         String sql = "UPDATE projects SET name = ?, description = ?, timebudget = ?, deadline = ? WHERE id=?";
         try{
@@ -77,9 +75,9 @@ public class ProjectRepository implements org.example.pmas.repository.Interfaces
                     newProject.getDescription(),
                     newProject.getTimeBudget(),
                     newProject.getDeadline(),
-                    oldProject.getId());
+                    newProject.getId());
         }catch(DataAccessException e){
-            throw new RuntimeException("Could not update project: " + oldProject.getName(), e);
+            throw new RuntimeException("Could not update project: " + newProject.getName(), e);
         }
 
 

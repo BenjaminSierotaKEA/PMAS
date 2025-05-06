@@ -12,7 +12,7 @@ public T readSelected(int id);
 
 public boolean delete(int id);
 
-public boolean update(Object oldObject, Object newObject);
+public boolean update(T newObject);
 
 }
 

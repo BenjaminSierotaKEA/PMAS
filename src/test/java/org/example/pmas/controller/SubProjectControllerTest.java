@@ -36,7 +36,7 @@ public class SubProjectControllerTest {
     void shouldReturnAllSubProjects() throws Exception {
         when(subprojectService.readAll()).thenReturn(subprojects);
 
-        mvc.perform(get("/subprojects"))
+        mvc.perform(get("/projects"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subprojects-all"))
                 .andExpect(model().attributeExists("subprojects"));
@@ -49,7 +49,7 @@ public class SubProjectControllerTest {
         SubProject subproject = subprojects.getFirst();
         when(subprojectService.readSelected(1)).thenReturn(subproject);
 
-        mvc.perform(get("/subprojects/1"))
+        mvc.perform(get("/projects/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subproject-selected"))
                 .andExpect(model().attributeExists("subproject"))
@@ -62,7 +62,7 @@ public class SubProjectControllerTest {
     void createSubProject_shouldRenderCreateSubProjectForm() throws Exception {
         int projectID = 1;
 
-        mvc.perform(get("/subprojects/add/{projectID}", projectID))
+        mvc.perform(get("/projects/{projectID}/subprojects/create", projectID))
                 .andExpect(status().isOk())
                 .andExpect(view().name("subproject-new"))
                 .andExpect(model().attributeExists("subproject"));
@@ -75,9 +75,11 @@ public class SubProjectControllerTest {
 
         when(subprojectService.create(newSubProject)).thenReturn(newSubProject);
 
-        mvc.perform(post("/subprojects/save").flashAttr("subproject", newSubProject))
+        mvc.perform(post("/projects/save")
+                        .param("projectID","4")
+                        .flashAttr("subproject", newSubProject))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/subprojectsall"));
+                .andExpect(redirectedUrl("/projects/4/subprojects"));
         verify(subprojectService).create(newSubProject);
     }
 
@@ -88,10 +90,33 @@ public class SubProjectControllerTest {
         int idToDelete = subproject.getId();
         //int projectID = subproject.getProjectID();
 
-        mvc.perform(post("/subprojects/{subprojectID}/delete",idToDelete))
+        mvc.perform(post("/projects/{subprojectID}/delete",idToDelete))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/subprojectsall"));
+                .andExpect(redirectedUrl("/projects"));
 
         verify(subprojectService).delete(idToDelete);
     }
+
+    @Test
+    void editSubProject_shouldReturnEditSubProjectForm() throws Exception {
+        SubProject subproject = subprojects.getFirst();
+        when(subprojectService.readSelected(1)).thenReturn(subproject);
+
+        mvc.perform(get("/projects/{subprojectID}/edit",subproject.getId()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("subproject-edit-form"))
+                .andExpect(model().attributeExists("subproject"));
+    }
+
+//    @Test
+//    void updateSubProject_shouldRedirectBackToSubProject() throws Exception {
+//        SubProject subproject = subprojects.getFirst();
+//
+//        mvc.perform(post("/projects/update")
+//                        .flashAttr("subproject", subproject))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("/" + subproject.getId()));
+//
+//        verify(subprojectService).updateSubProject(subproject);
+//    }
 }

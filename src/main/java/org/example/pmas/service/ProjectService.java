@@ -1,8 +1,11 @@
 package org.example.pmas.service;
 
 import org.example.pmas.model.Project;
+import org.example.pmas.model.SubProject;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
+import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.ProjectRepository;
+import org.example.pmas.repository.SubProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,10 +14,12 @@ import java.util.List;
 public class ProjectService {
 
     private final IProjectRepository projectRepository;
+    private final ISubProjectRepository subprojectRepository;
 
 
-    public ProjectService(IProjectRepository projectRepository){
+    public ProjectService(IProjectRepository projectRepository, ISubProjectRepository subprojectRepository) {
         this.projectRepository = projectRepository;
+        this.subprojectRepository = subprojectRepository;
 
     }
 
@@ -30,8 +35,8 @@ public class ProjectService {
         return projectRepository.readSelected(id);
     }
 
-    public boolean updateProject(Project oldProject, Project newProject){
-        return projectRepository.update(oldProject, newProject);
+    public boolean updateProject(Project newProject){
+        return projectRepository.update(newProject);
     }
 
     public boolean deleteProject(int id){
@@ -40,6 +45,10 @@ public class ProjectService {
 
     public boolean doesProjectExist(int id){
         return projectRepository.doesProjectExist(id);
+    }
+
+    public List<SubProject> getSubProjectsByProjectID(int projectId){
+        return subprojectRepository.getSubProjectsByProjectID(projectId);
     }
 
 

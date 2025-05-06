@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Create New SubProject</title>
 </head>
 <body>
+<h2>Create a New SubProject for Project ID: <span th:text="${projectId}"></span></h2>
+
+<form th:action="@{/projects/save}" method="post" th:object="${subproject}">
+
+
+
+    <div>
+        <label for="name">SubProject Name</label>
+        <input type="text" id="name" th:field="*{name}" placeholder="Enter subproject name" required />
+    </div>
+
+    <div>
+        <label for="description">Description</label>
+        <input type="text" id="description" th:field="*{description}" placeholder="Enter description" />
+    </div>
+
+    <div>
+        <label for="timeBudget">Time Budget</label>
+        <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Enter time budget" required />
+    </div>
+
+    <div>
+        <label for="timeTaken">Time Taken</label>
+        <input type="number" id="timeTaken" th:field="*{timeTaken}" placeholder="Enter time taken" />
+    </div>
+
+    <div>
+        <label for="completed">Completed</label>
+        <input type="checkbox" id="completed" th:field="*{completed}" />
+    </div>
+
+    <!-- Hidden field to pass the projectID to the form -->
+    <input type="hidden" th:field="*{projectID}" th:value="${projectId}" />
+
+    <button type="submit">Save SubProject</button>
+</form>
 
 </body>
 </html>

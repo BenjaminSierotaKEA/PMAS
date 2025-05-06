@@ -1,8 +1,10 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.exception.ConnectionException;
+import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
+import org.example.pmas.model.rowMapper.SubProjectRowMapper;
 import org.example.pmas.model.rowMapper.TaskRowMapper;
 import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -109,7 +111,12 @@ public class TaskRepository implements ITaskRepository {
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
+    public boolean update(Task newTask) {
         return false;
+    }
+
+    public List<Task> getTasksBySubProjectID(int subprojectId){
+        String sql = "SELECT * FROM tasks WHERE subProjectID = ?";
+        return jdbcTemplate.query(sql, new TaskRowMapper(), subprojectId);
     }
 }

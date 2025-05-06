@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>View SubProjects</title>
 </head>
 <body>
+<a th:href="@{/projects/{projectId}/subprojects/create(projectId=${projectId})}">Opret et nyt subprojekt</a>
 
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">Navn</th>
+        <th scope="col">Beskrivelse</th>
+        <th scope="col">TidsBudget</th>
+        <th scope="col">BrugtTid</th>
+        <th scope="col">Fuldført</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="subproject: ${subprojects}">
+        <td>
+            <a th:href="@{/projects/{subprojectId}/tasks(subprojectId=${subproject.id})}"
+               th:text="${subproject.name}"></a>
+        </td>
+        <td th:text="${subproject.description}"></td>
+        <td th:text="${subproject.timeBudget}"></td>
+        <td th:text="${subproject.timeTaken}"></td>
+        <td th:text="${subproject.completed}"></td>
+        <td>
+        <form th:action="@{/projects/{subprojectid}/edit(subprojectid=${subproject.id})}"
+              method="get">
+            <button type="submit">Redigere</button>
+        </form>
+        </td>
+        <td>
+            <form th:action="@{/projects/{subprojectId}/delete(subprojectId=${subproject.id})}" method="post">
+                <button type="submit">Slet</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

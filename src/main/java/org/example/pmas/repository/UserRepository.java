@@ -68,13 +68,27 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public boolean delete(int id) {
-        return false;
+        String sql = "DELETE FROM users WHERE id = ?";
+        return jdbcTemplate.update(sql, id) > 0;
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
-        return false;
+    @Transactional
+    public boolean update(User newUser) throws DataAccessException {
+
+        String sql = "UPDATE users SET name = ?, email = ?, password = ?, role = ? WHERE id = ?";
+
+        int rowsAffected = jdbcTemplate.update(sql,
+                newUser.getName(),
+                newUser.getEmail(),
+                newUser.getPassword(),
+                newUser.getRole().getId(),
+                newUser.getUserID()
+        );
+
+        return rowsAffected > 0;
     }
+
 
     @Override
     @Transactional

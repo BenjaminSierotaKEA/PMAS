@@ -3,8 +3,11 @@ package org.example.pmas.service;
 import org.example.pmas.exception.ProjectNotFoundException;
 import org.example.pmas.exception.SubProjectNotFoundException;
 import org.example.pmas.model.SubProject;
+import org.example.pmas.model.Task;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
+import org.example.pmas.repository.Interfaces.ITaskRepository;
+import org.example.pmas.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,18 +17,16 @@ public class SubProjectService {
 
     private final ISubProjectRepository subprojectRepository;
     private final IProjectRepository projectRepository;
+    private final ITaskRepository taskRepository;
 
-    public SubProjectService(ISubProjectRepository subProjectRepository, IProjectRepository projectRepository) {
+    public SubProjectService(ISubProjectRepository subProjectRepository, IProjectRepository projectRepository,ITaskRepository taskRepository) {
         this.subprojectRepository = subProjectRepository;
         this.projectRepository = projectRepository;
+        this.taskRepository = taskRepository;
     }
 
     public List<SubProject> readAll() {
         return subprojectRepository.readAll();
-    }
-
-    public List<SubProject> getSubProjectsByProjectID(int projectId){
-        return subprojectRepository.getSubProjectsByProjectID(projectId);
     }
 
     public SubProject readSelected(int id) {
@@ -52,5 +53,16 @@ public class SubProjectService {
             throw new SubProjectNotFoundException(id);
         }
         return subprojectRepository.delete(id);
+    }
+
+    public boolean updateSubProject(SubProject subproject) {
+        if(!subprojectRepository.doesSubProjectExist(subproject.getId())) {
+            throw new SubProjectNotFoundException(subproject.getId());
+        }
+        return subprojectRepository.update(subproject);
+    }
+
+    public List<Task> getTasksBySubProjectID(int subprojectId){
+        return taskRepository.getTasksBySubProjectID(subprojectId);
     }
 }
