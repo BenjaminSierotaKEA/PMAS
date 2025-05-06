@@ -119,4 +119,28 @@ class TaskControllerTest {
         verify(taskService, times(1))
                 .delete(any(Integer.class));
     }
+
+    @Test
+    void updateTask() throws Exception {
+        // Arrange
+        when(taskService.update(
+                any(Task.class), any(List.class)))
+                .thenReturn(true);
+
+        // Act & Assert
+        mvc.perform(post("/tasks/update")
+                        .param("id", String.valueOf(1))
+                        .param("name", task.getName())
+                        .param("description", task.getDescription())
+                        .param("timeBudget", String.valueOf(task.getTimeBudget()))
+                        .param("timeTaken", String.valueOf(task.getTimeTaken()))
+                        .param("completed", String.valueOf(task.isCompleted()))
+                        .param("subProject.id", "1")
+                        .param("userIds", "1", "2"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/tasks"));
+
+        verify(taskService, times(1))
+                .update(any(Task.class), any(List.class));
+    }
 }

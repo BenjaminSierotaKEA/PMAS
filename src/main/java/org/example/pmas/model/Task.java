@@ -52,6 +52,11 @@ public class Task {
         return id == ((Task) other).id;
     }
 
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
+
     public int getId() {
         return id;
     }

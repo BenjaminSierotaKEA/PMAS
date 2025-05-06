@@ -38,13 +38,13 @@ DROP TABLE IF EXISTS tasks;
 CREATE TABLE tasks
 (
     id           INT AUTO_INCREMENT,
-    name         VARCHAR(200) UNIQUE NOT NULL,
+    name         VARCHAR(200) NOT NULL,
     description  VARCHAR(200),
-    timeBudget   INT                 NOT NULL,
+    timeBudget   INT          NOT NULL,
     completed    BOOL,
     timeTaken    INT,
     deadline     DATE,
-    subProjectID INT                 NOT NULL,
+    subProjectID INT          NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (subProjectID) REFERENCES subprojects (id) ON DELETE CASCADE
 );
@@ -71,20 +71,7 @@ CREATE TABLE users
 );
 
 
-
 /* many to many relation tables:*/
-
-/*
-DROP TABLE IF EXISTS projectssubprojects;
-CREATE TABLE projectsubprojects(
-                                   projectid INT NOT NULL,
-                                   subprojectid INT NOT NULL,
-                                    PRIMARY KEY (projectid, subprojectid),
-                                   FOREIGN KEY(projectid) REFERENCES projects(id) ON DELETE CASCADE,
-                                   FOREIGN KEY(subprojectid) REFERENCES subprojects(id) ON DELETE CASCADE
-);
-
- */
 
 DROP TABLE IF EXISTS userprojects;
 CREATE TABLE userprojects
@@ -95,16 +82,6 @@ CREATE TABLE userprojects
     FOREIGN KEY (projectid) REFERENCES projects (id) ON DELETE CASCADE,
     FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE
 );
-
--- DROP TABLE IF EXISTS subprojectstasks;
--- CREATE TABLE subprojecttasks
--- (
---     subprojectid INT,
---     taskid       INT,
---     PRIMARY KEY (subprojectid, taskid),
---     FOREIGN KEY (subprojectid) REFERENCES subprojects (id) ON DELETE CASCADE,
---     FOREIGN KEY (taskid) REFERENCES tasks (id) ON DELETE CASCADE
--- );
 
 DROP TABLE IF EXISTS usertasks;
 CREATE TABLE usertasks
