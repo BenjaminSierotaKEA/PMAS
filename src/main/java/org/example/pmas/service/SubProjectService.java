@@ -54,6 +54,6 @@ public class SubProjectService {
         if(!subprojectRepository.doesSubProjectExist(subproject.getId())) {
             throw new SubProjectNotFoundException(subproject.getId());
         }
-        return subprojectRepository.updateSubProject(subproject) == 1;
+        return subprojectRepository.update(subproject);
     }
 }

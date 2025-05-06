@@ -80,9 +80,15 @@ public class UserService {
 
     }
 
-    public boolean updateUser(Object oldUser, Object newUser){
+    public boolean updateUser(int id, User newUser){
+        User oldUser = userRepository.readSelected(id);
+
+        if(oldUser == null){
+            throw new UserNotFoundException(id);
+        }
+
         try {
-          return userRepository.update(oldUser,newUser);
+          return userRepository.update(newUser);
         }catch (DataAccessException dataAccessException){
             dataAccessException.getMessage();
         }catch (IllegalArgumentException illegalArgumentException){

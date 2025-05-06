@@ -83,8 +83,15 @@ public class SubProjectRepository implements ISubProjectRepository {
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
-        return false;
+    public boolean update(SubProject subproject) {
+        String sql ="UPDATE subprojects SET name = ?, description = ?, timeBudget = ?, timeTaken = ?, completed = ? WHERE id = ?";
+        return jdbcTemplate.update(sql,
+                subproject.getName(),
+                subproject.getDescription(),
+                subproject.getTimeBudget(),
+                subproject.getTimeTaken(),
+                subproject.isCompleted(),
+                subproject.getId()) > 0;
     }
 
     public int getProjectIDBySubProjectID(int subprojectID) {
@@ -103,15 +110,5 @@ public class SubProjectRepository implements ISubProjectRepository {
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
     }
 
-    public int updateSubProject(SubProject subproject) {
-        String sql ="UPDATE subprojects SET name = ?, description = ?, timeBudget = ?, timeTaken = ?, completed = ? WHERE id = ?";
-        return jdbcTemplate.update(sql,
-                subproject.getName(),
-                subproject.getDescription(),
-                subproject.getTimeBudget(),
-                subproject.getTimeTaken(),
-                subproject.isCompleted(),
-                subproject.getId());
 
-    }
 }
