@@ -150,22 +150,7 @@ public class TaskRepository implements ITaskRepository {
 
     @Transactional
     @Override
-    public boolean addUserToTask(int taskId, List<Integer> newUserIds) {
-        // Fetch users for comparison
-        List<Integer> currentUserIds = getCurrentUserIdsFromUserTasks(taskId);
-
-        // Check differences for add or remove user from a task
-        Set<Integer> toAdd = differenceOrEmpty(newUserIds, currentUserIds);
-        Set<Integer> toRemove = differenceOrEmpty(currentUserIds, newUserIds);
-
-        // Add/Remove if needed
-        int added = addUsersToUserTasks(taskId, toAdd);
-        int removed = removeUsersFromUserTasks(taskId, toRemove);
-
-        return added == 0 && removed == 0;
-    }
-
-    private List<Integer> getCurrentUserIdsFromUserTasks(int taskId) {
+    public List<Integer> getCurrentUserIdsFromUserTasks(int taskId) {
         try {
             return jdbcTemplate.queryForList("SELECT userid FROM usertasks WHERE taskid = ?", Integer.class, taskId);
         } catch (DataAccessException e) {
@@ -173,7 +158,9 @@ public class TaskRepository implements ITaskRepository {
         }
     }
 
-    private int addUsersToUserTasks(int taskId, Set<Integer> userIds) {
+    @Transactional
+    @Override
+    public int addUsersToUserTasks(int taskId, Set<Integer> userIds) {
         int count = 0;
         for (Integer userId : userIds) {
             try {
@@ -190,8 +177,10 @@ public class TaskRepository implements ITaskRepository {
         return count;
     }
 
-    // Removes users from
-    private int removeUsersFromUserTasks(int taskId, Set<Integer> userIds) {
+    // Removes users from junction table
+    @Transactional
+    @Override
+    public int removeUsersFromUserTasks(int taskId, Set<Integer> userIds) {
         int count = 0;
         for (Integer userId : userIds) {
             try {
@@ -207,17 +196,8 @@ public class TaskRepository implements ITaskRepository {
         return count;
     }
 
-    // if no users added to the list. it will throw and error.
-    // this will avoid error
-    private Set<Integer> differenceOrEmpty(List<Integer> baseList, List<Integer> subtractList) {
-        if (subtractList == null) subtractList = Collections.emptyList();
-        if (baseList == null) baseList = Collections.emptyList();
-
-        Set<Integer> result = new HashSet<>(baseList);
-        result.removeAll(subtractList);
-        return result;
-    }
-
+    @Transactional
+    @Override
     public List<Task> getTasksBySubProjectID(int subprojectId){
         String sql = "SELECT * FROM tasks WHERE subProjectID = ?";
         return jdbcTemplate.query(sql, new TaskRowMapper(), subprojectId);

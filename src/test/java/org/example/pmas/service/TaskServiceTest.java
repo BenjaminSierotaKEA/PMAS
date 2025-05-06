@@ -167,7 +167,6 @@ class TaskServiceTest {
 
         when(taskRepository.readSelected(1)).thenReturn(task);
         when(taskRepository.update(task)).thenReturn(true);
-        when(taskRepository.addUserToTask(1, List.of(2, 3))).thenReturn(true);
 
         boolean result = taskService.update(task, List.of(2, 3));
 
@@ -175,7 +174,6 @@ class TaskServiceTest {
 
         verify(taskRepository).readSelected(1);
         verify(taskRepository).update(task);
-        verify(taskRepository).addUserToTask(1, List.of(2, 3));
     }
     @Test
     void update_return_false() {
