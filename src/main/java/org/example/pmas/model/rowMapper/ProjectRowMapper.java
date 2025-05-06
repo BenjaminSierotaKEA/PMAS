@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 public class ProjectRowMapper implements RowMapper<Project> {
@@ -17,7 +17,8 @@ public class ProjectRowMapper implements RowMapper<Project> {
         project.setName(rs.getString("name"));
         project.setDescription(rs.getString("description"));
         project.setTimeBudget(rs.getInt("timebudget"));
-        project.setDeadline(rs.getObject("deadline", LocalDateTime.class));
+        project.setDeadline(rs.getObject("deadline", LocalDate.class));
+        System.out.println("From the project rowmapper: the deadline: " + project.getDeadline());
 
         return project;
     }
