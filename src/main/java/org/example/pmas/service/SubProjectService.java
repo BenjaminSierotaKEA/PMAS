@@ -24,10 +24,6 @@ public class SubProjectService {
         return subprojectRepository.readAll();
     }
 
-    public List<SubProject> getSubProjectsByProjectID(int projectId){
-        return subprojectRepository.getSubProjectsByProjectID(projectId);
-    }
-
     public SubProject readSelected(int id) {
         SubProject sub = subprojectRepository.readSelected(id);
         if(sub == null) {
@@ -52,5 +48,12 @@ public class SubProjectService {
             throw new SubProjectNotFoundException(id);
         }
         return subprojectRepository.delete(id);
+    }
+
+    public boolean updateSubProject(SubProject subproject) {
+        if(!subprojectRepository.doesSubProjectExist(subproject.getId())) {
+            throw new SubProjectNotFoundException(subproject.getId());
+        }
+        return subprojectRepository.updateSubProject(subproject) == 1;
     }
 }

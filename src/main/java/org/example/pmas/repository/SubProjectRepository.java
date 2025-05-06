@@ -39,7 +39,7 @@ public class SubProjectRepository implements ISubProjectRepository {
     }
 
     public List<SubProject> getSubProjectsByProjectID(int projectId){
-        String sql = "SELECT * FROM subprojects WHERE projectsID = ?";
+        String sql = "SELECT * FROM subprojects WHERE projectID = ?";
         return jdbcTemplate.query(sql, new SubProjectRowMapper(), projectId);
     }
 
@@ -101,5 +101,17 @@ public class SubProjectRepository implements ISubProjectRepository {
         String sql = "SELECT EXISTS (SELECT 1 FROM projects WHERE id = ?)";
         //null safe way to check if result is true. Uses boolean object(true) to compare.
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
+    }
+
+    public int updateSubProject(SubProject subproject) {
+        String sql ="UPDATE subprojects SET name = ?, description = ?, timeBudget = ?, timeTaken = ?, completed = ? WHERE id = ?";
+        return jdbcTemplate.update(sql,
+                subproject.getName(),
+                subproject.getDescription(),
+                subproject.getTimeBudget(),
+                subproject.getTimeTaken(),
+                subproject.isCompleted(),
+                subproject.getId());
+
     }
 }
