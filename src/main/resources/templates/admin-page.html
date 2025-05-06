@@ -24,7 +24,7 @@
     <td th:text="${user.role}">ADMIN</td>
     <td>
       <form th:action="@{/{id}/delete(id=${user.userID})}" method="post">
-        <button type="submit">Slet</button>
+        <button type="submit">Delete</button>
       </form>
 
     <form th:action="@{/{id}/update(id=${user.userID})}" method="get">
