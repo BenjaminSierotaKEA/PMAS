@@ -21,7 +21,7 @@
     <td th:text="${user.userID}">1</td>
     <td th:text="${user.name}">John Doe</td>
     <td th:text="${user.email}">john@example.com</td>
-    <td th:text="${user.role}">ADMIN</td>
+    <td th:text="${user.getRole().name}">ADMIN</td>
     <td>
       <form th:action="@{/{id}/delete(id=${user.userID})}" method="post">
         <button type="submit">Delete</button>

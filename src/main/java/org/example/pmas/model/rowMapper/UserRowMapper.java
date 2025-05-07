@@ -1,4 +1,7 @@
-package org.example.pmas.model;
+package org.example.pmas.model.rowMapper;
+
+import org.example.pmas.model.Role;
+import org.example.pmas.model.User;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -18,21 +21,13 @@ public class UserRowMapper implements RowMapper<User> {
         user.setPassword(rs.getString("password"));
         user.setPicture(rs.getString("picture"));
 
-        int roleId = rs.getInt("role");
-        user.setRole(roleSetter(roleId));
-
+        Role role = new Role();
+        role.setId(rs.getInt("role_id"));
+        role.setName(rs.getString("role_name"));
+        user.setRole(role);
 
         return user;
 
-    }
-
-    private Role roleSetter(int roleNumber) {
-        return switch (roleNumber) {
-            case 1 -> new Role(1, "Admin");
-            case 2 -> new Role(2, "Project Manager");
-            case 3 -> new Role(3, "Employee");
-            default -> throw new IllegalArgumentException("Unknown role number: " + roleNumber);
-        };
     }
 
 

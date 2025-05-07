@@ -1,7 +1,7 @@
 package org.example.pmas.model;
 
 public class Role {
-    private int id;
+    private Integer id;
     private String name;
 
     public Role(){
@@ -18,7 +18,7 @@ public class Role {
         return name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -26,7 +26,14 @@ public class Role {
         this.name = name;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+
+
+    @Override
+    public String toString(){
+        return name + "";
     }
 }

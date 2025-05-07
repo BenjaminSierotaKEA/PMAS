@@ -25,7 +25,7 @@ class SessionControllerTest {
 
     @Test
     void getLogInPage() throws Exception {
-        mockMvc.perform(get("/session/user-login"))
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user-login"));
     }
@@ -39,7 +39,7 @@ class SessionControllerTest {
         when(sessionHandler.logIn("Rebecca@example.com", "password123")).thenReturn(true);
         when(sessionHandler.getCurrentUser()).thenReturn(mockUser);
 
-        mockMvc.perform(post("/session/login")
+        mockMvc.perform(post("/login")
                         .param("email", "Rebecca@example.com")
                         .param("password", "password123"))
                 .andExpect(status().is3xxRedirection())

@@ -1,6 +1,8 @@
 package org.example.pmas.controller;
 
+import org.example.pmas.model.Role;
 import org.example.pmas.model.User;
+
 import org.example.pmas.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,18 +16,28 @@ public class UserController {
 
     private final UserService userService;
 
+
     public UserController(UserService userService) {
         this.userService = userService;
+
     }
 
     @GetMapping("/user-form")
     public String getUserForm(Model model) {
-        model.addAttribute("newUser", new User());
+        List<Role> roles = userService.getAllRoles();
+        User user = new User();
+        user.setRole(new Role());
+
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
         return "user-form";
     }
 
     @PostMapping("/user/create")
     public  String createUser(@ModelAttribute  User newUser, Model errorMessage){
+
+
+
         if (userService.checkEmail(newUser.getEmail()) != null) {
             errorMessage.addAttribute("emailTaken", true);
             return "user-form";
@@ -33,7 +45,7 @@ public class UserController {
 
         userService.createUser(newUser);
 
-        return "redirect:/admin-page";
+        return "redirect:/user-overview";
 
     }
 
@@ -43,6 +55,7 @@ public class UserController {
         List<User> users = userService.getAll();
 
         model.addAttribute("users", users);
+
         return "admin-page";
     }
 
@@ -61,16 +74,21 @@ public class UserController {
                 IllegalArgumentException("Id not correct.");
 
         userService.delete(id);
-        return "admin-page";
+        return "redirect:/user-overview";
+
     }
 
     @GetMapping("/{id}/update")
         public String updateUser(@PathVariable("id") int id, Model model){
 
+        User user = userService.getUser(id);
+        List<Role> roles = userService.getAllRoles();
+
         if(id <= 0) throw new
                 IllegalArgumentException("ID not correct");
 
-        model.addAttribute("user", userService.getUser(id));
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
 
         return "user-form";
     }
@@ -83,6 +101,10 @@ public class UserController {
         if(!success){
             model.addAttribute("errorMessage", "Failed to update, check your inserted values");
             return "user-form";
+        }
+
+        if ( userService.getUser(id).getRole() == null) {
+            userService.getUser(id).setRole(new Role());
         }
 
         return "redirect:/user-overview";
