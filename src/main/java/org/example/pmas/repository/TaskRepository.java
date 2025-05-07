@@ -42,7 +42,7 @@ public class TaskRepository implements ITaskRepository {
                 ps.setString(1, task.getName());
                 ps.setString(2, task.getDescription());
                 // Vi sætter priority til null ellers vil det crashe, når vi henter dem.
-                ps.setString(3, task.getPriority() != null ? task.getPriority().name() : null);
+                ps.setString(3, task.getPriorityLevel() != null ? task.getPriorityLevel().name() : null);
                 ps.setDouble(4, task.getTimeBudget());
                 ps.setDouble(5, task.getTimeTaken());
                 ps.setBoolean(6, task.isCompleted());
@@ -143,7 +143,7 @@ public class TaskRepository implements ITaskRepository {
             return jdbcTemplate.update(sql,
                     newObject.getName(),
                     newObject.getDescription(),
-                    newObject.getPriority().name(),
+                    newObject.getPriorityLevel().name(),
                     newObject.getTimeBudget(),
                     newObject.getTimeTaken(),
                     newObject.isCompleted(),
