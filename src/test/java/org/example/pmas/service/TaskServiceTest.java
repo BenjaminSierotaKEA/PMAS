@@ -57,12 +57,13 @@ class TaskServiceTest {
     void readAll_without_values() {
         // Arrange
         when(taskRepository.readAll()).thenReturn(null);
+        List<Task> actual = new ArrayList<>();
 
         // Act
-        var result = taskService.readAll();
+        var expected = taskService.readAll();
 
         // Assert
-        assertNull(result);
+        assertEquals(actual,expected);
         verify(taskRepository, times(1)).readAll();
     }
 
