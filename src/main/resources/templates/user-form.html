@@ -1,10 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>user form</title>
 </head>
 <body>
+
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+
+
+<!-- This form sends to different endpoints, depending on the URL it is viewed through -->
+<!-- it basically says, if userID is not null, then post to the Update endpoint, otherwise Create -->
+<form th:action="@{${user != null and user.userID != null and user.userID > 0} ? '/' + ${user.userID} + '/update' : '/user/create'}"
+      th:object="${user}"
+      method="post">
+
+
+    <input type="hidden" th:field="*{userID}"/>
+
+    <label for="name">*Name:</label><br>
+    <input type="text" id="name" th:field="*{name}" placeholder="Name" required/><br>
+
+    <label for="email">*Email:</label><br>
+    <input type="email" id="email" th:field="*{email}" placeholder="Email" required/><br>
+
+    <label for="password">*Password:</label><br>
+    <input type="password" id="password" th:field="*{password}" placeholder="Password" required/><br>
+
+    <label for="picture">Profile Picture (File name or URL):</label><br>
+    <input type="text" id="picture" th:field="*{picture}" placeholder="File path or URL"/><br>
+
+    <label for="role">*Role:</label><br>
+    <select id="role" th:field="*{role.id}" required>
+        <option value="">-- Choose a role --</option>
+        <option th:each="r : ${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+    </select><br><br>
+
+    <button type="submit">Save</button>
+</form>
 
 </body>
 </html>

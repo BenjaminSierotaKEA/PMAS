@@ -1,6 +1,6 @@
 package org.example.pmas.repository;
 
-import org.example.pmas.exception.ConnectionException;
+import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
@@ -153,6 +153,6 @@ class TaskRepositoryTest {
         };
 
         // Assert
-        assertThrows(ConnectionException.class, executable);
+        assertThrows(DatabaseException.class, executable);
     }
 }

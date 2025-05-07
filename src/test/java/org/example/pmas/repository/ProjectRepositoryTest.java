@@ -2,7 +2,6 @@ package org.example.pmas.repository;
 
 import org.example.pmas.model.Project;
 import org.example.pmas.model.rowMapper.ProjectRowMapper;
-import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

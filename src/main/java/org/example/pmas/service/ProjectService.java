@@ -4,8 +4,6 @@ import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
-import org.example.pmas.repository.ProjectRepository;
-import org.example.pmas.repository.SubProjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

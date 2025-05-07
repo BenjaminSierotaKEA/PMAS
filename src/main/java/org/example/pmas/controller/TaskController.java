@@ -49,22 +49,16 @@ public class TaskController {
     public String createTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
                              Model model) {
-        if (task == null) throw new IllegalArgumentException("Fejl. Noget galt med opgaven du opretter.");
+        if (task == null) throw new IllegalArgumentException("Noget galt med task.");
         if (task.getSubProject().getId() <= 0) {
             model.addAttribute("task", task);
             model.addAttribute("subprojects", taskService.getAllSubproject());
             model.addAttribute("users", taskService.getAllUsers());
-            model.addAttribute("error", "Udfylde alle obligatoriske felter");
+            model.addAttribute("error", "Obligatorisk felt her.");
             return "task-new";
         }
 
-        // If not success
-        boolean success = taskService.create(task, userIDs);
-        if (!success) {
-            model.addAttribute("error", "Udfyld alle obligatoriske felter");
-            return "task-new";
-        }
-
+        taskService.create(task, userIDs);
         return "redirect:/tasks";
     }
 
@@ -81,23 +75,16 @@ public class TaskController {
     public String updateTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
                              Model model) {
-        if (task == null) throw new IllegalArgumentException("Noget gik galt med opgaven du har opdateret.");
+        if (task == null) throw new IllegalArgumentException("Noget galt med task.");
         if (task.getSubProject().getId() <= 0) {
             model.addAttribute("task", task);
             model.addAttribute("subprojects", taskService.getAllSubproject());
-            model.addAttribute("users", taskService.getAllUsers() );
-            model.addAttribute("error", "Udfylde alle obligatoriske felter");
+            model.addAttribute("users", taskService.getAllUsers());
+            model.addAttribute("error", "Obligatorisk felt her.");
             return "redirect:/tasks/" + task.getId() + "/task";
         }
 
-        boolean succes = taskService.update(task, userIDs);
-        if (!succes) {
-            model.addAttribute("subprojects", taskService.getAllSubproject());
-            model.addAttribute("users", taskService.getAllUsers() );
-            model.addAttribute("error", "Udfyld alle obligatoriske felter");
-            return "redirect:/tasks/" + task.getId() + "/task";
-        }
-
+        taskService.update(task, userIDs);
         return "redirect:/tasks";
     }
 }
