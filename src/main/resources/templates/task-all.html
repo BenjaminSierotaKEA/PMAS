@@ -28,7 +28,7 @@
         <td th:text="${task.description}"></td>
         <td th:text="${task.timeBudget}"></td>
         <td th:text="${task.timeTaken}"></td>
-        <td th:text="${task.deadline}"></td>
+        <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}"></td>
         <td>
         <span th:each="user, iterStat : ${task.users}">
             <span th:text="${user.name}"></span>
