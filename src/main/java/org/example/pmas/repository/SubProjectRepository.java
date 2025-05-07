@@ -83,8 +83,15 @@ public class SubProjectRepository implements ISubProjectRepository {
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
-        return false;
+    public boolean update(SubProject subproject) {
+        String sql ="UPDATE subprojects SET name = ?, description = ?, timeBudget = ?, timeTaken = ?, completed = ? WHERE id = ?";
+        return jdbcTemplate.update(sql,
+                subproject.getName(),
+                subproject.getDescription(),
+                subproject.getTimeBudget(),
+                subproject.getTimeTaken(),
+                subproject.isCompleted(),
+                subproject.getId()) > 0;
     }
 
     public int getProjectIDBySubProjectID(int subprojectID) {
@@ -98,20 +105,10 @@ public class SubProjectRepository implements ISubProjectRepository {
     }
 
     public boolean doesSubProjectExist(int id) {
-        String sql = "SELECT EXISTS (SELECT 1 FROM projects WHERE id = ?)";
+        String sql = "SELECT EXISTS (SELECT 1 FROM subprojects WHERE id = ?)";
         //null safe way to check if result is true. Uses boolean object(true) to compare.
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
     }
 
-    public int updateSubProject(SubProject subproject) {
-        String sql ="UPDATE subprojects SET name = ?, description = ?, timeBudget = ?, timeTaken = ?, completed = ? WHERE id = ?";
-        return jdbcTemplate.update(sql,
-                subproject.getName(),
-                subproject.getDescription(),
-                subproject.getTimeBudget(),
-                subproject.getTimeTaken(),
-                subproject.isCompleted(),
-                subproject.getId());
 
-    }
 }

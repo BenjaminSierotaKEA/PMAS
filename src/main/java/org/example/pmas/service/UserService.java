@@ -1,7 +1,6 @@
 package org.example.pmas.service;
 
-import org.example.pmas.exception.UserNotFoundException;
-import org.example.pmas.exception.WrongInputException;
+import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Role;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IRoleRepository;
@@ -27,7 +26,7 @@ public class UserService {
         try {
             //checks the return results of the method
             var user = userRepository.create(newUser);
-            if (user == null) throw new UserNotFoundException(newUser.getUserID());
+            if (user == null) throw new NotFoundException(newUser.getUserID());
             //returns the method
             return userRepository.create(newUser);
 
@@ -78,15 +77,21 @@ public class UserService {
 
     public void delete(int id) {
         var user = userRepository.readSelected(id);
-        if(user == null) throw new WrongInputException("Id not correct.");
+        if(user == null) throw new NotFoundException(id);
 
         userRepository.delete(id);
 
     }
 
-    public boolean updateUser(Object oldUser, Object newUser){
+    public boolean updateUser(int id, User newUser){
+        User oldUser = userRepository.readSelected(id);
+
+        if(oldUser == null){
+            throw new NotFoundException(id);
+        }
+
         try {
-          return userRepository.update(oldUser,newUser);
+          return userRepository.update(newUser);
         }catch (DataAccessException dataAccessException){
             dataAccessException.getMessage();
         }catch (IllegalArgumentException illegalArgumentException){

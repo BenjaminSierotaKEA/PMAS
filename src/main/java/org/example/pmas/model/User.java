@@ -43,6 +43,20 @@ public class User {
         this.name = name;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+
+        if(!(other instanceof User)) return false;
+
+        return userID == ((User) other).userID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(userID);
+    }
+
     public User(int userID,String name, String email, String password, String picture, Role role) {
         this.userID = userID;
         this.name = name;

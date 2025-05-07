@@ -2,6 +2,7 @@ package org.example.pmas.repository;
 
 import org.example.pmas.model.Project;
 import org.example.pmas.model.rowMapper.ProjectRowMapper;
+import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ProjectRepository implements org.example.pmas.repository.Interfaces.IProjectRepository {
+public class ProjectRepository implements IProjectRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -65,10 +66,8 @@ public class ProjectRepository implements org.example.pmas.repository.Interfaces
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
+    public boolean update(Project newProject) {
 
-        Project oldProject = (Project) oldObject;
-        Project newProject = (Project) newObject;
 
         String sql = "UPDATE projects SET name = ?, description = ?, timebudget = ?, deadline = ? WHERE id=?";
         try{
@@ -77,9 +76,9 @@ public class ProjectRepository implements org.example.pmas.repository.Interfaces
                     newProject.getDescription(),
                     newProject.getTimeBudget(),
                     newProject.getDeadline(),
-                    oldProject.getId());
+                    newProject.getId());
         }catch(DataAccessException e){
-            throw new RuntimeException("Could not update project: " + oldProject.getName(), e);
+            throw new RuntimeException("Could not update project: " + newProject.getName(), e);
         }
 
 

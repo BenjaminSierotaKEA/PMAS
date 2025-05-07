@@ -1,10 +1,11 @@
 package org.example.pmas.service;
 
-import org.example.pmas.exception.ProjectNotFoundException;
-import org.example.pmas.exception.SubProjectNotFoundException;
+import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;
+import org.example.pmas.model.Task;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
+import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,10 +15,12 @@ public class SubProjectService {
 
     private final ISubProjectRepository subprojectRepository;
     private final IProjectRepository projectRepository;
+    private final ITaskRepository taskRepository;
 
-    public SubProjectService(ISubProjectRepository subProjectRepository, IProjectRepository projectRepository) {
+    public SubProjectService(ISubProjectRepository subProjectRepository, IProjectRepository projectRepository,ITaskRepository taskRepository) {
         this.subprojectRepository = subProjectRepository;
         this.projectRepository = projectRepository;
+        this.taskRepository = taskRepository;
     }
 
     public List<SubProject> readAll() {
@@ -27,7 +30,7 @@ public class SubProjectService {
     public SubProject readSelected(int id) {
         SubProject sub = subprojectRepository.readSelected(id);
         if(sub == null) {
-            throw new SubProjectNotFoundException(id);
+            throw new NotFoundException(id);
         }
         return sub;
     }
@@ -38,22 +41,26 @@ public class SubProjectService {
 
     public SubProject create(SubProject subproject) {
         if(!projectRepository.doesProjectExist(subproject.getProjectID())) {
-            throw new ProjectNotFoundException(subproject.getProjectID());
+            throw new NotFoundException(subproject.getProjectID());
         }
         return subprojectRepository.create(subproject);
     }
 
     public boolean delete(int id) {
         if(!subprojectRepository.doesSubProjectExist(id)) {
-            throw new SubProjectNotFoundException(id);
+            throw new NotFoundException(id);
         }
         return subprojectRepository.delete(id);
     }
 
     public boolean updateSubProject(SubProject subproject) {
         if(!subprojectRepository.doesSubProjectExist(subproject.getId())) {
-            throw new SubProjectNotFoundException(subproject.getId());
+            throw new NotFoundException(subproject.getId());
         }
-        return subprojectRepository.updateSubProject(subproject) == 1;
+        return subprojectRepository.update(subproject);
+    }
+
+    public List<Task> getTasksBySubProjectID(int subprojectId){
+        return taskRepository.getTasksBySubProjectID(subprojectId);
     }
 }

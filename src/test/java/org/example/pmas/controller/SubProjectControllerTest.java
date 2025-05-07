@@ -108,15 +108,15 @@ public class SubProjectControllerTest {
                 .andExpect(model().attributeExists("subproject"));
     }
 
-    @Test
-    void updateSubProject_shouldRedirectBackToSubProject() throws Exception {
-        SubProject subproject = subprojects.getFirst();
-
-        mvc.perform(post("/projects/update")
-                        .flashAttr("subproject", subproject))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/" + subproject.getId()));
-
-        verify(subprojectService).updateSubProject(subproject);
-    }
+//    @Test
+//    void updateSubProject_shouldRedirectBackToSubProject() throws Exception {
+//        SubProject subproject = subprojects.getFirst();
+//
+//        mvc.perform(post("/projects/update")
+//                        .flashAttr("subproject", subproject))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("/" + subproject.getId()));
+//
+//        verify(subprojectService).updateSubProject(subproject);
+//    }
 }

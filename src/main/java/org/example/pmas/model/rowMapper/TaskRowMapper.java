@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TaskRowMapper implements RowMapper<Task> {
+
     @Override
     public Task mapRow(ResultSet rs, int rowNum) throws SQLException {
         Task task = new Task();
@@ -46,20 +47,22 @@ public class TaskRowMapper implements RowMapper<Task> {
     // Return users or null
     private Set<User> mapUsers(ResultSet rs) throws SQLException {
         Set<User> users = new HashSet<>();
+        String GROUP_CONCAT_SEPARATOR = ",";
 
         // Names are concatenated with ','
         String username = rs.getString("user_names");
-        String[] usernames = username.split(",");
+
+        String[] usernames = username.split(GROUP_CONCAT_SEPARATOR);
 
         // Users are concatenated with ','
         String id = rs.getString("user_ids");
-        String[] ids = id.split(",");
+        String[] ids = id.split(GROUP_CONCAT_SEPARATOR);
 
         // adds a user to users
         for (int i = 0; i < ids.length; i++) {
-            User user = new User();
-            user.setUserID(Integer.parseInt(ids[i]));
-            user.setName(usernames[i]);
+            User user = new User(
+                    Integer.parseInt(ids[i]),
+                    usernames[i]);
             users.add(user);
         }
 

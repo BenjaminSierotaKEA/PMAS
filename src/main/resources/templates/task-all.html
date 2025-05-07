@@ -17,6 +17,7 @@
         <th>Brugt tid</th>
         <th>Deadline</th>
         <th>Tildelt</th>
+        <th>Kategori</th>
         <th>Opdater</th>
         <th>Slet</th>
     </tr>
@@ -34,11 +35,12 @@
             <span th:if="${!iterStat.last}">, </span>
         </span>
         </td>
+        <td th:text="${task.getSubProject().getName()}"></td>
         <td><a th:href="@{/tasks/{id}/task(id=${task.id})}">Opdater</a></td>
         <td>
             <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post"
                   onsubmit="return confirm('Er du sikker på, at du vil slette denne opgave?');">
-               <button type="submit">Slet</button>
+                <button type="submit">Slet</button>
             </form>
         </td>
     </tr>

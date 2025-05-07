@@ -20,13 +20,22 @@
     </thead>
     <tbody>
     <tr th:each="subproject: ${subprojects}">
-        <td th:text="${subproject.getName()}"></td>
-        <td th:text="${subproject.getDescription()}"></td>
-        <td th:text="${subproject.getTimeBudget()}"></td>
-        <td th:text="${subproject.getTimeTaken()}"></td>
-        <td th:text="${subproject.isCompleted()}"></td>
         <td>
-            <form th:action="@{/subprojects/{id}/delete(id=${subproject.id})}" method="post">
+            <a th:href="@{/projects/{subprojectId}/tasks(subprojectId=${subproject.id})}"
+               th:text="${subproject.name}"></a>
+        </td>
+        <td th:text="${subproject.description}"></td>
+        <td th:text="${subproject.timeBudget}"></td>
+        <td th:text="${subproject.timeTaken}"></td>
+        <td th:text="${subproject.completed}"></td>
+        <td>
+        <form th:action="@{/projects/{subprojectid}/edit(subprojectid=${subproject.id})}"
+              method="get">
+            <button type="submit">Redigere</button>
+        </form>
+        </td>
+        <td>
+            <form th:action="@{/projects/{subprojectId}/delete(subprojectId=${subproject.id})}" method="post">
                 <button type="submit">Slet</button>
             </form>
         </td>

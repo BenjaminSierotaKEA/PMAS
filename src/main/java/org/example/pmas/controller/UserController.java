@@ -95,8 +95,8 @@ public class UserController {
 
     @PostMapping("/{id}/update")
         public String updateUser(@PathVariable("id") int id, @ModelAttribute User newUser, Model model){
-        User oldUser = userService.getUser(id);
-        boolean success = userService.updateUser(oldUser,newUser);
+
+        boolean success = userService.updateUser(id,newUser);
 
         if(!success){
             model.addAttribute("errorMessage", "Failed to update, check your inserted values");

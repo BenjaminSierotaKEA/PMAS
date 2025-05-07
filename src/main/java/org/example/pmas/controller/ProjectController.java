@@ -68,7 +68,7 @@ public class ProjectController {
         //until i figure out how to send both the old project and the new project,
         //we just send the new project twice. all we need from the old project is
         //the id, which should be the same as the new project no matter what.
-        projectService.updateProject(project, project);
+        projectService.updateProject(project);
 
 
         return "redirect:see-all";
