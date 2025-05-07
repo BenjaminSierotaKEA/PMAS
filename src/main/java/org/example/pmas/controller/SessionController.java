@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("session")
+@RequestMapping("/")
 public class SessionController {
 
     private final SessionHandler sessionHandler;
@@ -22,7 +22,7 @@ public class SessionController {
 
     }
 
-    @GetMapping("/user-login")
+    @GetMapping("/")
     public String getLogInPage(){
         return "user-login";
     }
@@ -32,18 +32,20 @@ public class SessionController {
                         @RequestParam String password,
                         Model model) {
         boolean loginSucceed = sessionHandler.logIn(email,password);
+        System.out.println("Login success? " + loginSucceed);
+
 
         if(loginSucceed){
             User user = sessionHandler.getCurrentUser();
             return "redirect:/session/"+user.getUserID()+"/user";
         }
+
         model.addAttribute("wrongCredentials", true);
         return "user-login";
 
-
     }
 
-    @GetMapping("/{id}/user")
+    @GetMapping("/session/{id}/user")
     public String userByID(@PathVariable("id") int id, Model model) {
         if (id <= 0) throw new IllegalArgumentException("Id can't be lower than 0");
 

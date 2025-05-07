@@ -1,72 +1,42 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>user form</title>
 </head>
 <body>
-<p th:if="${error}" th:text="${error}"></p>
-<form th:action="@{/}" th:method="post" th:object="${user}">
+
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+
+
+<!-- This form sends to different endpoints, depending on the URL it is viewed through -->
+<!-- it basically says, if userID is not null, then post to the Update endpoint, otherwise Create -->
+<form th:action="@{${user != null and user.userID != null and user.userID > 0} ? '/' + ${user.userID} + '/update' : '/user/create'}"
+      th:object="${user}"
+      method="post">
+
+
+    <input type="hidden" th:field="*{userID}"/>
+
     <label for="name">*Name:</label><br>
-    <input type="text" id="name" name="name" required placeholder="Name"
-           th:field="*{name}"/> <br>
+    <input type="text" id="name" th:field="*{name}" placeholder="Name" required/><br>
 
-    <label for="">*Email:</label><br>
-    <textarea id="description" name="email" required placeholder="email"
-              rows="4" cols="50"
-              th:field="*{email}"></textarea> <br>
+    <label for="email">*Email:</label><br>
+    <input type="email" id="email" th:field="*{email}" placeholder="Email" required/><br>
 
-    <!-- step allow you to add decimal numbers -->
-    <label for="timeBudget">*Tidsallokering:</label><br>
-    <input type="number" id="timeBudget" name="timeBudget" value=""
-           required step="0.1"
-           th:field="*{timeBudget}"/> <br>
+    <label for="password">*Password:</label><br>
+    <input type="password" id="password" th:field="*{password}" placeholder="Password" required/><br>
 
-    <!-- step allow you to add decimal numbers -->
-    <label for="timeTaken">Faktiske tid:</label><br>
-    <input type="number" id="timeTaken" name="timeTaken" value=""
-           step="0.1" required
-           th:field="*{timeTaken}"/> <br>
+    <label for="picture">Profile Picture (File name or URL):</label><br>
+    <input type="text" id="picture" th:field="*{picture}" placeholder="File path or URL"/><br>
 
-    <fieldset>
-        <legend>Opgave status</legend>
+    <label for="role">*Role:</label><br>
+    <select id="role" th:field="*{role.id}" required>
+        <option value="">-- Choose a role --</option>
+        <option th:each="r : ${roles}" th:value="${r.id}" th:text="${r.name}"></option>
+    </select><br><br>
 
-        <label for="yes">Færdig</label>
-        <input type="radio" id="yes" name="completed"
-               th:field="*{completed}" value="true"/>
-
-        <label for="no">Ikke færdig</label>
-        <input type="radio" id="no" name="completed"
-               th:field="*{completed}" value="false"/>
-    </fieldset>
-
-    <label for="deadline">Deadline:</label><br>
-    <input type="date" id="deadline" name="deadline"
-           th:field="*{deadline}"/> <br>
-
-    <label for="subproject">*Project kategori:</label><br>
-    <select name="subproject" id="subproject" th:field="*{subProject.id}" required>
-        <option value="0" selected>Vælg en kategori:</option><br>
-        <option th:each="subproject : ${subprojects}"
-                th:value="${subproject.id}"
-                th:text="${subproject.name}">
-        </option>
-    </select><br>
-
-    <fieldset>
-        <legend>Vælg brugere</legend>
-        <div th:each="user : ${users}">
-            <label>
-                <input type="checkbox" name="userIds"
-                       th:value="${user.userID}"/>
-                <span th:text="${user.name}"></span>
-            </label><br>
-        </div>
-    </fieldset>
-
-
-    <button type="submit">Opdater</button>
+    <button type="submit">Save</button>
 </form>
 
 </body>

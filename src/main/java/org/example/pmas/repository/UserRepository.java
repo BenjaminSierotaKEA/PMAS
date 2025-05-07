@@ -2,7 +2,7 @@ package org.example.pmas.repository;
 
 import org.example.pmas.model.User;
 
-import org.example.pmas.model.UserRowMapper;
+import org.example.pmas.model.rowMapper.UserRowMapper;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,7 +11,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
@@ -20,8 +19,10 @@ public class UserRepository implements IUserRepository {
     private final JdbcTemplate jdbcTemplate;
 
 
+
     public UserRepository(JdbcTemplate jdbcTemplate){
         this.jdbcTemplate=jdbcTemplate;
+
     }
 
 
@@ -39,7 +40,7 @@ public class UserRepository implements IUserRepository {
             ps.setString(1, newUser.getName());
             ps.setString(2, newUser.getEmail());
             ps.setString(3, newUser.getPassword());
-            ps.setObject(4, newUser.getRole());
+            ps.setInt(4, newUser.getRole().getId());
             return ps;
         }, keyHolder);
 
@@ -55,13 +56,23 @@ public class UserRepository implements IUserRepository {
     @Override
     @Transactional
     public List<User> readAll() throws DataAccessException {
-        String sql = "SELECT * FROM users";
+        String sql = """
+        SELECT u.*, r.id as role_id, r.name as role_name
+        FROM users u
+        JOIN roles r ON u.role = r.id
+        """;
         return jdbcTemplate.query(sql,new UserRowMapper());
     }
 
     @Override
     public User readSelected(int id) throws DataAccessException {
-        String sql = "SELECT * FROM users WHERE users.id = ?";
+        String sql = """
+        SELECT u.id, u.name, u.email, u.password, u.picture, 
+               r.id AS role_id, r.name AS role_name
+        FROM users u
+        JOIN roles r ON u.role = r.id
+        WHERE u.id = ?
+    """;
 
         return jdbcTemplate.queryForObject(sql, new UserRowMapper(), id);
     }
@@ -98,10 +109,15 @@ public class UserRepository implements IUserRepository {
     @Override
     @Transactional
     public User getByEmail(String email) throws DataAccessException {
-        String sql = "SELECT * FROM users WHERE LOWER(email) = LOWER(?)";
+        String sql = """
+        SELECT u.*, r.id AS role_id, r.name AS role_name
+        FROM users u
+        JOIN roles r ON u.role = r.id
+        WHERE LOWER(u.email) = LOWER(?)
+    """;
 
-        return jdbcTemplate.queryForObject(sql,
-                new UserRowMapper(),
-                email);
+        List<User> users = jdbcTemplate.query(sql, new UserRowMapper(), email);
+        return users.isEmpty() ? null : users.get(0);
     }
+
 }

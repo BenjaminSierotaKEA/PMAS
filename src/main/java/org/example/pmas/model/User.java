@@ -87,6 +87,9 @@ public class User {
     }
 
     public Role getRole() {
+        if (role == null) {
+            role = new Role();
+        }
         return role;
     }
 
