@@ -36,6 +36,11 @@ public class SubProject {
         this.description = description;
     }
 
+    public SubProject(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public int getId() {
         return id;
     }

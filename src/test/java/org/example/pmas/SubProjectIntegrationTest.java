@@ -1,0 +1,62 @@
+package org.example.pmas;
+
+import org.example.pmas.model.SubProject;
+import org.example.pmas.service.SubProjectService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@Sql(
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+        scripts ={"classpath:h2init.sql"}
+)
+
+@Transactional
+@Rollback
+public class SubProjectIntegrationTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Autowired
+    SubProjectService subprojectService;
+
+    @Test
+    public void createSubProjectShouldPersistToDatabase() throws Exception {
+        SubProject test = new SubProject("IntegrationTest","IntegrationTest");
+        mvc.perform(post("/projects/save")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("name",test.getName())
+                        .param("description",test.getDescription())
+                        .param("projectID", String.valueOf(1)))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/projects/1/subprojects"));
+
+        List<SubProject> projects = subprojectService.readAll();
+
+        boolean matchFound = false;
+        for(SubProject p : projects) {
+            if(p.getName().equals(test.getName()) && p.getDescription().equals(test.getDescription())
+            && p.getProjectID() == 1) {
+                matchFound = true;
+                break;
+            }
+        }
+        assertTrue(matchFound);
+    }
+}
