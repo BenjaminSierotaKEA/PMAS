@@ -41,14 +41,14 @@ class TaskServiceTest {
     @Test
     void readAll_with_values() {
         // Arrange
-        when(taskRepository.readAll()).thenReturn(tasks);
+        var task = when(taskRepository.readAll()).thenReturn(tasks);
 
         // Act
-        var result = taskService.readAll();
+        var actual = taskService.readAll();
 
         // Assert
-        assertNotNull(result);
-        assertEquals(tasks, result);
+        assertNotNull(actual);
+        assertEquals(tasks, actual);
         verify(taskRepository, times(1)).readAll();
     }
 

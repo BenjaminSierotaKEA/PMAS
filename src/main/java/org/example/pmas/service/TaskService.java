@@ -11,10 +11,7 @@ import org.example.pmas.service.comparators.TaskDeadlineComparator;
 import org.example.pmas.service.comparators.TaskPriorityComparator;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TaskService {
@@ -41,7 +38,10 @@ public class TaskService {
         List<Task> allTask = taskRepository.readAll();
         if (allTask == null) return Collections.emptyList();
 
-        allTask.sort(new TaskDeadlineComparator()
+        // Sorts the list by deadline and priority.
+        // Now the list isn't immutable, so we can modify it.
+        List<Task> modifiableList = new ArrayList<>(allTask);
+        modifiableList.sort(new TaskDeadlineComparator()
                 // priority wil be sorted high -> low because of reverse
                 .thenComparing(new TaskPriorityComparator().reversed()));
         return allTask;
