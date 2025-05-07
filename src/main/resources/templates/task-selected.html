@@ -53,7 +53,7 @@
 
     <label for="priorityLevel">Prioritet:</label><br>
     <select name="priority" id="priorityLevel"
-            th:field="*{priority}">
+            th:field="*{priorityLevel}">
         <option value="">Vælg venligst</option>
         <option th:each="priority : ${priorities}"
                 th:value="${priority}"
