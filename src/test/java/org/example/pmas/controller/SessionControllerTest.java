@@ -25,7 +25,7 @@ class SessionControllerTest {
 
     @Test
     void getLogInPage() throws Exception {
-        mockMvc.perform(get("/session/user-login"))
+        mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user-login"));
     }
