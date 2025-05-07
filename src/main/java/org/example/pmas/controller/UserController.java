@@ -103,8 +103,8 @@ public class UserController {
             return "user-form";
         }
 
-        if (oldUser.getRole() == null) {
-            oldUser.setRole(new Role());
+        if ( userService.getUser(id).getRole() == null) {
+            userService.getUser(id).setRole(new Role());
         }
 
         return "redirect:/user-overview";

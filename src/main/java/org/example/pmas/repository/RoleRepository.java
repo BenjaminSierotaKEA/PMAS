@@ -41,7 +41,7 @@ public class RoleRepository implements IRoleRepository {
     }
 
     @Override
-    public boolean update(Object oldObject, Object newObject) {
+    public boolean update(Role newObject) {
         return false;
     }
 
