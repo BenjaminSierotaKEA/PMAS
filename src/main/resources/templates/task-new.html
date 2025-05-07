@@ -9,65 +9,72 @@
 
 <p th:if="${error}" th:text="${error}"></p>
 <form th:action="@{/tasks/create}" th:method="post" th:object="${task}">
-    <label for="name">*Navn:</label><br>
+    <label for="name">Navn:*</label><br>
     <input type="text" id="name" name="name" required placeholder="Navn"
-           th:field="*{name}"/> <br>
+           th:field="*{name}"/>
+    <div th:if="${error}" th:text="${error}"></div><br>
 
-    <label for="description">*Beskrivelse:</label><br>
-    <textarea id="description" name="description" required placeholder="Beskrivelse"
-              rows="4" cols="50"
-              th:field="*{description}"></textarea> <br>
+        <label for="description">Beskrivelse:*</label><br>
+        <textarea id="description" name="description" required placeholder="Beskrivelse"
+                  rows="4" cols="50"
+                  th:field="*{description}"></textarea>
+        <div th:if="${error}" th:text="${error}"></div>
+        <br>
 
-    <!-- step allow you to add decimal numbers -->
-    <label for="timeBudget">*Tidsallokering:</label><br>
-    <input type="number" id="timeBudget" name="timeBudget" value=""
-           required step="0.1"
-           th:field="*{timeBudget}"/> <br>
+        <!-- step allow you to add decimal numbers -->
+        <label for="timeBudget">Tidsallokering:*</label><br>
+        <input type="number" id="timeBudget" name="timeBudget"
+               required step="0.1"
+               th:field="*{timeBudget}"/>
+        <div th:if="${error}" th:text="${error}"></div>
+        <br>
 
-    <!-- step allow you to add decimal numbers -->
-    <label for="timeTaken">Faktiske tid:</label><br>
-    <input type="number" id="timeTaken" name="timeTaken" value=""
-           step="0.1" required
-           th:field="*{timeTaken}"/> <br>
+        <!-- step allow you to add decimal numbers -->
+        <label for="timeTaken">Faktiske tid:</label><br>
+        <input type="number" id="timeTaken" name="timeTaken" value=""
+               step="0.1"
+               th:field="*{timeTaken}"/> <br>
 
-    <fieldset>
-        <legend>Opgave status</legend>
+        <fieldset>
+            <legend>Opgave status</legend>
 
-        <label for="yes">Færdig</label>
-        <input type="radio" id="yes" name="completed"
-               th:field="*{completed}" value="true"/>
+            <label for="yes">Færdig</label>
+            <input type="radio" id="yes" name="completed"
+                   th:field="*{completed}" value="true"/>
 
-        <label for="no">Ikke færdig</label>
-        <input type="radio" id="no" name="completed"
-               th:field="*{completed}" value="false"/>
-    </fieldset>
+            <label for="no">Ikke færdig</label>
+            <input type="radio" id="no" name="completed"
+                   th:field="*{completed}" value="false"/>
+        </fieldset>
 
-    <label for="deadline">Deadline:</label><br>
-    <input type="date" id="deadline" name="deadline"
-           th:field="*{deadline}"/> <br>
+        <label for="deadline">Deadline:</label><br>
+        <input type="date" id="deadline" name="deadline"
+               th:field="*{deadline}"/> <br>
 
-    <label for="subproject">*Project kategori:</label><br>
-    <select name="subproject" id="subproject" th:field="*{subProject.id}" required>
-        <option value="0" selected>Vælg en kategori:</option><br>
-        <option th:each="subproject : ${subprojects}"
-                th:value="${subproject.id}"
-                th:text="${subproject.name}">
-        </option>
-    </select><br>
+        <label for="subproject">Project kategori:*</label><br>
+        <select name="subproject" id="subproject" th:field="*{subProject.id}" required>
+            <option value="0" selected>Vælg en kategori:</option>
+            <option th:each="subproject : ${subprojects}"
+                    th:value="${subproject.id}"
+                    th:text="${subproject.name}">
+            </option>
+        </select>
+        <div th:if="${error}" th:text="${error}"></div>
+        <br>
 
-    <fieldset>
-        <legend>Vælg brugere</legend>
-        <div th:each="user : ${users}">
-            <label>
-                <input type="checkbox" name="userIds"
-                       th:value="${user.userID}"/>
-                <span th:text="${user.name}"></span>
-            </label><br>
-        </div>
-    </fieldset>
+        <fieldset>
+            <legend>Vælg brugere</legend>
+            <div th:each="user : ${users}">
+                <label>
+                    <input type="checkbox" name="userIds"
+                           th:value="${user.userID}"/>
+                    <span th:text="${user.name}"></span>
+                </label><br>
+            </div>
+        </fieldset>
 
 
-    <button type="submit">Send</button>
+        <button type="submit">Send</button>
 </form>
 
 </body>

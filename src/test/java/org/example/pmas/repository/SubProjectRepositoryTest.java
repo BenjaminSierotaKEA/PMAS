@@ -1,7 +1,6 @@
-package org.example.pmas.Repository;
+package org.example.pmas.repository;
 
 import org.example.pmas.model.SubProject;
-import org.example.pmas.repository.SubProjectRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,9 +1,6 @@
 package org.example.pmas.controller;
 
-
-import jakarta.servlet.http.HttpSession;
 import org.example.pmas.model.User;
-import org.example.pmas.service.UserService;
 import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
