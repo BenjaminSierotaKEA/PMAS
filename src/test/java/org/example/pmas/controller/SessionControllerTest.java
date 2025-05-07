@@ -39,7 +39,7 @@ class SessionControllerTest {
         when(sessionHandler.logIn("Rebecca@example.com", "password123")).thenReturn(true);
         when(sessionHandler.getCurrentUser()).thenReturn(mockUser);
 
-        mockMvc.perform(post("/session/login")
+        mockMvc.perform(post("/login")
                         .param("email", "Rebecca@example.com")
                         .param("password", "password123"))
                 .andExpect(status().is3xxRedirection())
