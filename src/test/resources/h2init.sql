@@ -31,6 +31,7 @@ CREATE TABLE TASKS
     id           INT AUTO_INCREMENT,
     name         VARCHAR(200) UNIQUE NOT NULL,
     description  VARCHAR(200),
+    priorityLevel     VARCHAR(30),
     timeBudget   INT                 NOT NULL,
     completed    BOOL,
     timeTaken    INT,

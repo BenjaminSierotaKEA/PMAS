@@ -4,6 +4,7 @@ import org.example.pmas.model.Role;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
+import org.example.pmas.model.enums.PriorityLevel;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -14,7 +15,10 @@ import java.util.Set;
 public class MockDataModel {
 
     public static Task taskWithValue(){
-        return new Task(1,"Create Mockups","Create mockup screens for new website design.",
+        return new Task(1,
+                "Create Mockups",
+                "Create mockup screens for new website design.",
+                PriorityLevel.LOW,
                 40.0,0.0,
                 false,
                 LocalDate.now(),
@@ -26,6 +30,7 @@ public class MockDataModel {
         return List.of(new Task(1,
                         "Amalie",
                         "Lav noget",
+                        PriorityLevel.HIGH,
                         5.5,
                         4.0,
                         true,
@@ -35,6 +40,7 @@ public class MockDataModel {
                 new Task(2,
                         "Niklas",
                         "Mere noget",
+                        PriorityLevel.MEDIUM,
                         5.5,
                         0.0,
                         false,

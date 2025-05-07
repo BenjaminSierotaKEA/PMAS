@@ -1,12 +1,14 @@
 package org.example.pmas.model;
 
+import org.example.pmas.model.enums.PriorityLevel;
+
 import java.time.LocalDate;
 import java.util.Set;
 
 public class Task {
     private int id;
-    private String name;
-    private String description;
+    private String name, description;
+    private PriorityLevel priority;
     private Double timeBudget;
     private double timeTaken;
     private boolean completed;
@@ -17,12 +19,13 @@ public class Task {
     public Task() {
     }
 
-    public Task(int id, String name, String description, double timeBudget,
+    public Task(int id, String name, String description, PriorityLevel priority, double timeBudget,
                 double timeTaken, boolean completed, LocalDate deadline, SubProject subProject,
                 Set<User> users) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.priority = priority;
         this.timeBudget = timeBudget;
         this.timeTaken = timeTaken;
         this.completed = completed;
@@ -31,11 +34,12 @@ public class Task {
         this.users = users;
     }
 
-    public Task(String name, String description, double timeBudget,
+    public Task(String name, String description, PriorityLevel priority, double timeBudget,
                 double timeTaken, boolean completed, LocalDate deadline, SubProject subProject,
                 Set<User> users) {
         this.name = name;
         this.description = description;
+        this.priority = priority;
         this.timeBudget = timeBudget;
         this.timeTaken = timeTaken;
         this.completed = completed;
@@ -128,5 +132,13 @@ public class Task {
 
     public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
+    }
+
+    public PriorityLevel getPriority() {
+        return priority;
+    }
+
+    public void setPriority(PriorityLevel priorityLevel) {
+        this.priority = priorityLevel;
     }
 }

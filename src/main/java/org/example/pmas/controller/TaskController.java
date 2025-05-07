@@ -1,6 +1,7 @@
 package org.example.pmas.controller;
 
 import org.example.pmas.model.Task;
+import org.example.pmas.model.enums.PriorityLevel;
 import org.example.pmas.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,18 +31,16 @@ public class TaskController {
     public String readSelected(@PathVariable int id, Model model) {
         if (id < 0) throw new IllegalArgumentException("Noget galt med id");
 
-        model.addAttribute("subprojects", taskService.getAllSubproject());
-        model.addAttribute("users", taskService.getAllUsers());
         model.addAttribute("task", taskService.readSelected(id));
+        getSubProjectUsersPriority(model);
+
         return "task-selected";
     }
 
     @GetMapping("new")
     public String getCreateTaskPage(Model model) {
         model.addAttribute("task", new Task());
-        model.addAttribute("subprojects", taskService.getAllSubproject());
-        model.addAttribute("users", taskService.getAllUsers());
-
+        getSubProjectUsersPriority(model);
         return "task-new";
     }
 
@@ -51,11 +50,9 @@ public class TaskController {
                              Model model) {
         if (task == null) throw new IllegalArgumentException("Noget galt med task.");
         if (task.getSubProject().getId() <= 0) {
+            getSubProjectUsersPriority(model);
             model.addAttribute("task", task);
-            model.addAttribute("subprojects", taskService.getAllSubproject());
-            model.addAttribute("users", taskService.getAllUsers());
-            model.addAttribute("error", "Obligatorisk felt her.");
-            return "task-new";
+            return "redirect:/tasks/new";
         }
 
         taskService.create(task, userIDs);
@@ -77,14 +74,19 @@ public class TaskController {
                              Model model) {
         if (task == null) throw new IllegalArgumentException("Noget galt med task.");
         if (task.getSubProject().getId() <= 0) {
+            getSubProjectUsersPriority(model);
             model.addAttribute("task", task);
-            model.addAttribute("subprojects", taskService.getAllSubproject());
-            model.addAttribute("users", taskService.getAllUsers());
             model.addAttribute("error", "Obligatorisk felt her.");
             return "redirect:/tasks/" + task.getId() + "/task";
         }
 
         taskService.update(task, userIDs);
         return "redirect:/tasks";
+    }
+
+    private void getSubProjectUsersPriority(Model model){
+        model.addAttribute("subprojects", taskService.getAllSubproject());
+        model.addAttribute("users", taskService.getAllUsers());
+        model.addAttribute("priorities", PriorityLevel.values());
     }
 }

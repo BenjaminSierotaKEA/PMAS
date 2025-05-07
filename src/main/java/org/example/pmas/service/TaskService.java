@@ -1,6 +1,5 @@
 package org.example.pmas.service;
 
-import org.example.pmas.exception.JunctionTableException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
@@ -8,6 +7,7 @@ import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
+import org.example.pmas.service.comparators.TaskDeadlineComparator;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -37,7 +37,11 @@ public class TaskService {
     }
 
     public List<Task> readAll() {
-        return taskRepository.readAll();
+        List<Task> allTask = taskRepository.readAll();
+        if (allTask == null) return Collections.emptyList();
+
+        allTask.sort(new TaskDeadlineComparator());
+        return allTask;
     }
 
     public Task readSelected(int id) {
@@ -73,7 +77,7 @@ public class TaskService {
             addUserToTask(task.getId(), userIDs);
     }
 
-    void addUserToTask(int taskId, List<Integer> newUserIds) {
+    private void addUserToTask(int taskId, List<Integer> newUserIds) {
         // Fetch users for comparison
         List<Integer> currentUserIds = taskRepository.getCurrentUserIdsFromUserTasks(taskId);
 
