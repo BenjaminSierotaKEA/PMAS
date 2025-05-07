@@ -1,6 +1,5 @@
 package org.example.pmas.service;
 
-import org.example.pmas.exception.JunctionTableException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;

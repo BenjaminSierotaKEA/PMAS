@@ -15,39 +15,59 @@ import java.util.Set;
 public class MockDataModel {
 
     public static Task taskWithValue(){
-        return new Task(1,
+        return new Task(
+                1,
                 "Create Mockups",
                 "Create mockup screens for new website design.",
                 PriorityLevel.LOW,
-                40.0,0.0,
+                40.0,
+                0.0,
                 false,
-                LocalDate.now(),
+                LocalDate.of(2023, 11, 17),
                 new SubProject(1, "UI Overhaul"),
-                Set.of(new User(1, "Rebecca Black")));
+                Set.of(new User(1, "Rebecca Black"))
+        );
     }
 
     public static List<Task> tasksWithValues() {
-        return List.of(new Task(1,
-                        "Amalie",
-                        "Lav noget",
-                        PriorityLevel.HIGH,
-                        5.5,
-                        4.0,
-                        true,
-                        LocalDate.now(),
-                        new SubProject(),
-                        new HashSet<>()),
-                new Task(2,
-                        "Niklas",
-                        "Mere noget",
-                        PriorityLevel.MEDIUM,
-                        5.5,
+        return List.of(
+                new Task(
+                        1,
+                        "Create Mockups",
+                        "Create mockup screens for new website design.",
+                        PriorityLevel.LOW,
+                        40.0,
                         0.0,
                         false,
-                        LocalDate.now(),
-                        new SubProject(),
-                        new HashSet<>()
-                ));
+                        LocalDate.of(2023, 11, 17),
+                        new SubProject(1, "UI Overhaul"),
+                        Set.of(new User(1, "Rebecca Black"))
+                ),
+                new Task(
+                        2,
+                        "Implement Login API",
+                        "Develop authentication endpoints.",
+                        PriorityLevel.MEDIUM,
+                        60.0,
+                        0.0,
+                        false,
+                        LocalDate.of(2021, 4, 5),
+                        new SubProject(2, "Backend API"),
+                        Set.of(new User(2, "John Smith"))
+                ),
+                new Task(
+                        3,
+                        "Build Profile Screen",
+                        "Create profile page design for app.",
+                        PriorityLevel.HIGH,
+                        50.0,
+                        0.0,
+                        false,
+                        LocalDate.of(2024, 8, 29),
+                        new SubProject(3, "App UI Design"),
+                        Set.of(new User(3, "CharlieXcX"))
+                )
+        );
     }
 
     public static User userWithValues(){

@@ -94,8 +94,8 @@ class TaskRepositoryTest {
                 LocalDate.of(2021, 1, 1),
                 new SubProject(1, "UI Overhaul"),
                 Set.of(
-                        new User(1, "Rebecca Black"),
-                        new User(2, "John Smith")));
+                        MockDataModel.userWithValues(),
+                        MockDataModel.userWithValues()));
 
         // Act
         var actual = taskRepository.create(task);
