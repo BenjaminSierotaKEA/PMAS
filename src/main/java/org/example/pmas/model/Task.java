@@ -134,11 +134,11 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public PriorityLevel getPriority() {
+    public PriorityLevel getPriorityLevel() {
         return priorityLevel;
     }
 
-    public void setPriority(PriorityLevel priorityLevel) {
+    public void setPriorityLevel(PriorityLevel priorityLevel) {
         this.priorityLevel = priorityLevel;
     }
 }
