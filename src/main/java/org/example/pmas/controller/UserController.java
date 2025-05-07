@@ -75,6 +75,7 @@ public class UserController {
 
         userService.delete(id);
         return "redirect:/user-overview";
+
     }
 
     @GetMapping("/{id}/update")
