@@ -1,8 +1,11 @@
 package org.example.pmas.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
+import org.example.pmas.model.User;
 import org.example.pmas.service.ProjectService;
+import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +47,33 @@ public class ProjectController {
         model.addAttribute("projects", projects);
 
         return "show-all-projects";
+    }
+
+    @GetMapping("/my-projects")
+    public String myProjects(Model model, HttpSession session){
+
+        var foundObject = session.getAttribute("user");
+        User user = null;
+        boolean loggedIn = false;
+        if(foundObject instanceof User){
+            user = (User) foundObject;
+            loggedIn = true;
+        }
+        List<Project> projects = null;
+        if(!(user==null)){
+          projects =  projectService.readProjectsOfUser(user.getUserID());
+        }
+        if(loggedIn){
+            model.addAttribute("username", user.getName());
+        }else{
+            model.addAttribute("username", "logged out");
+        }
+
+        model.addAttribute("projects", projects);
+        model.addAttribute("loggedIn", loggedIn);
+
+        return "my-projects";
+
     }
 
     @GetMapping("/{id}/update-form")

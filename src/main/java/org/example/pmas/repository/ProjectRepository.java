@@ -43,6 +43,19 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
+    public List<Project> readProjectsOfUser(int userID){
+        String sql ="SELECT p.*\n" +
+                "FROM projects p\n" +
+                "JOIN userprojects up ON p.id = up.projectid\n" +
+                "WHERE up.userid = ?;";
+        try{
+            return jdbcTemplate.query(sql, new ProjectRowMapper(), userID);
+        }catch(DataAccessException e){
+            throw new RuntimeException("Couldnt read projects for user id " + userID);
+        }
+    }
+
+    @Override
     public Project readSelected(int id) {
         String sql = "SELECT * FROM projects WHERE projects.id=?";
         try{
