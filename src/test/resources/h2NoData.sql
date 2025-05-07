@@ -28,15 +28,15 @@ CREATE TABLE SUBPROJECTS
 DROP TABLE IF EXISTS TASKS CASCADE;
 CREATE TABLE TASKS
 (
-    id           INT AUTO_INCREMENT,
-    name         VARCHAR(200) UNIQUE NOT NULL,
-    description  VARCHAR(200),
-    priorityLevel     VARCHAR(30),
-    timeBudget   INT                 NOT NULL,
-    completed    BOOL,
-    timeTaken    INT,
-    deadline     DATE,
-    subProjectID INT                 NOT NULL,
+    id            INT AUTO_INCREMENT,
+    name          VARCHAR(200) NOT NULL,
+    description   VARCHAR(200),
+    priorityLevel VARCHAR(30),
+    timeBudget    INT          NOT NULL,
+    completed     BOOL,
+    timeTaken     INT,
+    deadline      DATE,
+    subProjectID  INT          NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (subProjectID) REFERENCES subprojects (id) ON DELETE CASCADE
 );

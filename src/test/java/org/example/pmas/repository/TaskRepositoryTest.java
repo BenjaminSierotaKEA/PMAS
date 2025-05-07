@@ -88,14 +88,15 @@ class TaskRepositoryTest {
         // Arrange
         var task = new Task("test","test",
                 PriorityLevel.LOW,
-                Double.valueOf(40),
+                40.0,
                 0.0,
                 false,
                 LocalDate.of(2021, 1, 1),
                 new SubProject(1, "UI Overhaul"),
                 Set.of(
-                        MockDataModel.userWithValues(),
-                        MockDataModel.userWithValues()));
+                        new User(1, "Rebecca Black"),
+                        new User(2, "John Smith"))
+        );
 
         // Act
         var actual = taskRepository.create(task);

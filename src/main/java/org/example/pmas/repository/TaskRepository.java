@@ -30,7 +30,7 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public Task create(Task task) {
         String sql = "INSERT INTO tasks " +
-                "(name, description, priority, timeBudget, timeTaken, completed, deadline, subprojectID) " +
+                "(name, description, priorityLevel, timeBudget, timeTaken, completed, deadline, subprojectID) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Object for id
@@ -131,7 +131,7 @@ public class TaskRepository implements ITaskRepository {
         String sql = "UPDATE tasks SET " +
                 "name = ?, " +
                 "description = ?, " +
-                "priority = ?, " +
+                "priorityLevel = ?, " +
                 "timeBudget = ?, " +
                 "timeTaken = ?, " +
                 "completed = ?, " +
@@ -143,7 +143,7 @@ public class TaskRepository implements ITaskRepository {
             return jdbcTemplate.update(sql,
                     newObject.getName(),
                     newObject.getDescription(),
-                    newObject.getPriority(),
+                    newObject.getPriority().name(),
                     newObject.getTimeBudget(),
                     newObject.getTimeTaken(),
                     newObject.isCompleted(),
@@ -217,7 +217,7 @@ public class TaskRepository implements ITaskRepository {
             return jdbcTemplate.query(sql,
                     new TaskRowMapper(),
                     subprojectId);
-        }catch (DataAccessException e){
+        } catch (DataAccessException e) {
             throw new DatabaseException("Fejl: kunne ikke hente opgaver til subprojektet.", e);
         }
     }

@@ -18,8 +18,8 @@ public class TaskRowMapper implements RowMapper<Task> {
         Task task = new Task();
         task.setId(rs.getInt("id"));
         task.setName(rs.getString("name"));
-        if (rs.getString("priority") != null && !rs.wasNull())
-            task.setPriority(PriorityLevel.valueOf(rs.getString("priority")));
+        if (rs.getString("priorityLevel") != null && !rs.wasNull())
+            task.setPriority(PriorityLevel.valueOf(rs.getString("priorityLevel")));
         task.setDescription(rs.getString("description"));
         task.setTimeBudget(rs.getDouble("timeBudget"));
         task.setTimeTaken(rs.getDouble("timeTaken"));
