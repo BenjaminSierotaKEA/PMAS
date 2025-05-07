@@ -4,21 +4,21 @@ import org.example.pmas.model.Task;
 
 import java.util.Comparator;
 
-public class TaskDeadlineComparator implements Comparator<Task> {
+public class TaskPriorityComparator implements Comparator<Task> {
     @Override
     public int compare(Task o1, Task o2) {
         // if both don't have a value
-        if (o1.getDeadline() == null && o2.getDeadline() == null) {
+        if (o1.getPriority() == null && o2.getPriority() == null) {
             return 0;
             // o1 doesn't have a value
-        } else if (o1.getDeadline() == null) {
+        } else if (o1.getPriority() == null) {
             return 1;
             // o2 doesn't have a value
-        } else if (o2.getDeadline() == null) {
+        } else if (o2.getPriority() == null) {
             return -1;
-            // Sorts dates from high -> low
+            // Sorts priority by a -> z
         } else {
-            return o1.getDeadline().compareTo(o2.getDeadline());
+            return o1.getPriority().compareTo(o2.getPriority());
         }
     }
 }

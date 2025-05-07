@@ -8,6 +8,7 @@ import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.example.pmas.service.comparators.TaskDeadlineComparator;
+import org.example.pmas.service.comparators.TaskPriorityComparator;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -40,7 +41,9 @@ public class TaskService {
         List<Task> allTask = taskRepository.readAll();
         if (allTask == null) return Collections.emptyList();
 
-        allTask.sort(new TaskDeadlineComparator());
+        allTask.sort(new TaskDeadlineComparator()
+                // priority wil be sorted high -> low because of reverse
+                .thenComparing(new TaskPriorityComparator().reversed()));
         return allTask;
     }
 

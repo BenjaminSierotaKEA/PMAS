@@ -3,7 +3,7 @@ package org.example.pmas.model.enums;
 public enum PriorityLevel {
     LOW("Lav"),
     MEDIUM("Middel"),
-    HIGH("høj");
+    HIGH("Høj");
 
     private final String displayName;
 
