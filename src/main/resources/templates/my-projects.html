@@ -2,18 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>All Projects</title>
+    <title th:unless="${loggedIn}">Please Log In</title>
+    <title th:if="${loggedIn}" >Your Projects</title>
 </head>
 <body>
-<!--This is the ugly test version of the page,
-make this according to the styled mockup later-->
-<h1 th:unless="${allowAccess}">You are not a project manager. Access Denied!</h1>
-<div th:if="${allowAccess}">
-    <form  th:action="@{/projects/create-project-form}" method="get">
-        <button type="submit">Create Project</button>
-    </form>
-</div>
-    <table th:if="${allowAccess}">
+    <h1 th:if="${loggedIn}" th:text="'Hello, ' + ${username} + ', here are the projects you are part of:'"></h1>
+    <h1 th:unless="${loggedIn}">Please log in to see your projects</h1>
+    <table th:if="${loggedIn}">
         <tr th:each="project :${projects}" >
             <th th:text="${project.name}"></th>
             <th th:text="${project.description}"></th>
@@ -32,8 +27,6 @@ make this according to the styled mockup later-->
         </tr>
 
     </table>
-
-
 
 </body>
 </html>
