@@ -40,6 +40,10 @@ public class SubProject {
         this.description = description;
     }
 
+    public SubProject(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

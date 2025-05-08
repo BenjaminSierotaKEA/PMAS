@@ -7,7 +7,8 @@
 </head>
 <body>
 <h1>Du er i task</h1>
-<a th:href="@{/tasks/new}">Opret ny opgave</a>
+<input type="text" id="subprojectId" name="subprojectId" th:value="${subprojectId}" hidden>
+<a th:href="@{/tasks/subProjectId={id}/new(id=${subprojectId})}">Opret ny opgave</a>
 <table>
     <tr>
         <th>Opgave</th>
@@ -17,7 +18,6 @@
         <th>Brugt tid</th>
         <th>Deadline</th>
         <th>Tildelt</th>
-        <th>Kategori</th>
         <th>Prioritet</th>
         <th>Opdater</th>
         <th>Slet</th>
@@ -36,7 +36,6 @@
             <span th:if="${!iterStat.last}">, </span>
         </span>
         </td>
-        <td th:text="${task.getSubProject().getName()}"></td>
         <td th:text="${task.priorityLevel != null ? task.priorityLevel.displayName : ''}"></td>
         <td><a th:href="@{/tasks/{id}/task(id=${task.id})}">Opdater</a></td>
         <td>

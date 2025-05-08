@@ -47,15 +47,8 @@
     <input type="date" id="deadline" name="deadline"
            th:field="*{deadline}"/> <br>
 
-    <label for="subproject">Project kategori:*</label><br>
-    <select name="subproject" id="subproject" th:field="*{subProject.id}" required>
-        <option value="0" selected>Vælg venligst</option>
-        <option th:each="subproject : ${subprojects}"
-                th:value="${subproject.id}"
-                th:text="${subproject.name}">
-        </option>
-    </select>
-    <br>
+    <input type="text" hidden name="subProjectId"
+           th:value="${subProjectId}"/>
 
     <label for="priorityLevel">Prioritet:</label><br>
     <select name="priority" id="priorityLevel"
