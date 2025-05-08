@@ -4,6 +4,7 @@ import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
+import org.example.pmas.model.enums.PriorityLevel;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
@@ -86,14 +87,16 @@ class TaskRepositoryTest {
     void create_with_value(){
         // Arrange
         var task = new Task("test","test",
-                Double.valueOf(40),
+                PriorityLevel.LOW,
+                40.0,
                 0.0,
                 false,
                 LocalDate.of(2021, 1, 1),
                 new SubProject(1, "UI Overhaul"),
                 Set.of(
                         new User(1, "Rebecca Black"),
-                        new User(2, "John Smith")));
+                        new User(2, "John Smith"))
+        );
 
         // Act
         var actual = taskRepository.create(task);

@@ -1,7 +1,9 @@
 package org.example.pmas.service;
 
 import org.example.pmas.exception.NotFoundException;
+import org.example.pmas.model.Role;
 import org.example.pmas.model.User;
+import org.example.pmas.repository.Interfaces.IRoleRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import java.util.List;
 public class UserService {
 
     private final IUserRepository userRepository;
+    private final IRoleRepository roleRepository;
 
 
-    public UserService(IUserRepository userRepository) {
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     public User createUser(User newUser){
@@ -99,4 +103,10 @@ public class UserService {
     public User checkEmail(String email) {
         return userRepository.getByEmail(email);
     }
+
+    public List<Role> getAllRoles(){
+        return roleRepository.readAll();
+
+    }
+
 }

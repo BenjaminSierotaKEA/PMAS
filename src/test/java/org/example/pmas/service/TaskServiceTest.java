@@ -1,6 +1,5 @@
 package org.example.pmas.service;
 
-import org.example.pmas.exception.JunctionTableException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
@@ -42,14 +41,14 @@ class TaskServiceTest {
     @Test
     void readAll_with_values() {
         // Arrange
-        when(taskRepository.readAll()).thenReturn(tasks);
+        var task = when(taskRepository.readAll()).thenReturn(tasks);
 
         // Act
-        var result = taskService.readAll();
+        var actual = taskService.readAll();
 
         // Assert
-        assertNotNull(result);
-        assertEquals(tasks, result);
+        assertNotNull(actual);
+        assertEquals(tasks, actual);
         verify(taskRepository, times(1)).readAll();
     }
 
@@ -57,12 +56,13 @@ class TaskServiceTest {
     void readAll_without_values() {
         // Arrange
         when(taskRepository.readAll()).thenReturn(null);
+        List<Task> actual = new ArrayList<>();
 
         // Act
-        var result = taskService.readAll();
+        var expected = taskService.readAll();
 
         // Assert
-        assertNull(result);
+        assertEquals(actual,expected);
         verify(taskRepository, times(1)).readAll();
     }
 

@@ -1,5 +1,5 @@
 USE
-PMASDatabase;
+    PMASDatabase;
 
 -- Insert Roles
 INSERT INTO roles (name)
@@ -25,10 +25,10 @@ VALUES ('UI Overhaul', 'Update the UI/UX of the website.', 200, false, NULL, 1),
        ('App UI Design', 'Create new design layouts for the app.', 250, false, NULL, 2);
 
 -- Insert Tasks
-INSERT INTO tasks (name, description, timeBudget, completed, timeTaken, deadline, subProjectID)
-VALUES ('Create Mockups', 'Create mockup screens for new website design.', 40, false, NULL, '2023-11-17', 1),
-       ('Implement Login API', 'Develop authentication endpoints.', 60, false, NULL, '2021-04-05', 2),
-       ('Build Profile Screen', 'Create profile page design for app.', 50, false, NULL, '2024-08-29', 3);
+INSERT INTO tasks (name, description, priorityLevel, timeBudget, completed, timeTaken, deadline, subProjectID)
+VALUES ('Create Mockups', 'Create mockup screens for new website design.', 'LOW', 40, false, NULL, '2023-11-17', 1),
+       ('Implement Login API', 'Develop authentication endpoints.', 'MEDIUM', 60, false, NULL, '2021-04-05', 2),
+       ('Build Profile Screen', 'Create profile page design for app.', 'HIGH', 50, false, NULL, '2024-08-29', 3);
 
 -- Populate userprojects
 INSERT INTO userprojects (projectid, userid)
