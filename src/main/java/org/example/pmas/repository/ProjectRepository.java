@@ -1,5 +1,6 @@
 package org.example.pmas.repository;
 
+import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.rowMapper.ProjectRowMapper;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
@@ -26,7 +27,7 @@ public class ProjectRepository implements IProjectRepository {
         try{
             jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getTimeBudget(), project.getDeadline());
         }catch(DataAccessException e){
-            throw new RuntimeException("Couldnt add " + project.getName(), e);
+            throw new DatabaseException("Couldnt add " + project.getName(), e);
         }
         return null;
     }
@@ -37,7 +38,7 @@ public class ProjectRepository implements IProjectRepository {
         try{
             return jdbcTemplate.query(sql, new ProjectRowMapper());
         }catch (DataAccessException e){
-            throw new RuntimeException("Couldnt read all projects", e);
+            throw new DatabaseException("Couldnt read all projects", e);
         }
 
     }
@@ -51,7 +52,7 @@ public class ProjectRepository implements IProjectRepository {
         try{
             return jdbcTemplate.query(sql, new ProjectRowMapper(), userID);
         }catch(DataAccessException e){
-            throw new RuntimeException("Couldnt read projects for user id " + userID);
+            throw new DatabaseException("Couldnt read projects for user id " + userID);
         }
     }
 
@@ -62,7 +63,7 @@ public class ProjectRepository implements IProjectRepository {
             //query returns a list, we get the zeroth item on it to return as a single project
             return jdbcTemplate.query(sql, new ProjectRowMapper(), id).get(0);
         }catch(DataAccessException e){
-            throw new RuntimeException("couldnt find project where id=" + id, e);
+            throw new DatabaseException("couldnt find project where id=" + id, e);
         }
     }
 
@@ -73,7 +74,7 @@ public class ProjectRepository implements IProjectRepository {
             jdbcTemplate.update(sql, id);
             return true;
         }catch(DataAccessException e){
-            throw new RuntimeException("Could not delete project: ID=" + id, e);
+            throw new DatabaseException("Could not delete project: ID=" + id, e);
         }
 
     }
@@ -91,7 +92,7 @@ public class ProjectRepository implements IProjectRepository {
                     newProject.getDeadline(),
                     newProject.getId());
         }catch(DataAccessException e){
-            throw new RuntimeException("Could not update project: " + newProject.getName(), e);
+            throw new DatabaseException("Could not update project: " + newProject.getName(), e);
         }
 
 
