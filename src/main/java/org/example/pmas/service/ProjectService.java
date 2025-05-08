@@ -29,6 +29,10 @@ public class ProjectService {
         return projectRepository.readAll();
     }
 
+    public List<Project> readProjectsOfUser(int userID){
+        return projectRepository.readProjectsOfUser(userID);
+    }
+
     public Project readSelected(int id){
         return projectRepository.readSelected(id);
     }

@@ -1,8 +1,11 @@
 package org.example.pmas.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
+import org.example.pmas.model.User;
 import org.example.pmas.service.ProjectService;
+import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,16 +16,20 @@ import java.util.List;
 @RequestMapping("/projects")
 public class ProjectController {
     private final ProjectService projectService;
+    private final SessionHandler sessionHandler;
 
 
-    public ProjectController(ProjectService projectService){
-        this.projectService=projectService;
+    public ProjectController(ProjectService projectService, SessionHandler sessionHandler){
+        this.projectService = projectService;
+        this.sessionHandler = sessionHandler;
     }
 
     //TODO: add session stuff
     @GetMapping("/create-project-form")
     public String getCreateProjectForm(Model model){
         Project project = new Project();
+        boolean allowAccess = sessionHandler.isUserProjectManager();
+        model.addAttribute("allowAccess", allowAccess);
         model.addAttribute("project", project);
 
         return "create-project-form";
@@ -31,8 +38,10 @@ public class ProjectController {
     //TODO: add session stuff, redirect to somewhere better
     @PostMapping("/create-project")
     public String createProject(@ModelAttribute("project") Project project){
+        if(sessionHandler.isUserProjectManager()){
+            projectService.createProject(project);
+        }
 
-        projectService.createProject(project);
 
         return "redirect:see-all";
     }
@@ -40,10 +49,39 @@ public class ProjectController {
     //TODO: ADD stuff so only the cto can see this page
     @GetMapping("/see-all")
     public String seeAll(Model model){
+
+        boolean allowAccess = sessionHandler.isUserProjectManager();
         List<Project> projects = projectService.readAll();
         model.addAttribute("projects", projects);
+        model.addAttribute("allowAccess", allowAccess);
 
         return "show-all-projects";
+    }
+
+    @GetMapping("/my-projects")
+    public String myProjects(Model model, HttpSession session){
+
+
+        User user = sessionHandler.getCurrentUser();
+        boolean loggedIn = false;
+        if(user != null){
+            loggedIn = true;
+        }
+        List<Project> projects = null;
+        if(!(user==null)){
+          projects =  projectService.readProjectsOfUser(user.getUserID());
+        }
+        if(loggedIn){
+            model.addAttribute("username", user.getName());
+        }else{
+            model.addAttribute("username", "logged out");
+        }
+
+        model.addAttribute("projects", projects);
+        model.addAttribute("loggedIn", loggedIn);
+
+        return "my-projects";
+
     }
 
     @GetMapping("/{id}/update-form")
@@ -55,7 +93,9 @@ public class ProjectController {
         }else{
 
             Project project = projectService.readSelected(id);
-            model.addAttribute(project);
+            model.addAttribute("project", project);
+            boolean allowAccess = sessionHandler.isUserProjectManager();
+            model.addAttribute("allowAccess",allowAccess);
             return "update-project-form";
         }
         //Project project = projectService.
@@ -65,18 +105,18 @@ public class ProjectController {
     public String updateProject(@ModelAttribute Project project, Model model){
 
 
-        //until i figure out how to send both the old project and the new project,
-        //we just send the new project twice. all we need from the old project is
-        //the id, which should be the same as the new project no matter what.
-        projectService.updateProject(project);
-
+        if(sessionHandler.isUserProjectManager()){
+            projectService.updateProject(project);
+        }
 
         return "redirect:see-all";
     }
 
     @PostMapping("delete-project")
     public String deleteProject(@ModelAttribute Project project, Model model){
-        projectService.deleteProject(project.getId());
+        if(sessionHandler.isUserProjectManager()){
+            projectService.deleteProject(project.getId());
+        }
         return "redirect:see-all";
     }
 
@@ -88,5 +128,7 @@ public class ProjectController {
         model.addAttribute("projectId", projectId);
         return "subprojects-all";
     }
+
+
 
 }
