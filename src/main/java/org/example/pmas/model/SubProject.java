@@ -1,7 +1,6 @@
 package org.example.pmas.model;
 
 import java.util.List;
-import java.util.Objects;
 
 public class SubProject {
     private int id;
@@ -32,6 +31,11 @@ public class SubProject {
 
     public SubProject(int id, String name, String description) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+    public SubProject(String name, String description) {
         this.name = name;
         this.description = description;
     }
@@ -117,6 +121,6 @@ public class SubProject {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Integer.hashCode(id);
     }
 }

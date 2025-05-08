@@ -98,4 +98,9 @@ public class Project {
                 && this.deadline.equals(otherProject.deadline);
 
     }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
 }

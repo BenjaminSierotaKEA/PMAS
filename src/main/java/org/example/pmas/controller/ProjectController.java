@@ -89,7 +89,7 @@ public class ProjectController {
 
 
         if(!projectService.doesProjectExist(id)){
-            return "project-does-not-exist";
+            return "errorpage";
         }else{
 
             Project project = projectService.readSelected(id);

@@ -30,8 +30,8 @@ public class TaskService {
         if (createdTask == null) throw new NotFoundException(task.getId());
 
         // Adds user and task to junction table if any
-        if (userIDs != null && !userIDs.isEmpty())
-            addUserToTask(createdTask.getId(), userIDs);
+
+        addUserToTask(createdTask.getId(), userIDs);
     }
 
     public List<Task> readAll() {
@@ -76,8 +76,8 @@ public class TaskService {
         if (!succes) throw new NotFoundException("Id:" + task.getId() + " Kunne ikke opdatere task");
 
         // Adds users to the junction table if any
-        if (userIDs != null && !userIDs.isEmpty())
-            addUserToTask(task.getId(), userIDs);
+
+        addUserToTask(task.getId(), userIDs);
     }
 
     private void addUserToTask(int taskId, List<Integer> newUserIds) {
