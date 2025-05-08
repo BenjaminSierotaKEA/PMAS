@@ -66,6 +66,15 @@ public class SessionHandler {
         return user != null && user.getUserID() == ownerID;
     }
 
+    public boolean isUserProjectManager(){
+        if(isLoggedIn()){
+            if(getUserRole().getName().equals("Project Manager")){
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     //i dont know how to use the session handler so ill leave this commented out until
     //i figure it out

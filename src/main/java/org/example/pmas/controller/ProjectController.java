@@ -28,7 +28,7 @@ public class ProjectController {
     @GetMapping("/create-project-form")
     public String getCreateProjectForm(Model model){
         Project project = new Project();
-        boolean allowAccess = isUserProjectManager();
+        boolean allowAccess = sessionHandler.isUserProjectManager();
         model.addAttribute("allowAccess", allowAccess);
         model.addAttribute("project", project);
 
@@ -38,7 +38,7 @@ public class ProjectController {
     //TODO: add session stuff, redirect to somewhere better
     @PostMapping("/create-project")
     public String createProject(@ModelAttribute("project") Project project){
-        if(isUserProjectManager()){
+        if(sessionHandler.isUserProjectManager()){
             projectService.createProject(project);
         }
 
@@ -50,7 +50,7 @@ public class ProjectController {
     @GetMapping("/see-all")
     public String seeAll(Model model){
 
-        boolean allowAccess = isUserProjectManager();
+        boolean allowAccess = sessionHandler.isUserProjectManager();
         List<Project> projects = projectService.readAll();
         model.addAttribute("projects", projects);
         model.addAttribute("allowAccess", allowAccess);
@@ -94,7 +94,7 @@ public class ProjectController {
 
             Project project = projectService.readSelected(id);
             model.addAttribute("project", project);
-            boolean allowAccess = isUserProjectManager();
+            boolean allowAccess = sessionHandler.isUserProjectManager();
             model.addAttribute("allowAccess",allowAccess);
             return "update-project-form";
         }
@@ -105,7 +105,7 @@ public class ProjectController {
     public String updateProject(@ModelAttribute Project project, Model model){
 
 
-        if(isUserProjectManager()){
+        if(sessionHandler.isUserProjectManager()){
             projectService.updateProject(project);
         }
 
@@ -114,7 +114,7 @@ public class ProjectController {
 
     @PostMapping("delete-project")
     public String deleteProject(@ModelAttribute Project project, Model model){
-        if(isUserProjectManager()){
+        if(sessionHandler.isUserProjectManager()){
             projectService.deleteProject(project.getId());
         }
         return "redirect:see-all";
@@ -129,14 +129,6 @@ public class ProjectController {
         return "subprojects-all";
     }
 
-    private boolean isUserProjectManager(){
-        if(sessionHandler.isLoggedIn()){
-            if(sessionHandler.getUserRole().getName().equals("Project Manager")){
-                return true;
-            }
-        }
 
-        return false;
-    }
 
 }
