@@ -72,7 +72,6 @@ public class SessionHandler {
                 return true;
             }
         }
-
         return false;
     }
 
