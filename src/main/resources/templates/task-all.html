@@ -18,6 +18,7 @@
         <th>Deadline</th>
         <th>Tildelt</th>
         <th>Kategori</th>
+        <th>Prioritet</th>
         <th>Opdater</th>
         <th>Slet</th>
     </tr>
@@ -27,7 +28,7 @@
         <td th:text="${task.description}"></td>
         <td th:text="${task.timeBudget}"></td>
         <td th:text="${task.timeTaken}"></td>
-        <td th:text="${task.deadline}"></td>
+        <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}"></td>
         <td>
         <span th:each="user, iterStat : ${task.users}">
             <span th:text="${user.name}"></span>
@@ -36,6 +37,7 @@
         </span>
         </td>
         <td th:text="${task.getSubProject().getName()}"></td>
+        <td th:text="${task.priorityLevel != null ? task.priorityLevel.displayName : ''}"></td>
         <td><a th:href="@{/tasks/{id}/task(id=${task.id})}">Opdater</a></td>
         <td>
             <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post"

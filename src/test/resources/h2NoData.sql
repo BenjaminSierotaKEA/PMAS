@@ -28,14 +28,15 @@ CREATE TABLE SUBPROJECTS
 DROP TABLE IF EXISTS TASKS CASCADE;
 CREATE TABLE TASKS
 (
-    id           INT AUTO_INCREMENT,
-    name         VARCHAR(200) UNIQUE NOT NULL,
-    description  VARCHAR(200),
-    timeBudget   INT                 NOT NULL,
-    completed    BOOL,
-    timeTaken    INT,
-    deadline     DATE,
-    subProjectID INT                 NOT NULL,
+    id            INT AUTO_INCREMENT,
+    name          VARCHAR(200) NOT NULL,
+    description   VARCHAR(200),
+    priorityLevel VARCHAR(30),
+    timeBudget    INT          NOT NULL,
+    completed     BOOL,
+    timeTaken     INT,
+    deadline      DATE,
+    subProjectID  INT          NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (subProjectID) REFERENCES subprojects (id) ON DELETE CASCADE
 );
@@ -71,16 +72,6 @@ CREATE TABLE USERPROJECTS
     FOREIGN KEY (projectid) REFERENCES projects (id) ON DELETE CASCADE,
     FOREIGN KEY (userid) REFERENCES users (id) ON DELETE CASCADE
 );
-
--- DROP TABLE IF EXISTS SUBPROJECTTASKS CASCADE;
--- CREATE TABLE SUBPROJECTTASKS
--- (
---     subprojectid INT,
---     taskid       INT,
---     PRIMARY KEY (subprojectid, taskid),
---     FOREIGN KEY (subprojectid) REFERENCES subprojects (id) ON DELETE CASCADE,
---     FOREIGN KEY (taskid) REFERENCES tasks (id) ON DELETE CASCADE
--- );
 
 DROP TABLE IF EXISTS USERTASKS CASCADE;
 CREATE TABLE USERTASKS

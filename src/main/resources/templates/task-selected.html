@@ -11,11 +11,11 @@
     <input type="text" hidden name="id"
            th:field="*{id}"/> <br>
 
-    <label for="name">*Navn:</label><br>
+    <label for="name">Navn:</label><br>
     <input type="text" id="name" name="name"
            th:field="*{name}"/> <br>
 
-    <label for="description">*Beskrivelse:</label><br>
+    <label for="description">Beskrivelse:</label><br>
     <textarea id="description" name="description" rows="4" cols="50"
               th:field="*{description}"></textarea> <br>
 
@@ -43,13 +43,23 @@
     <input type="date" id="deadline" name="deadline"
            th:field="*{deadline}"/> <br>
 
-    <label for="subproject">*Project kategori:</label><br>
+    <label for="subproject">Project kategori:</label><br>
     <select name="subproject" id="subproject" th:field="*{subProject.id}" required>
         <option th:each="subproject : ${subprojects}"
                 th:value="${subproject.id}"
                 th:text="${subproject.name}">
         </option>
     </select><br>
+
+    <label for="priorityLevel">Prioritet:</label><br>
+    <select name="priority" id="priorityLevel"
+            th:field="*{priorityLevel}">
+        <option value="">Vælg venligst</option>
+        <option th:each="priority : ${priorities}"
+                th:value="${priority}"
+                th:text="${priority.displayName}">
+        </option>
+    </select>
 
     <fieldset>
         <legend>Vælg brugere:</legend>

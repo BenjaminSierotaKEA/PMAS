@@ -30,8 +30,8 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public Task create(Task task) {
         String sql = "INSERT INTO tasks " +
-                "(name, description, timeBudget, timeTaken, completed, deadline, subprojectID) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                "(name, description, priorityLevel, timeBudget, timeTaken, completed, deadline, subprojectID) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         // Object for id
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -41,11 +41,13 @@ public class TaskRepository implements ITaskRepository {
                 PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, task.getName());
                 ps.setString(2, task.getDescription());
-                ps.setDouble(3, task.getTimeBudget());
-                ps.setDouble(4, task.getTimeTaken());
-                ps.setBoolean(5, task.isCompleted());
-                ps.setObject(6, task.getDeadline());
-                ps.setInt(7, task.getSubProject().getId());
+                // Vi sætter priority til null ellers vil det crashe, når vi henter dem.
+                ps.setString(3, task.getPriorityLevel() != null ? task.getPriorityLevel().name() : null);
+                ps.setDouble(4, task.getTimeBudget());
+                ps.setDouble(5, task.getTimeTaken());
+                ps.setBoolean(6, task.isCompleted());
+                ps.setObject(7, task.getDeadline());
+                ps.setInt(8, task.getSubProject().getId());
                 return ps;
             }, keyHolder);
         } catch (DataAccessException e) {
@@ -87,7 +89,7 @@ public class TaskRepository implements ITaskRepository {
     @Transactional
     @Override
     public Task readSelected(int id) {
-        String sql = " SELECT " +
+        String sql = "SELECT " +
                 "t.*, " +
                 "sp.id as subproject_id, " +
                 "sp.name as subproject_name, " +
@@ -97,7 +99,8 @@ public class TaskRepository implements ITaskRepository {
                 "LEFT JOIN usertasks ut ON t.id = ut.taskid " +
                 "LEFT JOIN users u ON ut.userid = u.id " +
                 "LEFT JOIN subprojects sp ON sp.id = t.id " +
-                "WHERE t.id = ? " + "GROUP BY t.id";
+                "WHERE t.id = ? " +
+                "GROUP BY t.id";
 
         List<Task> task;
         try {
@@ -128,6 +131,7 @@ public class TaskRepository implements ITaskRepository {
         String sql = "UPDATE tasks SET " +
                 "name = ?, " +
                 "description = ?, " +
+                "priorityLevel = ?, " +
                 "timeBudget = ?, " +
                 "timeTaken = ?, " +
                 "completed = ?, " +
@@ -139,6 +143,7 @@ public class TaskRepository implements ITaskRepository {
             return jdbcTemplate.update(sql,
                     newObject.getName(),
                     newObject.getDescription(),
+                    newObject.getPriorityLevel().name(),
                     newObject.getTimeBudget(),
                     newObject.getTimeTaken(),
                     newObject.isCompleted(),
@@ -212,7 +217,7 @@ public class TaskRepository implements ITaskRepository {
             return jdbcTemplate.query(sql,
                     new TaskRowMapper(),
                     subprojectId);
-        }catch (DataAccessException e){
+        } catch (DataAccessException e) {
             throw new DatabaseException("Fejl: kunne ikke hente opgaver til subprojektet.", e);
         }
     }

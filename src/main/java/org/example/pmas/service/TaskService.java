@@ -1,6 +1,5 @@
 package org.example.pmas.service;
 
-import org.example.pmas.exception.JunctionTableException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
@@ -8,12 +7,11 @@ import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
+import org.example.pmas.service.comparators.TaskDeadlineComparator;
+import org.example.pmas.service.comparators.TaskPriorityComparator;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class TaskService {
@@ -37,7 +35,16 @@ public class TaskService {
     }
 
     public List<Task> readAll() {
-        return taskRepository.readAll();
+        List<Task> allTask = taskRepository.readAll();
+        if (allTask == null) return Collections.emptyList();
+
+        // Sorts the list by deadline and priority.
+        // Now the list isn't immutable, so we can modify it.
+        List<Task> modifiableList = new ArrayList<>(allTask);
+        modifiableList.sort(new TaskDeadlineComparator()
+                // priority wil be sorted high -> low because of reverse
+                .thenComparing(new TaskPriorityComparator().reversed()));
+        return allTask;
     }
 
     public Task readSelected(int id) {
@@ -73,7 +80,7 @@ public class TaskService {
             addUserToTask(task.getId(), userIDs);
     }
 
-    void addUserToTask(int taskId, List<Integer> newUserIds) {
+    private void addUserToTask(int taskId, List<Integer> newUserIds) {
         // Fetch users for comparison
         List<Integer> currentUserIds = taskRepository.getCurrentUserIdsFromUserTasks(taskId);
 

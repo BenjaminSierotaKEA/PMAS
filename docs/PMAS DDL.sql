@@ -1,11 +1,11 @@
 DROP
-DATABASE IF EXISTS PMASDatabase;
+    DATABASE IF EXISTS PMASDatabase;
 
 CREATE
-DATABASE PMASDatabase;
+    DATABASE PMASDatabase;
 
 USE
-PMASDatabase;
+    PMASDatabase;
 
 DROP TABLE IF EXISTS projects;
 CREATE TABLE projects
@@ -37,14 +37,15 @@ CREATE TABLE subprojects
 DROP TABLE IF EXISTS tasks;
 CREATE TABLE tasks
 (
-    id           INT AUTO_INCREMENT,
-    name         VARCHAR(200) NOT NULL,
-    description  VARCHAR(200),
-    timeBudget   INT          NOT NULL,
-    completed    BOOL,
-    timeTaken    INT,
-    deadline     DATE,
-    subProjectID INT          NOT NULL,
+    id            INT AUTO_INCREMENT,
+    name          VARCHAR(200) NOT NULL,
+    description   VARCHAR(200),
+    priorityLevel VARCHAR(30),
+    timeBudget    INT          NOT NULL,
+    completed     BOOL,
+    timeTaken     INT,
+    deadline      DATE,
+    subProjectID  INT          NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (subProjectID) REFERENCES subprojects (id) ON DELETE CASCADE
 );
