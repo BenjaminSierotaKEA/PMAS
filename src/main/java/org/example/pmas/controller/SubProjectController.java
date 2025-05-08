@@ -27,6 +27,7 @@ public class SubProjectController {
 
     @GetMapping("/{id}")
     public String getSubProject(@PathVariable int id, Model model) {
+        validateId(id);
         SubProject subproject = subprojectService.readSelected(id);
         model.addAttribute("subproject", subproject);
         return "subproject-selected";
@@ -34,6 +35,7 @@ public class SubProjectController {
 
     @PostMapping("/{subprojectId}/delete")
     public String deleteSubProject(@PathVariable int subprojectId) {
+        validateId(subprojectId);
         //int projectID = subprojectService.getProjectIDBySubProjectID(subprojectID);
         subprojectService.delete(subprojectId);
         return "redirect:/projects";
@@ -41,6 +43,7 @@ public class SubProjectController {
 
     @GetMapping("/{projectId}/subprojects/create")
     public String createSubProject(@PathVariable int projectId, Model model) {
+        validateId(projectId);
         SubProject subproject = new SubProject();
         subproject.setProjectID(projectId);
 
@@ -57,6 +60,7 @@ public class SubProjectController {
 
     @GetMapping("/{id}/edit")
     public String editSubProject(@PathVariable int id, Model model) {
+        validateId(id);
         SubProject subproject = subprojectService.readSelected(id);
         model.addAttribute("subproject", subproject);
         return "subproject-edit-form";
@@ -70,10 +74,15 @@ public class SubProjectController {
 
     @GetMapping("/{subprojectId}/tasks")
     public String viewTasks(@PathVariable int subprojectId, Model model) {
+        validateId(subprojectId);
         List<Task> tasks = subprojectService.getTasksBySubProjectID(subprojectId);
 
         model.addAttribute("tasks", tasks);
         model.addAttribute("subprojectId", subprojectId);
         return "task-all";
+    }
+
+    private void validateId(int id) {
+        if (id <= 0) throw new IllegalArgumentException("Ugyldigt ID.");
     }
 }
