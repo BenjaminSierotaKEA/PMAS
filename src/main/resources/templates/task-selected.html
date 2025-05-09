@@ -7,7 +7,8 @@
 </head>
 <body>
 <p th:if="${error}" th:text="${error}"></p>
-<form th:action="@{/tasks/update}" th:method="post" th:object="${task}">
+<form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/update(
+                    projectId=${project.id}, subprojectId=${subproject.id})}" th:method="post" th:object="${task}">
     <input type="text" hidden name="id"
            th:field="*{id}"/> <br>
 
@@ -42,9 +43,6 @@
     <label for="deadline">Deadline:</label><br>
     <input type="date" id="deadline" name="deadline"
            th:field="*{deadline}"/> <br>
-
-    <input type="text" hidden name="subProjectId"
-           th:value="${subProjectId}"/>
 
     <label for="priorityLevel">Prioritet:</label><br>
     <select name="priority" id="priorityLevel"

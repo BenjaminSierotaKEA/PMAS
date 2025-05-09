@@ -3,6 +3,8 @@ package org.example.pmas.controller;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.enums.PriorityLevel;
+import org.example.pmas.service.ProjectService;
+import org.example.pmas.service.SubProjectService;
 import org.example.pmas.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,20 +13,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("tasks")
-public class TaskController {
+@RequestMapping("projects/{projectId}/subprojects/{subprojectId}/tasks")
+public class TaskController extends BaseController {
 
     private final TaskService taskService;
 
-    public TaskController(TaskService taskService) {
+    // Loads this on program start
+    public TaskController(TaskService taskService,
+                          SubProjectService subProjectService,
+                          ProjectService projectService) {
+        super(subProjectService, projectService);
         this.taskService = taskService;
     }
 
     // Read all tasks
-    @GetMapping
-    public String readAll(Model model) {
+    @GetMapping("/all")
+    public String readAll(@PathVariable int subprojectId,
+            Model model) {
         // Adds all task
-        model.addAttribute("tasks", taskService.readAll());
+        model.addAttribute("tasks", taskService.getTasksBySubProjectID(subprojectId));
         return "task-all";
     }
 
@@ -35,18 +42,14 @@ public class TaskController {
 
         Task task = taskService.readSelected(id);
         model.addAttribute("task", task);
-        model.addAttribute("subProjectId", task.getSubProject().getId());
         getSubProjectUsersPriority(model);
 
         return "task-selected";
     }
 
-    @GetMapping("subProjectId={subprojectId}/new")
-    public String getCreateTaskPage(Model model, @PathVariable int subprojectId) {
-        int subProjectId = taskService.getSubProjectIdForTask(subprojectId);
-
+    @GetMapping("new")
+    public String getCreateTaskPage(Model model) {
         model.addAttribute("task", new Task());
-        model.addAttribute("subProjectId", subProjectId);
         getSubProjectUsersPriority(model);
         return "task-new";
     }
@@ -54,45 +57,51 @@ public class TaskController {
     @PostMapping("create")
     public String createTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
-                             @RequestParam(name = "subProjectId") int subProjectId,
+                             @PathVariable int subprojectId,
+                             @PathVariable int projectId,
                              Model model) {
         if (task == null) throw new IllegalArgumentException("Noget galt med task.");
-        if (subProjectId <= 0) {
+        if (subprojectId <= 0) {
             getSubProjectUsersPriority(model);
             model.addAttribute("task", task);
-            return "redirect:/tasks/new";
+
+            return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/new";
         }
 
-        task.setSubProject(new SubProject(subProjectId));
+        task.setSubProject(new SubProject(subprojectId));
         taskService.create(task, userIDs);
-        return "redirect:/projects/" + subProjectId + "/tasks";
+        return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/all";
     }
 
     @PostMapping("{id}/delete")
-    public String deleteTask(@PathVariable int id) {
+    public String deleteTask(@PathVariable int id,
+                             @PathVariable int subprojectId,
+                             @PathVariable int projectId) {
         if (id <= 0) throw new IllegalArgumentException("Noget galt med id.");
 
-        int subProjectId = taskService.delete(id);
+        taskService.delete(id);
 
-        return "redirect:/projects/" + subProjectId + "/tasks";
+
+        return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/all";
     }
 
     @PostMapping("update")
     public String updateTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
-                             @RequestParam(name = "subProjectId") int subProjectId,
+                             @PathVariable int subprojectId,
+                             @PathVariable int projectId,
                              Model model) {
         if (task == null) throw new IllegalArgumentException("Noget galt med task.");
-        if (subProjectId <= 0) {
+        if (subprojectId <= 0) {
             getSubProjectUsersPriority(model);
             model.addAttribute("task", task);
             model.addAttribute("error", "Obligatorisk felt her.");
             return "redirect:/tasks/" + task.getId() + "/task";
         }
 
-        task.setSubProject(new SubProject(subProjectId));
+        task.setSubProject(new SubProject(subprojectId));
         taskService.update(task, userIDs);
-        return "redirect:/projects/" + subProjectId + "/tasks";
+        return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/all";
     }
 
     private void getSubProjectUsersPriority(Model model){

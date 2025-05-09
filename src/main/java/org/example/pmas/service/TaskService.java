@@ -33,13 +33,6 @@ public class TaskService {
         addUserToTask(createdTask.getId(), userIDs);
     }
 
-    public int getSubProjectIdForTask(int subProjectID) {
-        if(!subProjectRepository.doesSubProjectExist(subProjectID)) throw new NotFoundException(subProjectID);
-
-        SubProject subProject = subProjectRepository.readSelected(subProjectID);
-        return subProject.getId();
-    }
-
     public List<Task> readAll() {
         List<Task> allTask = taskRepository.readAll();
         if (allTask == null) return Collections.emptyList();
@@ -65,7 +58,7 @@ public class TaskService {
         return subProjectRepository.readAll();
     }
 
-    public int delete(int id) {
+    public void delete(int id) {
         // check if id exist.
         var task = taskRepository.readSelected(id);
         if (task == null) throw new NotFoundException(id);
@@ -73,8 +66,6 @@ public class TaskService {
         // Skal tænkes igennem igen
         if(!taskRepository.delete(id))
             throw new NotFoundException("Id:" + id + " Kunne ikke slette opgaven");
-
-        return task.getSubProject().getId();
     }
 
     public void update(Task task, List<Integer> userIDs) {

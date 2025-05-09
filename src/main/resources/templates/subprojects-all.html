@@ -6,7 +6,7 @@
     <title>View SubProjects</title>
 </head>
 <body>
-<a th:href="@{/projects/{projectId}/subprojects/create(projectId=${projectId})}">Opret et nyt subprojekt</a>
+<a th:href="@{/projects/{projectId}/subprojects/create(projectId=${project.id})}">Opret et nyt subprojekt</a>
 
 <table class="table">
     <thead>
@@ -21,7 +21,7 @@
     <tbody>
     <tr th:each="subproject: ${subprojects}">
         <td>
-            <a th:href="@{/projects/{subprojectId}/tasks(subprojectId=${subproject.id})}"
+            <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(projectId=${project.id}, subprojectId=${subproject.id})}"
                th:text="${subproject.name}"></a>
         </td>
         <td th:text="${subproject.description}"></td>
@@ -29,13 +29,13 @@
         <td th:text="${subproject.timeTaken}"></td>
         <td th:text="${subproject.completed}"></td>
         <td>
-        <form th:action="@{/projects/{subprojectid}/edit(subprojectid=${subproject.id})}"
+        <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
               method="get">
             <button type="submit">Redigere</button>
         </form>
         </td>
         <td>
-            <form th:action="@{/projects/{subprojectId}/delete(subprojectId=${subproject.id})}" method="post">
+            <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/delete(projectId=${project.id}, subprojectId=${subproject.id})}" method="post">
                 <button type="submit">Slet</button>
             </form>
         </td>
