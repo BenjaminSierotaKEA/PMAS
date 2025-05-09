@@ -71,16 +71,6 @@ public class SubProjectController extends BaseController {
         return "redirect:/projects/" + subproject.getProjectID() + "/subprojects";
     }
 
-//    @GetMapping("/{id}/tasks")
-//    public String viewTasks(@PathVariable int subprojectId, Model model) {
-//        validateId(subprojectId);
-//        List<Task> tasks = subprojectService.getTasksBySubProjectID(subprojectId);
-//
-//        model.addAttribute("tasks", tasks);
-//        model.addAttribute("subprojectId", subprojectId);
-//        return "task-all";
-//    }
-
     private void validateId(int id) {
         if (id <= 0) throw new IllegalArgumentException("Ugyldigt ID.");
     }
