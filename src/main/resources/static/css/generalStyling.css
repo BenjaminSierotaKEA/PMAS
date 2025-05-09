@@ -1,0 +1,185 @@
+/* ---------------Global---------------- */
+@font-face {
+    font-family: 'Bahnschrift';
+    src: url('/fonts/Bahnschrift.woff2') format('woff2'),
+    url('/fonts/Bahnschrift.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.title{
+    font-family: "Bahnschrift", sans-serif ;
+    font-weight: lighter;
+    letter-spacing: 1vh;
+    color: #5a5a5a;
+    padding: 1vh;
+}
+
+
+/* ---------------logo related stuff---------------- */
+
+.logo_container {
+    width: 100px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.logo_container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+
+
+/* ---------------Navbar related stuff---------------- */
+.navbar{
+    background-color: #333333;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+
+.nav-section a {
+    text-decoration: none;
+    color: white;
+    font-weight: Lighter;
+    font-family: "Bahnschrift", sans-serif ;
+}
+
+
+
+
+/* ---------------Form related stuff---------------- */
+
+.frame{
+    background-color: rgba(192, 192, 192, 0.12);
+    padding: 5vh;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+
+
+
+}
+
+/* Base styles for form inputs */
+input{
+    width: 300px;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 1000px;
+    background-color: rgba(108, 108, 108, 0.7);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+    outline: none;
+}
+
+/* Placeholder styling */
+input::placeholder {
+    font-family: "Bahnschrift l", sans-serif;
+    font-weight: lighter;
+    letter-spacing: 1px;
+    font-size: large;
+    color: #d0d0d0;
+    text-transform: uppercase;
+    opacity: 1;
+}
+
+
+
+button {
+    font-family: 'Bahnschrift', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px;
+    border: none;
+    border-radius: 999px;
+    background-color: rgba(238, 238, 238, 0.89);
+    color: rgba(66, 66, 66, 0.72);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    letter-spacing: 1px;
+}
+
+
+
+/* Hover effect */
+button:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+/* When clicking */
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+/*Drop down menu*/
+select {
+    font-family: 'Bahnschrift', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #d0d0d0;
+    background-color: rgba(108, 108, 108, 0.7);
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Add a little custom dropdown arrow using background image */
+select {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='10'%20height='10'%20viewBox='0%200%2010%2010'%3E%3Cpath%20fill='white'%20d='M0%202.5l5%205%205-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px;
+    padding-right: 2.5rem; /* space for arrow */
+}
+
+/* Placeholder option */
+select option[value=""] {
+    color: #d0d0d0;
+}
+
+/* Focus style */
+select:focus {
+    outline: none;
+    background-color: #5a5a5a;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+}
+
+
+
+
+
+/* ---------------Custom goes here---------------- */
+
+.index_body {
+    background-image: url("/images/customBG.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+

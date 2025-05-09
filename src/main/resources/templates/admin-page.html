@@ -2,9 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+  <link rel="stylesheet" th:href="@{/css/admin.css}">
+  <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <title>admin-page</title>
 </head>
+
 <body>
+
+<div class="flex-column flex-center">
+<h2 class="title"> ADMIN PAGE </h2>
+
+<div class="button-container">
+  <a href="user-form">
+    <button type="submit">Add User</button>
+  </a>
+
+</div>
 
 <table>
   <thead>
@@ -12,6 +25,7 @@
     <th>User ID</th>
     <th>Name</th>
     <th>Email</th>
+    <th>password</th>
     <th>Role</th>
     <th>Options</th>
   </tr>
@@ -21,8 +35,9 @@
     <td th:text="${user.userID}">1</td>
     <td th:text="${user.name}">John Doe</td>
     <td th:text="${user.email}">john@example.com</td>
+    <td th:text="${user.password}">password</td>
     <td th:text="${user.getRole().name}">ADMIN</td>
-    <td>
+    <td class="options-column">
       <form th:action="@{/{id}/delete(id=${user.userID})}" method="post">
         <button type="submit">Delete</button>
       </form>
@@ -38,11 +53,9 @@
   </tr>
   </tbody>
 
-  <a href="user-form">
-    <button type="submit">Add User</button>
-  </a>
+
 
 </table>
-
+</div>
 </body>
 </html>

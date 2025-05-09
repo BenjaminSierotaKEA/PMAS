@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="navbar">
+  <nav class="navbar">
+    <div class="nav-section">
+      <img th:src="@{/images/logoWithText.png}" alt="Logo" class="navbar-logo">
+    </div>
+    <div class="nav-section">
+      <a th:href="@{/projects}">PROJECTS</a>
+    </div>
+    <div class="nav-section">
+      <a th:href="@{/session/{id}/user}">USERPAGE</a>
+    </div>
+    <div class="nav-section">
+      <a th:href="@{/logout}" th:if="${session.user != null}">LOG-OUT</a>
+    </div>
+  </nav>
+</div>
+</body>
+</html>
