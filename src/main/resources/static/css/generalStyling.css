@@ -1,0 +1,120 @@
+/* ---------------Global---------------- */
+@font-face {
+    font-family: 'Bahnschrift';
+    src: url('/fonts/Bahnschrift.woff2') format('woff2'),
+    url('/fonts/Bahnschrift.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+/* ---------------logo related stuff---------------- */
+
+.logo_container {
+    width: 100px;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.logo_container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+
+
+/* ---------------Navbar related stuff---------------- */
+.navbar{
+    background-color: #333333;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+
+.nav-section a {
+    text-decoration: none;
+    color: white;
+    font-weight: Lighter;
+    font-family: "Bahnschrift", sans-serif ;
+}
+
+
+
+
+/* ---------------Form related stuff---------------- */
+
+/* Base styles for form inputs */
+input{
+    width: 300px;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 1000px;
+    background-color: #6c6c6c;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+    outline: none;
+}
+
+/* Placeholder styling */
+input::placeholder {
+    font-family: "Bahnschrift l", sans-serif;
+    font-weight: lighter;
+    letter-spacing: 1px;
+    font-size: large;
+    color: #d0d0d0;
+    text-transform: uppercase;
+    opacity: 1;
+}
+
+button {
+    font-family: 'Bahnschrift', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px;
+    border: none;
+    border-radius: 999px;
+    background-color: #ffffff;
+    color: #2e2e2e;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    letter-spacing: 1px;
+}
+
+/* Hover effect */
+button:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Optional: when clicking */
+button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+/* ---------------Custom goes here---------------- */
+
+.index_body {
+    background-image: url("/images/customBG.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+

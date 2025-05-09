@@ -1,0 +1,100 @@
+
+/* ---------------Global reset---------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 1. Generic Flex Helpers */
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    justify-self: center;
+}
+
+/* 2. Page-Level Layout */
+.page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+}
+
+/* 3. Header & Footer */
+.page-header,
+.page-footer {
+    flex-shrink: 0;
+    padding: 1rem;
+}
+
+/* 4. Main Content Wrapper */
+.page-main {
+    flex: 1;
+    display: flex;
+    flex-direction: row; /* Default: sidebar left, content right */
+}
+
+/* 5. Sidebar */
+.sidebar-left {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.sidebar-right {
+    width: 250px;
+    flex-shrink: 0;
+    order: 1; /* Optional: place it on the right */
+}
+
+/* 6. Main Content Area */
+.main-content {
+    flex-grow: 1;
+    padding: 1rem;
+}
+
+
+
+
+
+/* ---------------NavBar---------------- */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    max-height: 15vh;
+
+}
+
+.nav-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar-logo {
+    height: 75px;
+    width: auto;
+    display: block;
+}
+
+
+
