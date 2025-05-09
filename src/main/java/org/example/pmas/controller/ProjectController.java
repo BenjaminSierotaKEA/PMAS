@@ -64,7 +64,7 @@ public class ProjectController {
 
         User user = sessionHandler.getCurrentUser();
         boolean loggedIn = false;
-        if(user != null){
+        if(user.getRole() != null){
             loggedIn = true;
         }
         List<Project> projects = null;

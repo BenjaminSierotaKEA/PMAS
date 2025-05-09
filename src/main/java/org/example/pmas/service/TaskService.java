@@ -30,7 +30,6 @@ public class TaskService {
         if (createdTask == null) throw new NotFoundException(task.getId());
 
         // Adds user and task to junction table if any
-
         addUserToTask(createdTask.getId(), userIDs);
     }
 
@@ -64,7 +63,9 @@ public class TaskService {
         var task = taskRepository.readSelected(id);
         if (task == null) throw new NotFoundException(id);
 
-        taskRepository.delete(id);
+        // Skal tænkes igennem igen
+        if(!taskRepository.delete(id))
+            throw new NotFoundException("Id:" + id + " Kunne ikke slette opgaven");
     }
 
     public void update(Task task, List<Integer> userIDs) {
@@ -78,6 +79,10 @@ public class TaskService {
         // Adds users to the junction table if any
 
         addUserToTask(task.getId(), userIDs);
+    }
+
+    public List<Task> getTasksBySubProjectID(int subProjectId){
+        return taskRepository.getTasksBySubProjectID(subProjectId);
     }
 
     private void addUserToTask(int taskId, List<Integer> newUserIds) {

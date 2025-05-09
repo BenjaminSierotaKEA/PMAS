@@ -1,34 +1,33 @@
 package org.example.pmas.controller;
 
 import org.example.pmas.model.SubProject;
-import org.example.pmas.model.Task;
+import org.example.pmas.service.ProjectService;
 import org.example.pmas.service.SubProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
-@RequestMapping("/projects")
-public class SubProjectController {
+@RequestMapping("projects/{projectId}/subprojects")
+public class SubProjectController extends BaseController {
 
     private final SubProjectService subprojectService;
 
-    public SubProjectController(SubProjectService subProjectService) {
+    public SubProjectController(SubProjectService subProjectService, ProjectService projectService) {
+        super(subProjectService,projectService);
         this.subprojectService = subProjectService;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public String readAll(Model model) {
         model.addAttribute("subprojects", subprojectService.readAll());
         return "subprojects-all";
     }
 
-    @GetMapping("/{id}")
-    public String getSubProject(@PathVariable int id, Model model) {
-        validateId(id);
-        SubProject subproject = subprojectService.readSelected(id);
+    @GetMapping("/{subprojectId}/subproject")
+    public String getSubProject(@PathVariable int subprojectId, Model model) {
+        validateId(subprojectId);
+        SubProject subproject = subprojectService.readSelected(subprojectId);
         model.addAttribute("subproject", subproject);
         return "subproject-selected";
     }
@@ -41,7 +40,7 @@ public class SubProjectController {
         return "redirect:/projects";
     }
 
-    @GetMapping("/{projectId}/subprojects/create")
+    @GetMapping("/create")
     public String createSubProject(@PathVariable int projectId, Model model) {
         validateId(projectId);
         SubProject subproject = new SubProject();
@@ -58,10 +57,10 @@ public class SubProjectController {
         return "redirect:/projects/" + subproject.getProjectID() + "/subprojects";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editSubProject(@PathVariable int id, Model model) {
-        validateId(id);
-        SubProject subproject = subprojectService.readSelected(id);
+    @GetMapping("/{subprojectId}/edit")
+    public String editSubProject(@PathVariable int subprojectId, Model model) {
+        validateId(subprojectId);
+        SubProject subproject = subprojectService.readSelected(subprojectId);
         model.addAttribute("subproject", subproject);
         return "subproject-edit-form";
     }
@@ -70,16 +69,6 @@ public class SubProjectController {
     public String updateSubProject(@ModelAttribute("subproject") SubProject subproject) {
         subprojectService.updateSubProject(subproject);
         return "redirect:/projects/" + subproject.getProjectID() + "/subprojects";
-    }
-
-    @GetMapping("/{subprojectId}/tasks")
-    public String viewTasks(@PathVariable int subprojectId, Model model) {
-        validateId(subprojectId);
-        List<Task> tasks = subprojectService.getTasksBySubProjectID(subprojectId);
-
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("subprojectId", subprojectId);
-        return "task-all";
     }
 
     private void validateId(int id) {

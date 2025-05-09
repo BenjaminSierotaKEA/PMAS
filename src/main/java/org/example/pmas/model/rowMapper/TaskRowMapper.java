@@ -11,6 +11,10 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Set;
 
+
+// We need information about different tables when we use TaskRowMapper.
+// You need to join users and subproject when making a query.
+// You need to give
 public class TaskRowMapper implements RowMapper<Task> {
 
     @Override
@@ -18,33 +22,26 @@ public class TaskRowMapper implements RowMapper<Task> {
         Task task = new Task();
         task.setId(rs.getInt("id"));
         task.setName(rs.getString("name"));
-        if (rs.getString("priorityLevel") != null && !rs.wasNull())
+        if (hasColumn(rs, "priorityLevel"))
             task.setPriorityLevel(PriorityLevel.valueOf(rs.getString("priorityLevel")));
         task.setDescription(rs.getString("description"));
         task.setTimeBudget(rs.getDouble("timeBudget"));
         task.setTimeTaken(rs.getDouble("timeTaken"));
         task.setCompleted(rs.getBoolean("completed"));
-        if (rs.getDate("deadline") != null && !rs.wasNull())
+        if (hasColumn(rs, "deadline"))
             task.setDeadline(rs.getDate("deadline").toLocalDate());
 
-        if (rs.getString("user_names") != null && rs.getString("user_ids") != null)
+        if (hasColumn(rs, "user_ids") && hasColumn(rs, "user_names"))
             task.setUsers(mapUsers(rs));
 
-        // If subproject is in query
-        if (hasColumn(rs, "subproject_name"))
-            task.setSubProject(mapSubproject(rs));
+        task.setSubProject(new SubProject(rs.getInt("subProjectID")));
 
         return task;
     }
 
     // If needed, this method can check for a specific column.
-    private boolean hasColumn(ResultSet rs, String columnName) {
-        // findColumn throws if not exist. That's why try catch
-        try {
-            return rs.findColumn(columnName) > 0;
-        } catch (SQLException e) {
-            return false;
-        }
+    private boolean hasColumn(ResultSet rs, String columnName) throws SQLException {
+        return rs.getString(columnName) != null && !rs.wasNull();
     }
 
     // Return users or null
@@ -70,14 +67,5 @@ public class TaskRowMapper implements RowMapper<Task> {
         }
 
         return users;
-    }
-
-    // maps SubProject only by name.
-    private SubProject mapSubproject(ResultSet rs) throws SQLException {
-        SubProject subproject = new SubProject();
-        subproject.setId(rs.getInt("subproject_id"));
-        subproject.setName(rs.getString("subproject_name"));
-
-        return subproject;
     }
 }
