@@ -8,6 +8,15 @@
 }
 
 
+.title{
+    font-family: "Bahnschrift", sans-serif ;
+    font-weight: lighter;
+    letter-spacing: 1vh;
+    color: #5a5a5a;
+    padding: 1vh;
+    backdrop-filter: blur(20px);
+}
+
 
 /* ---------------logo related stuff---------------- */
 
@@ -49,13 +58,22 @@
 
 /* ---------------Form related stuff---------------- */
 
+.frame{
+    background-color: rgba(192, 192, 192, 0.12);
+    padding: 5vh;
+    border-radius: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+
+}
+
 /* Base styles for form inputs */
 input{
     width: 300px;
     padding: 0.8rem 1rem;
     border: none;
     border-radius: 1000px;
-    background-color: #6c6c6c;
+    background-color: rgba(108, 108, 108, 0.7);
     color: white;
     font-weight: bold;
     text-transform: uppercase;
@@ -76,6 +94,11 @@ input::placeholder {
     opacity: 1;
 }
 
+.button-container{
+    justify-self: center;
+    padding-left: 10px;
+}
+
 button {
     font-family: 'Bahnschrift', sans-serif;
     font-weight: bold;
@@ -83,13 +106,15 @@ button {
     padding: 10px;
     border: none;
     border-radius: 999px;
-    background-color: #ffffff;
-    color: #2e2e2e;
+    background-color: rgba(238, 238, 238, 0.89);
+    color: rgba(66, 66, 66, 0.72);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     letter-spacing: 1px;
 }
+
+
 
 /* Hover effect */
 button:hover {
@@ -98,11 +123,53 @@ button:hover {
     transform: translateY(-2px);
 }
 
-/* Optional: when clicking */
+/* When clicking */
 button:active {
     transform: translateY(0);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
+
+
+/*Drop down menu*/
+select {
+    font-family: 'Bahnschrift', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #d0d0d0;
+    background-color: rgba(108, 108, 108, 0.7);
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    width: 300px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* Add a little custom dropdown arrow using background image */
+select {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='10'%20height='10'%20viewBox='0%200%2010%2010'%3E%3Cpath%20fill='white'%20d='M0%202.5l5%205%205-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px;
+    padding-right: 2.5rem; /* space for arrow */
+}
+
+/* Placeholder option */
+select option[value=""] {
+    color: #d0d0d0;
+}
+
+/* Focus style */
+select:focus {
+    outline: none;
+    background-color: #5a5a5a;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.4);
+}
+
 
 
 

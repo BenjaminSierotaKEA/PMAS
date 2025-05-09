@@ -10,10 +10,9 @@
       <a th:href="@{/projects}">PROJECTS</a>
     </div>
     <div class="nav-section">
-      <a th:href="@{/userpage}">USERPAGE</a>
+      <a th:href="@{/session/{id}/user}">USERPAGE</a>
     </div>
     <div class="nav-section">
-      <a th:href="@{/login}" th:if="${session.user == null}">LOG-IN</a>
       <a th:href="@{/logout}" th:if="${session.user != null}">LOG-OUT</a>
     </div>
   </nav>
