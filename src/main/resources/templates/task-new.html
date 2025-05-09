@@ -6,7 +6,8 @@
     <title>add task</title>
 </head>
 <body>
-<form th:action="@{/tasks/create}" th:method="post" th:object="${task}">
+<form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/create(
+                    projectId=${project.id}, subprojectId=${subproject.id})}" th:method="post" th:object="${task}">
     <label for="name">Navn:*</label><br>
     <input type="text" id="name" name="name" required placeholder="Navn"
            th:field="*{name}"/>
@@ -46,16 +47,6 @@
     <label for="deadline">Deadline:</label><br>
     <input type="date" id="deadline" name="deadline"
            th:field="*{deadline}"/> <br>
-
-    <label for="subproject">Project kategori:*</label><br>
-    <select name="subproject" id="subproject" th:field="*{subProject.id}" required>
-        <option value="0" selected>Vælg venligst</option>
-        <option th:each="subproject : ${subprojects}"
-                th:value="${subproject.id}"
-                th:text="${subproject.name}">
-        </option>
-    </select>
-    <br>
 
     <label for="priorityLevel">Prioritet:</label><br>
     <select name="priority" id="priorityLevel"
