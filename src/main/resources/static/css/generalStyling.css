@@ -14,7 +14,6 @@
     letter-spacing: 1vh;
     color: #5a5a5a;
     padding: 1vh;
-    backdrop-filter: blur(20px);
 }
 
 
@@ -63,6 +62,8 @@
     padding: 5vh;
     border-radius: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+
 
 
 }
@@ -94,10 +95,7 @@ input::placeholder {
     opacity: 1;
 }
 
-.button-container{
-    justify-self: center;
-    padding-left: 10px;
-}
+
 
 button {
     font-family: 'Bahnschrift', sans-serif;

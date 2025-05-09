@@ -96,5 +96,10 @@
     display: block;
 }
 
+.button-container{
+    justify-self: center;
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
 
 
