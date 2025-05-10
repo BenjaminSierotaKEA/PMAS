@@ -5,9 +5,10 @@
     <title>Create New SubProject</title>
 </head>
 <body>
-<h2>Create a New SubProject for Project ID: <span th:text="${projectId}"></span></h2>
+<h2>Create a New SubProject for Project ID: <span th:text="${project.name}"></span></h2>
 
-<form th:action="@{/projects/{projectId}/subprojects/create(projectId=${project.id})}" method="post" th:object="${subproject}">
+<form th:action="@{/projects/{projectId}/subprojects/save(projectId=${projectID})}" method="post" th:object="${subproject}">
+
     <div>
         <label for="name">SubProject Name</label>
         <input type="text" id="name" th:field="*{name}" placeholder="Enter subproject name" required />
@@ -32,9 +33,6 @@
         <label for="completed">Completed</label>
         <input type="checkbox" id="completed" th:field="*{completed}" />
     </div>
-
-    <!-- Hidden field to pass the projectID to the form -->
-    <input type="hidden" th:field="*{projectID}" th:value="${projectId}" />
 
     <button type="submit">Save SubProject</button>
 </form>

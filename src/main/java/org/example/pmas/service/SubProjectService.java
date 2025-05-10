@@ -1,5 +1,6 @@
 package org.example.pmas.service;
 
+import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
@@ -35,10 +36,6 @@ public class SubProjectService {
         return sub;
     }
 
-    public int getProjectIDBySubProjectID(int subprojectID){
-        return subprojectRepository.getProjectIDBySubProjectID(subprojectID);
-    }
-
     public SubProject create(SubProject subproject) {
         if(!projectRepository.doesProjectExist(subproject.getProjectID())) {
             throw new NotFoundException(subproject.getProjectID());
@@ -62,5 +59,10 @@ public class SubProjectService {
 
     public List<Task> getTasksBySubProjectID(int subprojectId){
         return taskRepository.getTasksBySubProjectID(subprojectId);
+    }
+
+    public List<SubProjectDTO> getSubProjectDTOByProjectId(int id) {
+        List<SubProjectDTO> subprojects = subprojectRepository.getSubProjectDTOByProjectID(id);
+        return subprojects;
     }
 }
