@@ -15,14 +15,15 @@ import java.util.List;
 @Controller
 @RequestMapping("projects/{projectId}/subprojects/{subprojectId}/tasks")
 public class TaskController extends BaseController {
-
     private final TaskService taskService;
+    private final SubProjectService subProjectService;
 
     // Loads this on program start
     public TaskController(TaskService taskService,
                           SubProjectService subProjectService,
                           ProjectService projectService) {
         super(subProjectService, projectService);
+        this.subProjectService = subProjectService;
         this.taskService = taskService;
     }
 
@@ -35,7 +36,7 @@ public class TaskController extends BaseController {
         return "task-all";
     }
 
-    @GetMapping("{id}/task")
+    @GetMapping("{id}/edit")
     public String readSelected(@PathVariable int id,
                                Model model) {
         if (id < 0) throw new IllegalArgumentException("Noget galt med id");
@@ -61,7 +62,8 @@ public class TaskController extends BaseController {
                              @PathVariable int projectId,
                              Model model) {
         if (task == null) throw new IllegalArgumentException("Noget galt med task.");
-        if (subprojectId <= 0) {
+        // Checks if subproject is set, if not, redirect to subproject page
+        if (model.getAttribute("subproject") != null) {
             getSubProjectUsersPriority(model);
             model.addAttribute("task", task);
 
@@ -80,8 +82,6 @@ public class TaskController extends BaseController {
         if (id <= 0) throw new IllegalArgumentException("Noget galt med id.");
 
         taskService.delete(id);
-
-
         return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/all";
     }
 
@@ -92,7 +92,8 @@ public class TaskController extends BaseController {
                              @PathVariable int projectId,
                              Model model) {
         if (task == null) throw new IllegalArgumentException("Noget galt med task.");
-        if (subprojectId <= 0) {
+        // Checks if subproject is set, if not, redirect to subproject page
+        if (model.getAttribute("subproject") != null) {
             getSubProjectUsersPriority(model);
             model.addAttribute("task", task);
             model.addAttribute("error", "Obligatorisk felt her.");

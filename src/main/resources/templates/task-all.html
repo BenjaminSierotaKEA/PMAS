@@ -37,7 +37,7 @@
         </span>
         </td>
         <td th:text="${task.priorityLevel != null ? task.priorityLevel.displayName : ''}"></td>
-        <td><a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/task(
+        <td><a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/edit(
                     projectId=${project.id}, subprojectId=${subproject.id}, taskId=${task.id})}">
             Opdater
         </a></td>

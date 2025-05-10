@@ -61,11 +61,11 @@ public class TaskService {
     public void delete(int id) {
         // check if id exist.
         var task = taskRepository.readSelected(id);
-        if (task == null) throw new NotFoundException(id);
+        if (task == null) throw new NotFoundException("opgaven findes ikke");
 
         // Skal tænkes igennem igen
         if(!taskRepository.delete(id))
-            throw new NotFoundException("Id:" + id + " Kunne ikke slette opgaven");
+            throw new NotFoundException("Id:" + id + " Kunne ikke slette task");
     }
 
     public void update(Task task, List<Integer> userIDs) {

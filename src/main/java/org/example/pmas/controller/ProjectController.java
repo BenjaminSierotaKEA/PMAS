@@ -117,7 +117,7 @@ public class ProjectController extends BaseController {
         model.addAttribute("projects", projects);
         model.addAttribute("loggedIn", loggedIn);
 
-        return "project-selected";
+        return "project-create-form";
 
     }
 }

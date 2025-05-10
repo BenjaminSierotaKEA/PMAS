@@ -45,14 +45,7 @@ public class ProjectService {
         return projectRepository.delete(id);
     }
 
-    public boolean doesProjectExist(int id){
-        return projectRepository.doesProjectExist(id);
-    }
-
     public List<SubProject> getSubProjectsByProjectID(int projectId){
         return subprojectRepository.getSubProjectsByProjectID(projectId);
     }
-
-
-
 }
