@@ -61,6 +61,8 @@ public class ProjectController extends BaseController {
 
     @GetMapping("/{projectId}/edit")
     public String updateForm(@PathVariable int projectId, Model model) {
+        if(projectId >= 0) throw new IllegalArgumentException("Ugyldig ID.");
+
         Project project = getProjectService().readSelected(projectId);
         model.addAttribute("project", project);
 
@@ -71,6 +73,8 @@ public class ProjectController extends BaseController {
 
     @PostMapping("{projectId}/delete")
     public String deleteProject(@PathVariable int projectId) {
+        if(projectId >= 0) throw new IllegalArgumentException("Ugyldig ID.");
+
         if (sessionHandler.isUserProjectManager()) {
             getProjectService().deleteProject(projectId);
         }
@@ -88,6 +92,8 @@ public class ProjectController extends BaseController {
 
     @GetMapping("/{projectId}/subprojects")
     public String viewSubProjects(@PathVariable int projectId, Model model) {
+        if(projectId >= 0) throw new IllegalArgumentException("Ugyldig ID.");
+
         List<SubProject> subprojects = getProjectService().getSubProjectsByProjectID(projectId);
 
         model.addAttribute("subprojects", subprojects);

@@ -1,7 +1,6 @@
 package org.example.pmas.service;
 
 import org.example.pmas.exception.NotFoundException;
-import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
@@ -54,10 +53,6 @@ public class TaskService {
         return task;
     }
 
-    public List<SubProject> getAllSubproject() {
-        return subProjectRepository.readAll();
-    }
-
     public void delete(int id) {
         // check if id exist.
         var task = taskRepository.readSelected(id);
@@ -73,8 +68,8 @@ public class TaskService {
         var old = taskRepository.readSelected(task.getId());
         if (old == null) throw new NotFoundException(task.getId());
 
-        boolean succes = taskRepository.update(task);
-        if (!succes) throw new NotFoundException("Id:" + task.getId() + " Kunne ikke opdatere task");
+        if (!taskRepository.update(task))
+            throw new NotFoundException("Id:" + task.getId() + " Kunne ikke opdatere task");
 
         // Adds users to the junction table if any
 
