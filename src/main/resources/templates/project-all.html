@@ -9,9 +9,7 @@
 make this according to the styled mockup later-->
 <h1 th:unless="${allowAccess}">You are not a project manager. Access Denied!</h1>
 <div th:if="${allowAccess}">
-    <form  th:action="@{/projects/create-project-form}" method="get">
-        <button type="submit">Create Project</button>
-    </form>
+    <a  th:href="@{/projects/new}">Create Project</a>
 </div>
     <table th:if="${allowAccess}">
         <tr th:each="project :${projects}" >
@@ -20,20 +18,15 @@ make this according to the styled mockup later-->
             <th th:text="${project.timeBudget}"></th>
             <th th:text="${project.deadline}"></th>
             <th>
-                <form th:object="${project}" th:action="@{/projects/{projectID}/update-form(projectID=${project.id})}"
-                      method="get">
-                    <button type="submit">Edit Project</button>
-                </form>
-                <form role="form" action="#" method="post" th:action="@{/projects/delete-project}" th:object="${project}">
-                    <input type="number" name="id" th:value="${project.id}" hidden readonly>
-                    <button type="submit">DELETE PROJECT</button>
+                <a th:href="@{/projects/{projectId}/project(projectId=${project.id})}">
+                    Update
+                </a>
+                <form method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" th:object="${project}"
+                      onsubmit="return confirm('Er du sikker på, at du vil slette kategorien?');">
+                    <button type="submit">Delete</button>
                 </form>
             </th>
         </tr>
-
     </table>
-
-
-
 </body>
 </html>

@@ -7,8 +7,8 @@
 </head>
 <body>
 <h1>Du er i task</h1>
-<a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(
-                    projectId=${project.id}, subprojectId=${subproject.id})}">Opret ny opgave</a>
+<a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(projectId=${project.id}, subprojectId=${subproject.id})}">
+    Opret opgave</a>
 <table>
     <tr>
         <th>Opgave</th>

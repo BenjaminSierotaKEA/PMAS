@@ -12,16 +12,13 @@ public class BaseController {
     private final ProjectService projectService;
 
     // Sets services
-    protected BaseController(SubProjectService subProjectService, ProjectService projectService) {
+    public BaseController(SubProjectService subProjectService, ProjectService projectService) {
         this.subProjectService = subProjectService;
         this.projectService = projectService;
     }
 
     /*
-        When a method from the child classes injects Model as parameter,
-        this will be run.
-
-        @PathVariable(value = "subprojectId"
+       @PathVariable(value = "subprojectId"
        looks after the value, from the URL
     * */
     @ModelAttribute("subproject")
@@ -29,13 +26,10 @@ public class BaseController {
         if (subprojectId != null) {
             return subProjectService.readSelected(subprojectId);
         }
-        return null;
+        return new SubProject();
     }
 
     /*
-       When a method from the child classes injects Model as parameter, in a method,
-       this will run.
-
        @PathVariable(value = "projectId"
        looks after the value, from the URL
    * */
@@ -44,6 +38,6 @@ public class BaseController {
         if (projectId != null) {
             return projectService.readSelected(projectId);
         }
-        return null;
+        return new Project();
     }
 }

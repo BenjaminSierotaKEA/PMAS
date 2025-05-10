@@ -19,7 +19,7 @@
                       method="get">
                     <button type="submit">Edit Project</button>
                 </form>
-                <form role="form" action="#" method="post" th:action="@{/projects/delete-project}" th:object="${project}">
+                <form role="form" method="post" th:action="@{/projects/delete-project}" th:object="${project}">
                     <input type="number" name="id" th:value="${project.id}" hidden readonly>
                     <button type="submit">DELETE PROJECT</button>
                 </form>

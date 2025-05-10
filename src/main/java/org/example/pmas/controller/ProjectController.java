@@ -2,8 +2,8 @@ package org.example.pmas.controller;
 
 import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
-import org.example.pmas.model.User;
 import org.example.pmas.service.ProjectService;
+import org.example.pmas.service.SubProjectService;
 import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +13,15 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/projects")
-public class ProjectController {
+public class ProjectController extends BaseController {
     private final ProjectService projectService;
     private final SessionHandler sessionHandler;
 
 
-    public ProjectController(ProjectService projectService, SessionHandler sessionHandler) {
+    public ProjectController(ProjectService projectService,
+                             SubProjectService subProjectService,
+                             SessionHandler sessionHandler) {
+        super(subProjectService, projectService);
         this.projectService = projectService;
         this.sessionHandler = sessionHandler;
     }
@@ -35,14 +38,14 @@ public class ProjectController {
     }
 
     //TODO: add session stuff, redirect to somewhere better
-    @PostMapping("/create-project")
-    public String createProject(@ModelAttribute("project") Project project) {
+    @PostMapping("/create")
+    public String createProject(@ModelAttribute Project project) {
         if (sessionHandler.isUserProjectManager()) {
             projectService.createProject(project);
         }
 
 
-        return "redirect:projects/all";
+        return "redirect:/projects/all";
     }
 
     //TODO: ADD stuff so only the cto can see this page
@@ -57,64 +60,32 @@ public class ProjectController {
         return "project-all";
     }
 
-    @GetMapping("/my-projects")
-    public String myProjects(Model model) {
 
-
-        User user = sessionHandler.getCurrentUser();
-        boolean loggedIn = false;
-        if (user.getRole() != null) {
-            loggedIn = true;
-        }
-        List<Project> projects = null;
-        if (!(user == null)) {
-            projects = projectService.readProjectsOfUser(user.getUserID());
-        }
-        if (loggedIn) {
-            model.addAttribute("username", user.getName());
-        } else {
-            model.addAttribute("username", "logged out");
-        }
-
-        model.addAttribute("projects", projects);
-        model.addAttribute("loggedIn", loggedIn);
-
-        return "project-selected";
-
-    }
-
-    @GetMapping("/{id}/update")
-    public String updateForm(@PathVariable int id, Model model) {
-
-
-        if (!projectService.doesProjectExist(id)) {
-            return "errorpage";
-        }
-
-        Project project = projectService.readSelected(id);
+    @GetMapping("/{projectId}/project")
+    public String updateForm(@PathVariable int projectId, Model model) {
+        Project project = projectService.readSelected(projectId);
         model.addAttribute("project", project);
+
         boolean allowAccess = sessionHandler.isUserProjectManager();
         model.addAttribute("allowAccess", allowAccess);
         return "project-update";
     }
 
-    @PostMapping("update-project")
-    public String updateProject(@ModelAttribute Project project, Model model) {
+    @PostMapping("{projectId}/delete")
+    public String deleteProject(@PathVariable int projectId) {
+        if (sessionHandler.isUserProjectManager()) {
+            projectService.deleteProject(projectId);
+        }
+        return "redirect:/projects/all";
+    }
 
-
+    @PostMapping("update")
+    public String updateProject(@ModelAttribute Project project) {
         if (sessionHandler.isUserProjectManager()) {
             projectService.updateProject(project);
         }
 
-        return "redirect:see-all";
-    }
-
-    @PostMapping("delete-project")
-    public String deleteProject(@ModelAttribute Project project, Model model) {
-        if (sessionHandler.isUserProjectManager()) {
-            projectService.deleteProject(project.getId());
-        }
-        return "redirect:all";
+        return "redirect:/projects/all";
     }
 
     @GetMapping("/{projectId}/subprojects")
@@ -125,4 +96,30 @@ public class ProjectController {
         model.addAttribute("projectId", projectId);
         return "subprojects-all";
     }
+
+//    @GetMapping("/my-projects")
+//    public String myProjects(Model model) {
+//
+//
+//        User user = sessionHandler.getCurrentUser();
+//        boolean loggedIn = false;
+//        if (user.getRole() != null) {
+//            loggedIn = true;
+//        }
+//        List<Project> projects = null;
+//        if (!(user == null)) {
+//            projects = projectService.readProjectsOfUser(user.getUserID());
+//        }
+//        if (loggedIn) {
+//            model.addAttribute("username", user.getName());
+//        } else {
+//            model.addAttribute("username", "logged out");
+//        }
+//
+//        model.addAttribute("projects", projects);
+//        model.addAttribute("loggedIn", loggedIn);
+//
+//        return "project-selected";
+//
+//    }
 }

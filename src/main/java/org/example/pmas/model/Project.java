@@ -9,7 +9,7 @@ public class Project {
     private final int nameMaxLength = 200;
     private String description;
     private final int descriptionMaxLength = 200;
-    private int timeBudget;
+    private Double timeBudget;
     private LocalDate deadline;
 
 
@@ -21,7 +21,7 @@ public class Project {
         this.deadline = deadline;
     }
 
-    public Project(int id, String name, String description, int timeBudget, LocalDate deadline){
+    public Project(int id, String name, String description, double timeBudget, LocalDate deadline){
         this.id = id;
         //we trim the length of the name and description to the max of what the database allows
         setName(name);
@@ -32,12 +32,7 @@ public class Project {
 
     }
 
-    public Project(){
-        this.id = - 1;
-        setName("nothing");
-        setDescription("nothing");
-        this.timeBudget = -1;
-    }
+    public Project(){}
 
 
     public int getId() {
@@ -74,11 +69,11 @@ public class Project {
         }
     }
 
-    public int getTimeBudget() {
+    public Double getTimeBudget() {
         return timeBudget;
     }
 
-    public void setTimeBudget(int timeBudget) {
+    public void setTimeBudget(double timeBudget) {
         this.timeBudget = timeBudget;
     }
 
