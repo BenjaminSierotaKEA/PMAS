@@ -11,7 +11,7 @@
             <label for="name">Project Name:</label>
             <input type="text" id="name" name="name" th:field="*{name}" placeholder="Name" required>
             <label for="description">Description:</label>
-            <input type="text" id="description" name="description" th:field="*{description}" placeholder="Description">
+            <textarea type="text" id="description" name="description" th:field="*{description}" placeholder="Description"></textarea>
             <label for="timeBudget">Time Budget:</label>
             <input type="number" id="timeBudget" name="timeBudget" th:field="*{timeBudget}" required step="0.1">
             <label for="deadline">Deadline:</label>
