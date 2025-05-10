@@ -17,7 +17,6 @@ import java.util.List;
 public class ProjectController extends BaseController {
     private final SessionHandler sessionHandler;
 
-
     public ProjectController(ProjectService projectService,
                              SubProjectService subProjectService,
                              SessionHandler sessionHandler) {
