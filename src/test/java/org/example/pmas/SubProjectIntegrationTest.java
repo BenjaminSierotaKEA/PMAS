@@ -30,33 +30,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Rollback
 public class SubProjectIntegrationTest {
 
-//    @Autowired
-//    private MockMvc mvc;
-//
-//    @Autowired
-//    SubProjectService subprojectService;
-//
-//    @Test
-//    public void createSubProjectShouldPersistToDatabase() throws Exception {
-//        SubProject test = new SubProject("IntegrationTest","IntegrationTest");
-//        mvc.perform(post("/projects/save")
-//                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//                        .param("name",test.getName())
-//                        .param("description",test.getDescription())
-//                        .param("projectID", String.valueOf(1)))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/projects/1/subprojects"));
-//
-//        List<SubProject> projects = subprojectService.readAll();
-//
-//        boolean matchFound = false;
-//        for(SubProject p : projects) {
-//            if(p.getName().equals(test.getName()) && p.getDescription().equals(test.getDescription())
-//            && p.getProjectID() == 1) {
-//                matchFound = true;
-//                break;
-//            }
-//        }
-//        assertTrue(matchFound);
-//    }
+    @Autowired
+    private MockMvc mvc;
+
+    @Autowired
+    SubProjectService subprojectService;
+
+    @Test
+    public void createSubProjectShouldPersistToDatabase() throws Exception {
+        SubProject test = new SubProject("IntegrationTest","IntegrationTest");
+        test.setProjectID(1);
+        mvc.perform(post("/projects/1/subprojects/save")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .flashAttr("subproject",test))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/projects/1/subprojects"));
+
+        List<SubProject> projects = subprojectService.readAll();
+
+        boolean matchFound = false;
+        for(SubProject p : projects) {
+            if(p.getName().equals(test.getName()) && p.getDescription().equals(test.getDescription())
+            && p.getProjectID() == 1) {
+                matchFound = true;
+                break;
+            }
+        }
+        assertTrue(matchFound);
+    }
 }
