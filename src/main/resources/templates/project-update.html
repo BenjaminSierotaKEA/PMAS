@@ -10,13 +10,13 @@
         <form method="post" th:action="@{/projects/update}" th:object="${project}">
             <input hidden type="number" th:field="*{id}">
             <label>Project Name:</label>
-            <input type="text" th:field="*{name}">
+            <input type="text" th:field="*{name}" required>
             <label>Description:</label>
             <textarea type="text" th:field="*{description}"></textarea>
             <label>Time Budget:</label>
-            <input type="number" th:field="*{timeBudget}">
+            <input type="number" th:field="*{timeBudget}" required step="0.1">
             <label>Deadline:</label>
-            <input type="date" th:field="*{deadline}">
+            <input type="date" th:field="*{deadline}" required>
             <button type="submit">Submit</button>
 
         </form>

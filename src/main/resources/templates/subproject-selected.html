@@ -14,7 +14,7 @@
         <form method="post" th:action="@{/projects/{projectId}/subprojects/update(projectId=${project.id})}"
               th:object="${subproject}">
             <input type="number" th:field="*{id}" readonly hidden>
-            <input hidden readonly type="number" th:field="*{projectID}">
+            <input hidden readonly type="number" th:field="*{projectID}" required>
 
             <label>Navn</label>
             <input type="text" th:field="*{name}"/>
@@ -25,7 +25,7 @@
 
             <br>
             <label>TidsBudget</label>
-            <input type="text" th:field="*{timeBudget}"/>
+            <input type="text" th:field="*{timeBudget}" placeholder="0.0" required step="0.1"/>
 
             <label>TidBrugt</label>
             <input type="text" th:field="*{timeTaken}">

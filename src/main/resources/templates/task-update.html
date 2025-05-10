@@ -14,14 +14,14 @@
 
     <label for="name">Navn:</label><br>
     <input type="text" id="name" name="name"
-           th:field="*{name}"/> <br>
+           th:field="*{name}" required/> <br>
 
     <label for="description">Beskrivelse:</label><br>
-    <textarea id="description" name="description" rows="4" cols="50"
+    <textarea id="description" name="description" required rows="4" cols="50"
               th:field="*{description}"></textarea> <br>
 
     <label for="timeBudget">*Tidsallokering:</label><br>
-    <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1"
+    <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1" required
            th:field="*{timeBudget}"/> <br>
 
     <label for="timeTaken">Faktiske tid:</label><br>
@@ -41,7 +41,7 @@
     </fieldset>
 
     <label for="deadline">Deadline:</label><br>
-    <input type="date" id="deadline" name="deadline"
+    <input type="date" id="deadline" name="deadline" required
            th:field="*{deadline}"/> <br>
 
     <label for="priorityLevel">Prioritet:</label><br>
