@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Rediger Subprojekt</title>
 </head>
 <body>
+<div>
+    <h1>Rediger Subprojekt</h1>
+</div>
+<div>
+    <div>
+        <form method="post" th:action="@{/projects/{projectId}/subprojects/update(projectId=${project.id})}"
+              th:object="${subproject}">
+            <input type="number" th:field="*{id}" readonly hidden>
+            <input hidden readonly type="number" th:field="*{projectID}">
+
+            <label>Navn</label>
+            <input type="text" th:field="*{name}"/>
+
+            <br>
+            <label>Beskrivelse</label>
+            <textarea rows="3" cols="20" th:field="*{description}"></textarea>
+
+            <br>
+            <label>TidsBudget</label>
+            <input type="text" th:field="*{timeBudget}"/>
+
+            <label>TidBrugt</label>
+            <input type="text" th:field="*{timeTaken}">
+
+            <label>Fuldført</label>
+            <input type="checkbox" th:field="*{completed}">
+    </div>
+    <div class="button-container">
+        <button type="submit">Opdatere</button>
+    </div>
+    </form>
+</div>
+
 
 </body>
 </html>

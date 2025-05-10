@@ -1,6 +1,5 @@
 package org.example.pmas.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.User;
@@ -19,93 +18,91 @@ public class ProjectController {
     private final SessionHandler sessionHandler;
 
 
-    public ProjectController(ProjectService projectService, SessionHandler sessionHandler){
+    public ProjectController(ProjectService projectService, SessionHandler sessionHandler) {
         this.projectService = projectService;
         this.sessionHandler = sessionHandler;
     }
 
     //TODO: add session stuff
-    @GetMapping("/create-project-form")
-    public String getCreateProjectForm(Model model){
+    @GetMapping("/new")
+    public String getCreateProjectForm(Model model) {
         Project project = new Project();
         boolean allowAccess = sessionHandler.isUserProjectManager();
         model.addAttribute("allowAccess", allowAccess);
         model.addAttribute("project", project);
 
-        return "create-project-form";
+        return "project-new";
     }
 
     //TODO: add session stuff, redirect to somewhere better
     @PostMapping("/create-project")
-    public String createProject(@ModelAttribute("project") Project project){
-        if(sessionHandler.isUserProjectManager()){
+    public String createProject(@ModelAttribute("project") Project project) {
+        if (sessionHandler.isUserProjectManager()) {
             projectService.createProject(project);
         }
 
 
-        return "redirect:see-all";
+        return "redirect:projects/all";
     }
 
     //TODO: ADD stuff so only the cto can see this page
-    @GetMapping("/see-all")
-    public String seeAll(Model model){
+    @GetMapping("/all")
+    public String seeAll(Model model) {
 
         boolean allowAccess = sessionHandler.isUserProjectManager();
         List<Project> projects = projectService.readAll();
         model.addAttribute("projects", projects);
         model.addAttribute("allowAccess", allowAccess);
 
-        return "show-all-projects";
+        return "project-all";
     }
 
     @GetMapping("/my-projects")
-    public String myProjects(Model model, HttpSession session){
+    public String myProjects(Model model) {
 
 
         User user = sessionHandler.getCurrentUser();
         boolean loggedIn = false;
-        if(user.getRole() != null){
+        if (user.getRole() != null) {
             loggedIn = true;
         }
         List<Project> projects = null;
-        if(!(user==null)){
-          projects =  projectService.readProjectsOfUser(user.getUserID());
+        if (!(user == null)) {
+            projects = projectService.readProjectsOfUser(user.getUserID());
         }
-        if(loggedIn){
+        if (loggedIn) {
             model.addAttribute("username", user.getName());
-        }else{
+        } else {
             model.addAttribute("username", "logged out");
         }
 
         model.addAttribute("projects", projects);
         model.addAttribute("loggedIn", loggedIn);
 
-        return "my-projects";
+        return "project-selected";
 
     }
 
-    @GetMapping("/{id}/update-form")
-    public String updateForm(@PathVariable int id, Model model){
+    @GetMapping("/{id}/update")
+    public String updateForm(@PathVariable int id, Model model) {
 
 
-        if(!projectService.doesProjectExist(id)){
+        if (!projectService.doesProjectExist(id)) {
             return "errorpage";
-        }else{
-
-            Project project = projectService.readSelected(id);
-            model.addAttribute("project", project);
-            boolean allowAccess = sessionHandler.isUserProjectManager();
-            model.addAttribute("allowAccess",allowAccess);
-            return "update-project-form";
         }
-        //Project project = projectService.
+
+        Project project = projectService.readSelected(id);
+        model.addAttribute("project", project);
+        boolean allowAccess = sessionHandler.isUserProjectManager();
+        model.addAttribute("allowAccess", allowAccess);
+        return "project-update";
     }
 
     @PostMapping("update-project")
-    public String updateProject(@ModelAttribute Project project, Model model){
+    public String updateProject(@ModelAttribute Project project, Model model) {
 
 
-        if(sessionHandler.isUserProjectManager()){
+        if (sessionHandler.isUserProjectManager()) {
             projectService.updateProject(project);
         }
 
@@ -113,11 +110,11 @@ public class ProjectController {
     }
 
     @PostMapping("delete-project")
-    public String deleteProject(@ModelAttribute Project project, Model model){
-        if(sessionHandler.isUserProjectManager()){
+    public String deleteProject(@ModelAttribute Project project, Model model) {
+        if (sessionHandler.isUserProjectManager()) {
             projectService.deleteProject(project.getId());
         }
-        return "redirect:see-all";
+        return "redirect:all";
     }
 
     @GetMapping("/{projectId}/subprojects")
@@ -128,7 +125,4 @@ public class ProjectController {
         model.addAttribute("projectId", projectId);
         return "subprojects-all";
     }
-
-
-
 }
