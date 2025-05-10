@@ -59,7 +59,7 @@ public class ProjectController extends BaseController {
     }
 
 
-    @GetMapping("/{projectId}/project")
+    @GetMapping("/{projectId}/edit")
     public String updateForm(@PathVariable int projectId, Model model) {
         Project project = getProjectService().readSelected(projectId);
         model.addAttribute("project", project);

@@ -12,13 +12,22 @@ make this according to the styled mockup later-->
     <a  th:href="@{/projects/new}">Create Project</a>
 </div>
     <table th:if="${allowAccess}">
+        <tr>
+            <th>Project</th>
+            <th>Description</th>
+            <th>Time budget</th>
+            <th>Time taken</th>
+            <th>Deadline</th>
+            <th>Update</th>
+            <th>Delete</th>
+        </tr>
         <tr th:each="project :${projects}" >
             <th th:text="${project.name}"></th>
             <th th:text="${project.description}"></th>
             <th th:text="${project.timeBudget}"></th>
             <th th:text="${project.deadline}"></th>
             <th>
-                <a th:href="@{/projects/{projectId}/project(projectId=${project.id})}">
+                <a th:href="@{/projects/{projectId}/edit(projectId=${project.id})}">
                     Update
                 </a>
                 <form method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" th:object="${project}"
