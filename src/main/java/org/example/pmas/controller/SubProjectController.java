@@ -1,11 +1,14 @@
 package org.example.pmas.controller;
 
+import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.service.ProjectService;
 import org.example.pmas.service.SubProjectService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("projects/{projectId}/subprojects")
@@ -19,8 +22,10 @@ public class SubProjectController extends BaseController {
     }
 
     @GetMapping("/all")
-    public String readAll(Model model) {
-        model.addAttribute("subprojects", subprojectService.readAll());
+    public String readAll(@PathVariable int projectId, Model model) {
+        model.addAttribute(model.getAttribute("project"));
+        List<SubProjectDTO> subprojects = subprojectService.getSubProjectDTOByProjectId(projectId);
+        model.addAttribute("subprojects",subprojects);
         return "subprojects-all";
     }
 
@@ -52,13 +57,15 @@ public class SubProjectController extends BaseController {
     }
 
     @PostMapping("/save")
-    public String saveSubProject(@ModelAttribute("subproject") SubProject subproject) {
+    public String saveSubProject(@PathVariable int projectId,
+                                 @ModelAttribute("subproject") SubProject subproject) {
+        subproject.setProjectID(projectId);
         subprojectService.create(subproject);
-        return "redirect:/projects/" + subproject.getProjectID() + "/subprojects";
+        return "redirect:/projects/" + projectId + "/subprojects";
     }
 
     @GetMapping("/{subprojectId}/edit")
-    public String editSubProject(@PathVariable int subprojectId, Model model) {
+    public String editSubProject(@PathVariable int projectId, @PathVariable int subprojectId, Model model) {
         validateId(subprojectId);
         SubProject subproject = subprojectService.readSelected(subprojectId);
         model.addAttribute("subproject", subproject);

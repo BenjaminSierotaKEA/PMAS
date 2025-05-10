@@ -1,8 +1,10 @@
 package org.example.pmas.repository;
 
+import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;
+import org.example.pmas.model.rowMapper.SubProjectDTORowMapper;
 import org.example.pmas.model.rowMapper.SubProjectRowMapper;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.springframework.dao.DataAccessException;
@@ -27,7 +29,7 @@ public class SubProjectRepository implements ISubProjectRepository {
 
     @Override
     public List<SubProject> readAll() {
-        String sql = "SELECT * FROM subprojects";
+        String sql = "SELECT * from subprojects";
         try {
             return jdbcTemplate.query(sql, new SubProjectRowMapper());
         } catch (DataAccessException e) {
@@ -62,7 +64,7 @@ public class SubProjectRepository implements ISubProjectRepository {
 
         try {
             jdbcTemplate.update(connection -> {
-                var ps = connection.prepareStatement(sql, new String[]{"id"}); // Specify "id" as the generated column
+                var ps = connection.prepareStatement(sql, new String[]{"id"});
                 ps.setString(1, subProject.getName());
                 ps.setString(2, subProject.getDescription());
                 ps.setDouble(3, subProject.getTimeBudget());
@@ -132,4 +134,27 @@ public class SubProjectRepository implements ISubProjectRepository {
             throw new DatabaseException("Database fejl: kunne ikke kontrollere eksistensen af subprojekt med ID " + id,e);
         }
     }
+
+    public List<SubProjectDTO> getSubProjectDTOByProjectID(int projectID) {
+        String sql = "SELECT " +
+                "sp.id, " +
+                "sp.name, " +
+                "sp.description, " +
+                "sp.completed, " +
+                "sp.projectID, " +
+                "COUNT(t.id) AS totalTasks, " +
+                "SUM(CASE WHEN t.completed = true THEN 1 ELSE 0 END) AS completedTasks, " +
+                "SUM(CASE WHEN t.completed = true THEN t.timeTaken ELSE 0 END) AS timeTaken, " +
+                "SUM(t.timeBudget) AS timeBudget " +
+                "FROM subprojects sp " +                                                  // <-- and here
+                "LEFT JOIN tasks t ON sp.id = t.subProjectID " +                          // <-- and here
+                "WHERE sp.projectID = ? " +                                               // <-- and here
+                "GROUP BY sp.id";
+        try {
+            return jdbcTemplate.query(sql, new SubProjectDTORowMapper(),projectID);
+        } catch (DataAccessException e) {
+            throw new DatabaseException("Database fejl: kunne ikke hente alle subprojekter", e);
+        }
+    }
+
 }

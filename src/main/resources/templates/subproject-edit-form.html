@@ -11,7 +11,7 @@
 </div>
 <div>
     <div>
-        <form method="post" th:action="@{/projects/update}"
+        <form method="post" th:action="@{/projects/{projectId}/subprojects/update(projectId=${subproject.getProjectID()})}"
               th:object="${subproject}">
             <input type="number" th:field="*{id}" readonly hidden>
             <input hidden readonly type="number" th:field="*{projectID}">
