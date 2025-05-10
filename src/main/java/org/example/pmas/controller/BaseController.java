@@ -40,4 +40,12 @@ public class BaseController {
         }
         return new Project();
     }
+
+    public ProjectService getProjectService() {
+        return projectService;
+    }
+
+    public SubProjectService getSubProjectService() {
+        return subProjectService;
+    }
 }

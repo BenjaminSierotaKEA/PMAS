@@ -2,6 +2,7 @@ package org.example.pmas.controller;
 
 import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
+import org.example.pmas.model.User;
 import org.example.pmas.service.ProjectService;
 import org.example.pmas.service.SubProjectService;
 import org.example.pmas.util.SessionHandler;
@@ -14,7 +15,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/projects")
 public class ProjectController extends BaseController {
-    private final ProjectService projectService;
     private final SessionHandler sessionHandler;
 
 
@@ -22,7 +22,6 @@ public class ProjectController extends BaseController {
                              SubProjectService subProjectService,
                              SessionHandler sessionHandler) {
         super(subProjectService, projectService);
-        this.projectService = projectService;
         this.sessionHandler = sessionHandler;
     }
 
@@ -41,9 +40,8 @@ public class ProjectController extends BaseController {
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project) {
         if (sessionHandler.isUserProjectManager()) {
-            projectService.createProject(project);
+            getProjectService().createProject(project);
         }
-
 
         return "redirect:/projects/all";
     }
@@ -53,7 +51,7 @@ public class ProjectController extends BaseController {
     public String seeAll(Model model) {
 
         boolean allowAccess = sessionHandler.isUserProjectManager();
-        List<Project> projects = projectService.readAll();
+        List<Project> projects = getProjectService().readAll();
         model.addAttribute("projects", projects);
         model.addAttribute("allowAccess", allowAccess);
 
@@ -63,7 +61,7 @@ public class ProjectController extends BaseController {
 
     @GetMapping("/{projectId}/project")
     public String updateForm(@PathVariable int projectId, Model model) {
-        Project project = projectService.readSelected(projectId);
+        Project project = getProjectService().readSelected(projectId);
         model.addAttribute("project", project);
 
         boolean allowAccess = sessionHandler.isUserProjectManager();
@@ -74,7 +72,7 @@ public class ProjectController extends BaseController {
     @PostMapping("{projectId}/delete")
     public String deleteProject(@PathVariable int projectId) {
         if (sessionHandler.isUserProjectManager()) {
-            projectService.deleteProject(projectId);
+            getProjectService().deleteProject(projectId);
         }
         return "redirect:/projects/all";
     }
@@ -82,7 +80,7 @@ public class ProjectController extends BaseController {
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project) {
         if (sessionHandler.isUserProjectManager()) {
-            projectService.updateProject(project);
+            getProjectService().updateProject(project);
         }
 
         return "redirect:/projects/all";
@@ -90,36 +88,36 @@ public class ProjectController extends BaseController {
 
     @GetMapping("/{projectId}/subprojects")
     public String viewSubProjects(@PathVariable int projectId, Model model) {
-        List<SubProject> subprojects = projectService.getSubProjectsByProjectID(projectId);
+        List<SubProject> subprojects = getProjectService().getSubProjectsByProjectID(projectId);
 
         model.addAttribute("subprojects", subprojects);
         model.addAttribute("projectId", projectId);
         return "subprojects-all";
     }
 
-//    @GetMapping("/my-projects")
-//    public String myProjects(Model model) {
-//
-//
-//        User user = sessionHandler.getCurrentUser();
-//        boolean loggedIn = false;
-//        if (user.getRole() != null) {
-//            loggedIn = true;
-//        }
-//        List<Project> projects = null;
-//        if (!(user == null)) {
-//            projects = projectService.readProjectsOfUser(user.getUserID());
-//        }
-//        if (loggedIn) {
-//            model.addAttribute("username", user.getName());
-//        } else {
-//            model.addAttribute("username", "logged out");
-//        }
-//
-//        model.addAttribute("projects", projects);
-//        model.addAttribute("loggedIn", loggedIn);
-//
-//        return "project-selected";
-//
-//    }
+    @GetMapping("/my-projects")
+    public String myProjects(Model model) {
+
+
+        User user = sessionHandler.getCurrentUser();
+        boolean loggedIn = false;
+        if (user.getRole() != null) {
+            loggedIn = true;
+        }
+        List<Project> projects = null;
+        if (!(user == null)) {
+            projects = getProjectService().readProjectsOfUser(user.getUserID());
+        }
+        if (loggedIn) {
+            model.addAttribute("username", user.getName());
+        } else {
+            model.addAttribute("username", "logged out");
+        }
+
+        model.addAttribute("projects", projects);
+        model.addAttribute("loggedIn", loggedIn);
+
+        return "project-selected";
+
+    }
 }

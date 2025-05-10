@@ -8,7 +8,7 @@
 <body>
 <h1 th:text="'Project: ' + ${project.name}"></h1>
 
-<a th:href="@{/projects/{projectId}/subprojects/create(projectId=${project.id})}">Opret et nyt subprojekt</a>
+<a th:href="@{/projects/{projectId}/subprojects/new(projectId=${project.id})}">Opret et nyt subprojekt</a>
 
 <table class="table">
     <thead>

@@ -14,17 +14,14 @@ import java.util.List;
 @RequestMapping("projects/{projectId}/subprojects")
 public class SubProjectController extends BaseController {
 
-    private final SubProjectService subprojectService;
-
     public SubProjectController(SubProjectService subProjectService, ProjectService projectService) {
         super(subProjectService,projectService);
-        this.subprojectService = subProjectService;
     }
 
     @GetMapping("/all")
     public String readAll(@PathVariable int projectId, Model model) {
         model.addAttribute(model.getAttribute("project"));
-        List<SubProjectDTO> subprojects = subprojectService.getSubProjectDTOByProjectId(projectId);
+        List<SubProjectDTO> subprojects = getSubProjectService().getSubProjectDTOByProjectId(projectId);
         model.addAttribute("subprojects",subprojects);
         return "subprojects-all";
     }
@@ -33,7 +30,7 @@ public class SubProjectController extends BaseController {
     public String getSubProject(@PathVariable int subprojectId,
                                 Model model) {
         validateId(subprojectId);
-        SubProject subproject = subprojectService.readSelected(subprojectId);
+        SubProject subproject = getSubProjectService().readSelected(subprojectId);
         model.addAttribute("subproject", subproject);
         return "subproject-selected";
     }
@@ -43,7 +40,7 @@ public class SubProjectController extends BaseController {
                                    @PathVariable int projectId) {
         validateId(subprojectId);
         //int projectID = subprojectService.getProjectIDBySubProjectID(subprojectID);
-        subprojectService.delete(subprojectId);
+        getSubProjectService().delete(subprojectId);
         return "redirect:/projects/" + projectId +"/subprojects/all";
     }
 
@@ -59,18 +56,20 @@ public class SubProjectController extends BaseController {
         return "subproject-new";
     }
 
-    @PostMapping("/save")
+    @PostMapping("/create")
     public String saveSubProject(@PathVariable int projectId,
-                                 @ModelAttribute("subproject") SubProject subproject) {
+                                 @ModelAttribute SubProject subproject) {
         subproject.setProjectID(projectId);
-        subprojectService.create(subproject);
+        getSubProjectService().create(subproject);
         return "redirect:/projects/" + projectId + "/subprojects";
     }
 
     @GetMapping("/{subprojectId}/edit")
-    public String editSubProject(@PathVariable int projectId, @PathVariable int subprojectId, Model model) {
+    public String editSubProject(@PathVariable int projectId,
+                                 @PathVariable int subprojectId,
+                                 Model model) {
         validateId(subprojectId);
-        SubProject subproject = subprojectService.readSelected(subprojectId);
+        SubProject subproject = getSubProjectService().readSelected(subprojectId);
         model.addAttribute("subproject", subproject);
         return "subproject-edit-form";
     }
@@ -78,7 +77,7 @@ public class SubProjectController extends BaseController {
     @PostMapping("/update")
     public String updateSubProject(@ModelAttribute SubProject subproject,
                                    @PathVariable(value="projectId") int projectId) {
-        subprojectService.updateSubProject(subproject);
+        getSubProjectService().updateSubProject(subproject);
         return "redirect:/projects/" + projectId + "/subprojects/all";
     }
 
