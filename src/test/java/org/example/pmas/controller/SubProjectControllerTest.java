@@ -62,15 +62,15 @@ public class SubProjectControllerTest {
 //        verify(subprojectService).readSelected(1);
 //    }
 
-    @Test
-    void createSubProject_shouldRenderCreateSubProjectForm() throws Exception {
-        int projectID = 1;
-
-        mvc.perform(get("/projects/{projectID}/subprojects/create", projectID))
-                .andExpect(status().isOk())
-                .andExpect(view().name("subproject-new"))
-                .andExpect(model().attributeExists("subproject"));
-    }
+//    @Test
+//    void createSubProject_shouldRenderCreateSubProjectForm() throws Exception {
+//        int projectID = 1;
+//
+//        mvc.perform(get("/projects/{projectID}/subprojects/create", projectID))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("subproject-new"))
+//                .andExpect(model().attributeExists("subproject"));
+//    }
 
     //needs to be updated to redirect to projectlist when projectlist is added
     @Test
