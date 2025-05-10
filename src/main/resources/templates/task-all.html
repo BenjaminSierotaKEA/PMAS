@@ -7,8 +7,14 @@
 </head>
 <body>
 <h1>Du er i task</h1>
-<a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(projectId=${project.id}, subprojectId=${subproject.id})}">
-    Opret opgave</a>
+<form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(projectId=${project.id}, subprojectId=${subproject.id})}"
+      method="get">
+    <button type="submit">Opret</button>
+</form>
+<form th:action="@{/projects/{projectId}/subprojects/all(projectId=${project.id})}"
+             method="get">
+    <button type="submit">Tilbage til Kategori</button>
+</form>
 <table>
     <tr>
         <th>Opgave</th>

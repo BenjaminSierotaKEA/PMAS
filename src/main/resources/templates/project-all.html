@@ -9,7 +9,7 @@
 make this according to the styled mockup later-->
 <h1 th:unless="${allowAccess}">You are not a project manager. Access Denied!</h1>
 <div th:if="${allowAccess}">
-    <a th:href="@{/projects/new}">Create Project</a>
+    <a th:href="@{/projects/new}">Create</a>
 </div>
 <table th:if="${allowAccess}">
     <thead>
