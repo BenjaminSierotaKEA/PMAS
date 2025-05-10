@@ -38,9 +38,9 @@ public class SubProjectIntegrationTest {
 
     @Test
     public void createSubProjectShouldPersistToDatabase() throws Exception {
-        SubProject test = new SubProject("IntegrationTest","IntegrationTest");
+        SubProject test = new SubProject("IntegrationTest","IntegrationTest",1.1,0,true,1);
         test.setProjectID(1);
-        mvc.perform(post("/projects/1/subprojects/save")
+        mvc.perform(post("/projects/1/subprojects/create")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .flashAttr("subproject",test))
                 .andExpect(status().is3xxRedirection())

@@ -95,7 +95,7 @@ public class SubProjectControllerTest {
 
         mvc.perform(post("/projects/{projectId}/subprojects/{subprojectID}/delete",projectID,idToDelete))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/projects"));
+                .andExpect(redirectedUrl("/projects/0/subprojects/all"));
 
         verify(subprojectService).delete(idToDelete);
     }
@@ -118,7 +118,7 @@ public class SubProjectControllerTest {
         mvc.perform(post("/projects/{projectId}/subprojects/update",subproject.getProjectID())
                         .flashAttr("subproject", subproject))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/projects/" + subproject.getProjectID() + "/subprojects"));
+                .andExpect(redirectedUrl("/projects/" + subproject.getProjectID() + "/subprojects/all"));
 
         verify(subprojectService).updateSubProject(subproject);
     }
