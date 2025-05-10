@@ -45,7 +45,7 @@ public class TaskController extends BaseController {
         model.addAttribute("task", task);
         getSubProjectUsersPriority(model);
 
-        return "task-selected";
+        return "task-update";
     }
 
     @GetMapping("new")
@@ -93,7 +93,7 @@ public class TaskController extends BaseController {
                              Model model) {
         if (task == null) throw new IllegalArgumentException("Noget galt med task.");
         // Checks if subproject is set, if not, redirect to subproject page
-        if (model.getAttribute("subproject") != null) {
+        if (model.getAttribute("subproject") == null) {
             getSubProjectUsersPriority(model);
             model.addAttribute("task", task);
             model.addAttribute("error", "Obligatorisk felt her.");

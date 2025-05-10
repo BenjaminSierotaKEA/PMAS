@@ -7,7 +7,9 @@ import org.example.pmas.service.SubProjectService;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
+// We inherit from this class, so we can use the services in our controllers
 public class BaseController {
+    // We can use these values in our controllers
     private final SubProjectService subProjectService;
     private final ProjectService projectService;
 
@@ -20,6 +22,7 @@ public class BaseController {
     /*
        @PathVariable(value = "subprojectId"
        looks after the value, from the URL
+       if no value found return new SubProject()
     * */
     @ModelAttribute("subproject")
     public SubProject getSubProject(@PathVariable(value = "subprojectId", required = false) Integer subprojectId) {
@@ -32,6 +35,7 @@ public class BaseController {
     /*
        @PathVariable(value = "projectId"
        looks after the value, from the URL
+       if no value found return new Project()
    * */
     @ModelAttribute("project")
     public Project getProject(@PathVariable(value = "projectId", required = false) Integer projectId) {

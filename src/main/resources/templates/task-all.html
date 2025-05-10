@@ -37,10 +37,12 @@
         </span>
         </td>
         <td th:text="${task.priorityLevel != null ? task.priorityLevel.displayName : ''}"></td>
-        <td><a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/edit(
-                    projectId=${project.id}, subprojectId=${subproject.id}, taskId=${task.id})}">
-            Opdater
-        </a></td>
+        <td>
+            <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/edit(
+                    projectId=${project.id}, subprojectId=${subproject.id}, taskId=${task.id})}" method="get">
+                <button type="submit">Opdater</button>
+            </form>
+        </td>
         <td>
             <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/delete(
                     projectId=${project.id}, subprojectId=${subproject.id}, taskId=${task.id})}" method="post"

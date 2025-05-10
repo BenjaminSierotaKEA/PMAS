@@ -34,9 +34,10 @@
         <td th:text="${#numbers.formatDecimal(subproject.completionPercentage, 0, 2)} + '%'"></td>
 
         <td>
-            <a th:href="@{/projects/{projectId}/subprojects/{subprojectid}/subproject(projectId=${project.id}, subprojectid=${subproject.id})}">
-            Opdater
-        </a>
+            <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
+            method="get">
+            <button type="submit">Opdater</button>
+        </form>
         </td>
         <td>
             <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/delete(projectId=${project.id}, subprojectId=${subproject.id})}" method="post"

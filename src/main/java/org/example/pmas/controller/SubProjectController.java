@@ -30,7 +30,7 @@ public class SubProjectController extends BaseController {
     public String getSubProject(@PathVariable int subprojectId,
                                 Model model) {
         validateId(subprojectId);
-        SubProject subproject = getSubProjectService().readSelected(subprojectId);
+        SubProject subproject = (SubProject) model.getAttribute("subproject");
         model.addAttribute("subproject", subproject);
         return "subproject-selected";
     }
@@ -65,11 +65,10 @@ public class SubProjectController extends BaseController {
     }
 
     @GetMapping("/{subprojectId}/edit")
-    public String editSubProject(@PathVariable int projectId,
-                                 @PathVariable int subprojectId,
+    public String editSubProject(@PathVariable int subprojectId,
                                  Model model) {
         validateId(subprojectId);
-        SubProject subproject = getSubProjectService().readSelected(subprojectId);
+        SubProject subproject = (SubProject) model.getAttribute("subproject");
         model.addAttribute("subproject", subproject);
         return "subproject-edit-form";
     }

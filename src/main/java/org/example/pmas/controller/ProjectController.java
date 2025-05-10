@@ -60,9 +60,9 @@ public class ProjectController extends BaseController {
 
     @GetMapping("/{projectId}/edit")
     public String updateForm(@PathVariable int projectId, Model model) {
-        if(projectId >= 0) throw new IllegalArgumentException("Ugyldig ID.");
+        if(projectId <= 0) throw new IllegalArgumentException("Ugyldig ID.");
 
-        Project project = getProjectService().readSelected(projectId);
+        Project project = (Project) model.getAttribute("project");
         model.addAttribute("project", project);
 
         boolean allowAccess = sessionHandler.isUserProjectManager();

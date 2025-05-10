@@ -31,9 +31,10 @@ make this according to the styled mockup later-->
         <td th:text="${project.timeBudget}"></td>
         <td th:text="${project.deadline}"></td>
         <td>
-            <a th:href="@{/projects/{projectId}/edit(projectId=${project.id})}">
-                Update
-            </a>
+            <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}"
+            method="get">
+                <button type="submit">Update</button>
+            </form>
         </td>
         <td>
             <form method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.id})}"
