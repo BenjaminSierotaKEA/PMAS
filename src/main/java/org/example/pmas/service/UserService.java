@@ -1,16 +1,20 @@
 package org.example.pmas.service;
 
 import org.example.pmas.exception.NotFoundException;
+import org.example.pmas.model.Project;
 import org.example.pmas.model.Role;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IRoleRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
+import org.example.pmas.repository.ProjectRepository;
 import org.example.pmas.repository.TaskRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -18,12 +22,14 @@ public class UserService {
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
     private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
 
 
-    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, TaskRepository taskRepository) {
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, TaskRepository taskRepository, ProjectRepository projectRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.taskRepository = taskRepository;
+        this.projectRepository = projectRepository;
     }
 
     public User createUser(User newUser){
@@ -56,12 +62,10 @@ public class UserService {
             User user = userRepository.readSelected(userId);
             System.out.println(user);
             List<Task> tasks = taskRepository.findAllByUserId(userId);
-
-            for (Task t : tasks){
-                System.out.println(t.getName());
-            }
+            List<Project> projects = projectRepository.readProjectsOfUser(userId);
 
             user.setTasks(tasks);
+            user.setProjects(projects);
 
             System.out.println(user);
             return user;

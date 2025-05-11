@@ -7,10 +7,17 @@
 </head>
 <body>
 
-<div>
-    <div>
+<div th:replace="fragments/navbar :: navbar"></div>
 
-    </div>
+<div>
+    <div th:text="${user.name}"> Name </div>
+    <div th:text="${user.email}">Email  </div>
+    <div th:text="${user.role}"> Role </div>
+
+    <img th:src="@{/images/{pic}(pic=${user.picture})}" alt="Profile picture">
+
+
+
 </div>
 
 <hr>
@@ -48,6 +55,31 @@
         </tbody>
     </table>
 </div>
+
+<div th:if="${user.projects != null and !user.projects.isEmpty()}">
+    <h2>Your Projects</h2>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Time Budget (hrs)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="project : ${user.projects}">
+            <td>
+            <a th:href="@{/{id}/subprojects(id=${project.id})}" th:text="${project.name}">Project Name</a>
+            </td>
+            <td th:text="${project.description}">Description</td>
+            <td th:text="${project.deadline}">YYYY-MM-DD</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
 
 
 </body>
