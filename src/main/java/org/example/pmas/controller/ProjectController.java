@@ -31,7 +31,7 @@ public class ProjectController {
         model.addAttribute("allowAccess", allowAccess);
         model.addAttribute("project", project);
 
-        return "project-new";
+        return "project-create-form";
     }
 
     //TODO: add session stuff, redirect to somewhere better
@@ -56,53 +56,6 @@ public class ProjectController {
         return "project-all";
     }
 
-
-    @GetMapping("/{projectId}/edit")
-    public String updateForm(@PathVariable int projectId, Model model) {
-        if(projectId <= 0) throw new IllegalArgumentException("Ugyldig ID.");
-
-        if(!projectService.doesProjectExist(projectId)){
-            return "errorpage";
-        }else{
-
-            Project project = projectService.readSelected(projectId);
-            model.addAttribute("project", project);
-            boolean allowAccess = sessionHandler.isUserProjectManager();
-            model.addAttribute("allowAccess",allowAccess);
-            return "project-update";
-        }
-    }
-
-    @PostMapping("{projectId}/delete")
-    public String deleteProject(@PathVariable int projectId) {
-        if(projectId <= 0) throw new IllegalArgumentException("Ugyldig ID.");
-
-        if (sessionHandler.isUserProjectManager()) {
-            projectService.deleteProject(projectId);
-        }
-        return "redirect:/projects/all";
-    }
-
-    @PostMapping("update")
-    public String updateProject(@ModelAttribute Project project) {
-        if (sessionHandler.isUserProjectManager()) {
-            projectService.updateProject(project);
-        }
-
-        return "redirect:/projects/all";
-    }
-
-    @GetMapping("/{projectId}/subprojects")
-    public String viewSubProjects(@PathVariable int projectId, Model model) {
-        if(projectId >= 0) throw new IllegalArgumentException("Ugyldig ID.");
-
-        List<SubProject> subprojects = projectService.getSubProjectsByProjectID(projectId);
-
-        model.addAttribute("subprojects", subprojects);
-        model.addAttribute("projectId", projectId);
-        return "subprojects-all";
-    }
-
     @GetMapping("/my-projects")
     public String myProjects(Model model) {
 
@@ -125,7 +78,56 @@ public class ProjectController {
         model.addAttribute("projects", projects);
         model.addAttribute("loggedIn", loggedIn);
 
-        return "project-new";
+        return "project-selected";
 
     }
+
+
+    @GetMapping("/{projectId}/edit")
+    public String updateForm(@PathVariable int projectId, Model model) {
+        if(projectId <= 0) throw new IllegalArgumentException("Ugyldig ID.");
+
+        if(!projectService.doesProjectExist(projectId)){
+            return "errorpage";
+        }else{
+
+            Project project = projectService.readSelected(projectId);
+            model.addAttribute("project", project);
+            boolean allowAccess = sessionHandler.isUserProjectManager();
+            model.addAttribute("allowAccess",allowAccess);
+            return "project-update-form";
+        }
+    }
+
+    @PostMapping("update")
+    public String updateProject(@ModelAttribute Project project) {
+        if(project == null) throw new IllegalArgumentException("Ugyldig projekt.");
+
+        if (sessionHandler.isUserProjectManager()) {
+            projectService.updateProject(project);
+        }
+
+        return "redirect:/projects/all";
+    }
+
+    @PostMapping("{projectId}/delete")
+    public String deleteProject(@PathVariable int projectId) {
+        if(projectId <= 0) throw new IllegalArgumentException("Ugyldig ID.");
+
+        if (sessionHandler.isUserProjectManager()) {
+            projectService.deleteProject(projectId);
+        }
+        return "redirect:/projects/all";
+    }
+
+//    @GetMapping("/{projectId}/subprojects")
+//    public String viewSubProjects(@PathVariable int projectId, Model model) {
+//        if(projectId >= 0) throw new IllegalArgumentException("Ugyldig ID.");
+//
+//        List<SubProject> subprojects = projectService.getSubProjectsByProjectID(projectId);
+//
+//        model.addAttribute("subprojects", subprojects);
+//        model.addAttribute("projectId", projectId);
+//        return "subprojects-all";
+//    }
 }
