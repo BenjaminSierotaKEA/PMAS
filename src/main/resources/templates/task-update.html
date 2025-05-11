@@ -6,6 +6,7 @@
     <title>Selected Task</title>
 </head>
 <body>
+<h3 th:text="'Opdater: ' + ${task.name}"></h3>
 <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/update(
                     projectId=${projectId}, subprojectId=${subprojectId})}" th:method="post" th:object="${task}">
     <input type="text" hidden name="id"
@@ -68,6 +69,10 @@
 
 
     <button type="submit">Opdater</button>
+    <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
+    projectId=${projectId}, subprojectId=${subprojectId})}">
+        <button type="button">Tilbage</button>
+    </a>
 </form>
 </body>
 </html>

@@ -6,6 +6,7 @@
     <title>add task</title>
 </head>
 <body>
+<h3>Opret en opgave</h3>
 <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/create(
                     projectId=${projectId}, subprojectId=${subprojectId})}" th:method="post" th:object="${task}">
     <label for="name">Navn:*</label><br>
@@ -71,6 +72,10 @@
 
 
     <button type="submit">Send</button>
+    <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
+    projectId=${projectId}, subprojectId=${subprojectId})}">
+        <button type="button">Tilbage</button>
+    </a>
 </form>
 
 </body>
