@@ -4,7 +4,6 @@ import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.User;
 import org.example.pmas.service.ProjectService;
-import org.example.pmas.service.SubProjectService;
 import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +13,13 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/projects")
-public class ProjectController extends BaseController {
+public class ProjectController {
     private final SessionHandler sessionHandler;
+    private final ProjectService projectService;
 
     public ProjectController(ProjectService projectService,
-                             SubProjectService subProjectService,
                              SessionHandler sessionHandler) {
-        super(subProjectService, projectService);
+        this.projectService = projectService;
         this.sessionHandler = sessionHandler;
     }
 
@@ -39,7 +38,7 @@ public class ProjectController extends BaseController {
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project) {
         if (sessionHandler.isUserProjectManager()) {
-            getProjectService().createProject(project);
+            projectService.createProject(project);
         }
 
         return "redirect:/projects/all";
@@ -50,7 +49,7 @@ public class ProjectController extends BaseController {
     public String seeAll(Model model) {
 
         boolean allowAccess = sessionHandler.isUserProjectManager();
-        List<Project> projects = getProjectService().readAll();
+        List<Project> projects = projectService.readAll();
         model.addAttribute("projects", projects);
         model.addAttribute("allowAccess", allowAccess);
 
@@ -62,20 +61,24 @@ public class ProjectController extends BaseController {
     public String updateForm(@PathVariable int projectId, Model model) {
         if(projectId <= 0) throw new IllegalArgumentException("Ugyldig ID.");
 
-        Project project = (Project) model.getAttribute("project");
-        model.addAttribute("project", project);
+        if(!projectService.doesProjectExist(projectId)){
+            return "errorpage";
+        }else{
 
-        boolean allowAccess = sessionHandler.isUserProjectManager();
-        model.addAttribute("allowAccess", allowAccess);
-        return "project-update";
+            Project project = projectService.readSelected(projectId);
+            model.addAttribute("project", project);
+            boolean allowAccess = sessionHandler.isUserProjectManager();
+            model.addAttribute("allowAccess",allowAccess);
+            return "project-update";
+        }
     }
 
     @PostMapping("{projectId}/delete")
     public String deleteProject(@PathVariable int projectId) {
-        if(projectId >= 0) throw new IllegalArgumentException("Ugyldig ID.");
+        if(projectId <= 0) throw new IllegalArgumentException("Ugyldig ID.");
 
         if (sessionHandler.isUserProjectManager()) {
-            getProjectService().deleteProject(projectId);
+            projectService.deleteProject(projectId);
         }
         return "redirect:/projects/all";
     }
@@ -83,7 +86,7 @@ public class ProjectController extends BaseController {
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project) {
         if (sessionHandler.isUserProjectManager()) {
-            getProjectService().updateProject(project);
+            projectService.updateProject(project);
         }
 
         return "redirect:/projects/all";
@@ -93,7 +96,7 @@ public class ProjectController extends BaseController {
     public String viewSubProjects(@PathVariable int projectId, Model model) {
         if(projectId >= 0) throw new IllegalArgumentException("Ugyldig ID.");
 
-        List<SubProject> subprojects = getProjectService().getSubProjectsByProjectID(projectId);
+        List<SubProject> subprojects = projectService.getSubProjectsByProjectID(projectId);
 
         model.addAttribute("subprojects", subprojects);
         model.addAttribute("projectId", projectId);
@@ -111,7 +114,7 @@ public class ProjectController extends BaseController {
         }
         List<Project> projects = null;
         if (!(user == null)) {
-            projects = getProjectService().readProjectsOfUser(user.getUserID());
+            projects = projectService.readProjectsOfUser(user.getUserID());
         }
         if (loggedIn) {
             model.addAttribute("username", user.getName());

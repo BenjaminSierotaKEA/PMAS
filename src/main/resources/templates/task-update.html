@@ -6,9 +6,8 @@
     <title>Selected Task</title>
 </head>
 <body>
-<p th:if="${error}" th:text="${error}"></p>
 <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/update(
-                    projectId=${project.id}, subprojectId=${subproject.id})}" th:method="post" th:object="${task}">
+                    projectId=${projectId}, subprojectId=${subprojectId})}" th:method="post" th:object="${task}">
     <input type="text" hidden name="id"
            th:field="*{id}"/> <br>
 

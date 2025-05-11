@@ -7,7 +7,7 @@
 <body>
 <h2>Create a New SubProject for Project ID: <span th:text="${project.name}"></span></h2>
 
-<form th:action="@{/projects/{projectId}/subprojects/create(projectId=${projectID})}" method="post" th:object="${subproject}">
+<form th:action="@{/projects/{projectId}/subprojects/create(projectId=${project.id})}" method="post" th:object="${subproject}">
 
     <div>
         <label for="name">SubProject Name</label>

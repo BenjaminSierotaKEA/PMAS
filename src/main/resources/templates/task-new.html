@@ -7,7 +7,7 @@
 </head>
 <body>
 <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/create(
-                    projectId=${project.id}, subprojectId=${subproject.id})}" th:method="post" th:object="${task}">
+                    projectId=${projectId}, subprojectId=${subprojectId})}" th:method="post" th:object="${task}">
     <label for="name">Navn:*</label><br>
     <input type="text" id="name" name="name" required placeholder="Navn"
            th:field="*{name}"/>
