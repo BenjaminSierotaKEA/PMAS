@@ -101,7 +101,7 @@ public class ProjectController {
 
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project) {
-        if(project == null) throw new IllegalArgumentException("Ugyldig projekt.");
+        if(project == null) throw new IllegalArgumentException("Ugyldig proj    ekt.");
 
         if (sessionHandler.isUserProjectManager()) {
             projectService.updateProject(project);
