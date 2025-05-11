@@ -4,29 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <title>User Page</title>
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
 </head>
-<body>
+<body class="page-container font_style">
 
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div>
-    <div th:text="${user.name}"> Name </div>
-    <div th:text="${user.email}">Email  </div>
-    <div th:text="${user.role}"> Role </div>
+<div class="flex-row flex-center dark_frame">
+    <div th:text="${user.name}" class="profile_title"> Name</div>
+    <div th:text="${user.email}" class="title">Email</div>
+    <div th:text="${user.role}" class="title"> Role</div>
 
-    <img th:src="@{/images/{pic}(pic=${user.picture})}" alt="Profile picture">
-
-
-
+    <img th:src="@{/images/{pic}(pic=${user.picture})}" alt="Profile picture" class="profile_picture">
 </div>
 
-<hr>
+
+
 
 <div th:if="${user.tasks == null or user.tasks.isEmpty()}">
     <p>No tasks currently waiting for you!</p>
 </div>
-
-<div th:if="${user.tasks != null and !user.tasks.isEmpty()}">
+<div class="flex-row flex-center">
+<div th:if="${user.tasks != null and !user.tasks.isEmpty()}" class="dark_frame">
     <h2>Your Tasks</h2>
     <table border="1">
         <thead>
@@ -42,7 +42,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="task : ${user.tasks}">
+        <tr th:each="task : ${user.tasks}" class="table_row">
             <td th:text="${task.name}">Task Name</td>
             <td th:text="${task.description}">Description</td>
             <td th:text="${task.priorityLevel}">Priority</td>
@@ -56,7 +56,7 @@
     </table>
 </div>
 
-<div th:if="${user.projects != null and !user.projects.isEmpty()}">
+<div th:if="${user.projects != null and !user.projects.isEmpty()}" class="dark_frame">
     <h2>Your Projects</h2>
     <table border="1">
         <thead>
@@ -69,7 +69,7 @@
         <tbody>
         <tr th:each="project : ${user.projects}">
             <td>
-            <a th:href="@{/{id}/subprojects(id=${project.id})}" th:text="${project.name}">Project Name</a>
+                <a th:href="@{/{id}/subprojects(id=${project.id})}" th:text="${project.name}">Project Name</a>
             </td>
             <td th:text="${project.description}">Description</td>
             <td th:text="${project.deadline}">YYYY-MM-DD</td>
@@ -77,10 +77,7 @@
         </tbody>
     </table>
 </div>
-
-
-
-
+</div>
 
 </body>
 </html>
