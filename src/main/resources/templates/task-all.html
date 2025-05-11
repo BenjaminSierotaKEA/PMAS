@@ -6,7 +6,7 @@
     <title>View tasks</title>
 </head>
 <body>
-<h1>Du er i task</h1>
+<h3 th:text="'Opgave oversigt  for: ' + ${subproject.name}"></h3>
 <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(projectId=${projectId}, subprojectId=${subprojectId})}"
       method="get">
     <button type="submit">Opret</button>

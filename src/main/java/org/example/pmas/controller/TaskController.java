@@ -25,10 +25,9 @@ public class TaskController {
     public String readAll(@PathVariable(value = "projectId") int projectId,
                           @PathVariable(value = "subprojectId") int subprojectId,
             Model model) {
-        // Adds all task
-        model.addAttribute("subprojectId", subprojectId);
-        model.addAttribute("projectId", projectId);
+        // Adds all task to HTML
         model.addAttribute("tasks", taskService.getTasksBySubProjectID(subprojectId));
+        model.addAttribute("subproject", taskService.getSubProject(subprojectId));
         return "task-all";
     }
 
