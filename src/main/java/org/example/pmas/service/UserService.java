@@ -2,9 +2,11 @@ package org.example.pmas.service;
 
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Role;
+import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IRoleRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
+import org.example.pmas.repository.TaskRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,13 @@ public class UserService {
 
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
+    private final TaskRepository taskRepository;
 
 
-    public UserService(IUserRepository userRepository, IRoleRepository roleRepository) {
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, TaskRepository taskRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.taskRepository = taskRepository;
     }
 
     public User createUser(User newUser){
@@ -49,7 +53,19 @@ public class UserService {
 
     public User getUser(int userId) {
         try {
-            return userRepository.readSelected(userId);
+            User user = userRepository.readSelected(userId);
+            System.out.println(user);
+            List<Task> tasks = taskRepository.findAllByUserId(userId);
+
+            for (Task t : tasks){
+                System.out.println(t.getName());
+            }
+
+            user.setTasks(tasks);
+
+            System.out.println(user);
+            return user;
+
         } catch (DataAccessException dataAccessException) {
             return null;
         }
