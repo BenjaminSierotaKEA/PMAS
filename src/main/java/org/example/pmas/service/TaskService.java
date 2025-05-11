@@ -16,13 +16,15 @@ import java.util.*;
 @Service
 public class TaskService {
     private final ITaskRepository taskRepository;
-    private final ISubProjectRepository subProjectRepository;
     private final IUserRepository userRepository;
+    private final ISubProjectRepository subProjectRepository;
 
-    public TaskService(ITaskRepository taskRepository, ISubProjectRepository subProjectRepository, IUserRepository userRepository) {
+    public TaskService(ITaskRepository taskRepository,
+                       IUserRepository userRepository,
+                       ISubProjectRepository subProjectService) {
         this.taskRepository = taskRepository;
-        this.subProjectRepository = subProjectRepository;
         this.userRepository = userRepository;
+        this.subProjectRepository = subProjectService;
     }
 
     public void create(Task task, List<Integer> userIDs) {
@@ -30,7 +32,8 @@ public class TaskService {
         if (createdTask == null) throw new NotFoundException(task.getId());
 
         // Adds user and task to junction table if any
-        addUserToTask(createdTask.getId(), userIDs);
+        if (userIDs != null)
+            addUserToTask(createdTask.getId(), userIDs);
     }
 
     public List<Task> readAll() {
@@ -54,17 +57,13 @@ public class TaskService {
         return task;
     }
 
-    public List<SubProject> getAllSubproject() {
-        return subProjectRepository.readAll();
-    }
-
     public void delete(int id) {
         // check if id exist.
         var task = taskRepository.readSelected(id);
-        if (task == null) throw new NotFoundException(id);
+        if (task == null) throw new NotFoundException("opgaven findes ikke");
 
         // Skal tænkes igennem igen
-        if(!taskRepository.delete(id))
+        if (!taskRepository.delete(id))
             throw new NotFoundException("Id:" + id + " Kunne ikke slette opgaven");
     }
 
@@ -73,20 +72,20 @@ public class TaskService {
         var old = taskRepository.readSelected(task.getId());
         if (old == null) throw new NotFoundException(task.getId());
 
-        boolean succes = taskRepository.update(task);
-        if (!succes) throw new NotFoundException("Id:" + task.getId() + " Kunne ikke opdatere task");
+        if (!taskRepository.update(task))
+            throw new NotFoundException("Id:" + task.getId() + " Kunne ikke opdatere opgaven");
 
         // Adds users to the junction table if any
-
         addUserToTask(task.getId(), userIDs);
     }
 
-    public List<Task> getTasksBySubProjectID(int subProjectId){
+    public List<Task> getTasksBySubProjectID(int subProjectId) {
         return taskRepository.getTasksBySubProjectID(subProjectId);
     }
 
+    // This handle the junction table relation
     private void addUserToTask(int taskId, List<Integer> newUserIds) {
-        // Fetch users for comparison
+        // Get users for comparison
         List<Integer> currentUserIds = taskRepository.getCurrentUserIdsFromUserTasks(taskId);
 
         // Check differences for add or remove user from a task
@@ -98,14 +97,14 @@ public class TaskService {
         taskRepository.removeUsersFromUserTasks(taskId, toRemove);
     }
 
-    // if no users added to the list. it will throw and error.
-    // this will avoid error
     private Set<Integer> differenceOrEmpty(List<Integer> baseList, List<Integer> subtractList) {
         // We've to check null and isEmpty or else either update or create won't work.
         if (subtractList == null || subtractList.isEmpty()) subtractList = Collections.emptyList();
         if (baseList == null || baseList.isEmpty()) baseList = Collections.emptyList();
 
+        // Adds the list with values
         Set<Integer> result = new HashSet<>(baseList);
+        // Removes duplicates and returns
         result.removeAll(subtractList);
         return result;
     }
@@ -113,4 +112,13 @@ public class TaskService {
     public List<User> getAllUsers() {
         return userRepository.readAll();
     }
+
+    public SubProject getSubProject(int id) {
+        var subproject = subProjectRepository.readSelected(id);
+        if(subproject == null) {
+            throw new NotFoundException(id);
+        }
+        return subproject;
+    }
+
 }

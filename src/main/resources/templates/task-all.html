@@ -6,9 +6,15 @@
     <title>View tasks</title>
 </head>
 <body>
-<h1>Du er i task</h1>
-<a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(
-                    projectId=${project.id}, subprojectId=${subproject.id})}">Opret ny opgave</a>
+<h3 th:text="'Opgave oversigt  for: ' + ${subproject.name}"></h3>
+<form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(projectId=${projectId}, subprojectId=${subprojectId})}"
+      method="get">
+    <button type="submit">Opret</button>
+</form>
+<form th:action="@{/projects/{projectId}/subprojects/all(projectId=${projectId})}"
+             method="get">
+    <button type="submit">Tilbage til Kategori</button>
+</form>
 <table>
     <tr>
         <th>Opgave</th>
@@ -37,13 +43,15 @@
         </span>
         </td>
         <td th:text="${task.priorityLevel != null ? task.priorityLevel.displayName : ''}"></td>
-        <td><a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/task(
-                    projectId=${project.id}, subprojectId=${subproject.id}, taskId=${task.id})}">
-            Opdater
-        </a></td>
+        <td>
+            <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/edit(
+                    projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" method="get">
+                <button type="submit">Opdater</button>
+            </form>
+        </td>
         <td>
             <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/delete(
-                    projectId=${project.id}, subprojectId=${subproject.id}, taskId=${task.id})}" method="post"
+                    projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" method="post"
                   onsubmit="return confirm('Er du sikker på, at du vil slette denne opgave?');">
                 <button type="submit">Slet</button>
             </form>

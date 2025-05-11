@@ -13,15 +13,12 @@ import java.util.List;
 
 @Service
 public class SubProjectService {
-
     private final ISubProjectRepository subprojectRepository;
     private final IProjectRepository projectRepository;
-    private final ITaskRepository taskRepository;
 
-    public SubProjectService(ISubProjectRepository subProjectRepository, IProjectRepository projectRepository,ITaskRepository taskRepository) {
+    public SubProjectService(ISubProjectRepository subProjectRepository, IProjectRepository projectRepository) {
         this.subprojectRepository = subProjectRepository;
         this.projectRepository = projectRepository;
-        this.taskRepository = taskRepository;
     }
 
     public List<SubProject> readAll() {
@@ -55,10 +52,6 @@ public class SubProjectService {
             throw new NotFoundException(subproject.getId());
         }
         return subprojectRepository.update(subproject);
-    }
-
-    public List<Task> getTasksBySubProjectID(int subprojectId){
-        return taskRepository.getTasksBySubProjectID(subprojectId);
     }
 
     public List<SubProjectDTO> getSubProjectDTOByProjectId(int id) {

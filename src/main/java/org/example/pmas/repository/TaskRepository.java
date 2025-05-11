@@ -167,8 +167,7 @@ public class TaskRepository implements ITaskRepository {
 
     @Transactional
     @Override
-    public int addUsersToUserTasks(int taskId, Set<Integer> userIds) {
-        int count = 0;
+    public void addUsersToUserTasks(int taskId, Set<Integer> userIds) {
         for (Integer userId : userIds) {
             try {
                 jdbcTemplate.update("INSERT INTO usertasks (userid, taskid) " +
@@ -178,17 +177,13 @@ public class TaskRepository implements ITaskRepository {
             } catch (DataAccessException e) {
                 throw new DatabaseException("Fejl: kunne ikke indsætte brugerid'er til opgaven.", e);
             }
-            count++;
         }
-
-        return count;
     }
 
     // Removes users from junction table
     @Transactional
     @Override
-    public int removeUsersFromUserTasks(int taskId, Set<Integer> userIds) {
-        int count = 0;
+    public void removeUsersFromUserTasks(int taskId, Set<Integer> userIds) {
         for (Integer userId : userIds) {
             try {
                 jdbcTemplate.update("DELETE FROM usertasks " +
@@ -198,10 +193,7 @@ public class TaskRepository implements ITaskRepository {
             } catch (DataAccessException e) {
                 throw new DatabaseException("Fejl: kunne ikke fjerne brugerid'er fra opgaven.", e);
             }
-
-            count++;
         }
-        return count;
     }
 
     @Transactional

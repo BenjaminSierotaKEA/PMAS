@@ -1,5 +1,6 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
@@ -34,7 +35,12 @@ public class ProjectService {
     }
 
     public Project readSelected(int id){
-        return projectRepository.readSelected(id);
+        Project project = projectRepository.readSelected(id);
+        if (project == null) {
+            throw new NotFoundException("Project with id " + id + " does not exist");
+        }
+
+        return project;
     }
 
     public boolean updateProject(Project newProject){
@@ -52,7 +58,4 @@ public class ProjectService {
     public List<SubProject> getSubProjectsByProjectID(int projectId){
         return subprojectRepository.getSubProjectsByProjectID(projectId);
     }
-
-
-
 }

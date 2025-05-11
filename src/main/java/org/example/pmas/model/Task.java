@@ -16,8 +16,7 @@ public class Task {
     private SubProject subProject;
     private Set<User> users;
 
-    public Task() {
-    }
+    public Task() {}
 
     public Task(int id, String name, String description, PriorityLevel priorityLevel, double timeBudget,
                 double timeTaken, boolean completed, LocalDate deadline, SubProject subProject,

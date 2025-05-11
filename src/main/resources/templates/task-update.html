@@ -6,22 +6,22 @@
     <title>Selected Task</title>
 </head>
 <body>
-<p th:if="${error}" th:text="${error}"></p>
+<h3 th:text="'Opdater: ' + ${task.name}"></h3>
 <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/update(
-                    projectId=${project.id}, subprojectId=${subproject.id})}" th:method="post" th:object="${task}">
+                    projectId=${projectId}, subprojectId=${subprojectId})}" th:method="post" th:object="${task}">
     <input type="text" hidden name="id"
            th:field="*{id}"/> <br>
 
     <label for="name">Navn:</label><br>
     <input type="text" id="name" name="name"
-           th:field="*{name}"/> <br>
+           th:field="*{name}" required/> <br>
 
     <label for="description">Beskrivelse:</label><br>
-    <textarea id="description" name="description" rows="4" cols="50"
+    <textarea id="description" name="description" required rows="4" cols="50"
               th:field="*{description}"></textarea> <br>
 
     <label for="timeBudget">*Tidsallokering:</label><br>
-    <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1"
+    <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1" required
            th:field="*{timeBudget}"/> <br>
 
     <label for="timeTaken">Faktiske tid:</label><br>
@@ -41,7 +41,7 @@
     </fieldset>
 
     <label for="deadline">Deadline:</label><br>
-    <input type="date" id="deadline" name="deadline"
+    <input type="date" id="deadline" name="deadline" required
            th:field="*{deadline}"/> <br>
 
     <label for="priorityLevel">Prioritet:</label><br>
@@ -69,6 +69,10 @@
 
 
     <button type="submit">Opdater</button>
+    <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
+    projectId=${projectId}, subprojectId=${subprojectId})}">
+        <button type="button">Tilbage</button>
+    </a>
 </form>
 </body>
 </html>

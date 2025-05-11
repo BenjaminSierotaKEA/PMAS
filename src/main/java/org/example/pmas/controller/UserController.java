@@ -34,8 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public  String createUser(@ModelAttribute  User newUser, Model errorMessage){
-
+    public String createUser(@ModelAttribute User newUser, Model errorMessage) {
 
 
         if (userService.checkEmail(newUser.getEmail()) != null) {
@@ -69,9 +68,7 @@ public class UserController {
 
     @PostMapping("/{id}/delete")
     public String deleteUser(@PathVariable("id") int id) {
-        if (id <= 0) throw new
-
-                IllegalArgumentException("Id not correct.");
+        if (id <= 0) throw new IllegalArgumentException("Id not correct.");
 
         userService.delete(id);
         return "redirect:/user-overview";
@@ -79,12 +76,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}/update")
-        public String updateUser(@PathVariable("id") int id, Model model){
+    public String updateUser(@PathVariable("id") int id, Model model) {
 
         User user = userService.getUser(id);
         List<Role> roles = userService.getAllRoles();
 
-        if(id <= 0) throw new
+        if (id <= 0) throw new
                 IllegalArgumentException("ID not correct");
 
         model.addAttribute("user", user);
@@ -94,16 +91,16 @@ public class UserController {
     }
 
     @PostMapping("/{id}/update")
-        public String updateUser(@PathVariable("id") int id, @ModelAttribute User newUser, Model model){
+    public String updateUser(@PathVariable("id") int id, @ModelAttribute User newUser, Model model) {
 
-        boolean success = userService.updateUser(id,newUser);
+        boolean success = userService.updateUser(id, newUser);
 
-        if(!success){
+        if (!success) {
             model.addAttribute("errorMessage", "Failed to update, check your inserted values");
             return "user-form";
         }
 
-        if ( userService.getUser(id).getRole() == null) {
+        if (userService.getUser(id).getRole() == null) {
             userService.getUser(id).setRole(new Role());
         }
 
