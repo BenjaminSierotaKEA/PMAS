@@ -6,7 +6,7 @@ public class SubProject {
     private int id;
     private String name;
     private String description;
-    private double timeBudget;
+    private Double timeBudget;
     private double timeTaken;
     private boolean completed;
     private Project project;
@@ -68,7 +68,7 @@ public class SubProject {
         this.description = description;
     }
 
-    public double getTimeBudget() {
+    public Double getTimeBudget() {
         return timeBudget;
     }
 

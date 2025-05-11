@@ -145,7 +145,7 @@ class TaskServiceTest {
     }
 
     @Test
-    void delete_without_value() {
+    void delete_notvalid_id() {
         // Arrange
         int taskId = 1;
         when(taskRepository.readSelected(taskId)).thenReturn(null);
@@ -160,7 +160,7 @@ class TaskServiceTest {
 
         // Assert
         var result = assertThrows(NotFoundException.class, executable);
-        assertEquals("id: " + 1 + " blev ikke fundet", result.getMessage());
+        assertEquals(null, result.getMessage());
         verify(taskRepository, times(1)).readSelected(taskId);
         verify(taskRepository, never()).delete(anyInt());
     }

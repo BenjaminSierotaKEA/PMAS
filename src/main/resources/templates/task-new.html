@@ -7,7 +7,7 @@
 </head>
 <body>
 <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/create(
-                    projectId=${project.id}, subprojectId=${subproject.id})}" th:method="post" th:object="${task}">
+                    projectId=${projectId}, subprojectId=${subprojectId})}" th:method="post" th:object="${task}">
     <label for="name">Navn:*</label><br>
     <input type="text" id="name" name="name" required placeholder="Navn"
            th:field="*{name}"/>
@@ -21,14 +21,14 @@
 
     <!-- step allow you to add decimal numbers -->
     <label for="timeBudget">Tidsallokering:*</label><br>
-    <input type="number" id="timeBudget" name="timeBudget"
+    <input type="number" id="timeBudget" name="timeBudget" placeholder="0.0"
            required step="0.1"
            th:field="*{timeBudget}"/>
     <br>
 
     <!-- step allow you to add decimal numbers -->
     <label for="timeTaken">Faktiske tid:</label><br>
-    <input type="number" id="timeTaken" name="timeTaken" value=""
+    <input type="number" id="timeTaken" name="timeTaken"
            step="0.1"
            th:field="*{timeTaken}"/> <br>
 

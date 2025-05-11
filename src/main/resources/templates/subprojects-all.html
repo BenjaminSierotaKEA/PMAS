@@ -8,7 +8,14 @@
 <body>
 <h1 th:text="'Project: ' + ${project.name}"></h1>
 
-<a th:href="@{/projects/{projectId}/subprojects/create(projectId=${project.id})}">Opret et nyt subprojekt</a>
+<form th:action="@{/projects/{projectId}/subprojects/new(projectId=${project.id})}"
+method="get">
+    <button>Opret</button>
+</form>
+<form th:action="@{/projects/all}"
+      method="get">
+    <button type="submit">Tilbage til projekter</button>
+</form>
 
 <table class="table">
     <thead>
@@ -34,14 +41,14 @@
         <td th:text="${#numbers.formatDecimal(subproject.completionPercentage, 0, 2)} + '%'"></td>
 
         <td>
-        <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
-              method="get">
-            <button type="submit">Redigere</button>
-        </form>
+            <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
+            method="get">
+                <button type="submit">Opdater</button>
+            </form>
         </td>
         <td>
-            <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/delete(projectId=${project.id}, subprojectId=${subproject.id})}"
-                  method="post" onsubmit="return confirm('Er du sikker på, at du vil slette denne opgave?');">
+            <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/delete(projectId=${project.id}, subprojectId=${subproject.id})}" method="post"
+                  onsubmit="return confirm('Er du sikker på, at du vil slette kategorien?');">
                 <button type="submit">Slet</button>
             </form>
         </td>
