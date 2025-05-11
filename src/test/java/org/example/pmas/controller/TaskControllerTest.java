@@ -1,7 +1,5 @@
 package org.example.pmas.controller;
 
-import org.example.pmas.model.Project;
-import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.service.ProjectService;
@@ -48,7 +46,10 @@ class TaskControllerTest {
     @Test
     void readAllTaskBySubProjectID() throws Exception {
         // Arrange
-        when(taskService.getTasksBySubProjectID(1)).thenReturn(tasks);
+        when(taskService.getTasksBySubProjectID(1))
+                .thenReturn(tasks);
+        when(taskService.getSubProject(any(Integer.class)))
+                .thenReturn(MockDataModel.subprojectsWithValues().getFirst());
 
         // Act & Assert
         mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/all", 1, 1))
@@ -62,7 +63,8 @@ class TaskControllerTest {
     @Test
     void readSelected() throws Exception {
         // Arrange
-        when(taskService.readSelected(any(Integer.class))).thenReturn(task);
+        when(taskService.readSelected(any(Integer.class)))
+                .thenReturn(task);
 
         // Act & Assert
         mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/{id}/edit", 1,1,1))
