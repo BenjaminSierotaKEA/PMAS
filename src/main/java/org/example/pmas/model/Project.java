@@ -2,6 +2,7 @@
 package org.example.pmas.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Project {
     private int id;
@@ -89,7 +90,7 @@ public class Project {
         return this.getId() == otherProject.getId()
                 && this.getName().equals(otherProject.getName())
                 && this.getDescription().equals(otherProject.getDescription())
-                && this.timeBudget == otherProject.timeBudget
+                && Objects.equals(this.timeBudget, otherProject.timeBudget)
                 && this.deadline.equals(otherProject.deadline);
 
     }
