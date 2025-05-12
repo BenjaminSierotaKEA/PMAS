@@ -1,6 +1,5 @@
 package org.example.pmas.dto;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class ProjectDTO {

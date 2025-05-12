@@ -12,13 +12,8 @@ public class SubProjectDTO {
         private int completedTasks;
         private double completionPercentage;
 
-    public SubProjectDTO(int i, String s) {
-        this.id = i;
-        this.name = s;
-    }
 
     public SubProjectDTO() {
-
     }
 
     public int getId() {
