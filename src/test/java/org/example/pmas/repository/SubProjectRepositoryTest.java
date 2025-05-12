@@ -9,8 +9,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -62,7 +60,7 @@ public class SubProjectRepositoryTest {
     @Test
     public void shouldCreateASubProject() {
         int sizeBefore = subProjectRepository.readAll().size();
-        subProjectRepository.create(new SubProject("UI Overhauls", "Update the UI/UX of the website.", 200, 200, false, 1));
+        subProjectRepository.create(new SubProject("UI Overhauls", "Update the UI/UX of the website.", 200.0, 200, false, 1));
         int sizeAfter = subProjectRepository.readAll().size();
 
         assertEquals(sizeBefore + 1, sizeAfter);

@@ -3,10 +3,8 @@ package org.example.pmas.service;
 import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;
-import org.example.pmas.model.Task;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
-import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,6 +54,25 @@ public class SubProjectService {
 
     public List<SubProjectDTO> getSubProjectDTOByProjectId(int id) {
         List<SubProjectDTO> subprojects = subprojectRepository.getSubProjectDTOByProjectID(id);
+        for(SubProjectDTO s : subprojects) {
+            calculateCompletionPercentage(s);
+            checkIfCompleted(s);
+        }
         return subprojects;
+    }
+
+    public void calculateCompletionPercentage(SubProjectDTO dto) {
+        if (dto.getTotalTasks() == 0) {
+            dto.setCompletionPercentage(0);
+        } else {
+            double completionPercentage = 1.0 * dto.getCompletedTasks() * 100 / dto.getTotalTasks();
+            dto.setCompletionPercentage(completionPercentage);
+        }
+    }
+
+    public void checkIfCompleted(SubProjectDTO dto) {
+        if(dto.getTimeTaken() == dto.getTimeBudget()) {
+            dto.setCompleted(true);
+        }
     }
 }

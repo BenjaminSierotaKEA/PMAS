@@ -36,26 +36,31 @@ public class SubProjectIntegrationTest {
     @Autowired
     SubProjectService subprojectService;
 
-//    @Test
-//    public void createSubProjectShouldPersistToDatabase() throws Exception {
-//        SubProject test = new SubProject("IntegrationTest","IntegrationTest",1.1,0,true,1);
-//        test.setProjectID(1);
-//        mvc.perform(post("/projects/1/subprojects/create")
-//                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-//                        .flashAttr("subproject",test))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/projects/1/subprojects"));
-//
-//        List<SubProject> projects = subprojectService.readAll();
-//
-//        boolean matchFound = false;
-//        for(SubProject p : projects) {
-//            if(p.getName().equals(test.getName()) && p.getDescription().equals(test.getDescription())
-//            && p.getProjectID() == 1) {
-//                matchFound = true;
-//                break;
-//            }
-//        }
-//        assertTrue(matchFound);
-//    }
+    @Test
+    public void createSubProjectShouldPersistToDatabase() throws Exception {
+        mvc.perform(post("/projects/1/subprojects/create")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("name", "IntegrationTestName")
+                        .param("description", "IntegrationTestDescription")
+                        .param("timeBudget", "1.1")
+                        .param("timeTaken", "0")
+                        .param("completed", "true"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/projects/1/subprojects/all"));
+
+        List<SubProject> projects = subprojectService.readAll();
+
+        boolean matchFound = false;
+        for (SubProject p : projects) {
+            if ("IntegrationTestName".equals(p.getName())
+                    && "IntegrationTestDescription".equals(p.getDescription())
+                    && p.getProjectID() == 1) {
+                matchFound = true;
+                break;
+            }
+        }
+
+        assertTrue(matchFound);
+    }
+
 }

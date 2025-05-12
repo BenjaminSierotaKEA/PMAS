@@ -38,8 +38,8 @@ method="get">
         <td th:text="${subproject.timeTaken}"></td>
         <td th:text="${subproject.timeBudget}"></td>
         <td th:text="${subproject.completed}"></td>
-        <td th:text="${#numbers.formatDecimal(subproject.completionPercentage, 0, 2)} + '%'"></td>
 
+        <td th:text="${subproject.completionPercentage == 0 ? '0%' : #numbers.formatDecimal(subproject.completionPercentage, 0, 2) + '%'}"></td>
         <td>
             <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
             method="get">
