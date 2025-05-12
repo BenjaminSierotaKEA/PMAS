@@ -67,7 +67,7 @@ public class SubProjectRepository implements ISubProjectRepository {
                 var ps = connection.prepareStatement(sql, new String[]{"id"});
                 ps.setString(1, subProject.getName());
                 ps.setString(2, subProject.getDescription());
-                ps.setDouble(3, subProject.getTimeBudget());
+                ps.setObject(3, subProject.getTimeBudget(),java.sql.Types.DOUBLE);
                 ps.setDouble(4, subProject.getTimeTaken());
                 ps.setBoolean(5, subProject.isCompleted());
                 ps.setInt(6, subProject.getProjectID());
@@ -146,9 +146,9 @@ public class SubProjectRepository implements ISubProjectRepository {
                 "SUM(CASE WHEN t.completed = true THEN 1 ELSE 0 END) AS completedTasks, " +
                 "SUM(CASE WHEN t.completed = true THEN t.timeTaken ELSE 0 END) AS timeTaken, " +
                 "SUM(t.timeBudget) AS timeBudget " +
-                "FROM subprojects sp " +                                                  // <-- and here
-                "LEFT JOIN tasks t ON sp.id = t.subProjectID " +                          // <-- and here
-                "WHERE sp.projectID = ? " +                                               // <-- and here
+                "FROM subprojects sp " +
+                "LEFT JOIN tasks t ON sp.id = t.subProjectID " +
+                "WHERE sp.projectID = ? " +
                 "GROUP BY sp.id";
         try {
             return jdbcTemplate.query(sql, new SubProjectDTORowMapper(),projectID);
@@ -156,5 +156,4 @@ public class SubProjectRepository implements ISubProjectRepository {
             throw new DatabaseException("Database fejl: kunne ikke hente alle subprojekter", e);
         }
     }
-
 }
