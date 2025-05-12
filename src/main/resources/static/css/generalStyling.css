@@ -14,7 +14,9 @@
     letter-spacing: 1vh;
     color: #5a5a5a;
     padding: 1vh;
+    margin-top: 5vh;
 }
+
 
 .profile_title {
     font-family: "Bahnschrift", sans-serif;
@@ -75,6 +77,14 @@
     border-radius: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
+    max-width: 500px;
+    margin: 0 auto; /* center the .frame itself */
+}
+
+.frame form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .dark_frame {
@@ -339,6 +349,83 @@ select:focus {
 .normalized_padding{
     margin: 2.5vh;
 }
+
+/* Style for description textarea (adjusted to match form's color scheme) */
+textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 1000px;
+    border: none;
+    background-color: rgba(108, 108, 108, 0.7);  /* Darker background */
+    color: white;  /* White text color */
+    font-family: 'Bahnschrift', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+    outline: none;
+    resize: vertical;  /* Allow vertical resizing */
+}
+
+/* Placeholder styling for textarea (matches input fields) */
+textarea::placeholder {
+    font-family: 'Bahnschrift', sans-serif;
+    font-weight: lighter;
+    letter-spacing: 1px;
+    font-size: large;
+    color: #d0d0d0;  /* Light gray placeholder text */
+    text-transform: uppercase;
+    opacity: 1;
+}
+
+/* Focus effect for textarea (matching input fields) */
+textarea:focus {
+    border-color: #3b99fc;
+    background-color: rgba(108, 108, 108, 0.9);  /* Darker background on focus */
+    box-shadow: 0 0 8px rgba(59, 153, 252, 0.4);  /* Blue glow effect */
+    outline: none;
+}
+
+/* Checkboxes */
+.user-fieldset {
+    border: none;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.user-legend {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: block;
+    width: 100%;
+}
+
+.user-checkboxes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.user-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.user-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 1000px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+
 
 
 
