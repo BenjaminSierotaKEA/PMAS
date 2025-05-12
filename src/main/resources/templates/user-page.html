@@ -44,8 +44,9 @@
                 <tbody>
 
                 <tr th:each="task : ${user.tasks}"
-                    th:onclick="'window.location.href=\'' + ${task.id} + '/edit\''"
+                    th:onclick="'window.location.href=\'/projects/' + ${task.subProject.projectID} + '/subprojects/' + ${task.subProject.id} + '/tasks/' + ${task.id} + '/edit\''"
                     class="table_row clickable-row">
+
 
 
                 <td th:text="${task.name}" class="task_label">Task Name</td>
@@ -82,7 +83,7 @@
             <tbody>
             <tr th:each="project : ${user.projects}">
                 <td class="table_row">
-                    <a th:href="@{projects/{id}/subprojects(id=${project.id})}"
+                    <a th:href="@{/projects/{id}/subprojects/all(id=${project.id})}"
                        th:text="${project.name}"
                        class="project-button">
                     </a>

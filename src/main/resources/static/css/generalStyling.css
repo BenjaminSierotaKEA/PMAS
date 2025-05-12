@@ -219,7 +219,7 @@ select:focus {
     overflow: hidden;
     box-shadow: 0 4px 6px rgb(0, 0, 0);
     color: #525252;
-
+    text-transform: uppercase;
 
 
 }
