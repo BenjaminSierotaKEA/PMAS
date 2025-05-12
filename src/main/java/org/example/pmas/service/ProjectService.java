@@ -3,9 +3,9 @@ package org.example.pmas.service;
 import org.example.pmas.dto.ProjectDTO;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Project;
-import org.example.pmas.model.SubProject;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
+import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,28 +56,10 @@ public class ProjectService {
         return projectRepository.doesProjectExist(id);
     }
 
-
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
-        for(ProjectDTO p : projects) {
-            calculateCompletionPercentage(p);
-            checkIfCompleted(p);
-        }
+        CompletionStatCalculator<ProjectDTO> calc = new CompletionStatCalculator<>();
+        calc.calculateSubProjectCompletionPercentage(projects);
         return projects;
-    }
-
-    public void calculateCompletionPercentage(ProjectDTO dto) {
-        if (dto.getTotalSubProjects() == 0) {
-            dto.setCompletionPercentage(0);
-        } else {
-            double completionPercentage = 1.0 * dto.getCompletedSubProjects() * 100 / dto.getTotalSubProjects();
-            dto.setCompletionPercentage(completionPercentage);
-        }
-    }
-
-    public void checkIfCompleted(ProjectDTO dto) {
-        if(dto.getTimeTaken() == dto.getTimeBudget()) {
-            dto.setCompleted(true);
-        }
     }
 }
