@@ -43,7 +43,7 @@ class SessionControllerTest {
                         .param("email", "Rebecca@example.com")
                         .param("password", "password123"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/session/1/user"));
+                .andExpect(redirectedUrl("/1/user"));
     }
 
     @Test
@@ -55,7 +55,7 @@ class SessionControllerTest {
 
         when(sessionHandler.getCurrentUser()).thenReturn(mockUser);
 
-        mockMvc.perform(get("/session/1/user"))
+        mockMvc.perform(get("/1/user"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user-page"))
                 .andExpect(model().attributeExists("user"));
