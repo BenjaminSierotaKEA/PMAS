@@ -26,7 +26,13 @@ public class UserRowMapper implements RowMapper<User> {
         role.setName(rs.getString("role_name"));
         user.setRole(role);
 
+
+
         return user;
+
+
+
+
 
     }
 

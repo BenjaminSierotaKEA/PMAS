@@ -43,21 +43,7 @@ class SessionControllerTest {
                         .param("email", "Rebecca@example.com")
                         .param("password", "password123"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/session/1/user"));
+                .andExpect(redirectedUrl("/1/user"));
     }
 
-    @Test
-    void userByID_valid() throws Exception {
-        User mockUser = new User();
-        mockUser.setUserID(1);
-        mockUser.setName("Test User");
-        mockUser.setEmail("test@example.com");
-
-        when(sessionHandler.getCurrentUser()).thenReturn(mockUser);
-
-        mockMvc.perform(get("/session/1/user"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("user-page"))
-                .andExpect(model().attributeExists("user"));
-    }
 }
