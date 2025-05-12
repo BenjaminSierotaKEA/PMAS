@@ -13,7 +13,7 @@ public class User {
     private Role role;
     private String picture;
     private List<Task> tasks;
-    private Set<Project> projects;
+    private List<Project> projects;
 
     public User(int userID, String name, String email, String password, Role role, String picture) {
         this.userID = userID;
@@ -128,11 +128,11 @@ public class User {
         this.tasks = tasks;
     }
 
-    public Set<Project> getProjects() {
+    public List<Project> getProjects() {
         return projects;
     }
 
-    public void setProjects(Set<Project> projects) {
+    public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
 

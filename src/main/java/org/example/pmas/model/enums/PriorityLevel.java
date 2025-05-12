@@ -1,9 +1,9 @@
 package org.example.pmas.model.enums;
 
 public enum PriorityLevel {
-    LOW("Lav"),
-    MEDIUM("Middel"),
-    HIGH("Høj");
+    LOW("Low"),
+    MEDIUM("Medium"),
+    HIGH("High");
 
     private final String displayName;
 

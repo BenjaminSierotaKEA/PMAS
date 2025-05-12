@@ -217,4 +217,23 @@ public class TaskRepository implements ITaskRepository {
             throw new DatabaseException("Fejl: kunne ikke hente opgaver til subprojektet.", e);
         }
     }
+
+    @Transactional
+    @Override
+    public List<Task> findAllByUserId(int userId) {
+        String sql = """
+                 SELECT t.*,\s
+                        GROUP_CONCAT(u.id) AS user_ids,\s
+                        GROUP_CONCAT(u.name) AS user_names
+                 FROM tasks t
+                 JOIN usertasks ut ON t.id = ut.taskid
+                 JOIN users u ON u.id = ut.userid
+                 WHERE ut.userid = ?
+                 GROUP BY t.id;
+                 
+                """;
+
+        return jdbcTemplate.query(sql, new TaskRowMapper(), userId);
+    }
+
 }

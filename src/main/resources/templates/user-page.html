@@ -3,24 +3,97 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>User Page</title>
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
 </head>
-<body>
+<body class="page-container font_style">
 
-<div th:text="${user.name}">USER NAME</div>
-<div th:text="${user.role}">USER ROLE</div>
-<div th:text="${user.email}">USER EMAIL</div>
+<div th:replace="fragments/navbar :: navbar"></div>
 
-<!--
-<div th:if ="${user.tasks.isEmpty()}">No tasks currently waiting for you!</div>
-<div th:unless ="${user.tasks.isEmpty()}">
-    <div th:each ="task : ${tasks.task}">
-        <div th:text="${task.name}"></div>
-        <div th:text="${task.timeBudget}"></div>
-        <div th:text="${task.status}"></div>
-        <div th:text="${task.subproject}"></div>
+<div class="flex-row flex-center profile-Banner normalized_padding">
+    <div th:text="${user.name}" class="profile_title nav-section"> Name</div>
+    <div th:text="${user.email}" class="title nav-section">Email</div>
+    <div th:text="${user.role}" class="title nav-section"> Role</div>
+
+    <img th:src="@{/images/{pic}(pic=${user.picture})}" alt="Profile picture" class="profile_picture">
+</div>
+
+
+<div th:if="${user.tasks == null or user.tasks.isEmpty()}">
+    <p>No tasks currently waiting for you!</p>
+</div>
+<div class="dashboard-wrapper">
+    <div class="dashboard-left">
+        <div th:if="${user.tasks != null and !user.tasks.isEmpty()}" class="dark_frame  normalized_padding">
+           <div>
+                <h2 class="profile_title">Your Tasks</h2>
+           </div>
+            <table class="task-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Priority</th>
+                    <th>Time Budget (hrs)</th>
+                    <th>Time Taken (hrs)</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                    <th>Subproject</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="task : ${user.tasks}"
+                    th:onclick="'window.location.href=\'' + ${task.id} + '/edit\''"
+                    class="table_row clickable-row">
+
+
+                <td th:text="${task.name}" class="task_label">Task Name</td>
+                    <td th:classappend="'priority-' + ${task.priorityLevel.displayName}">
+                        <div th:text="${task.priorityLevel}" class="priority-bar"
+                             >Priority
+                        </div>
+                    </td>
+                    <td th:text="${task.timeBudget}">0</td>
+                    <td th:text="${task.timeTaken}">0</td>
+                    <td th:text="${task.deadline}">YYYY-MM-DD</td>
+                    <td th:classappend="${task.completed} ? 'status-green' : 'status-yellow'">
+                        <div th:text="${task.completed ? 'Completed' : 'In Progress'}" class="status_indicator"
+                             >Status
+                        </div>
+                    </td>
+                    <td th:text="${task.subProject.name}">Subproject Name</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<div class="dashboard-right">
+    <div th:if="${user.projects != null and !user.projects.isEmpty()}" class="dark_frame normalized_padding">
+        <h2 class="profile_title">Your Projects</h2>
+        <table class="task-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="project : ${user.projects}">
+                <td class="table_row">
+                    <a th:href="@{projects/{id}/subprojects(id=${project.id})}"
+                       th:text="${project.name}"
+                       class="project-button">
+                    </a>
+                </td>
+                ...
+            </tr>
+
+            </tbody>
+        </table>
     </div>
 </div>
--->
+</div>
 </body>
 </html>

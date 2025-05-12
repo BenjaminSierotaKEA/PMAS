@@ -69,6 +69,22 @@
 }
 
 
+/*--------------dashstructure-------------*/
+
+.dashboard-wrapper {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.dashboard-left {
+    flex: 2;
+}
+
+.dashboard-right {
+    flex: 1;
+}
+
 
 
 
