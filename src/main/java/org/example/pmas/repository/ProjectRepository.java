@@ -1,6 +1,9 @@
 package org.example.pmas.repository;
 
+import org.example.pmas.dto.ProjectDTO;
+import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.Project;
+import org.example.pmas.model.rowMapper.ProjectDTORowMapper;
 import org.example.pmas.model.rowMapper.ProjectRowMapper;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.springframework.dao.DataAccessException;
@@ -102,5 +105,30 @@ public class ProjectRepository implements IProjectRepository {
         String sql = "SELECT EXISTS (SELECT 1 FROM projects WHERE id = ?)";
         //null safe way to check if result is true. Uses boolean object(true) to compare.
         return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
+    }
+
+    public List<ProjectDTO> getProjectDTOByUserID(int userId) {
+        String sql = "SELECT " +
+                "p.id, " +
+                "p.name, " +
+                "p.description, " +
+                "p.timeBudget, " +
+                "p.completed, " +
+                "p.timeTaken    , " +
+                "p.deadline, " +
+                "COUNT(sp.id) AS totalSubProjects, " +
+                "SUM(CASE WHEN sp.completed = true THEN 1 ELSE 0 END) AS completedSubProjects, " +
+                "SUM(CASE WHEN sp.completed = true THEN sp.timeTaken ELSE 0 END) AS timeTaken, " +
+                "SUM(sp.timeBudget) AS timeBudget " +
+                "FROM userprojects up " +
+                "JOIN projects p ON up.projectid = p.id " +
+                "LEFT JOIN subprojects sp ON sp.projectID = p.id " +
+                "WHERE up.userid = ? " +
+                "GROUP BY  p.id, p.name, p.description, p.timeBudget, p.timeTaken, p.completed";
+        try {
+            return jdbcTemplate.query(sql, new ProjectDTORowMapper(),userId);
+        } catch (DataAccessException e) {
+            throw new DatabaseException("Database fejl: kunne ikke hente alle subprojekter", e);
+        }
     }
 }

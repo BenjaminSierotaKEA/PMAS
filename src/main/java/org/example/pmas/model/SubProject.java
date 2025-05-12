@@ -20,7 +20,7 @@ public class SubProject {
         this.name = name;
     }
 
-    public SubProject(String name, String description, double timeBudget, double timeTaken, boolean completed, int projectID) {
+    public SubProject(String name, String description, Double timeBudget, double timeTaken, boolean completed, int projectID) {
         this.name = name;
         this.description = description;
         this.timeBudget = timeBudget;

@@ -20,6 +20,7 @@ make this according to the styled mockup later-->
         <th>Description</th>
         <th>Time budget</th>
         <th>Deadline</th>
+        <th>%</th>
         <th>Update</th>
         <th>Delete</th>
     </tr>
@@ -32,6 +33,7 @@ make this according to the styled mockup later-->
         <td th:text="${project.description}"></td>
         <td th:text="${project.timeBudget}"></td>
         <td th:text="${project.deadline}"></td>
+        <td th:text="${project.completionPercentage}"></td>
         <td>
             <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}"
             method="get">

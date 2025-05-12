@@ -1,19 +1,31 @@
 package org.example.pmas.dto;
 
-public class SubProjectDTO {
-        private int id;
-        private String name;
-        private String description;
-        private double timeBudget;
-        private double timeTaken;
-        private boolean completed;
-        private int projectID;
-        private int totalTasks;
-        private int completedTasks;
-        private double completionPercentage;
+import java.util.Date;
 
+public class ProjectDTO {
+    private int id;
+    private String name;
+    private String description;
+    private double timeBudget;
+    private double timeTaken;
+    private boolean completed;
+    private Date deadline;
 
-    public SubProjectDTO() {
+    public Date getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline) {
+        this.deadline = deadline;
+    }
+
+    private int projectID;
+    private int totalSubProjects;
+    private int completedSubProjects;
+    private double completionPercentage;
+
+    public ProjectDTO() {
+
     }
 
     public int getId() {
@@ -32,20 +44,20 @@ public class SubProjectDTO {
         this.name = name;
     }
 
-    public double getTimeBudget() {
-        return timeBudget;
-    }
-
-    public void setTimeBudget(double timeBudget) {
-        this.timeBudget = timeBudget;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public double getTimeBudget() {
+        return timeBudget;
+    }
+
+    public void setTimeBudget(double timeBudget) {
+        this.timeBudget = timeBudget;
     }
 
     public double getTimeTaken() {
@@ -72,20 +84,20 @@ public class SubProjectDTO {
         this.projectID = projectID;
     }
 
-    public int getTotalTasks() {
-        return totalTasks;
+    public int getTotalSubProjects() {
+        return totalSubProjects;
     }
 
-    public void setTotalTasks(int totalTasks) {
-        this.totalTasks = totalTasks;
+    public void setTotalSubProjects(int totalSubProjects) {
+        this.totalSubProjects = totalSubProjects;
     }
 
-    public int getCompletedTasks() {
-        return completedTasks;
+    public int getCompletedSubProjects() {
+        return completedSubProjects;
     }
 
-    public void setCompletedTasks(int completedTasks) {
-        this.completedTasks = completedTasks;
+    public void setCompletedSubProjects(int completedSubProjects) {
+        this.completedSubProjects = completedSubProjects;
     }
 
     public double getCompletionPercentage() {
@@ -95,5 +107,4 @@ public class SubProjectDTO {
     public void setCompletionPercentage(double completionPercentage) {
         this.completionPercentage = completionPercentage;
     }
-
 }

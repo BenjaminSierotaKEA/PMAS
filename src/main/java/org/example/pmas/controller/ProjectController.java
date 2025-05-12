@@ -1,7 +1,7 @@
 package org.example.pmas.controller;
 
+import org.example.pmas.dto.ProjectDTO;
 import org.example.pmas.model.Project;
-import org.example.pmas.model.SubProject;
 import org.example.pmas.model.User;
 import org.example.pmas.service.ProjectService;
 import org.example.pmas.util.SessionHandler;
@@ -47,19 +47,18 @@ public class ProjectController {
     //TODO: ADD stuff so only the cto can see this page
     @GetMapping("/all")
     public String seeAll(Model model) {
-
+        User user = sessionHandler.getCurrentUser();
         boolean allowAccess = sessionHandler.isUserProjectManager();
-        List<Project> projects = projectService.readAll();
-        model.addAttribute("projects", projects);
+        if(allowAccess) {
+            List<ProjectDTO> projects = projectService.getProjectDTOByUserID(user.getUserID());
+            model.addAttribute("projects", projects);
+        }
         model.addAttribute("allowAccess", allowAccess);
-
         return "project-all";
     }
 
     @GetMapping("/my-projects")
     public String myProjects(Model model) {
-
-
         User user = sessionHandler.getCurrentUser();
         boolean loggedIn = (user != null);
 
