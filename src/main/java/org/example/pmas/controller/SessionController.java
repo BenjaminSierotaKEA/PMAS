@@ -34,7 +34,7 @@ public class SessionController {
 
         if(loginSucceed){
             User user = sessionHandler.getCurrentUser();
-            return "redirect:" +user.getUserID()+"/user";
+            return "redirect:" +"/"+ +user.getUserID()+"/user";
         }
 
         model.addAttribute("wrongCredentials", true);
