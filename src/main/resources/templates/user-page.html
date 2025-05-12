@@ -11,73 +11,86 @@
 
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class="flex-row flex-center dark_frame">
-    <div th:text="${user.name}" class="profile_title"> Name</div>
-    <div th:text="${user.email}" class="title">Email</div>
-    <div th:text="${user.role}" class="title"> Role</div>
+<div class="flex-row flex-center profile-Banner normalized_padding">
+    <div th:text="${user.name}" class="profile_title nav-section"> Name</div>
+    <div th:text="${user.email}" class="title nav-section">Email</div>
+    <div th:text="${user.role}" class="title nav-section"> Role</div>
 
     <img th:src="@{/images/{pic}(pic=${user.picture})}" alt="Profile picture" class="profile_picture">
 </div>
 
 
-
-
 <div th:if="${user.tasks == null or user.tasks.isEmpty()}">
     <p>No tasks currently waiting for you!</p>
 </div>
-<div class="flex-row flex-center">
-<div th:if="${user.tasks != null and !user.tasks.isEmpty()}" class="dark_frame">
-    <h2>Your Tasks</h2>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Priority</th>
-            <th>Time Budget (hrs)</th>
-            <th>Time Taken (hrs)</th>
-            <th>Deadline</th>
-            <th>Status</th>
-            <th>Subproject</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="task : ${user.tasks}" class="table_row">
-            <td th:text="${task.name}">Task Name</td>
-            <td th:text="${task.description}">Description</td>
-            <td th:text="${task.priorityLevel}">Priority</td>
-            <td th:text="${task.timeBudget}">0</td>
-            <td th:text="${task.timeTaken}">0</td>
-            <td th:text="${task.deadline}">YYYY-MM-DD</td>
-            <td th:text="${task.completed ? 'Completed' : 'In Progress'}">Status</td>
-            <td th:text="${task.subProject.name}">Subproject Name</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<div class="dashboard-wrapper">
+    <div class="dashboard-left">
+        <div th:if="${user.tasks != null and !user.tasks.isEmpty()}" class="dark_frame  normalized_padding">
+           <div>
+                <h2 class="profile_title">Your Tasks</h2>
+           </div>
+            <table class="task-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Priority</th>
+                    <th>Time Budget (hrs)</th>
+                    <th>Time Taken (hrs)</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                    <th>Subproject</th>
+                </tr>
+                </thead>
+                <tbody>
 
-<div th:if="${user.projects != null and !user.projects.isEmpty()}" class="dark_frame">
-    <h2>Your Projects</h2>
-    <table border="1">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Time Budget (hrs)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="project : ${user.projects}">
-            <td>
-                <a th:href="@{/{id}/subprojects(id=${project.id})}" th:text="${project.name}">Project Name</a>
-            </td>
-            <td th:text="${project.description}">Description</td>
-            <td th:text="${project.deadline}">YYYY-MM-DD</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-</div>
+                <tr th:each="task : ${user.tasks}" class="table_row">
 
+                    <td th:text="${task.name}" class="task_label">Task Name</td>
+                    <td th:classappend="'priority-' + ${task.priorityLevel.displayName}">
+                        <div th:text="${task.priorityLevel}" class="priority-bar"
+                             >Priority
+                        </div>
+                    </td>
+                    <td th:text="${task.timeBudget}">0</td>
+                    <td th:text="${task.timeTaken}">0</td>
+                    <td th:text="${task.deadline}">YYYY-MM-DD</td>
+                    <td th:classappend="${task.completed} ? 'status-green' : 'status-yellow'">
+                        <div th:text="${task.completed ? 'Completed' : 'In Progress'}" class="status_indicator"
+                             >Status
+                        </div>
+                    </td>
+                    <td th:text="${task.subProject.name}">Subproject Name</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<div class="dashboard-right">
+    <div th:if="${user.projects != null and !user.projects.isEmpty()}" class="dark_frame normalized_padding">
+        <h2 class="profile_title">Your Projects</h2>
+        <table class="task-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="project : ${user.projects}">
+                <td class="table_row">
+                    <a th:href="@{/{id}/subprojects(id=${project.id})}"
+                       th:text="${project.name}"
+                       class="project-button">
+                    </a>
+                </td>
+                ...
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
 </body>
 </html>
