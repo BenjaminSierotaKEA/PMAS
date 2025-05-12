@@ -227,6 +227,16 @@ select:focus {
     padding: 1rem;
 }
 
+/*-----------clickable rows----------------*/
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.clickable-row:hover {
+    background-color: #bfbfbf; /* or any hover color */
+}
+
 
 
 

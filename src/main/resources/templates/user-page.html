@@ -43,9 +43,12 @@
                 </thead>
                 <tbody>
 
-                <tr th:each="task : ${user.tasks}" class="table_row">
+                <tr th:each="task : ${user.tasks}"
+                    th:onclick="'window.location.href=\'' + ${task.id} + '/edit\''"
+                    class="table_row clickable-row">
 
-                    <td th:text="${task.name}" class="task_label">Task Name</td>
+
+                <td th:text="${task.name}" class="task_label">Task Name</td>
                     <td th:classappend="'priority-' + ${task.priorityLevel.displayName}">
                         <div th:text="${task.priorityLevel}" class="priority-bar"
                              >Priority
@@ -79,7 +82,7 @@
             <tbody>
             <tr th:each="project : ${user.projects}">
                 <td class="table_row">
-                    <a th:href="@{/{id}/subprojects(id=${project.id})}"
+                    <a th:href="@{projects/{id}/subprojects(id=${project.id})}"
                        th:text="${project.name}"
                        class="project-button">
                     </a>
