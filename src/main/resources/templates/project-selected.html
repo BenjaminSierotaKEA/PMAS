@@ -4,29 +4,51 @@
     <meta charset="UTF-8">
     <title th:unless="${loggedIn}">Please Log In</title>
     <title th:if="${loggedIn}" >Your Projects</title>
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
 </head>
-<body>
-    <h1 th:if="${loggedIn}" th:text="'Hello, ' + ${username} + ', here are the projects you are part of:'"></h1>
-    <h1 th:unless="${loggedIn}">Please log in to see your projects</h1>
-    <table th:if="${loggedIn}">
-        <tr th:each="project :${projects}" >
-            <th th:text="${project.name}"></th>
-            <th th:text="${project.description}"></th>
-            <th th:text="${project.timeBudget}"></th>
-            <th th:text="${project.deadline}"></th>
-            <th>
-                <form th:object="${project}" th:action="@{/projects/{projectId}/edit(projectId=${project.id})}"
-                      method="get">
-                    <button type="submit">Edit Project</button>
-                </form>
-                <form role="form" method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" th:object="${project}">
-                    <input type="number" name="id" th:value="${project.id}" hidden readonly>
-                    <button type="submit">DELETE PROJECT</button>
-                </form>
-            </th>
+
+<body class="page-container font_style">
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+
+    <h1 th:if="${loggedIn}" th:text="'Hello, ' + ${username} + ', here are the projects you are part of:'" class="profile_title flex-center normalized_padding"></h1>
+    <h1 th:unless="${loggedIn}" class="profile_title flex-center normalized_padding">Please log in to see your projects</h1>
+
+<div class="dark_frame normalized_padding" th:if="${loggedIn}">
+    <table class="task-table">
+        <thead>
+        <tr>
+            <th class="title">Name</th>
+            <th class="title">Description</th>
+            <th class="title">Time Budget</th>
+            <th class="title">Deadline</th>
+            <th class="title">Actions</th>
         </tr>
+        </thead>
+        <tbody>
 
+        <tr th:each="project : ${projects}"
+            th:onclick="'window.location.href=\'/projects/' + ${project.id} + '/subprojects/all\''"
+            class="table_row clickable-row">
+
+        <td th:text="${project.name}">Project Name</td>
+            <td th:text="${project.description}">Project Description</td>
+            <td th:text="${project.timeBudget}">Time Budget</td>
+            <td th:text="${project.deadline}">YYYY-MM-DD</td>
+            <td>
+                <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}" method="get" style="display:inline-block">
+                    <button type="submit">Edit</button>
+                </form>
+                <form th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" method="post" style="display:inline-block">
+                    <input type="hidden" name="id" th:value="${project.id}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
     </table>
-
+</div>
 </body>
 </html>
