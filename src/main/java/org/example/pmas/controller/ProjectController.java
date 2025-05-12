@@ -61,15 +61,11 @@ public class ProjectController {
 
 
         User user = sessionHandler.getCurrentUser();
-        boolean loggedIn = false;
-        if (user.getRole() != null) {
-            loggedIn = true;
-        }
+        boolean loggedIn = (user != null);
+
         List<Project> projects = null;
-        if (!(user == null)) {
-            projects = projectService.readProjectsOfUser(user.getUserID());
-        }
         if (loggedIn) {
+            projects = projectService.readProjectsOfUser(user.getUserID());
             model.addAttribute("username", user.getName());
         } else {
             model.addAttribute("username", "logged out");
