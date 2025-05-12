@@ -217,10 +217,25 @@ select:focus {
     background-color: #cccccc;
     border-radius: 1000px;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 6px rgb(0, 0, 0);
+    color: #525252;
+
+
 
 }
 
+
+.task-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1vh;
+    color: white;
+    text-align: center;
+
+
+
+
+}
 .task-table td {
     height: 6vh;
     vertical-align: middle;
@@ -242,15 +257,7 @@ select:focus {
 
 
 
-.task-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 1vh;
-    color: white;
-    text-align: center;
 
-
-}
 
 
 /*----these take care of rounded row corners------*/
@@ -266,13 +273,14 @@ select:focus {
 
 
 
-/*----these take care of rounded row corners------*/
+/*----table contents------*/
 .task-label {
     font-weight: bold;
     text-transform: uppercase;
     background-color: #3a3a3a;
     padding: 1vh;
     border-radius: 20px;
+
 }
 
 .priority-bar {
@@ -323,6 +331,10 @@ select:focus {
 .project-button:hover {
     background-color: #444444;
 }
+
+
+
+
 
 .normalized_padding{
     margin: 2.5vh;
