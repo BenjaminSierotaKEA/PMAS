@@ -34,7 +34,7 @@ public class SessionController {
 
         if(loginSucceed){
             User user = sessionHandler.getCurrentUser();
-            return "redirect:/session/"+user.getUserID()+"/user";
+            return "redirect:" +user.getUserID()+"/user";
         }
 
         model.addAttribute("wrongCredentials", true);
@@ -50,6 +50,13 @@ public class SessionController {
 
         return "user-page";
     }
+
+    @GetMapping("/logout")
+    public String logUserOut() {
+        sessionHandler.logOut();
+        return "redirect:/";
+    }
+
 
 
 
