@@ -5,23 +5,27 @@ import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.User;
 import org.example.pmas.service.ProjectService;
+import org.example.pmas.service.UserService;
 import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/projects")
 public class ProjectController {
     private final ProjectService projectService;
+    private final UserService userService;
     private final SessionHandler sessionHandler;
 
 
-    public ProjectController(ProjectService projectService, SessionHandler sessionHandler){
+    public ProjectController(ProjectService projectService, UserService userService, SessionHandler sessionHandler){
         this.projectService = projectService;
         this.sessionHandler = sessionHandler;
+        this.userService = userService;
     }
 
     //TODO: add session stuff
@@ -29,6 +33,18 @@ public class ProjectController {
     public String getCreateProjectForm(Model model){
         Project project = new Project();
         boolean allowAccess = sessionHandler.isUserProjectManager();
+
+        //getting a list of users so we can add them to the project:
+        if(allowAccess){
+          List<User> users =  userService.getAll();
+          List<Boolean> selections = new ArrayList<>();
+          for(int i = 0; i < users.size(); i++){
+              selections.add(false);
+          }
+          model.addAttribute("users", users);
+          model.addAttribute("userSelections", selections);
+        }
+
         model.addAttribute("allowAccess", allowAccess);
         model.addAttribute("project", project);
 
@@ -95,6 +111,12 @@ public class ProjectController {
             Project project = projectService.readSelected(id);
             model.addAttribute("project", project);
             boolean allowAccess = sessionHandler.isUserProjectManager();
+            //getting a list of users if we are allowed access:
+            if(allowAccess){
+                List<User> users =  userService.getAll();
+                model.addAttribute("users", users);
+            }
+
             model.addAttribute("allowAccess",allowAccess);
             return "update-project-form";
         }
