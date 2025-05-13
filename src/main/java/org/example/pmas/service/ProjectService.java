@@ -31,13 +31,15 @@ public class ProjectService {
     }
 
     public List<Project> readAll(){
-         List<Project> project = projectRepository.readAll();
+         List<Project> projects = projectRepository.readAll();
 
-         sortList(project);
+         return sortList(projects);
     }
 
     public List<Project> readProjectsOfUser(int userID){
-        return projectRepository.readProjectsOfUser(userID);
+        List<Project> projects = projectRepository.readProjectsOfUser(userID);
+
+        return sortList(projects);
     }
 
     public Project readSelected(int id){
@@ -68,9 +70,13 @@ public class ProjectService {
         return projects;
     }
 
+    // Sorts the list by deadline and then priority.
+    // If the list is null, return an empty list. No errors
     private List<Project> sortList(List<Project> projects){
+        // If the list is null, return an empty list. No errors
         if(projects.isEmpty() || projects == null) return Collections.emptyList();
 
+        // Sort the list by deadline and then priority.
         List<Project> modifiableList = new ArrayList<>(projects);
         modifiableList.sort(new ProjectDeadlineComparator().reversed());
 
