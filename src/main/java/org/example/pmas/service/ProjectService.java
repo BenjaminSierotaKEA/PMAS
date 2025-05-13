@@ -5,9 +5,12 @@ import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Project;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
+import org.example.pmas.service.comparators.ProjectDeadlineComparator;
 import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,7 +31,9 @@ public class ProjectService {
     }
 
     public List<Project> readAll(){
-        return projectRepository.readAll();
+         List<Project> project = projectRepository.readAll();
+
+         sortList(project);
     }
 
     public List<Project> readProjectsOfUser(int userID){
@@ -61,5 +66,14 @@ public class ProjectService {
         CompletionStatCalculator<ProjectDTO> calc = new CompletionStatCalculator<>();
         calc.calculateSubProjectCompletionPercentage(projects);
         return projects;
+    }
+
+    private List<Project> sortList(List<Project> projects){
+        if(projects.isEmpty() || projects == null) return Collections.emptyList();
+
+        List<Project> modifiableList = new ArrayList<>(projects);
+        modifiableList.sort(new ProjectDeadlineComparator().reversed());
+
+        return modifiableList;
     }
 }
