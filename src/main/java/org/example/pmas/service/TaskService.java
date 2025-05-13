@@ -45,9 +45,9 @@ public class TaskService {
         // Sorts the list by deadline and priority.
         // Now the list isn't immutable, so we can modify it.
         List<Task> modifiableList = new ArrayList<>(allTask);
-        modifiableList.sort(new TaskDeadlineComparator()
+        modifiableList.sort(new TaskPriorityComparator().reversed()
                 // priority wil be sorted high -> low because of reverse
-                .thenComparing(new TaskPriorityComparator().reversed()));
+                .thenComparing(new TaskDeadlineComparator()));
         return allTask;
     }
 
