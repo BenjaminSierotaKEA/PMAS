@@ -63,8 +63,7 @@
                 </td>
                 <td th:classappend="' priority-' + ${task.priorityLevel != null ? task.priorityLevel.displayName : 'Low'}">
                     <div th:text="${task.priorityLevel != null ? task.priorityLevel.displayName : 'None'}"
-                         class="priority-bar"
-                    >
+                         class="priority-bar">
                     </div>
                 </td>
                 <td>
