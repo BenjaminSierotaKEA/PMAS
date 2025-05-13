@@ -1,86 +1,67 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>add task</title>
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
+    <title>Opret en opgave</title>
 </head>
-<body>
-<form th:action="@{/tasks/create}" th:method="post" th:object="${task}">
-    <label for="name">Navn:*</label><br>
-    <input type="text" id="name" name="name" required placeholder="Navn"
-           th:field="*{name}"/>
-    <br>
 
-    <label for="description">Beskrivelse:*</label><br>
-    <textarea id="description" name="description" required placeholder="Beskrivelse"
-              rows="4" cols="50"
-              th:field="*{description}"></textarea>
-    <br>
+<body class="index_body page-container">
 
-    <!-- step allow you to add decimal numbers -->
-    <label for="timeBudget">Tidsallokering:*</label><br>
-    <input type="number" id="timeBudget" name="timeBudget"
-           required step="0.1"
-           th:field="*{timeBudget}"/>
-    <br>
+<div th:replace="fragments/navbar :: navbar"></div>
 
-    <!-- step allow you to add decimal numbers -->
-    <label for="timeTaken">Faktiske tid:</label><br>
-    <input type="number" id="timeTaken" name="timeTaken" value=""
-           step="0.1"
-           th:field="*{timeTaken}"/> <br>
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
 
-    <fieldset>
-        <legend>Opgave status</legend>
+<div class="page-main">
+    <div class="flex-center flex-column flex-grow">
+        <h2 class="title">Opret en opgave</h2>
 
-        <label for="yes">Færdig</label>
-        <input type="radio" id="yes" name="completed"
-               th:field="*{completed}" value="true"/>
+        <div class="frame">
+            <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/create(
+                                projectId=${projectId}, subprojectId=${subprojectId})}"
+                  th:method="post" th:object="${task}">
 
-        <label for="no">Ikke færdig</label>
-        <input type="radio" id="no" name="completed"
-               th:field="*{completed}" value="false"/>
-    </fieldset>
+                <input type="text" id="name" th:field="*{name}" placeholder="Navn" required/><br>
 
-    <label for="deadline">Deadline:</label><br>
-    <input type="date" id="deadline" name="deadline"
-           th:field="*{deadline}"/> <br>
+                <textarea id="description" th:field="*{description}" placeholder="Beskrivelse" rows="4"></textarea><br>
 
-    <label for="subproject">Project kategori:*</label><br>
-    <select name="subproject" id="subproject" th:field="*{subProject.id}" required>
-        <option value="0" selected>Vælg venligst</option>
-        <option th:each="subproject : ${subprojects}"
-                th:value="${subproject.id}"
-                th:text="${subproject.name}">
-        </option>
-    </select>
-    <br>
+                <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Tidsallokering" step="0.1" required/><br>
 
-    <label for="priorityLevel">Prioritet:</label><br>
-    <select name="priority" id="priorityLevel"
-            th:field="*{priorityLevel}">
-        <option value="">Vælg venligst</option>
-        <option th:each="priority : ${priorities}"
-                th:value="${priority}"
-                th:text="${priority.displayName}">
-        </option>
-    </select>
+                <input type="date" id="deadline" th:field="*{deadline}" /><br>
 
-    <fieldset>
-        <legend>Vælg brugere</legend>
-        <div th:each="user : ${users}">
-            <label>
-                <input type="checkbox" name="userIds"
-                       th:value="${user.userID}"/>
-                <span th:text="${user.name}"></span>
-            </label><br>
+                <select id="priorityLevel" th:field="*{priorityLevel}">
+                    <option value="">Vælg venligst</option>
+                    <option th:each="priority : ${priorities}" th:value="${priority}" th:text="${priority.displayName}"></option>
+                </select><br>
+
+
+
+                <fieldset class="user-fieldset">
+                    <legend class="font_style user-legend">Vælg brugere</legend>
+                    <div class="user-checkboxes">
+                        <div th:each="user : ${users}" class="user-checkbox-wrapper">
+                            <label class="font_style user-checkbox">
+                                <input type="checkbox" name="userIds" th:value="${user.userID}" />
+                                <span th:text="${user.name}"></span>
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+
+
+                <div class="button-container">
+                    <button type="submit">Save</button>
+                    <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
+                            projectId=${projectId}, subprojectId=${subprojectId})}">
+                        <button type="button">Tilbage</button>
+                    </a>
+                </div>
+
+            </form>
         </div>
-    </fieldset>
-
-
-    <button type="submit">Send</button>
-</form>
+    </div>
+</div>
 
 </body>
 </html>

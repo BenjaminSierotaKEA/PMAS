@@ -1,8 +1,9 @@
 package org.example.pmas.controller;
 
-import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
+import org.example.pmas.service.ProjectService;
+import org.example.pmas.service.SubProjectService;
 import org.example.pmas.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,12 +25,17 @@ class TaskControllerTest {
 
     private List<Task> tasks;
     private Task task;
-
     @Autowired
     private MockMvc mvc;
 
     @MockitoBean
     private TaskService taskService;
+
+    @MockitoBean
+    private SubProjectService subProjectService;
+
+    @MockitoBean
+    private ProjectService projectService;
 
     @BeforeEach
     void setUp() {
@@ -38,47 +44,35 @@ class TaskControllerTest {
     }
 
     @Test
-    void readAll() throws Exception {
+    void readAllTaskBySubProjectID() throws Exception {
         // Arrange
-        when(taskService.readAll()).thenReturn(tasks);
+        when(taskService.getTasksBySubProjectID(1))
+                .thenReturn(tasks);
+        when(taskService.getSubProject(any(Integer.class)))
+                .thenReturn(MockDataModel.subprojectsWithValues().getFirst());
 
         // Act & Assert
-        mvc.perform(get("/tasks"))
+        mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/all", 1, 1))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task-all"))
                 .andExpect(model().attributeExists("tasks"));
 
-        verify(taskService).readAll();
+        verify(taskService).getTasksBySubProjectID(1);
     }
 
     @Test
     void readSelected() throws Exception {
         // Arrange
-        when(taskService.readSelected(any(Integer.class))).thenReturn(task);
+        when(taskService.readSelected(any(Integer.class)))
+                .thenReturn(task);
 
         // Act & Assert
-        mvc.perform(get("/tasks/{id}/task", 1))
+        mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/{id}/edit", 1,1,1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("task-selected"))
+                .andExpect(view().name("task-update"))
                 .andExpect(model().attributeExists("task"));
 
         verify(taskService).readSelected(any(Integer.class));
-    }
-
-    @Test
-    void getCreateTaskPage() throws Exception {
-        // Arrange
-        List<SubProject> subprojects = MockDataModel.subprojectsWithValues();
-        when(taskService.getAllSubproject()).thenReturn(subprojects);
-
-        // Act & Assert
-        mvc.perform(get("/tasks/new"))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("task"))
-                .andExpect(model().attributeExists("subprojects"))
-                .andExpect(view().name("task-new"));
-
-        verify(taskService).getAllSubproject();
     }
 
     @Test
@@ -86,7 +80,7 @@ class TaskControllerTest {
         // Arrange
 
         // Act & Assert
-        mvc.perform(post("/tasks/create")
+        mvc.perform(post("/projects/{projectId}/subprojects/{subprojectID}/tasks/create", 1,1)
                         .param("id", String.valueOf(1))
                         .param("name", task.getName())
                         .param("description", task.getDescription())
@@ -97,7 +91,7 @@ class TaskControllerTest {
                         .param("subProject.id", "1")
                         .param("userIds", "1", "2"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/tasks"));
+                .andExpect(redirectedUrl("/projects/1/subprojects/1/tasks/all"));
 
         verify(taskService, times(1))
                 .create(any(Task.class), any(List.class));
@@ -108,10 +102,10 @@ class TaskControllerTest {
         // Arrange
 
         // Act & Assert
-        mvc.perform(post("/tasks/{id}/delete", 1)
+        mvc.perform(post("/projects/{projectId}/subprojects/{subprojectID}/tasks/{id}/delete", 1,1,1)
                         .param("id", String.valueOf(1)))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/tasks"));
+                .andExpect(redirectedUrl("/projects/1/subprojects/1/tasks/all"));
 
         verify(taskService, times(1))
                 .delete(any(Integer.class));
@@ -122,7 +116,7 @@ class TaskControllerTest {
         // Arrange
 
         // Act & Assert
-        mvc.perform(post("/tasks/update")
+        mvc.perform(post("/projects/{projectId}/subprojects/{subprojectID}/tasks/update",1,1)
                         .param("id", String.valueOf(1))
                         .param("name", task.getName())
                         .param("description", task.getDescription())
@@ -132,7 +126,7 @@ class TaskControllerTest {
                         .param("subProject.id", "1")
                         .param("userIds", "1", "2"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/tasks"));
+                .andExpect(redirectedUrl("/projects/1/subprojects/1/tasks/all"));
 
         verify(taskService, times(1))
                 .update(any(Task.class), any(List.class));

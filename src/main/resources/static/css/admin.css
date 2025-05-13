@@ -1,0 +1,84 @@
+/* Font and reset */
+body {
+    font-family: 'Bahnschrift', sans-serif;
+    margin: 0;
+    background-color: #eeeeee;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Table container (optional for spacing/centering) */
+table {
+    width: 100vw;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Table head */
+thead {
+    background-color: #444;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+thead th {
+    padding: 1rem;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* Table body */
+tbody td {
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+}
+
+td {
+    background-color: #f9f9f9;
+
+}
+
+
+/* Buttons inside table */
+form button {
+    font-family: 'Bahnschrift', sans-serif;
+    font-weight: bold;
+    padding: 0.2rem 1rem;
+    margin: 0.1rem;
+    border: none;
+    border-radius: 20px;
+    text-transform: uppercase;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 100px;
+    text-align: center;
+}
+
+form button:hover {
+    background-color: #555;
+}
+
+/* Add User button */
+a button {
+    margin-top: 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 30px;
+    padding: 0.8rem 2rem;
+    background-color: #222;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+a button:hover {
+    background-color: #444;
+}
+

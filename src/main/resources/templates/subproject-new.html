@@ -2,45 +2,38 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
     <title>Create New SubProject</title>
 </head>
-<body>
-<h2>Create a New SubProject for Project ID: <span th:text="${projectId}"></span></h2>
+<body class="index_body page-container">
 
-<form th:action="@{/projects/save}" method="post" th:object="${subproject}">
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+
+<div class="page-main">
+    <div class="flex-center flex-column flex-grow">
+        <h2 class="title">Create a New SubProject for Project: <span th:text="${project.name}"></span></h2>
+
+        <div class="frame">
+            <form th:action="@{/projects/{projectId}/subprojects/create(projectId=${project.id})}"
+                  method="post" th:object="${subproject}">
+
+                <input type="text" id="name" th:field="*{name}" placeholder="SubProject Name" required/><br>
+
+                <textarea id="description" th:field="*{description}" placeholder="Description" rows="4"></textarea><br>
+
+                <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Time Budget" required step="0.1"/><br>
 
 
-
-    <div>
-        <label for="name">SubProject Name</label>
-        <input type="text" id="name" th:field="*{name}" placeholder="Enter subproject name" required />
+                <div class="button-container">
+                    <button type="submit">Save SubProject</button>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <div>
-        <label for="description">Description</label>
-        <input type="text" id="description" th:field="*{description}" placeholder="Enter description" />
-    </div>
-
-    <div>
-        <label for="timeBudget">Time Budget</label>
-        <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Enter time budget" required />
-    </div>
-
-    <div>
-        <label for="timeTaken">Time Taken</label>
-        <input type="number" id="timeTaken" th:field="*{timeTaken}" placeholder="Enter time taken" />
-    </div>
-
-    <div>
-        <label for="completed">Completed</label>
-        <input type="checkbox" id="completed" th:field="*{completed}" />
-    </div>
-
-    <!-- Hidden field to pass the projectID to the form -->
-    <input type="hidden" th:field="*{projectID}" th:value="${projectId}" />
-
-    <button type="submit">Save SubProject</button>
-</form>
+</div>
 
 </body>
 </html>

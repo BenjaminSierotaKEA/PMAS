@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Projects</title>
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
+</head>
+<body>
+<!--This is the ugly test version of the page,
+make this according to the styled mockup later-->
+<h1 th:unless="${allowAccess}">You are not a project manager. Access Denied!</h1>
+<div th:if="${allowAccess}">
+    <a th:href="@{/projects/new}">Create</a>
+</div>
+<table th:if="${allowAccess}">
+    <thead>
+    <tr>
+        <th>Project</th>
+        <th>Description</th>
+        <th>Time budget</th>
+        <th>Deadline</th>
+        <th>%</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="project :${projects}">
+        <td>
+            <a th:href="@{/projects/{projectId}/subprojects/all(projectId=${project.id})}"
+               th:text="${project.name}"></a></td>
+        <td th:text="${project.description}"></td>
+        <td th:text="${project.timeBudget}"></td>
+        <td th:text="${project.deadline}"></td>
+        <td th:text="${project.completionPercentage}"></td>
+        <td>
+            <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}"
+            method="get">
+                <button type="submit">Update</button>
+            </form>
+        </td>
+        <td>
+            <form method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.id})}"
+                  th:object="${project}"
+                  onsubmit="return confirm('Er du sikker på, at du vil slette kategorien?');">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

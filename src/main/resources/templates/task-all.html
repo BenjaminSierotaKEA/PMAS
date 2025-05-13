@@ -1,51 +1,90 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>View tasks</title>
+    <title>Task Overview</title>
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
 </head>
-<body>
-<h1>Du er i task</h1>
-<a th:href="@{/tasks/new}">Opret ny opgave</a>
-<table>
-    <tr>
-        <th>Opgave</th>
-        <th>Status</th>
-        <th>Beskrivelse</th>
-        <th>Tids allokering</th>
-        <th>Brugt tid</th>
-        <th>Deadline</th>
-        <th>Tildelt</th>
-        <th>Kategori</th>
-        <th>Prioritet</th>
-        <th>Opdater</th>
-        <th>Slet</th>
-    </tr>
-    <tr th:each="task : ${tasks}">
-        <td th:text="${task.name}"></td>
-        <td th:text="${task.completed}"></td>
-        <td th:text="${task.description}"></td>
-        <td th:text="${task.timeBudget}"></td>
-        <td th:text="${task.timeTaken}"></td>
-        <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}"></td>
-        <td>
-        <span th:each="user, iterStat : ${task.users}">
-            <span th:text="${user.name}"></span>
-            <!-- Places a comma if not last -->
-            <span th:if="${!iterStat.last}">, </span>
-        </span>
-        </td>
-        <td th:text="${task.getSubProject().getName()}"></td>
-        <td th:text="${task.priorityLevel != null ? task.priorityLevel.displayName : ''}"></td>
-        <td><a th:href="@{/tasks/{id}/task(id=${task.id})}">Opdater</a></td>
-        <td>
-            <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post"
-                  onsubmit="return confirm('Er du sikker på, at du vil slette denne opgave?');">
-                <button type="submit">Slet</button>
-            </form>
-        </td>
-    </tr>
-</table>
+
+<body class="page-container font_style">
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<h1 class="profile_title flex-center normalized_padding"
+    th:text="'Tasks for: ' + ${subproject.name}">
+</h1>
+
+<div class="flex-row flex-center normalized_padding">
+    <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(projectId=${projectId}, subprojectId=${subprojectId})}"
+          method="get" style="margin-right: 1rem;">
+        <button type="submit">Create Task</button>
+    </form>
+    <form th:action="@{/projects/{projectId}/subprojects/all(projectId=${projectId})}"
+          method="get">
+        <button type="submit">Back to Subprojects</button>
+    </form>
+</div>
+
+<div class="dark_frame normalized_padding">
+    <table class="task-table">
+        <thead>
+        <tr>
+            <th class="title">Task</th>
+            <th class="title">Status</th>
+            <th class="title">Description</th>
+            <th class="title">Time Budget</th>
+            <th class="title">Time Taken</th>
+            <th class="title">Deadline</th>
+            <th class="title">Assigned</th>
+            <th class="title">Priority</th>
+            <th class="title">Edit</th>
+            <th class="title">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}" class="table_row">
+            <td th:text="${task.name}">Task Name</td>
+            <td th:classappend="${task.completed} ? ' status-green' : ' status-yellow'">
+                <div th:text="${task.completed ? 'Completed' : 'In Progress'}"
+                     class="status_indicator"
+                     >
+                </div>
+            </td>
+            <td th:text="${task.description}">Description</td>
+            <td th:text="${task.timeBudget}">0</td>
+            <td th:text="${task.timeTaken}">0</td>
+            <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}">Date</td>
+            <td>
+                <span th:each="user, iterStat : ${task.users}">
+                    <span th:text="${user.name}"></span>
+                    <span th:if="${!iterStat.last}">, </span>
+                </span>
+            </td>
+            <td  th:classappend="' priority-' + ${task.priorityLevel != null ? task.priorityLevel.displayName : 'Low'}">
+                <div th:text="${task.priorityLevel != null ? task.priorityLevel.displayName : 'None'}"
+                     class="priority-bar"
+                    >
+                </div>
+            </td>
+            <td>
+                <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/edit(
+                    projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}" method="get">
+                    <button type="submit">Edit</button>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/delete(
+                    projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}"
+                      method="post"
+                      onsubmit="return confirm('Are you sure you want to delete this task?');">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 </body>
 </html>

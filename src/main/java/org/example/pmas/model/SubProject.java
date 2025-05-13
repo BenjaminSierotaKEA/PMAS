@@ -1,13 +1,12 @@
 package org.example.pmas.model;
 
 import java.util.List;
-import java.util.Objects;
 
 public class SubProject {
     private int id;
     private String name;
     private String description;
-    private double timeBudget;
+    private Double timeBudget;
     private double timeTaken;
     private boolean completed;
     private Project project;
@@ -21,7 +20,7 @@ public class SubProject {
         this.name = name;
     }
 
-    public SubProject(String name, String description, double timeBudget, double timeTaken, boolean completed, int projectID) {
+    public SubProject(String name, String description, Double timeBudget, double timeTaken, boolean completed, int projectID) {
         this.name = name;
         this.description = description;
         this.timeBudget = timeBudget;
@@ -34,6 +33,15 @@ public class SubProject {
         this.id = id;
         this.name = name;
         this.description = description;
+    }
+
+    public SubProject(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public SubProject(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -60,7 +68,7 @@ public class SubProject {
         this.description = description;
     }
 
-    public double getTimeBudget() {
+    public Double getTimeBudget() {
         return timeBudget;
     }
 
@@ -117,6 +125,6 @@ public class SubProject {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Integer.hashCode(id);
     }
 }

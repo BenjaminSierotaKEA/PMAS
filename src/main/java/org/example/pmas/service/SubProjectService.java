@@ -1,26 +1,23 @@
 package org.example.pmas.service;
 
+import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;
-import org.example.pmas.model.Task;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
-import org.example.pmas.repository.Interfaces.ITaskRepository;
+import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class SubProjectService {
-
     private final ISubProjectRepository subprojectRepository;
     private final IProjectRepository projectRepository;
-    private final ITaskRepository taskRepository;
 
-    public SubProjectService(ISubProjectRepository subProjectRepository, IProjectRepository projectRepository,ITaskRepository taskRepository) {
+    public SubProjectService(ISubProjectRepository subProjectRepository, IProjectRepository projectRepository) {
         this.subprojectRepository = subProjectRepository;
         this.projectRepository = projectRepository;
-        this.taskRepository = taskRepository;
     }
 
     public List<SubProject> readAll() {
@@ -33,10 +30,6 @@ public class SubProjectService {
             throw new NotFoundException(id);
         }
         return sub;
-    }
-
-    public int getProjectIDBySubProjectID(int subprojectID){
-        return subprojectRepository.getProjectIDBySubProjectID(subprojectID);
     }
 
     public SubProject create(SubProject subproject) {
@@ -60,7 +53,10 @@ public class SubProjectService {
         return subprojectRepository.update(subproject);
     }
 
-    public List<Task> getTasksBySubProjectID(int subprojectId){
-        return taskRepository.getTasksBySubProjectID(subprojectId);
+    public List<SubProjectDTO> getSubProjectDTOByProjectId(int id) {
+        List<SubProjectDTO> subprojects = subprojectRepository.getSubProjectDTOByProjectID(id);
+        CompletionStatCalculator<SubProjectDTO> calc = new CompletionStatCalculator<>();
+        calc.calculateTaskCompletionPercentage(subprojects);
+        return subprojects;
     }
 }

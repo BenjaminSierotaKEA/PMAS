@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
+    <title>Create your project!</title>
+</head>
+<body class="index_body page-container">
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+
+<main th:if="${allowAccess}">
+    <div class="page-main">
+        <div class="flex-center flex-column flex-grow">
+            <h2 class="title">Enter your project information please</h2>
+
+            <div class="frame">
+                <form method="post" th:action="@{/projects/create}" th:object="${project}">
+
+                    <input type="text" id="name" name="name" th:field="*{name}" placeholder="Name" required/><br>
+
+                    <textarea id="description" name="description" th:field="*{description}" placeholder="Description" rows="4"></textarea><br>
+
+                    <input type="number" id="timeBudget" name="timeBudget" th:field="*{timeBudget}" placeholder="0.0" required step="0.1"/><br>
+
+                    <input type="date" id="deadline" name="deadline" th:field="*{deadline}" required/><br>
+
+                    <div class="button-container">
+                        <button type="submit">Submit</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<main th:unless="${allowAccess}">
+    <h1>You can only create a project if you are logged in as a project manager</h1>
+</main>
+
+</body>
+</html>

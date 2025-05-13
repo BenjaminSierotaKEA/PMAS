@@ -69,8 +69,6 @@ public class TaskRepository implements ITaskRepository {
     public List<Task> readAll() {
         String sql = "SELECT " +
                 "t.*, " +
-                "sp.id as subproject_id, " +
-                "sp.name as subproject_name, " +
                 "GROUP_CONCAT(u.id SEPARATOR ',') AS user_ids, " +
                 "GROUP_CONCAT(u.name SEPARATOR ',') AS user_names " +
                 "FROM tasks t " +
@@ -91,8 +89,6 @@ public class TaskRepository implements ITaskRepository {
     public Task readSelected(int id) {
         String sql = "SELECT " +
                 "t.*, " +
-                "sp.id as subproject_id, " +
-                "sp.name as subproject_name, " +
                 "GROUP_CONCAT(u.id SEPARATOR ',') as user_ids, " +
                 "GROUP_CONCAT(u.name SEPARATOR ',') as user_names " +
                 "FROM tasks t " +
@@ -171,8 +167,7 @@ public class TaskRepository implements ITaskRepository {
 
     @Transactional
     @Override
-    public int addUsersToUserTasks(int taskId, Set<Integer> userIds) {
-        int count = 0;
+    public void addUsersToUserTasks(int taskId, Set<Integer> userIds) {
         for (Integer userId : userIds) {
             try {
                 jdbcTemplate.update("INSERT INTO usertasks (userid, taskid) " +
@@ -182,17 +177,13 @@ public class TaskRepository implements ITaskRepository {
             } catch (DataAccessException e) {
                 throw new DatabaseException("Fejl: kunne ikke indsætte brugerid'er til opgaven.", e);
             }
-            count++;
         }
-
-        return count;
     }
 
     // Removes users from junction table
     @Transactional
     @Override
-    public int removeUsersFromUserTasks(int taskId, Set<Integer> userIds) {
-        int count = 0;
+    public void removeUsersFromUserTasks(int taskId, Set<Integer> userIds) {
         for (Integer userId : userIds) {
             try {
                 jdbcTemplate.update("DELETE FROM usertasks " +
@@ -202,17 +193,22 @@ public class TaskRepository implements ITaskRepository {
             } catch (DataAccessException e) {
                 throw new DatabaseException("Fejl: kunne ikke fjerne brugerid'er fra opgaven.", e);
             }
-
-            count++;
         }
-        return count;
     }
 
     @Transactional
     @Override
     public List<Task> getTasksBySubProjectID(int subprojectId) {
-        String sql = "SELECT * FROM tasks " +
-                "WHERE subProjectID = ?";
+        String sql = "SELECT " +
+                "t.*, " +
+                "GROUP_CONCAT(u.id SEPARATOR ',') AS user_ids, " +
+                "GROUP_CONCAT(u.name SEPARATOR ',') AS user_names " +
+                "FROM tasks t " +
+                "LEFT JOIN usertasks ut ON t.id = ut.taskid " +
+                "LEFT JOIN users u ON ut.userid = u.id " +
+                "LEFT JOIN subprojects sp ON t.subprojectID = sp.id " +
+                "WHERE t.subProjectID = ? " +
+                "GROUP BY t.id";
         try {
             return jdbcTemplate.query(sql,
                     new TaskRowMapper(),
@@ -221,4 +217,23 @@ public class TaskRepository implements ITaskRepository {
             throw new DatabaseException("Fejl: kunne ikke hente opgaver til subprojektet.", e);
         }
     }
+
+    @Transactional
+    @Override
+    public List<Task> findAllByUserId(int userId) {
+        String sql = """
+                 SELECT t.*,\s
+                        GROUP_CONCAT(u.id) AS user_ids,\s
+                        GROUP_CONCAT(u.name) AS user_names
+                 FROM tasks t
+                 JOIN usertasks ut ON t.id = ut.taskid
+                 JOIN users u ON u.id = ut.userid
+                 WHERE ut.userid = ?
+                 GROUP BY t.id;
+                 
+                """;
+
+        return jdbcTemplate.query(sql, new TaskRowMapper(), userId);
+    }
+
 }

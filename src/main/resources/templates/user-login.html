@@ -1,33 +1,53 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
 </head>
-<body>
 
-<h1>Login page</h1>
-
-<form th:action="@{/login}" method="post" >
+<body class="index_body page-container">
 
 
-      <p th:if="${wrongCredentials}" class="error">Wrong password or email</p>
-      <div>
-        <label for="email">Email:</label>
-        <input id="email" name="email" type="text" required>
-      </div>
 
-      <div><label for="password">Password:</label>
-        <input id="password" name="password" type="password" required>
-      </div>
+<div class="page-main">
+    <div class="flex-center flex-column flex-grow">
 
-  <div>
-    <button type="submit">Login</button>
-    <a th:href="@{'/'}">
-      <button type="button">Cancel</button>
-    </a>
-  </div>
-</form>
+        <div class="logo_container">
+            <img th:src="@{/images/Logo.png}" alt="alphaSolutionsLogo" >
+        </div>
+
+            <form th:action="@{/login}" method="post">
+
+
+                <p th:if="${wrongCredentials}" class="error">Wrong password or email</p>
+
+                <div>
+                    <input id="EMAIL" name="email" type="text" placeholder="Email" required>
+                </div>
+
+                <div>
+                    <input id="PASSWORD" name="password" type="password" placeholder="Password" required>
+                </div>
+
+                <div class = "flex-row flex-center">
+                    <div class = "button-container">
+                    <button type="submit">Login</button>
+                    </div>
+                    <div class = "button-container">
+                    <a th:href="@{'/'}">
+                        <button type="button">Cancel</button>
+                    </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+<div class="page-footer"></div>
 
 </body>
 </html>
