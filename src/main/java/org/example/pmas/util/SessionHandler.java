@@ -44,8 +44,10 @@ public class SessionHandler {
     //log user in of the credentials match in DB
     public boolean logIn(String email, String password) {
         var userExists = userService.logIn(email, password);
-        if (userExists != null) {
-            session.setAttribute("user", userExists);
+        User user = new User(userExists.getUserID(),userExists.getRole());
+
+        if (user != null) {
+            session.setAttribute("user", user);
             session.setMaxInactiveInterval(MAX_SESSION_LENGTH);
             return true;
         }

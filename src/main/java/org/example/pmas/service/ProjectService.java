@@ -74,7 +74,7 @@ public class ProjectService {
     // If the list is null, return an empty list. No errors
     private List<Project> sortList(List<Project> projects){
         // If the list is null, return an empty list. No errors
-        if(projects.isEmpty() || projects == null) return Collections.emptyList();
+        if(projects.isEmpty()) return Collections.emptyList();
 
         // Sort the list by deadline and then priority.
         List<Project> modifiableList = new ArrayList<>(projects);

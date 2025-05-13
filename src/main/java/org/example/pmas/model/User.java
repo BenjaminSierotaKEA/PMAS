@@ -43,6 +43,11 @@ public class User {
         this.name = name;
     }
 
+    public User(int userID, Role role) {
+        this.userID = userID;
+        this.role = role;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (this == other) return true;
