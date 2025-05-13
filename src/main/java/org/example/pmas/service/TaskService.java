@@ -33,7 +33,7 @@ public class TaskService {
         Task createdTask = taskRepository.create(task);
         if (createdTask == null) throw new NotFoundException(task.getId());
 
-        // Adds user and task to junction table if any
+        // Adds user and task to the junction table if any
         if (userIDs != null)
             addUserToTask(createdTask.getId(), userIDs);
     }
@@ -42,12 +42,12 @@ public class TaskService {
         List<Task> allTask = taskRepository.readAll();
         if (allTask == null) return Collections.emptyList();
 
-        // Sorts the list by deadline and priority.
-        // Now the list isn't immutable, so we can modify it.
+        // The list isn't immutable, so we can modify it.
+        // Sorts the list by priority and then deadline.
         List<Task> modifiableList = new ArrayList<>(allTask);
-        modifiableList.sort(new TaskDeadlineComparator()
+        modifiableList.sort(new TaskPriorityComparator().reversed()
                 // priority wil be sorted high -> low because of reverse
-                .thenComparing(new TaskPriorityComparator().reversed()));
+                .thenComparing(new TaskDeadlineComparator()));
         return allTask;
     }
 
@@ -99,8 +99,9 @@ public class TaskService {
         taskRepository.removeUsersFromUserTasks(taskId, toRemove);
     }
 
+    // Filter users who've been deleted or added
     private Set<Integer> differenceOrEmpty(List<Integer> baseList, List<Integer> subtractList) {
-        // We've to check null and isEmpty or else either update or create won't work.
+        // We've to check null and isEmpty or else either update or create won't work. If a list is empty
         if (subtractList == null || subtractList.isEmpty()) subtractList = Collections.emptyList();
         if (baseList == null || baseList.isEmpty()) baseList = Collections.emptyList();
 
