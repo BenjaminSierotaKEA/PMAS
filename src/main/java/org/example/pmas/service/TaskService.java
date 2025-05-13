@@ -1,6 +1,8 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
+import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
@@ -64,7 +66,7 @@ public class TaskService {
 
         // Skal tænkes igennem igen
         if (!taskRepository.delete(id))
-            throw new NotFoundException("Id:" + id + " could not be deleted from database.");
+            throw new DeleteObjectException("Id:" + id + " could not be deleted from database.");
     }
 
     public void update(Task task, List<Integer> userIDs) {
@@ -73,7 +75,7 @@ public class TaskService {
         if (old == null) throw new NotFoundException(task.getId());
 
         if (!taskRepository.update(task))
-            throw new NotFoundException("Id:" + task.getId() + " could not be updated in database.");
+            throw new UpdateObjectException("Id:" + task.getId() + " could not be updated in database.");
 
         // Adds users to the junction table if any
         addUserToTask(task.getId(), userIDs);
