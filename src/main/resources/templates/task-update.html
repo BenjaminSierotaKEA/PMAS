@@ -10,28 +10,29 @@
 
 
 <body class="page-container font_style">
+<h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
 
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:if="${allowAccess}">
+    <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class=" normalized_padding">
-    <h3 th:text="'Opdater: ' + ${task.name}" class="profile_title flex-center"></h3>
+    <div class=" normalized_padding">
+        <h3 th:text="'Opdater: ' + ${task.name}" class="profile_title flex-center"></h3>
 
-    <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/update(
+        <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/update(
                     projectId=${projectId}, subprojectId=${subprojectId})}"
-          th:method="post" th:object="${task}" class=" frame flex-center flex-grow">
+              th:method="post" th:object="${task}" class=" frame flex-center flex-grow">
 
-        <div class="dashboard-left flex-column">
-            <input type="text" hidden name="id"
-                   th:field="*{id}"/> <br>
+            <div class="dashboard-left flex-column">
+                <input type="text" hidden name="id"
+                       th:field="*{id}"/> <br>
 
-            <label for="name">Navn:</label><br>
-            <input type="text" id="name" name="name"
-                   th:field="*{name}" required/> <br>
+                <label for="name">Navn:</label><br>
+                <input type="text" id="name" name="name"
+                       th:field="*{name}" required/> <br>
 
-            <label for="description">Beskrivelse:</label><br>
-            <textarea id="description" name="description" required rows="4" cols="50"
-                      th:field="*{description}" class="text-field"></textarea> <br>
-
+                <label for="description">Beskrivelse:</label><br>
+                <textarea id="description" name="description" required rows="4" cols="50"
+                          th:field="*{description}" class="text-field"></textarea> <br>
 
 
                 <legend>Vælg brugere:</legend>
@@ -46,7 +47,6 @@
                 </div>
 
 
-
                 <legend>Opgave status</legend>
 
                 <label for="yes">Færdig</label>
@@ -58,44 +58,45 @@
                        th:field="*{completed}" value="false"/>
 
 
-        </div>
+            </div>
 
-        <div class="dashboard-right flex-column normalized_padding">
+            <div class="dashboard-right flex-column normalized_padding">
 
-            <label for="timeBudget">*Tidsallokering:</label><br>
-            <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1" required
-                   th:field="*{timeBudget}"/> <br>
+                <label for="timeBudget">*Tidsallokering:</label><br>
+                <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1" required
+                       th:field="*{timeBudget}"/> <br>
 
-            <label for="timeTaken">Faktiske tid:</label><br>
-            <input type="number" id="timeTaken" name="timeTaken" step="0.1"
-                   th:field="*{timeTaken}"/> <br>
-
-
-            <label for="deadline">Deadline:</label><br>
-            <input type="date" id="deadline" name="deadline" required
-                   th:field="*{deadline}"/> <br>
-
-            <label for="priorityLevel">Prioritet:</label><br>
-            <select name="priority" id="priorityLevel"
-                    th:field="*{priorityLevel}">
-                <option value="">Vælg venligst</option>
-                <option th:each="priority : ${priorities}"
-                        th:value="${priority}"
-                        th:text="${priority.displayName}">
-                </option>
-            </select>
-        </div>
+                <label for="timeTaken">Faktiske tid:</label><br>
+                <input type="number" id="timeTaken" name="timeTaken" step="0.1"
+                       th:field="*{timeTaken}"/> <br>
 
 
-</div>
+                <label for="deadline">Deadline:</label><br>
+                <input type="date" id="deadline" name="deadline" required
+                       th:field="*{deadline}"/> <br>
 
-<div class="button-container flex-center">
-    <button type="submit">Opdater</button>
-    <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
+                <label for="priorityLevel">Prioritet:</label><br>
+                <select name="priority" id="priorityLevel"
+                        th:field="*{priorityLevel}">
+                    <option value="">Vælg venligst</option>
+                    <option th:each="priority : ${priorities}"
+                            th:value="${priority}"
+                            th:text="${priority.displayName}">
+                    </option>
+                </select>
+            </div>
+
+
+    </div>
+
+    <div class="button-container flex-center">
+        <button type="submit">Opdater</button>
+        <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
     projectId=${projectId}, subprojectId=${subprojectId})}">
-        <button type="button">Tilbage</button>
-    </a>
-    </form>
+            <button type="button">Tilbage</button>
+        </a>
+        </form>
+    </div>
 </div>
 </body>
 </html>
