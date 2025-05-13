@@ -58,7 +58,6 @@ public class SubProjectController {
                                    @PathVariable(value = "subprojectId") int subprojectId) {
         if (sessionHandler.isNotAdmin()) {
             validateId(subprojectId);
-            //int projectID = subprojectService.getProjectIDBySubProjectID(subprojectID);
             subProjectService.delete(subprojectId);
         }
 

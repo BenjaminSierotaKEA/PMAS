@@ -18,7 +18,7 @@
     </div>
 
     <h1 class="profile_title flex-center normalized_padding"
-        th:text="'Project: ' + ${project.name}">
+        th:text="'SubProjects for Project: ' + ${project.name}">
     </h1>
 
     <div class="flex-row flex-center normalized_padding">
@@ -26,7 +26,7 @@
               method="get">
             <button>Opret</button>
         </form>
-        <form th:action="@{/projects/all}"
+        <form th:action="@{/projects/my-projects}"
               method="get">
             <button type="submit">Tilbage til projekter</button>
         </form>
@@ -56,14 +56,16 @@
                 <td th:text="${subproject.completionPercentage == 0 ? '0%' : #numbers.formatDecimal(subproject.completionPercentage, 0, 2) + '%'}"></td>
                 <td>
                     <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
-                          method="get">
+                          method="get"
+                          onclick="event.stopPropagation()">
                         <button type="submit">Opdater</button>
                     </form>
                 </td>
                 <td>
                     <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/delete(projectId=${project.id}, subprojectId=${subproject.id})}"
                           method="post"
-                          onsubmit="return confirm('Er du sikker på, at du vil slette kategorien?');">
+                          onsubmit="return confirm('Er du sikker på, at du vil slette kategorien?');"
+                          onclick="event.stopPropagation()">
                         <button type="submit">Slet</button>
                     </form>
                 </td>

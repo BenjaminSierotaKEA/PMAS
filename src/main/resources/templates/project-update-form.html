@@ -1,31 +1,57 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Update your project!</title>
+    <title>Rediger Projekt</title>
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
 </head>
-<body>
-    <main th:if="${allowAccess}">
-        <h1>Update your project information:</h1>
-        <form method="post" th:action="@{/projects/update}" th:object="${project}">
-            <input hidden type="number" th:field="*{id}">
-            <label>Project Name:</label>
-            <input type="text" th:field="*{name}" required>
-            <label>Description:</label>
-            <textarea type="text" th:field="*{description}"></textarea>
-            <label>Time Budget:</label>
-            <input type="number" th:field="*{timeBudget}" required step="0.1">
-            <label>Deadline:</label>
-            <input type="date" th:field="*{deadline}" required>
-            <button type="submit">Submit</button>
+<body class="index_body page-container">
 
-        </form>
-    </main>
-<main th:unless="${allowAccess}">
-    <h1>You can only update a project when logged in as a project manager.</h1>
+<!-- Navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<!-- Error Message (if any) -->
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+
+<!-- Access Check -->
+<main th:if="${allowAccess}">
+    <div class="page-main">
+        <div class="flex-center flex-column flex-grow">
+            <h2 class="title">
+                Rediger Projekt: <span th:text="*{name}">[Projekt Navn]</span>
+            </h2>
+
+            <div class="frame">
+                <form method="post" th:action="@{/projects/update}" th:object="${project}">
+                    <!-- Hidden Fields -->
+                    <input type="number" th:field="*{id}" hidden readonly/>
+
+                    <!-- Editable Fields -->
+                    <label for="name">Projektnavn</label>
+                    <input type="text" id="name" th:field="*{name}" placeholder="Projektnavn" required/><br>
+
+                    <label for="description">Beskrivelse</label>
+                    <textarea id="description" th:field="*{description}" rows="4" placeholder="Beskrivelse"></textarea><br>
+
+                    <label for="timeBudget">Tidsbudget</label>
+                    <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="0.0" step="0.1" required/><br>
+
+                    <label for="deadline">Deadline</label>
+                    <input type="date" id="deadline" th:field="*{deadline}" required/><br>
+
+                    <div class="button-container">
+                        <button type="submit">Opdatér</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
 
-
+<main th:unless="${allowAccess}">
+    <h1>Du kan kun redigere projektet, hvis du er logget ind som projektleder.</h1>
+</main>
 
 </body>
 </html>

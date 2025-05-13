@@ -15,86 +15,77 @@
 <div th:if="${allowAccess}">
     <div th:replace="fragments/navbar :: navbar"></div>
 
-    <div class=" normalized_padding">
+    <div class="normalized_padding">
         <h3 th:text="'Opdater: ' + ${task.name}" class="profile_title flex-center"></h3>
 
         <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/update(
                     projectId=${projectId}, subprojectId=${subprojectId})}"
-              th:method="post" th:object="${task}" class=" frame flex-center flex-grow">
+              th:method="post" th:object="${task}" class="frame">
 
-            <div class="dashboard-left flex-column">
-                <input type="text" hidden name="id"
-                       th:field="*{id}"/> <br>
+            <input type="hidden" name="id" th:field="*{id}"/>
 
-                <label for="name">Navn:</label><br>
-                <input type="text" id="name" name="name"
-                       th:field="*{name}" required/> <br>
+            <div class="form-group">
+                <label for="name">Navn:</label>
+                <input type="text" id="name" name="name" th:field="*{name}" required/>
+            </div>
 
-                <label for="description">Beskrivelse:</label><br>
-                <textarea id="description" name="description" required rows="4" cols="50"
-                          th:field="*{description}" class="text-field"></textarea> <br>
+            <div class="form-group">
+                <label for="description">Beskrivelse:</label>
+                <textarea id="description" name="description" rows="4" th:field="*{description}" class="text-field" required></textarea>
+            </div>
 
-
+            <fieldset class="checkbox-group">
                 <legend>Vælg brugere:</legend>
-
-                <div th:each="user : ${users}">
-                    <label class="custom-checkbox">
+                <div th:each="user : ${users}" class="user-checkbox-wrapper">
+                    <label class="user-checkbox">
                         <input type="checkbox" name="userIds"
                                th:checked="${task.users != null and task.users.contains(user)}"
                                th:value="${user.userID}"/>
                         <span th:text="${user.name}"></span>
-                    </label><br>
+                    </label>
                 </div>
+            </fieldset>
 
-
+            <fieldset class="radio-group">
                 <legend>Opgave status</legend>
-
                 <label for="yes">Færdig</label>
-                <input type="radio" id="yes" name="completed"
-                       th:field="*{completed}" value="true"/>
+                <input type="radio" id="yes" name="completed" th:field="*{completed}" value="true"/>
 
                 <label for="no">Ikke færdig</label>
-                <input type="radio" id="no" name="completed"
-                       th:field="*{completed}" value="false"/>
+                <input type="radio" id="no" name="completed" th:field="*{completed}" value="false"/>
+            </fieldset>
 
-
+            <div class="form-group">
+                <label for="timeBudget">*Tidsallokering:</label>
+                <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1" th:field="*{timeBudget}" required/>
             </div>
 
-            <div class="dashboard-right flex-column normalized_padding">
+            <div class="form-group">
+                <label for="timeTaken">Faktiske tid:</label>
+                <input type="number" id="timeTaken" name="timeTaken" step="0.1" th:field="*{timeTaken}"/>
+            </div>
 
-                <label for="timeBudget">*Tidsallokering:</label><br>
-                <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1" required
-                       th:field="*{timeBudget}"/> <br>
+            <div class="form-group">
+                <label for="deadline">Deadline:</label>
+                <input type="date" id="deadline" name="deadline" th:field="*{deadline}" required/>
+            </div>
 
-                <label for="timeTaken">Faktiske tid:</label><br>
-                <input type="number" id="timeTaken" name="timeTaken" step="0.1"
-                       th:field="*{timeTaken}"/> <br>
-
-
-                <label for="deadline">Deadline:</label><br>
-                <input type="date" id="deadline" name="deadline" required
-                       th:field="*{deadline}"/> <br>
-
-                <label for="priorityLevel">Prioritet:</label><br>
-                <select name="priority" id="priorityLevel"
-                        th:field="*{priorityLevel}">
+            <div class="form-group">
+                <label for="priorityLevel">Prioritet:</label>
+                <select name="priority" id="priorityLevel" th:field="*{priorityLevel}">
                     <option value="">Vælg venligst</option>
-                    <option th:each="priority : ${priorities}"
-                            th:value="${priority}"
-                            th:text="${priority.displayName}">
-                    </option>
+                    <option th:each="priority : ${priorities}" th:value="${priority}" th:text="${priority.displayName}"></option>
                 </select>
             </div>
 
+            <div class="button-container">
+                <button type="submit">Opdater</button>
+                <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
+                    projectId=${projectId}, subprojectId=${subprojectId})}">
+                    <button type="button">Tilbage</button>
+                </a>
+            </div>
 
-    </div>
-
-    <div class="button-container flex-center">
-        <button type="submit">Opdater</button>
-        <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
-    projectId=${projectId}, subprojectId=${subprojectId})}">
-            <button type="button">Tilbage</button>
-        </a>
         </form>
     </div>
 </div>
