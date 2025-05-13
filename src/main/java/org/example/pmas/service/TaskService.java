@@ -62,11 +62,11 @@ public class TaskService {
     public void delete(int id) {
         // check if id exist.
         var task = taskRepository.readSelected(id);
-        if (task == null) throw new NotFoundException("opgaven findes ikke");
+        if (task == null) throw new NotFoundException("Task didnt exist with id: " + id);
 
         // Skal tænkes igennem igen
         if (!taskRepository.delete(id))
-            throw new DeleteObjectException("Id:" + id + " Kunne ikke slette opgaven");
+            throw new DeleteObjectException("Id:" + id + " could not be deleted from database.");
     }
 
     public void update(Task task, List<Integer> userIDs) {
@@ -75,7 +75,7 @@ public class TaskService {
         if (old == null) throw new NotFoundException(task.getId());
 
         if (!taskRepository.update(task))
-            throw new UpdateObjectException("Id:" + task.getId() + " Kunne ikke opdatere opgaven");
+            throw new UpdateObjectException("Id:" + task.getId() + " could not be updated in database.");
 
         // Adds users to the junction table if any
         addUserToTask(task.getId(), userIDs);

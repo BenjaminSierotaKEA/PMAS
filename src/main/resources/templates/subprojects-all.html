@@ -10,62 +10,67 @@
 
 
 <body class="page-container font_style">
+<h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
 
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:if="${allowAccess}">
+    <div>
+        <div th:replace="fragments/navbar :: navbar"></div>
+    </div>
 
-<h1 class="profile_title flex-center normalized_padding"
-    th:text="'Project: ' + ${project.name}">
-</h1>
+    <h1 class="profile_title flex-center normalized_padding"
+        th:text="'Project: ' + ${project.name}">
+    </h1>
 
-<div class="flex-row flex-center normalized_padding">
-    <form th:action="@{/projects/{projectId}/subprojects/new(projectId=${project.id})}"
-          method="get">
-        <button>Opret</button>
-    </form>
-    <form th:action="@{/projects/all}"
-          method="get">
-        <button type="submit">Tilbage til projekter</button>
-    </form>
-</div>
+    <div class="flex-row flex-center normalized_padding">
+        <form th:action="@{/projects/{projectId}/subprojects/new(projectId=${project.id})}"
+              method="get">
+            <button>Opret</button>
+        </form>
+        <form th:action="@{/projects/all}"
+              method="get">
+            <button type="submit">Tilbage til projekter</button>
+        </form>
+    </div>
 
-<div class="dark_frame normalized_padding">
-    <table class="task-table">
-        <thead>
-        <tr>
-            <th scope="col">Navn</th>
-            <th scope="col">Beskrivelse</th>
-            <th scope="col">BrugtTid</th>
-            <th scope="col">TidsBudget</th>
-            <th scope="col">Fuldført</th>
-            <th scope="col">% Færdig</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="subproject: ${subprojects}" class="table_row clickable-row"
-            th:onclick="'window.location.href=\'/projects/' + ${project.id} + '/subprojects/' + ${subproject.id} + '/tasks/all\''">
-            <td th:text="${subproject.name}"></td>
-            <td th:text="${subproject.description}"></td>
-            <td th:text="${subproject.timeTaken}"></td>
-            <td th:text="${subproject.timeBudget}"></td>
-            <td th:text="${subproject.completed}"></td>
+    <div class="dark_frame normalized_padding">
+        <table class="task-table">
+            <thead>
+            <tr>
+                <th scope="col">Navn</th>
+                <th scope="col">Beskrivelse</th>
+                <th scope="col">BrugtTid</th>
+                <th scope="col">TidsBudget</th>
+                <th scope="col">Fuldført</th>
+                <th scope="col">% Færdig</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="subproject: ${subprojects}" class="table_row clickable-row"
+                th:onclick="'window.location.href=\'/projects/' + ${project.id} + '/subprojects/' + ${subproject.id} + '/tasks/all\''">
+                <td th:text="${subproject.name}"></td>
+                <td th:text="${subproject.description}"></td>
+                <td th:text="${subproject.timeTaken}"></td>
+                <td th:text="${subproject.timeBudget}"></td>
+                <td th:text="${subproject.completed}"></td>
 
-            <td th:text="${subproject.completionPercentage == 0 ? '0%' : #numbers.formatDecimal(subproject.completionPercentage, 0, 2) + '%'}"></td>
-            <td>
-                <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
-                      method="get">
-                    <button type="submit">Opdater</button>
-                </form>
-            </td>
-            <td>
-                <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/delete(projectId=${project.id}, subprojectId=${subproject.id})}"
-                      method="post"
-                      onsubmit="return confirm('Er du sikker på, at du vil slette kategorien?');">
-                    <button type="submit">Slet</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                <td th:text="${subproject.completionPercentage == 0 ? '0%' : #numbers.formatDecimal(subproject.completionPercentage, 0, 2) + '%'}"></td>
+                <td>
+                    <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
+                          method="get">
+                        <button type="submit">Opdater</button>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/delete(projectId=${project.id}, subprojectId=${subproject.id})}"
+                          method="post"
+                          onsubmit="return confirm('Er du sikker på, at du vil slette kategorien?');">
+                        <button type="submit">Slet</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

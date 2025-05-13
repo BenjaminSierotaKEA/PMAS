@@ -4,6 +4,7 @@ import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.exception.UpdateObjectException;
+import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
@@ -63,5 +64,10 @@ public class SubProjectService {
         CompletionStatCalculator<SubProjectDTO> calc = new CompletionStatCalculator<>();
         calc.calculateTaskCompletionPercentage(subprojects);
         return subprojects;
+    }
+
+    public Project getProjectById(int projectId){
+        if(!projectRepository.doesProjectExist(projectId)) throw new NotFoundException("Something wrong with project id");
+        return projectRepository.readSelected(projectId);
     }
 }
