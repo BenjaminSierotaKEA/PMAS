@@ -36,7 +36,7 @@ public class TaskController {
                                @PathVariable(value = "projectId") int projectId,
                                @PathVariable(value = "subprojectId") int subprojectId,
                                Model model) {
-        if (id < 0) throw new IllegalArgumentException("Noget galt med id");
+        if (id < 0) throw new IllegalArgumentException("Something wrong with id");
 
         Task task = taskService.readSelected(id);
         model.addAttribute("subprojectId", subprojectId);
@@ -64,7 +64,7 @@ public class TaskController {
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId,
                              Model model) {
-        if (task == null) throw new IllegalArgumentException("Noget galt med task.");
+        if (task == null) throw new IllegalArgumentException("Something wrong with task.");
         // Checks if subproject is set, if not, redirect to subproject page
         if (subprojectId <= 0 || projectId <= 0) {
             getSubProjectUsersPriority(model);
@@ -94,12 +94,11 @@ public class TaskController {
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId,
                              Model model) {
-        if (task == null) throw new IllegalArgumentException("Noget galt med task.");
+        if (task == null) throw new IllegalArgumentException("Something wrong with task.");
         // Checks if subproject is set, if not, redirect to subproject page
         if (subprojectId <= 0 || projectId <= 0 || task.getId() <= 0) {
             getSubProjectUsersPriority(model);
             model.addAttribute("task", task);
-            model.addAttribute("error", "Obligatorisk felt her.");
             return "redirect:/tasks/" + task.getId() + "/task";
         }
 

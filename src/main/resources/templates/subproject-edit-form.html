@@ -6,39 +6,38 @@
     <title>Rediger Subprojekt</title>
 </head>
 <body>
-<div>
-    <h1>Rediger Subprojekt</h1>
-</div>
-<div>
+<h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
+<div th:if="${allowAccess}">
     <div>
-        <form method="post" th:action="@{/projects/{projectId}/subprojects/update(projectId=${subproject.getProjectID()})}"
-              th:object="${subproject}">
-            <input type="number" th:field="*{id}" readonly hidden>
-            <input hidden readonly type="number" th:field="*{projectID}">
-
-            <label>Navn</label>
-            <input type="text" th:field="*{name}"/>
-
-            <br>
-            <label>Beskrivelse</label>
-            <textarea rows="3" cols="20" th:field="*{description}"></textarea>
-
-            <br>
-            <label>TidsBudget</label>
-            <input type="text" th:field="*{timeBudget}" step="0.1" placeholder="0.0" required/>
-
-            <label>TidBrugt</label>
-            <input type="text" th:field="*{timeTaken}">
-
-            <label>Fuldført</label>
-            <input type="checkbox" th:field="*{completed}">
+        <h1>Rediger Subprojekt</h1>
     </div>
-    <div class="button-container">
-        <button type="submit">Opdatere</button>
-    </div>
+
+    <form method="post"
+          th:action="@{/projects/{projectId}/subprojects/update(projectId=${subproject.getProjectID()})}"
+          th:object="${subproject}">
+        <input type="number" th:field="*{id}" readonly hidden>
+        <input hidden readonly type="number" th:field="*{projectID}">
+
+        <label>Navn</label>
+        <input type="text" th:field="*{name}"/>
+
+        <br>
+        <label>Beskrivelse</label>
+        <textarea rows="3" cols="20" th:field="*{description}"></textarea>
+
+        <br>
+        <label>TidsBudget</label>
+        <input type="text" th:field="*{timeBudget}" step="0.1" placeholder="0.0" required/>
+
+        <label>TidBrugt</label>
+        <input type="text" th:field="*{timeTaken}">
+
+        <label>Fuldført</label>
+        <input type="checkbox" th:field="*{completed}">
+        <div class="button-container">
+            <button type="submit">Opdatere</button>
+        </div>
     </form>
 </div>
-
-
 </body>
 </html>
