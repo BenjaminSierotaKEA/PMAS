@@ -3,8 +3,8 @@ package org.example.pmas.controller;
 import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
-import org.example.pmas.service.ProjectService;
 import org.example.pmas.service.SubProjectService;
+import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +15,26 @@ import java.util.List;
 @RequestMapping("projects/{projectId}/subprojects")
 public class SubProjectController {
     private final SubProjectService subProjectService;
-    private final ProjectService projectService;
+    private final SessionHandler sessionHandler;
 
-    public SubProjectController(SubProjectService subProjectService, ProjectService projectService) {
+    public SubProjectController(SubProjectService subProjectService,
+                                SessionHandler sessionHandler) {
         this.subProjectService = subProjectService;
-        this.projectService = projectService;
+        this.sessionHandler = sessionHandler;
     }
 
     @GetMapping("/all")
     public String readAll(@PathVariable(value = "projectId") int projectId,
                           Model model) {
-        model.addAttribute("project", projectService.readSelected(projectId));
-        List<SubProjectDTO> subprojects = subProjectService.getSubProjectDTOByProjectId(projectId);
-        model.addAttribute("subprojects",subprojects);
+        boolean loggedIn = sessionHandler.isNotAdmin();
+        if (loggedIn) {
+            validateId(projectId);
+            model.addAttribute("project", subProjectService.getProjectById(projectId));
+            List<SubProjectDTO> subprojects = subProjectService.getSubProjectDTOByProjectId(projectId);
+            model.addAttribute("subprojects", subprojects);
+        }
+
+        model.addAttribute("allowAccess", loggedIn);
         return "subprojects-all";
     }
 
@@ -35,39 +42,57 @@ public class SubProjectController {
     public String getSubProject(@PathVariable(value = "projectId") int projectId,
                                 @PathVariable(value = "subprojectId") int subprojectId,
                                 Model model) {
-        validateId(subprojectId);
-        SubProject subproject = subProjectService.readSelected(subprojectId);
-        model.addAttribute("subproject", subproject);
+        boolean loggedIn = sessionHandler.isNotAdmin();
+        if (loggedIn) {
+            validateId(subprojectId);
+            SubProject subproject = subProjectService.readSelected(subprojectId);
+            model.addAttribute("subproject", subproject);
+        }
+
+        model.addAttribute("allowAccess", loggedIn);
         return "subproject-selected";
     }
 
     @PostMapping("/{subprojectId}/delete")
     public String deleteSubProject(@PathVariable(value = "projectId") int projectId,
                                    @PathVariable(value = "subprojectId") int subprojectId) {
-        validateId(subprojectId);
-        //int projectID = subprojectService.getProjectIDBySubProjectID(subprojectID);
-        subProjectService.delete(subprojectId);
-        return "redirect:/projects/" + projectId +"/subprojects/all";
+        if (sessionHandler.isNotAdmin()) {
+            validateId(subprojectId);
+            //int projectID = subprojectService.getProjectIDBySubProjectID(subprojectID);
+            subProjectService.delete(subprojectId);
+        }
+
+        return "redirect:/projects/" + projectId + "/subprojects/all";
     }
 
     @GetMapping("/new")
     public String createSubProject(@PathVariable(value = "projectId") int projectId,
                                    Model model) {
-        validateId(projectId);
-        SubProject subproject = new SubProject();
-        subproject.setProjectID(projectId);
-        Project project = projectService.readSelected(projectId);
+        boolean loggedIn = sessionHandler.isNotAdmin();
+        if (loggedIn) {
+            validateId(projectId);
+            SubProject subproject = new SubProject();
+            subproject.setProjectID(projectId);
+            Project project = subProjectService.getProjectById(projectId);
 
-        model.addAttribute("subproject", subproject);
-        model.addAttribute("project",project);
+            model.addAttribute("subproject", subproject);
+            model.addAttribute("project", project);
+        }
+
+        model.addAttribute("allowAccess", loggedIn);
         return "subproject-new";
     }
 
     @PostMapping("/create")
     public String saveSubProject(@PathVariable(value = "projectId") int projectId,
                                  @ModelAttribute SubProject subproject) {
-        subproject.setProjectID(projectId);
-        subProjectService.create(subproject);
+        if (sessionHandler.isNotAdmin()) {
+            if (subproject == null) throw new IllegalArgumentException("Something wrong with subproject.");
+
+            subproject.setProjectID(projectId);
+            subProjectService.create(subproject);
+        }
+
         return "redirect:/projects/" + projectId + "/subprojects/all";
     }
 
@@ -75,20 +100,29 @@ public class SubProjectController {
     public String editSubProject(@PathVariable(value = "projectId") int projectId,
                                  @PathVariable(value = "subprojectId") int subprojectId,
                                  Model model) {
-        validateId(subprojectId);
-        SubProject subproject = subProjectService.readSelected(subprojectId);
-        model.addAttribute("subproject", subproject);
+        boolean loggedIn = sessionHandler.isNotAdmin();
+        if (loggedIn) {
+            validateId(subprojectId);
+            SubProject subproject = subProjectService.readSelected(subprojectId);
+            model.addAttribute("subproject", subproject);
+        }
+
+        model.addAttribute("allowAccess", loggedIn);
         return "subproject-edit-form";
     }
 
     @PostMapping("/update")
     public String updateSubProject(@ModelAttribute SubProject subproject,
                                    @PathVariable(value = "projectId") int projectId) {
-        subProjectService.updateSubProject(subproject);
+        if (sessionHandler.isNotAdmin()) {
+            if (subproject == null) throw new IllegalArgumentException("Something wrong with subproject.");
+
+            subProjectService.updateSubProject(subproject);
+        }
         return "redirect:/projects/" + projectId + "/subprojects/all";
     }
 
     private void validateId(int id) {
-        if (id <= 0) throw new IllegalArgumentException("Ugyldigt ID.");
+        if (id <= 0) throw new IllegalArgumentException("Something wrong with id in URL.");
     }
 }

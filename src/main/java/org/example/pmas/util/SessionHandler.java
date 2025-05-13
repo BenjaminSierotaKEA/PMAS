@@ -66,11 +66,16 @@ public class SessionHandler {
         return user != null && user.getUserID() == ownerID;
     }
 
-    public boolean isUserProjectManager(){
-        if(isLoggedIn()){
-            if(getUserRole().getName().equals("Project Manager")){
-                return true;
-            }
+    public boolean isUserProjectManager() {
+        if (isLoggedIn()) {
+            return getUserRole().getName().equals("Project Manager");
+        }
+        return false;
+    }
+
+    public boolean isNotAdmin() {
+        if (isLoggedIn()) {
+            return !getUserRole().getName().equals("Admin");
         }
         return false;
     }
@@ -85,8 +90,6 @@ public class SessionHandler {
         }
     }
     */
-
-
 
 
 }
