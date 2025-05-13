@@ -123,7 +123,7 @@ public class TaskService {
     // If the list is null, return an empty list. No errors
     private List<Task> sortList(List<Task> taskList) {
         // If the list is null, return an empty list. No errors
-        if (taskList.isEmpty()) return Collections.emptyList();
+        if (taskList == null) return Collections.emptyList();
 
         // Sort the list by deadline and then priority.
         List<Task> modifiableList = new ArrayList<>(taskList);

@@ -5,7 +5,7 @@ import org.example.pmas.dto.SubProjectDTO;
 
 import java.util.List;
 
-public class CompletionStatCalculator<T>{
+public class CompletionStatCalculator{
 
     public CompletionStatCalculator() {
 

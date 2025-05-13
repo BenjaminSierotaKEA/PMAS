@@ -65,7 +65,7 @@ public class ProjectService {
 
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
-        CompletionStatCalculator<ProjectDTO> calc = new CompletionStatCalculator<>();
+        CompletionStatCalculator calc = new CompletionStatCalculator();
         calc.calculateSubProjectCompletionPercentage(projects);
         return projects;
     }
@@ -74,7 +74,7 @@ public class ProjectService {
     // If the list is null, return an empty list. No errors
     private List<Project> sortList(List<Project> projects){
         // If the list is null, return an empty list. No errors
-        if(projects.isEmpty()) return Collections.emptyList();
+        if(projects == null) return Collections.emptyList();
 
         // Sort the list by deadline and then priority.
         List<Project> modifiableList = new ArrayList<>(projects);
