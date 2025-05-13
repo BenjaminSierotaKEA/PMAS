@@ -1,7 +1,9 @@
 package org.example.pmas.service;
 
 import org.example.pmas.dto.SubProjectDTO;
+import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
+import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
@@ -39,18 +41,21 @@ public class SubProjectService {
         return subprojectRepository.create(subproject);
     }
 
-    public boolean delete(int id) {
+    public void delete(int id) {
         if(!subprojectRepository.doesSubProjectExist(id)) {
             throw new NotFoundException(id);
         }
-        return subprojectRepository.delete(id);
+        if(!subprojectRepository.delete(id))
+            throw new DeleteObjectException("Couldn't delete subproject with id: " + id);
     }
 
-    public boolean updateSubProject(SubProject subproject) {
+    public void updateSubProject(SubProject subproject) {
         if(!subprojectRepository.doesSubProjectExist(subproject.getId())) {
             throw new NotFoundException(subproject.getId());
         }
-        return subprojectRepository.update(subproject);
+
+        if(!subprojectRepository.update(subproject))
+            throw new UpdateObjectException("Couldn't update subproject with id: " + subproject.getId());
     }
 
     public List<SubProjectDTO> getSubProjectDTOByProjectId(int id) {

@@ -24,4 +24,16 @@ public class GlobalException {
         model.addAttribute("message", e.getMessage());
         return "errorpage";
     }
+
+    @ExceptionHandler(DeleteObjectException.class)
+    public String handleDeleteObjectException(DeleteObjectException e, Model model) {
+        model.addAttribute("message", e.getMessage());
+        return "errorpage";
+    }
+
+    @ExceptionHandler(UpdateObjectException.class)
+    public String handleUpdateObjectException(UpdateObjectException e, Model model) {
+        model.addAttribute("message", e.getMessage());
+        return "errorpage";
+    }
 }
