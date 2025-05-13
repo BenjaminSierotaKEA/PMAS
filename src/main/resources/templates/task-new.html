@@ -13,11 +13,9 @@
 <div th:if="${allowAccess}">
     <div th:replace="fragments/navbar :: navbar"></div>
 
-    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
-
     <div class="page-main">
         <div class="flex-center flex-column flex-grow">
-            <h2 class="title">Opret en opgave</h2>
+            <h2 class="title">Create a task</h2>
 
             <div class="frame">
                 <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/create(
@@ -35,9 +33,10 @@
                     <input type="date" id="deadline" th:field="*{deadline}"/><br>
 
                     <select id="priorityLevel" th:field="*{priorityLevel}">
-                        <option value="">Vælg venligst</option>
-                        <option th:each="priority : ${priorities}" th:value="${priority}"
-                                th:text="${priority.displayName}"></option>
+                        <option th:each="priority : ${priorities}"
+                                th:value="${priority}"
+                                th:text="${priority.displayName}">
+                        </option>
                     </select><br>
 
 
