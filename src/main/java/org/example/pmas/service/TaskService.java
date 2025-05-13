@@ -40,15 +40,8 @@ public class TaskService {
 
     public List<Task> readAll() {
         List<Task> allTask = taskRepository.readAll();
-        if (allTask == null) return Collections.emptyList();
 
-        // The list isn't immutable, so we can modify it.
-        // Sorts the list by priority and then deadline.
-        List<Task> modifiableList = new ArrayList<>(allTask);
-        modifiableList.sort(new TaskPriorityComparator().reversed()
-                // priority wil be sorted high -> low because of reverse
-                .thenComparing(new TaskDeadlineComparator()));
-        return allTask;
+        return sortList(allTask);
     }
 
     public Task readSelected(int id) {
@@ -82,7 +75,9 @@ public class TaskService {
     }
 
     public List<Task> getTasksBySubProjectID(int subProjectId) {
-        return taskRepository.getTasksBySubProjectID(subProjectId);
+        List<Task> taskList = taskRepository.getTasksBySubProjectID(subProjectId);
+
+        return sortList(taskList);
     }
 
     // This handle the junction table relation
@@ -118,10 +113,24 @@ public class TaskService {
 
     public SubProject getSubProject(int id) {
         var subproject = subProjectRepository.readSelected(id);
-        if(subproject == null) {
+        if (subproject == null) {
             throw new NotFoundException(id);
         }
         return subproject;
+    }
+
+    // Sorts the list by deadline and then priority.
+    // If the list is null, return an empty list. No errors
+    public List<Task> sortList(List<Task> taskList) {
+        // If the list is null, return an empty list. No errors
+        if (taskList == null) return Collections.emptyList();
+
+        // Sort the list by deadline and then priority.
+        List<Task> modifiableList = new ArrayList<>(taskList);
+        modifiableList.sort(new TaskDeadlineComparator().reversed()
+                        .thenComparing(new TaskPriorityComparator())
+        );
+        return modifiableList;
     }
 
 }
