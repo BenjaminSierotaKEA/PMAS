@@ -58,8 +58,7 @@ public class ProjectService {
 
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
-        CompletionStatCalculator<ProjectDTO> calc = new CompletionStatCalculator<>();
-        calc.calculateSubProjectCompletionPercentage(projects);
+        CompletionStatCalculator.calculateSubProjectCompletionPercentage(projects);
         return projects;
     }
 }
