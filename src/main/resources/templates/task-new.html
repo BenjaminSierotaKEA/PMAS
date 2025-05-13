@@ -8,57 +8,62 @@
 </head>
 
 <body class="index_body page-container">
+<h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
 
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:if="${allowAccess}">
+    <div th:replace="fragments/navbar :: navbar"></div>
 
-<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+    <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
 
-<div class="page-main">
-    <div class="flex-center flex-column flex-grow">
-        <h2 class="title">Opret en opgave</h2>
+    <div class="page-main">
+        <div class="flex-center flex-column flex-grow">
+            <h2 class="title">Opret en opgave</h2>
 
-        <div class="frame">
-            <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/create(
+            <div class="frame">
+                <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/create(
                                 projectId=${projectId}, subprojectId=${subprojectId})}"
-                  th:method="post" th:object="${task}">
+                      th:method="post" th:object="${task}">
 
-                <input type="text" id="name" th:field="*{name}" placeholder="Navn" required/><br>
+                    <input type="text" id="name" th:field="*{name}" placeholder="Navn" required/><br>
 
-                <textarea id="description" th:field="*{description}" placeholder="Beskrivelse" rows="4"></textarea><br>
+                    <textarea id="description" th:field="*{description}" placeholder="Beskrivelse"
+                              rows="4"></textarea><br>
 
-                <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Tidsallokering" step="0.1" required/><br>
+                    <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Tidsallokering"
+                           step="0.1" required/><br>
 
-                <input type="date" id="deadline" th:field="*{deadline}" /><br>
+                    <input type="date" id="deadline" th:field="*{deadline}"/><br>
 
-                <select id="priorityLevel" th:field="*{priorityLevel}">
-                    <option value="">Vælg venligst</option>
-                    <option th:each="priority : ${priorities}" th:value="${priority}" th:text="${priority.displayName}"></option>
-                </select><br>
+                    <select id="priorityLevel" th:field="*{priorityLevel}">
+                        <option value="">Vælg venligst</option>
+                        <option th:each="priority : ${priorities}" th:value="${priority}"
+                                th:text="${priority.displayName}"></option>
+                    </select><br>
 
 
-
-                <fieldset class="user-fieldset">
-                    <legend class="font_style user-legend">Vælg brugere</legend>
-                    <div class="user-checkboxes">
-                        <div th:each="user : ${users}" class="user-checkbox-wrapper">
-                            <label class="font_style user-checkbox">
-                                <input type="checkbox" name="userIds" th:value="${user.userID}" />
-                                <span th:text="${user.name}"></span>
-                            </label>
+                    <fieldset class="user-fieldset">
+                        <legend class="font_style user-legend">Vælg brugere</legend>
+                        <div class="user-checkboxes">
+                            <div th:each="user : ${users}" class="user-checkbox-wrapper">
+                                <label class="font_style user-checkbox">
+                                    <input type="checkbox" name="userIds" th:value="${user.userID}"/>
+                                    <span th:text="${user.name}"></span>
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                </fieldset>
+                    </fieldset>
 
 
-                <div class="button-container">
-                    <button type="submit">Save</button>
-                    <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
+                    <div class="button-container">
+                        <button type="submit">Save</button>
+                        <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
                             projectId=${projectId}, subprojectId=${subprojectId})}">
-                        <button type="button">Tilbage</button>
-                    </a>
-                </div>
+                            <button type="button">Tilbage</button>
+                        </a>
+                    </div>
 
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 </div>
