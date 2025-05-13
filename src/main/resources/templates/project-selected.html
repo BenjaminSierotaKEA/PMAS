@@ -16,6 +16,17 @@
     <h1 th:if="${loggedIn}" th:text="'Hello, ' + ${username} + ', here are the projects you are part of:'" class="profile_title flex-center normalized_padding"></h1>
     <h1 th:unless="${loggedIn}" class="profile_title flex-center normalized_padding">Please log in to see your projects</h1>
 
+<div class="flex-row flex-center normalized_padding">
+    <form th:action="@{/projects/new}"
+          method="get">
+        <button>Opret</button>
+    </form>
+    <form th:action="@{/projects/my-projects}"
+          method="get">
+        <button type="submit">Tilbage til projekter</button>
+    </form>
+</div>
+
 <div class="dark_frame normalized_padding" th:if="${loggedIn}">
     <table class="task-table">
         <thead>
