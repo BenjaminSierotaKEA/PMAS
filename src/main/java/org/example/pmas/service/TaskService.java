@@ -121,7 +121,7 @@ public class TaskService {
 
     // Sorts the list by deadline and then priority.
     // If the list is null, return an empty list. No errors
-    public List<Task> sortList(List<Task> taskList) {
+    private List<Task> sortList(List<Task> taskList) {
         // If the list is null, return an empty list. No errors
         if (taskList == null) return Collections.emptyList();
 

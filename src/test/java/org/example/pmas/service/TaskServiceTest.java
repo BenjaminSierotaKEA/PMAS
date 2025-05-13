@@ -5,6 +5,8 @@ import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.repository.TaskRepository;
+import org.example.pmas.service.comparators.TaskDeadlineComparator;
+import org.example.pmas.service.comparators.TaskPriorityComparator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,16 +44,22 @@ class TaskServiceTest {
     @Test
     void readAll_with_values() {
         // Arrange
-        var task = when(taskRepository.readAll()).thenReturn(tasks);
+        when(taskRepository.readAll()).thenReturn(tasks);
+        List<Task> expected = new ArrayList<>(tasks);
+        expected.sort(
+                new TaskDeadlineComparator().reversed()
+                        .thenComparing(new TaskPriorityComparator())
+        );
 
         // Act
         var actual = taskService.readAll();
 
         // Assert
         assertNotNull(actual);
-        assertEquals(tasks, actual);
+        assertEquals(expected, actual);
         verify(taskRepository, times(1)).readAll();
     }
+
 
     @Test
     void readAll_without_values() {
