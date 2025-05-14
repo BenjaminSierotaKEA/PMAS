@@ -4,7 +4,8 @@ import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
-import org.example.pmas.repository.TaskRepository;
+import org.example.pmas.repository.Interfaces.ISubProjectRepository;
+import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.example.pmas.service.comparators.TaskDeadlineComparator;
 import org.example.pmas.service.comparators.TaskPriorityComparator;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,10 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class TaskServiceTest {
     @Mock
-    private TaskRepository taskRepository;
+    private ITaskRepository taskRepository;
+
+    @Mock
+    private ISubProjectRepository subProjectRepository;
 
     @InjectMocks
     private TaskService taskService;
@@ -112,7 +116,8 @@ class TaskServiceTest {
     @Test
     void create_with_values() {
         // Arrange
-        when(taskRepository.create(any(Task.class))).thenReturn(task);
+        when(subProjectRepository.doesSubProjectExist(1)).thenReturn(true);
+        when(taskRepository.create(task)).thenReturn(task);
 
         // Act
         taskService.create(task, userIDs);
@@ -124,7 +129,7 @@ class TaskServiceTest {
     @Test
     void create_without_values() {
         // Arrange
-        when(taskRepository.create(any(Task.class))).thenReturn(null);
+        when(subProjectRepository.doesSubProjectExist(any(Integer.class))).thenReturn(false);
 
         // Act
         Executable executable = new Executable() {
@@ -134,8 +139,9 @@ class TaskServiceTest {
             }
         };
         // assert
+        // Assert
         assertThrows(NotFoundException.class, executable);
-        verify(taskRepository, times(1)).create(task);
+        verify(taskRepository, never()).create(any());
         verifyNoMoreInteractions(taskRepository);
     }
 

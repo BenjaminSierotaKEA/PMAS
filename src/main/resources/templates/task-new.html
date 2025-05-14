@@ -22,16 +22,21 @@
                                 projectId=${projectId}, subprojectId=${subprojectId})}"
                       th:method="post" th:object="${task}">
 
+                    <label for="name">Name:</label>
                     <input type="text" id="name" th:field="*{name}" placeholder="Navn" required/><br>
 
+                    <label for="description">Description:</label>
                     <textarea id="description" th:field="*{description}" placeholder="Beskrivelse"
                               rows="4"></textarea><br>
 
+                    <label for="timeBudget">Time budget:</label>
                     <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Tidsallokering"
                            step="0.1" required/><br>
 
+                    <label for="deadline">Deadline:</label>
                     <input type="date" id="deadline" th:field="*{deadline}"/><br>
 
+                    <label for="priorityLevel">Priority:</label>
                     <select id="priorityLevel" th:field="*{priorityLevel}">
                         <option th:each="priority : ${priorities}"
                                 th:value="${priority}"
@@ -41,7 +46,7 @@
 
 
                     <fieldset class="user-fieldset">
-                        <legend class="font_style user-legend">Vælg brugere</legend>
+                        <legend class="font_style user-legend">Pick users:</legend>
                         <div class="user-checkboxes">
                             <div th:each="user : ${users}" class="user-checkbox-wrapper">
                                 <label class="font_style user-checkbox">
@@ -57,7 +62,7 @@
                         <button type="submit">Save</button>
                         <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
                             projectId=${projectId}, subprojectId=${subprojectId})}">
-                            <button type="button">Tilbage</button>
+                            <button type="button">Back</button>
                         </a>
                     </div>
 

@@ -41,6 +41,7 @@ public class ProjectController {
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project,
                                 @RequestParam(name="userIds", required = false) List<Integer> userIDs) {
+        if(project == null) throw new IllegalArgumentException("Something wrong with project.");
 
         if (sessionHandler.isUserProjectManager()) {
             Project resultProject = projectService.createProject(project);
@@ -82,7 +83,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/edit")
     public String updateForm(@PathVariable int projectId, Model model) {
-        if(projectId <= 0) throw new IllegalArgumentException("Ugyldig ID.");
+        if(projectId <= 0) throw new IllegalArgumentException("Something wrong with id: " + projectId);
 
         if(!projectService.doesProjectExist(projectId)){
             return "errorpage";
@@ -110,7 +111,7 @@ public class ProjectController {
     public String updateProject(@ModelAttribute Project project,
                                 @RequestParam(name="usersToAddID", required = false) List<Integer> usersToAddID,
                                 @RequestParam(name="usersToRemoveID", required = false) List<Integer> usersToRemoveID) {
-        if(project == null) throw new IllegalArgumentException("Ugyldig projekt.");
+        if(project == null) throw new IllegalArgumentException("Something wrong with project");
 
         if (sessionHandler.isUserProjectManager()) {
             projectService.updateProject(project);
@@ -128,7 +129,7 @@ public class ProjectController {
 
     @PostMapping("{projectId}/delete")
     public String deleteProject(@PathVariable int projectId) {
-        if(projectId <= 0) throw new IllegalArgumentException("Ugyldig ID.");
+        if(projectId <= 0) throw new IllegalArgumentException("Something wrong with id: " + projectId);
 
         if (sessionHandler.isUserProjectManager()) {
             projectService.deleteProject(projectId);

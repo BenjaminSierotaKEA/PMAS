@@ -28,6 +28,7 @@ public class SessionController {
     public String login(@RequestParam String email,
                         @RequestParam String password,
                         Model model) {
+
         boolean loginSucceed = sessionHandler.logIn(email,password);
 
         User user = sessionHandler.getCurrentUser();
@@ -52,34 +53,12 @@ public class SessionController {
 
     }
 
-    @GetMapping("/session/{id}/user")
-    public String userByID(@PathVariable("id") int id, Model model) {
-        if (id <= 0) throw new IllegalArgumentException("Id can't be lower than 0");
-
-        model.addAttribute("user", sessionHandler.getCurrentUser());
-
-        return "user-page";
-    }
 
     @GetMapping("/logout")
     public String logUserOut() {
         sessionHandler.logOut();
         return "redirect:/";
     }
-
-
-    @GetMapping("/session/capture-return")
-    public String captureReturnPath(@RequestHeader(value = "Referer", required = false) String referer) {
-        if (referer != null) {
-            sessionHandler.setReturnPath(referer);
-            sessionHandler.markReturnCaptured(); // ✅ set the flag
-        }
-        return "redirect:" + (referer != null ? referer : "/");
-    }
-
-
-
-
 
 
 }

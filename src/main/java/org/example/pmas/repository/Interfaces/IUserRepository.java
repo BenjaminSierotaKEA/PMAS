@@ -6,12 +6,11 @@ import java.util.List;
 
 public interface IUserRepository extends CrudInterface<User> {
 
-    public User getByEmail(String email);
+    User getByEmail(String email);
 
+    List<User> getAllOnProject(int projectID);
+    List<User> getAllNotOnProject(int projectID);
 
     int getProjectIDOfUsersSubproject(int userID, int subprojectID);
-
-    public List<User> getAllOnProject(int projectID);
-    public List<User> getAllNotOnProject(int projectID);
 
 }

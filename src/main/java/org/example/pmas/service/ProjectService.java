@@ -74,10 +74,16 @@ public class ProjectService {
     }
 
     public boolean updateProject(Project newProject){
+        if(!projectRepository.doesProjectExist(newProject.getId()))
+            throw new NotFoundException("Project with id " + newProject.getId() + " does not exist");
+
         return projectRepository.update(newProject);
     }
 
     public boolean deleteProject(int id){
+        if(!projectRepository.doesProjectExist(id))
+            throw new NotFoundException("Project with id " + id + " does not exist");
+
         return projectRepository.delete(id);
     }
 
