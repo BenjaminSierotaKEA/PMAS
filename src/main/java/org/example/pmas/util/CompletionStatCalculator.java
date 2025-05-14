@@ -1,10 +1,5 @@
 package org.example.pmas.util;
 
-import org.example.pmas.dto.ProjectDTO;
-import org.example.pmas.dto.SubProjectDTO;
-
-import java.util.List;
-
 public class CompletionStatCalculator{
 
     public CompletionStatCalculator() {
