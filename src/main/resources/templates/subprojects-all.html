@@ -26,7 +26,19 @@
               method="get">
             <button>Create</button>
         </form>
-        <form th:action="@{/projects/my-projects}"
+
+        <a th:if="${session.user.role.name == 'Employee'}"
+           th:href="@{/{id}/user(id=${session.user.userID})}">
+            <button type="button">Home</button>
+        </a>
+
+        <a th:if="${session.user.role.name == 'Employee'}"
+           th:href="@{/projects/my-projects}">
+            <button type="button">Projects</button>
+        </a>
+
+        <form th:unless="${session.user.role.name == 'Employee'}"
+                th:action="@{/projects/all}"
               method="get">
             <button type="submit">Back to projects</button>
         </form>

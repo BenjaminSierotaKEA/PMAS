@@ -64,6 +64,8 @@ public class UserController {
         if(id <= 0) throw new IllegalArgumentException("Id not correct.");
 
         model.addAttribute("user", userService.getUser(id));
+        //model.addAttribute("projects", );
+
         return "user-page";
     }
 

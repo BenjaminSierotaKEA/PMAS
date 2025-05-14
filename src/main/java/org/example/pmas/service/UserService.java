@@ -65,8 +65,20 @@ public class UserService {
             List<Task> tasks = taskRepository.findAllByUserId(userId);
             List<Project> projects = projectRepository.readProjectsOfUser(userId);
 
+
+
+            for(Task task : tasks){
+                if(task.getSubProject() != null){
+                    int subprojectID = task.getSubProject().getId();
+                    int projectID = userRepository.getProjectIDOfUsersSubproject(userId, subprojectID);
+                    task.getSubProject().setProjectID(projectID);
+                }
+            }
+
+
             user.setTasks(tasks);
             user.setProjects(projects);
+
 
             System.out.println(user);
             return user;

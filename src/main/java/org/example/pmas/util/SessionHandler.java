@@ -81,4 +81,44 @@ public class SessionHandler {
         }
         return false;
     }
+
+
+    public void setReturnPath(String path) {
+        session.setAttribute("returnPath", path);
+    }
+
+    public String getReturnPath() {
+        var path = session.getAttribute("returnPath");
+        if (path != null) {
+            return path.toString();
+        } else {
+            return null;
+        }
+    }
+
+    public void markReturnCaptured() {
+        session.setAttribute("returnCaptured", true);
+    }
+
+    public boolean isReturnCaptured() {
+        Object flag = session.getAttribute("returnCaptured");
+        return flag instanceof Boolean && (Boolean) flag;
+    }
+
+
+
+
+
+    //i dont know how to use the session handler so ill leave this commented out until
+    //i figure it out
+    //gets the users ID:
+    /*
+    public int getUserID(){
+        if(getCurrentUser() != null){
+           return getCurrentUser().getUserID();
+        }
+    }
+    */
+
+
 }
