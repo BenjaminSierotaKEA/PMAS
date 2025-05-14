@@ -17,15 +17,12 @@ import java.util.List;
 @RequestMapping("/projects")
 public class ProjectController {
     private final ProjectService projectService;
-    private final UserService userService;
     private final SessionHandler sessionHandler;
 
     public ProjectController(ProjectService projectService,
-                             UserService userService,
                              SessionHandler sessionHandler) {
         this.projectService = projectService;
         this.sessionHandler = sessionHandler;
-        this.userService = userService;
     }
 
     //TODO: add session stuff
@@ -34,30 +31,21 @@ public class ProjectController {
         Project project = new Project();
         boolean allowAccess = sessionHandler.isUserProjectManager();
 
-        //getting a list of users so we can add them to the project:
-        if(allowAccess){
-          List<User> users =  userService.getAll();
-          List<Boolean> selections = new ArrayList<>();
-          for(int i = 0; i < users.size(); i++){
-              selections.add(false);
-          }
-          model.addAttribute("users", users);
-          model.addAttribute("userSelections", selections);
-        }
 
         model.addAttribute("allowAccess", allowAccess);
         model.addAttribute("project", project);
+        model.addAttribute("users", projectService.getAllUsers());
 
         return "project-create-form";
     }
 
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project,
-                                @RequestParam(name="helloWorld", required = false) String testMessage) {
+                                @RequestParam(name="userIds", required = false) List<Integer> userIDs) {
 
-        System.out.println("Hello from createProject: " + testMessage);
         if (sessionHandler.isUserProjectManager()) {
-            projectService.createProject(project);
+            Project resultProject = projectService.createProject(project);
+            projectService.addUsersToProject(resultProject.getId(), userIDs); //replace 1 with ID of newly created project
         }
 
         return "redirect:/projects/my-projects";
@@ -111,8 +99,8 @@ public class ProjectController {
             boolean allowAccess = sessionHandler.isUserProjectManager();
             //getting a list of users if we are allowed access:
             if(allowAccess){
-                List<User> users =  userService.getAll();
-                model.addAttribute("users", users);
+                //List<User> users =  userService.getAll();
+                //model.addAttribute("users", users);
             }
 
             model.addAttribute("allowAccess",allowAccess);
