@@ -19,7 +19,7 @@
     <div class="page-main">
         <div class="flex-center flex-column flex-grow">
             <h2 class="title">
-                Rediger Projekt: <span th:text="*{name}">[Projekt Navn]</span>
+                Rediger Projekt: <span th:text="*{project.name}">[Projekt Navn]</span>
             </h2>
 
             <div class="frame">
@@ -39,6 +39,30 @@
 
                     <label for="deadline">Deadline</label>
                     <input type="date" id="deadline" th:field="*{deadline}" required/><br>
+
+                    <fieldset class="user-fieldset">
+                        <legend class="font_style user-legend">Users On Project (tick to remove from project)</legend>
+                        <div class="user-checkboxes">
+                            <div th:each="user : ${usersOnProject}" class="user-checkbox-wrapper">
+                                <label class="font_style user-checkbox">
+                                    <input type="checkbox" name="usersToRemoveID" th:value="${user.userID}"/>
+                                    <span th:text="${user.name}"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="user-fieldset">
+                        <legend class="font_style user-legend">Users Not On Project (tick box to add to project)</legend>
+                        <div class="user-checkboxes">
+                            <div th:each="user : ${usersNotOnProject}" class="user-checkbox-wrapper">
+                                <label class="font_style user-checkbox">
+                                    <input type="checkbox" name="usersToAddID" th:value="${user.userID}"/>
+                                    <span th:text="${user.name}"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+
 
                     <div class="button-container">
                         <button type="submit">Opdatér</button>
