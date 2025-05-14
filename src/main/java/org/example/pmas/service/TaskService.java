@@ -1,6 +1,8 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
+import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
@@ -31,22 +33,15 @@ public class TaskService {
         Task createdTask = taskRepository.create(task);
         if (createdTask == null) throw new NotFoundException(task.getId());
 
-        // Adds user and task to junction table if any
+        // Adds user and task to the junction table if any
         if (userIDs != null)
             addUserToTask(createdTask.getId(), userIDs);
     }
 
     public List<Task> readAll() {
         List<Task> allTask = taskRepository.readAll();
-        if (allTask == null) return Collections.emptyList();
 
-        // Sorts the list by deadline and priority.
-        // Now the list isn't immutable, so we can modify it.
-        List<Task> modifiableList = new ArrayList<>(allTask);
-        modifiableList.sort(new TaskDeadlineComparator()
-                // priority wil be sorted high -> low because of reverse
-                .thenComparing(new TaskPriorityComparator().reversed()));
-        return allTask;
+        return sortList(allTask);
     }
 
     public Task readSelected(int id) {
@@ -60,11 +55,11 @@ public class TaskService {
     public void delete(int id) {
         // check if id exist.
         var task = taskRepository.readSelected(id);
-        if (task == null) throw new NotFoundException("opgaven findes ikke");
+        if (task == null) throw new NotFoundException("Task didnt exist with id: " + id);
 
         // Skal tænkes igennem igen
         if (!taskRepository.delete(id))
-            throw new NotFoundException("Id:" + id + " Kunne ikke slette opgaven");
+            throw new DeleteObjectException("Id:" + id + " could not be deleted from database.");
     }
 
     public void update(Task task, List<Integer> userIDs) {
@@ -73,14 +68,16 @@ public class TaskService {
         if (old == null) throw new NotFoundException(task.getId());
 
         if (!taskRepository.update(task))
-            throw new NotFoundException("Id:" + task.getId() + " Kunne ikke opdatere opgaven");
+            throw new UpdateObjectException("Id:" + task.getId() + " could not be updated in database.");
 
         // Adds users to the junction table if any
         addUserToTask(task.getId(), userIDs);
     }
 
     public List<Task> getTasksBySubProjectID(int subProjectId) {
-        return taskRepository.getTasksBySubProjectID(subProjectId);
+        List<Task> taskList = taskRepository.getTasksBySubProjectID(subProjectId);
+
+        return sortList(taskList);
     }
 
     // This handle the junction table relation
@@ -97,8 +94,9 @@ public class TaskService {
         taskRepository.removeUsersFromUserTasks(taskId, toRemove);
     }
 
+    // Filter users who've been deleted or added
     private Set<Integer> differenceOrEmpty(List<Integer> baseList, List<Integer> subtractList) {
-        // We've to check null and isEmpty or else either update or create won't work.
+        // We've to check null and isEmpty or else either update or create won't work. If a list is empty
         if (subtractList == null || subtractList.isEmpty()) subtractList = Collections.emptyList();
         if (baseList == null || baseList.isEmpty()) baseList = Collections.emptyList();
 
@@ -115,10 +113,24 @@ public class TaskService {
 
     public SubProject getSubProject(int id) {
         var subproject = subProjectRepository.readSelected(id);
-        if(subproject == null) {
+        if (subproject == null) {
             throw new NotFoundException(id);
         }
         return subproject;
+    }
+
+    // Sorts the list by deadline and then priority.
+    // If the list is null, return an empty list. No errors
+    private List<Task> sortList(List<Task> taskList) {
+        // If the list is null, return an empty list. No errors
+        if (taskList == null) return Collections.emptyList();
+
+        // Sort the list by deadline and then priority.
+        List<Task> modifiableList = new ArrayList<>(taskList);
+        modifiableList.sort(new TaskDeadlineComparator().reversed()
+                        .thenComparing(new TaskPriorityComparator())
+        );
+        return modifiableList;
     }
 
 }

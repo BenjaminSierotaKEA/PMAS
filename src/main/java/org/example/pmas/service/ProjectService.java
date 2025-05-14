@@ -1,13 +1,17 @@
 package org.example.pmas.service;
 
 import org.example.pmas.dto.ProjectDTO;
+import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Project;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
+import org.example.pmas.service.comparators.ProjectDeadlineComparator;
 import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -28,11 +32,15 @@ public class ProjectService {
     }
 
     public List<Project> readAll(){
-        return projectRepository.readAll();
+         List<Project> projects = projectRepository.readAll();
+
+         return sortList(projects);
     }
 
     public List<Project> readProjectsOfUser(int userID){
-        return projectRepository.readProjectsOfUser(userID);
+        List<Project> projects = projectRepository.readProjectsOfUser(userID);
+
+        return sortList(projects);
     }
 
     public Project readSelected(int id){
@@ -58,10 +66,25 @@ public class ProjectService {
 
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
-        CompletionStatCalculator<ProjectDTO> calc = new CompletionStatCalculator<>();
-        calc.calculateSubProjectCompletionPercentage(projects);
+
+        for(ProjectDTO p : projects) {
+            p.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(),p.getTotalSubProjects()));
+            p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getTimeTaken(), p.getTimeBudget()));
+        }
+
         return projects;
     }
 
+    // Sorts the list by deadline and then priority.
+    // If the list is null, return an empty list. No errors
+    private List<Project> sortList(List<Project> projects){
+        // If the list is null, return an empty list. No errors
+        if(projects == null) return Collections.emptyList();
 
+        // Sort the list by deadline and then priority.
+        List<Project> modifiableList = new ArrayList<>(projects);
+        modifiableList.sort(new ProjectDeadlineComparator().reversed());
+
+        return modifiableList;
+    }
 }

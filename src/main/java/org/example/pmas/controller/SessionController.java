@@ -29,7 +29,6 @@ public class SessionController {
                         @RequestParam String password,
                         Model model) {
         boolean loginSucceed = sessionHandler.logIn(email,password);
-        System.out.println("Login success? " + loginSucceed);
 
 
         if(loginSucceed){

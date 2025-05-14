@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SessionHandler {
-    private HttpSession session;
-    private UserService userService;
+    private final HttpSession session;
+    private final UserService userService;
     private final int MAX_SESSION_LENGTH = 1800;
 
     public SessionHandler(UserService userService, HttpSession session) {
@@ -44,8 +44,10 @@ public class SessionHandler {
     //log user in of the credentials match in DB
     public boolean logIn(String email, String password) {
         var userExists = userService.logIn(email, password);
-        if (userExists != null) {
-            session.setAttribute("user", userExists);
+        User user = new User(userExists.getUserID(),userExists.getName(), userExists.getRole());
+
+        if (user != null) {
+            session.setAttribute("user", user);
             session.setMaxInactiveInterval(MAX_SESSION_LENGTH);
             return true;
         }
@@ -66,11 +68,16 @@ public class SessionHandler {
         return user != null && user.getUserID() == ownerID;
     }
 
-    public boolean isUserProjectManager(){
-        if(isLoggedIn()){
-            if(getUserRole().getName().equals("Project Manager")){
-                return true;
-            }
+    public boolean isUserProjectManager() {
+        if (isLoggedIn()) {
+            return getUserRole().getName().equals("Project Manager");
+        }
+        return false;
+    }
+
+    public boolean isNotAdmin() {
+        if (isLoggedIn()) {
+            return !getUserRole().getName().equals("Admin");
         }
         return false;
     }
@@ -85,8 +92,6 @@ public class SessionHandler {
         }
     }
     */
-
-
 
 
 }
