@@ -66,13 +66,13 @@ public class UserService {
 
 
 
-//            for(Task task : tasks){
-//                if(task.getSubProject() != null){
-//                    int subprojectID = task.getSubProject().getId();
-//                    int projectID = userRepository.getProjectIDOfUsersSubproject(userId, subprojectID);
-//                    task.getSubProject().setProjectID(projectID);
-//                }
-//            }
+            for(Task task : tasks){
+                if(task.getSubProject() != null){
+                    int subprojectID = task.getSubProject().getId();
+                    int projectID = userRepository.getProjectIDOfUsersSubproject(userId, subprojectID);
+                    task.getSubProject().setProjectID(projectID);
+                }
+            }
 
 
             user.setTasks(tasks);
