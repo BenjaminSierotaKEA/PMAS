@@ -1,6 +1,7 @@
 package org.example.pmas.service;
 
 import org.example.pmas.dto.ProjectDTO;
+import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Project;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
@@ -65,8 +66,15 @@ public class ProjectService {
 
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
+
         CompletionStatCalculator calc = new CompletionStatCalculator();
         calc.calculateSubProjectCompletionPercentage(projects);
+
+        for(ProjectDTO p : projects) {
+            p.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(),p.getTotalSubProjects()));
+            p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getTimeTaken(), p.getTimeBudget()));
+        }
+
         return projects;
     }
 

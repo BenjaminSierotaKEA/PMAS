@@ -61,8 +61,15 @@ public class SubProjectService {
 
     public List<SubProjectDTO> getSubProjectDTOByProjectId(int id) {
         List<SubProjectDTO> subprojects = subprojectRepository.getSubProjectDTOByProjectID(id);
+
         CompletionStatCalculator calc = new CompletionStatCalculator();
         calc.calculateTaskCompletionPercentage(subprojects);
+
+        for(SubProjectDTO s : subprojects) {
+            s.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(s.getCompletedTasks(),s.getTotalTasks()));
+            s.setCompleted(CompletionStatCalculator.isJobCompleted(s.getTimeTaken(), s.getTimeBudget()));
+        }
+
         return subprojects;
     }
 
