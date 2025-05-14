@@ -82,7 +82,6 @@ public class ProjectController {
         model.addAttribute("loggedIn", loggedIn);
 
         return "project-selected";
-
     }
 
 

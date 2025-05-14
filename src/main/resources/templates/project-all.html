@@ -32,7 +32,6 @@
                 <th class="title">Description</th>
                 <th class="title">Time Budget</th>
                 <th class="title">Deadline</th>
-                <th class="title">% Done</th>
                 <th class="title">Edit</th>
                 <th class="title">Delete</th>
             </tr>
@@ -43,8 +42,7 @@
                 <td th:text="${project.name}">Project Name</td>
                 <td th:text="${project.description}">Description</td>
                 <td th:text="${project.timeBudget}">0</td>
-                <td th:text="${#dates.format(project.deadline, 'dd-MM-yyyy')}">Date</td>
-                <td th:text="${project.completionPercentage + '%'}">0%</td>
+                <td th:text="${#temporals.format(project.deadline, 'dd-MM-yyyy')}">Date</td>
 
                 <td>
                     <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}"

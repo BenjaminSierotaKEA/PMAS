@@ -39,7 +39,7 @@ public class SessionController {
 
         if(loginSucceed && user.getRole().getName().equals("Project Manager")){
 
-            return "redirect:" +"/projects/all";
+            return "redirect:/" + user.getUserID() + "/user";
         }
 
         if(loginSucceed && user.getRole().getName().equals("Admin")){
