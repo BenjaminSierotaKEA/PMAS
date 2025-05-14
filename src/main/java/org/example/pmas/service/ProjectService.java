@@ -67,9 +67,6 @@ public class ProjectService {
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
 
-        CompletionStatCalculator calc = new CompletionStatCalculator();
-        calc.calculateSubProjectCompletionPercentage(projects);
-
         for(ProjectDTO p : projects) {
             p.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(),p.getTotalSubProjects()));
             p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getTimeTaken(), p.getTimeBudget()));
