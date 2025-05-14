@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SessionHandler {
-    private HttpSession session;
-    private UserService userService;
+    private final HttpSession session;
+    private final UserService userService;
     private final int MAX_SESSION_LENGTH = 1800;
 
     public SessionHandler(UserService userService, HttpSession session) {
@@ -44,7 +44,7 @@ public class SessionHandler {
     //log user in of the credentials match in DB
     public boolean logIn(String email, String password) {
         var userExists = userService.logIn(email, password);
-        User user = new User(userExists.getUserID(),userExists.getRole());
+        User user = new User(userExists.getUserID(),userExists.getName(), userExists.getRole());
 
         if (user != null) {
             session.setAttribute("user", user);
