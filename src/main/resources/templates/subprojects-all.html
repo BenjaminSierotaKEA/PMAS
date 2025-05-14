@@ -38,7 +38,7 @@
         </a>
 
         <form th:unless="${session.user.role.name == 'Employee'}"
-                th:action="@{/projects/all}"
+                th:action="@{/projects/my-projects}"
               method="get">
             <button type="submit">Tilbage til projekter</button>
         </form>
@@ -51,9 +51,9 @@
                 <th scope="col">Name</th>
                 <th scope="col">Status</th>
                 <th scope="col">Description</th>
-                <th scope="col">Time Budget</th>
-                <th scope="col">Time Actual</th>
-                <th scope="col">% Done</th>
+                <th scope="col">Est. SubProject Time</th>
+                <th scope="col">Act. Task Time</th>
+                <th scope="col">% Completed</th>
             </tr>
             </thead>
             <tbody>
