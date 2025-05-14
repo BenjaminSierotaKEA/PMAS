@@ -62,6 +62,8 @@ public class UserController {
     public String userByID(@PathVariable("id") int id, Model model) {
 
         model.addAttribute("user", userService.getUser(id));
+        //model.addAttribute("projects", );
+
         return "user-page";
     }
 

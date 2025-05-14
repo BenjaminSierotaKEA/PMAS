@@ -12,9 +12,10 @@
     font-family: "Bahnschrift", sans-serif;
     font-weight: lighter;
     letter-spacing: 1vh;
-    color: #5a5a5a;
+    color: rgba(143, 143, 143, 0.86);
     padding: 1vh;
     margin-top: 5vh;
+    margin-bottom: 5vh;
 }
 
 
@@ -33,6 +34,10 @@
     font-family: "Bahnschrift", sans-serif;
     text-decoration: none;
     color: #333333;
+}
+
+.huge_text{
+    font-size: xx-large;
 }
 
 
@@ -237,8 +242,8 @@ select:focus {
 }
 /* -------------- pictures --------------*/
 .profile_picture {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     border-radius: 100px
 }
 
@@ -488,6 +493,7 @@ textarea:focus {
     justify-content: center;
     margin-top: 2rem;
 }
+
 
 
 

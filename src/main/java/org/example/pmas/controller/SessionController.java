@@ -30,10 +30,21 @@ public class SessionController {
                         Model model) {
         boolean loginSucceed = sessionHandler.logIn(email,password);
 
+        User user = sessionHandler.getCurrentUser();
 
-        if(loginSucceed){
-            User user = sessionHandler.getCurrentUser();
+
+        if(loginSucceed && user.getRole().getName().equals("Employee")){
             return "redirect:" +"/"+ +user.getUserID()+"/user";
+        }
+
+        if(loginSucceed && user.getRole().getName().equals("Project Manager")){
+
+            return "redirect:" +"/projects/all";
+        }
+
+        if(loginSucceed && user.getRole().getName().equals("Admin")){
+
+            return "redirect:" +"/user-overview";
         }
 
         model.addAttribute("wrongCredentials", true);
@@ -55,6 +66,18 @@ public class SessionController {
         sessionHandler.logOut();
         return "redirect:/";
     }
+
+
+    @GetMapping("/session/capture-return")
+    public String captureReturnPath(@RequestHeader(value = "Referer", required = false) String referer) {
+        if (referer != null) {
+            sessionHandler.setReturnPath(referer);
+            sessionHandler.markReturnCaptured(); // ✅ set the flag
+        }
+        return "redirect:" + (referer != null ? referer : "/");
+    }
+
+
 
 
 

@@ -1,6 +1,8 @@
 package org.example.pmas.controller;
 
+import org.example.pmas.model.Role;
 import org.example.pmas.model.Task;
+import org.example.pmas.model.User;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.service.ProjectService;
 import org.example.pmas.service.SubProjectService;
@@ -68,8 +70,21 @@ class TaskControllerTest {
                 .thenReturn(task);
         when(sessionHandler.isNotAdmin()).thenReturn(true);
 
+        Role role = new Role();
+        role.setName("Employee");
+
+        User user = new User();
+        user.setUserID(1);
+        user.setName("Test User");
+        user.setRole(role);
+
+        when(sessionHandler.getCurrentUser()).thenReturn(user);
+
+
+
         // Act & Assert
-        mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/{id}/edit", 1,1,1))
+        mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/{id}/edit", 1,1,1)
+                        .sessionAttr("user", user))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task-update"))
                 .andExpect(model().attributeExists("projectId"))
