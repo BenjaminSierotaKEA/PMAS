@@ -12,5 +12,10 @@ public interface IProjectRepository extends CrudInterface<Project> {
     boolean doesProjectExist(int id);
 
     List<Project> readProjectsOfUser(int userID);
+
+    void addUsersToProject(int projectID, List<Integer> userIDs);
+
+    void removeUsersFromProject(int projectID, List<Integer> userIDs);
     List<ProjectDTO> getProjectDTOByUserID(int userID);
+    //List<ProjectDTO> getAllProjectDTO();
 }
