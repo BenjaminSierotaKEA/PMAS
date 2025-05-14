@@ -31,7 +31,8 @@
 
             <div class="form-group">
                 <label for="description">Beskrivelse:</label>
-                <textarea id="description" name="description" rows="4" th:field="*{description}" class="text-field" required></textarea>
+                <textarea id="description" name="description" rows="4" th:field="*{description}" class="text-field"
+                          required></textarea>
             </div>
 
             <fieldset class="checkbox-group">
@@ -57,7 +58,8 @@
 
             <div class="form-group">
                 <label for="timeBudget">Time budget:</label>
-                <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1" th:field="*{timeBudget}" required/>
+                <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1" th:field="*{timeBudget}"
+                       required/>
             </div>
 
             <div class="form-group">
@@ -74,13 +76,12 @@
                 <label for="priorityLevel">Priority:</label>
                 <select name="priority" id="priorityLevel" th:field="*{priorityLevel}">
                     <option value="">Please choose</option>
-                    <option th:each="priority : ${priorities}" th:value="${priority}" th:text="${priority.displayName}"></option>
+                    <option th:each="priority : ${priorities}" th:value="${priority}"
+                            th:text="${priority.displayName}"></option>
                 </select>
             </div>
 
             <div class="button-container">
-                <button type="submit">Update</button>
-                <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
                 <button type="submit">Opdater</button>
 
                 <a th:if="${session.user.role.name == 'Employee'}"
@@ -89,9 +90,9 @@
                 </a>
 
                 <a th:unless="${session.user.role.name == 'Employee'}"
-                        th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
+                   th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
                     projectId=${projectId}, subprojectId=${subprojectId})}">
-                    <button type="button">Tilbage</button>
+                    <button type="button">Back</button>
                 </a>
 
             </div>
