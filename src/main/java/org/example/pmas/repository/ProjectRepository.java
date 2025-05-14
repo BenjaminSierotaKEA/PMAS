@@ -7,9 +7,12 @@ import org.example.pmas.model.rowMapper.ProjectDTORowMapper;
 import org.example.pmas.model.rowMapper.ProjectRowMapper;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -26,12 +29,15 @@ public class ProjectRepository implements IProjectRepository {
     @Override
     public Project create(Project project) {
         String sql = "INSERT INTO projects(name, description, timeBudget, deadline) VALUES(?,?,?,?)";
+        String retrievalSql = "SELECT * FROM projects WHERE name = ?";
+        Project returnProject = null;
         try{
             jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getTimeBudget(), project.getDeadline());
+            returnProject = jdbcTemplate.query(retrievalSql, new ProjectRowMapper(), project.getName()).get(0);
         }catch(DataAccessException e){
-            throw new RuntimeException("Couldn't add " + project.getName(), e);
+            throw new DatabaseException("Couldnt add " + project.getName(), e);
         }
-        return null;
+        return returnProject;
     }
 
     @Override
@@ -40,7 +46,7 @@ public class ProjectRepository implements IProjectRepository {
         try{
             return jdbcTemplate.query(sql, new ProjectRowMapper());
         }catch (DataAccessException e){
-            throw new RuntimeException("Couldn't read all projects", e);
+            throw new DatabaseException("Couldnt read all projects", e);
         }
 
     }
@@ -54,7 +60,7 @@ public class ProjectRepository implements IProjectRepository {
         try{
             return jdbcTemplate.query(sql, new ProjectRowMapper(), userID);
         }catch(DataAccessException e){
-            throw new RuntimeException("Couldn't read projects for user id " + userID);
+            throw new DatabaseException("Couldnt read projects for user id " + userID);
         }
     }
 
@@ -65,7 +71,7 @@ public class ProjectRepository implements IProjectRepository {
             //query returns a list, we get the zeroth item on it to return as a single project
             return jdbcTemplate.query(sql, new ProjectRowMapper(), id).get(0);
         }catch(DataAccessException e){
-            throw new RuntimeException("Couldn't find project where id=" + id, e);
+            throw new DatabaseException("couldnt find project where id=" + id, e);
         }
     }
 
@@ -76,7 +82,7 @@ public class ProjectRepository implements IProjectRepository {
             jdbcTemplate.update(sql, id);
             return true;
         }catch(DataAccessException e){
-            throw new RuntimeException("Could not delete project: ID=" + id, e);
+            throw new DatabaseException("Could not delete project: ID=" + id, e);
         }
 
     }
@@ -94,7 +100,7 @@ public class ProjectRepository implements IProjectRepository {
                     newProject.getDeadline(),
                     newProject.getId());
         }catch(DataAccessException e){
-            throw new RuntimeException("Could not update project: " + newProject.getName(), e);
+            throw new DatabaseException("Could not update project: " + newProject.getName(), e);
         }
 
 
@@ -131,4 +137,58 @@ public class ProjectRepository implements IProjectRepository {
             throw new DatabaseException("Database error: Could not get all subprojects with id: " + userId, e);
         }
     }
+
+    @Override
+    public void addUsersToProject(int projectID,List<Integer> userIDs){
+            //WIP
+            String sql = "INSERT INTO userprojects(projectid, userid) VALUES (?,?)";
+
+
+            //this is a use of batchupdate, which allows us to update multiple rows of the
+            //table with a single database query. first, the sql statement is passed as the first argument,
+            //than an inline implementation of the batchpreparedstatementsetter interface, containing two functions
+            jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+                //first is the setvalues function, which  sets the values of the question marks in the
+                //sql statement for each insertion. i is the index of the iteration through the batch
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+
+                    //ps.setInt sets the value of one of the question marks in the statement. the first
+                    //argument is which question mark in the statement is being set, the second is its value
+                    ps.setInt(1, projectID);
+                    ps.setInt(2, userIDs.get(i));
+                }
+
+                //This specifies the size of the batch.
+                @Override
+                public int getBatchSize() {
+                    return userIDs.size();
+                }
+            });
+    }
+
+    @Override
+    public void removeUsersFromProject(int projectID, List<Integer> userIDs){
+        //see addUsersToProject for an explanation of what is going on here
+
+        String sql = "DELETE FROM userprojects WHERE projectid = ? AND userid = ?";
+
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setInt(1, projectID);
+                ps.setInt(2, userIDs.get(i));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return userIDs.size();
+            }
+        });
+
+
+    }
+
+
 }

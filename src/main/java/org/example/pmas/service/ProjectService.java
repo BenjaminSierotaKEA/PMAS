@@ -4,8 +4,11 @@ import org.example.pmas.dto.ProjectDTO;
 import org.example.pmas.dto.SubProjectDTO;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Project;
+import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
+import org.example.pmas.repository.Interfaces.IUserRepository;
+import org.example.pmas.repository.UserRepository;
 import org.example.pmas.service.comparators.ProjectDeadlineComparator;
 import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
@@ -19,16 +22,26 @@ public class ProjectService {
 
     private final IProjectRepository projectRepository;
     private final ISubProjectRepository subprojectRepository;
+    private final IUserRepository userRepository;
 
 
-    public ProjectService(IProjectRepository projectRepository, ISubProjectRepository subprojectRepository) {
+    public ProjectService(IProjectRepository projectRepository, ISubProjectRepository subprojectRepository, IUserRepository userRepository) {
         this.projectRepository = projectRepository;
         this.subprojectRepository = subprojectRepository;
+        this.userRepository = userRepository;
 
     }
 
-    public void createProject(Project project){
-        projectRepository.create(project);
+    public Project createProject(Project project){
+        return projectRepository.create(project);
+    }
+
+    public void addUsersToProject(int projectID, List<Integer> userIDs){
+        projectRepository.addUsersToProject(projectID, userIDs);
+    }
+
+    public void removeUsersFromProject(int projectID, List<Integer> userIds){
+        projectRepository.removeUsersFromProject(projectID, userIds);
     }
 
     public List<Project> readAll(){
@@ -50,6 +63,14 @@ public class ProjectService {
         }
 
         return project;
+    }
+
+    public List<User> getAllUsersOnProject(int projectID){
+        return userRepository.getAllOnProject(projectID);
+    }
+
+    public List<User> getAllUsersNotOnProject(int projectID){
+        return userRepository.getAllNotOnProject(projectID);
     }
 
     public boolean updateProject(Project newProject){
@@ -81,6 +102,10 @@ public class ProjectService {
         return projects;
     }
 
+    public List<User> getAllUsers(){
+        return userRepository.readAll();
+    }
+
     // Sorts the list by deadline and then priority.
     // If the list is null, return an empty list. No errors
     private List<Project> sortList(List<Project> projects){
@@ -93,4 +118,6 @@ public class ProjectService {
 
         return modifiableList;
     }
+
+
 }

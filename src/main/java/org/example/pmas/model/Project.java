@@ -3,6 +3,7 @@ package org.example.pmas.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 public class Project {
     private int id;
@@ -12,7 +13,15 @@ public class Project {
     private final int descriptionMaxLength = 200;
     private Double timeBudget;
     private LocalDate deadline;
+    private Set<User> users;
 
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
     public LocalDate getDeadline() {
         return deadline;

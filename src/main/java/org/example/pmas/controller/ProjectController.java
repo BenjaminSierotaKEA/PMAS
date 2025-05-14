@@ -4,18 +4,20 @@ import org.example.pmas.dto.ProjectDTO;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.User;
 import org.example.pmas.service.ProjectService;
+import org.example.pmas.service.UserService;
 import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/projects")
 public class ProjectController {
-    private final SessionHandler sessionHandler;
     private final ProjectService projectService;
+    private final SessionHandler sessionHandler;
 
     public ProjectController(ProjectService projectService,
                              SessionHandler sessionHandler) {
@@ -28,31 +30,36 @@ public class ProjectController {
     public String getCreateProjectForm(Model model) {
         Project project = new Project();
         boolean allowAccess = sessionHandler.isUserProjectManager();
+
+
         model.addAttribute("allowAccess", allowAccess);
         model.addAttribute("project", project);
+        model.addAttribute("users", projectService.getAllUsers());
 
         return "project-create-form";
     }
 
-    //TODO: add session stuff, redirect to somewhere better
     @PostMapping("/create")
-    public String createProject(@ModelAttribute Project project) {
+    public String createProject(@ModelAttribute Project project,
+                                @RequestParam(name="userIds", required = false) List<Integer> userIDs) {
         if(project == null) throw new IllegalArgumentException("Something wrong with project.");
 
         if (sessionHandler.isUserProjectManager()) {
-            projectService.createProject(project);
+            Project resultProject = projectService.createProject(project);
+            projectService.addUsersToProject(resultProject.getId(), userIDs); //replace 1 with ID of newly created project
         }
 
         return "redirect:/projects/my-projects";
     }
 
-    //TODO: ADD stuff so only the cto can see this page
     @GetMapping("/all")
     public String seeAll(Model model) {
         User user = sessionHandler.getCurrentUser();
         boolean allowAccess = sessionHandler.isUserProjectManager();
         if(allowAccess) {
-            List<ProjectDTO> projects = projectService.getProjectDTOByUserID(user.getUserID());
+            //i dont know why this has been done but we need to view ALL the projects on this page
+            //List<ProjectDTO> projects = projectService.getProjectDTOByUserID(user.getUserID());
+            List<Project> projects = projectService.readAll();
             model.addAttribute("projects", projects);
         }
         model.addAttribute("allowAccess", allowAccess);
@@ -91,17 +98,36 @@ public class ProjectController {
             Project project = projectService.readSelected(projectId);
             model.addAttribute("project", project);
             boolean allowAccess = sessionHandler.isUserProjectManager();
+            //getting a list of users if we are allowed access:
+            List<User> usersOnProject = new ArrayList<>();
+            List<User> usersNotOnProject = new ArrayList<>();
+            if(allowAccess){
+                usersOnProject = projectService.getAllUsersOnProject(projectId);
+                usersNotOnProject = projectService.getAllUsersNotOnProject(projectId);
+            }
+
             model.addAttribute("allowAccess",allowAccess);
+            model.addAttribute("usersOnProject", usersOnProject);
+            model.addAttribute("usersNotOnProject", usersNotOnProject);
             return "project-update-form";
         }
     }
 
     @PostMapping("update")
-    public String updateProject(@ModelAttribute Project project) {
+    public String updateProject(@ModelAttribute Project project,
+                                @RequestParam(name="usersToAddID", required = false) List<Integer> usersToAddID,
+                                @RequestParam(name="usersToRemoveID", required = false) List<Integer> usersToRemoveID) {
         if(project == null) throw new IllegalArgumentException("Something wrong with project");
 
         if (sessionHandler.isUserProjectManager()) {
             projectService.updateProject(project);
+            if(usersToAddID != null){
+                projectService.addUsersToProject(project.getId(), usersToAddID);
+            }
+            if(usersToRemoveID != null){
+                projectService.removeUsersFromProject(project.getId(), usersToRemoveID);
+            }
+
         }
 
         return "redirect:/projects/my-projects";
