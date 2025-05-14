@@ -122,6 +122,6 @@ public class SubProjectController {
     }
 
     private void validateId(int id) {
-        if (id <= 0) throw new IllegalArgumentException("Something wrong with id in URL.");
+        if (id <= 0) throw new IllegalArgumentException("Something wrong with id: " + id);
     }
 }

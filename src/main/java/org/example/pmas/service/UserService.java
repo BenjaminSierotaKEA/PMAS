@@ -114,10 +114,8 @@ public class UserService {
 
         try {
           return userRepository.update(newUser);
-        }catch (DataAccessException dataAccessException){
+        }catch (DataAccessException | IllegalArgumentException dataAccessException){
             dataAccessException.getMessage();
-        }catch (IllegalArgumentException illegalArgumentException){
-            illegalArgumentException.getMessage();
         }
         return false;
     }

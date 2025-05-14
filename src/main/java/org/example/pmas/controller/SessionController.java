@@ -28,6 +28,7 @@ public class SessionController {
     public String login(@RequestParam String email,
                         @RequestParam String password,
                         Model model) {
+
         boolean loginSucceed = sessionHandler.logIn(email,password);
 
 
@@ -43,7 +44,7 @@ public class SessionController {
 
     @GetMapping("/session/{id}/user")
     public String userByID(@PathVariable("id") int id, Model model) {
-        if (id <= 0) throw new IllegalArgumentException("Id can't be lower than 0");
+        if (id <= 0) throw new IllegalArgumentException("Something wrong with id: " + id);
 
         model.addAttribute("user", sessionHandler.getCurrentUser());
 

@@ -29,7 +29,7 @@ public class ProjectRepository implements IProjectRepository {
         try{
             jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getTimeBudget(), project.getDeadline());
         }catch(DataAccessException e){
-            throw new RuntimeException("Couldnt add " + project.getName(), e);
+            throw new RuntimeException("Couldn't add " + project.getName(), e);
         }
         return null;
     }
@@ -40,7 +40,7 @@ public class ProjectRepository implements IProjectRepository {
         try{
             return jdbcTemplate.query(sql, new ProjectRowMapper());
         }catch (DataAccessException e){
-            throw new RuntimeException("Couldnt read all projects", e);
+            throw new RuntimeException("Couldn't read all projects", e);
         }
 
     }
@@ -54,7 +54,7 @@ public class ProjectRepository implements IProjectRepository {
         try{
             return jdbcTemplate.query(sql, new ProjectRowMapper(), userID);
         }catch(DataAccessException e){
-            throw new RuntimeException("Couldnt read projects for user id " + userID);
+            throw new RuntimeException("Couldn't read projects for user id " + userID);
         }
     }
 
@@ -65,7 +65,7 @@ public class ProjectRepository implements IProjectRepository {
             //query returns a list, we get the zeroth item on it to return as a single project
             return jdbcTemplate.query(sql, new ProjectRowMapper(), id).get(0);
         }catch(DataAccessException e){
-            throw new RuntimeException("couldnt find project where id=" + id, e);
+            throw new RuntimeException("Couldn't find project where id=" + id, e);
         }
     }
 
@@ -128,7 +128,7 @@ public class ProjectRepository implements IProjectRepository {
         try {
             return jdbcTemplate.query(sql, new ProjectDTORowMapper(),userId);
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database fejl: kunne ikke hente alle subprojekter", e);
+            throw new DatabaseException("Database error: Could not get all subprojects with id: " + userId, e);
         }
     }
 }

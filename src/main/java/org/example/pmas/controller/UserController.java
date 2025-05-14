@@ -35,6 +35,7 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String createUser(@ModelAttribute User newUser, Model errorMessage) {
+        if(newUser == null) throw new IllegalArgumentException("Something wrong with user.");
 
 
         if (userService.checkEmail(newUser.getEmail()) != null) {
@@ -60,6 +61,7 @@ public class UserController {
 
     @GetMapping("/{id}/user")
     public String userByID(@PathVariable("id") int id, Model model) {
+        if(id <= 0) throw new IllegalArgumentException("Id not correct.");
 
         model.addAttribute("user", userService.getUser(id));
         return "user-page";
@@ -77,12 +79,11 @@ public class UserController {
 
     @GetMapping("/{id}/update")
     public String updateUser(@PathVariable("id") int id, Model model) {
+        if (id <= 0) throw new
+                IllegalArgumentException("ID not correct");
 
         User user = userService.getUser(id);
         List<Role> roles = userService.getAllRoles();
-
-        if (id <= 0) throw new
-                IllegalArgumentException("ID not correct");
 
         model.addAttribute("user", user);
         model.addAttribute("roles", roles);
@@ -92,6 +93,7 @@ public class UserController {
 
     @PostMapping("/{id}/update")
     public String updateUser(@PathVariable("id") int id, @ModelAttribute User newUser, Model model) {
+        if(newUser == null || id <= 0) throw new IllegalArgumentException("Something wrong with user.");
 
         boolean success = userService.updateUser(id, newUser);
 

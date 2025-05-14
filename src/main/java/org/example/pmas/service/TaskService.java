@@ -30,6 +30,9 @@ public class TaskService {
     }
 
     public void create(Task task, List<Integer> userIDs) {
+        if(!subProjectRepository.doesSubProjectExist(task.getSubProject().getId()))
+            throw new NotFoundException("Subproject doesn't exist: " + task.getSubProject().getId());
+
         Task createdTask = taskRepository.create(task);
         if (createdTask == null) throw new NotFoundException(task.getId());
 
