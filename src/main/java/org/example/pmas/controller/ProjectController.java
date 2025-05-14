@@ -98,22 +98,35 @@ public class ProjectController {
             model.addAttribute("project", project);
             boolean allowAccess = sessionHandler.isUserProjectManager();
             //getting a list of users if we are allowed access:
+            List<User> usersOnProject = new ArrayList<>();
+            List<User> usersNotOnProject = new ArrayList<>();
             if(allowAccess){
-                //List<User> users =  userService.getAll();
-                //model.addAttribute("users", users);
+                usersOnProject = projectService.getAllUsersOnProject(projectId);
+                usersNotOnProject = projectService.getAllUsersNotOnProject(projectId);
             }
 
             model.addAttribute("allowAccess",allowAccess);
+            model.addAttribute("usersOnProject", usersOnProject);
+            model.addAttribute("usersNotOnProject", usersNotOnProject);
             return "project-update-form";
         }
     }
 
     @PostMapping("update")
-    public String updateProject(@ModelAttribute Project project) {
+    public String updateProject(@ModelAttribute Project project,
+                                @RequestParam(name="usersToAddID", required = false) List<Integer> usersToAddID,
+                                @RequestParam(name="usersToRemoveID", required = false) List<Integer> usersToRemoveID) {
         if(project == null) throw new IllegalArgumentException("Ugyldig projekt.");
 
         if (sessionHandler.isUserProjectManager()) {
             projectService.updateProject(project);
+            if(usersToAddID != null){
+                projectService.addUsersToProject(project.getId(), usersToAddID);
+            }
+            if(usersToRemoveID != null){
+                projectService.removeUsersFromProject(project.getId(), usersToRemoveID);
+            }
+
         }
 
         return "redirect:/projects/my-projects";

@@ -8,6 +8,7 @@ import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
+import org.example.pmas.repository.UserRepository;
 import org.example.pmas.service.comparators.ProjectDeadlineComparator;
 import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
@@ -62,6 +63,14 @@ public class ProjectService {
         }
 
         return project;
+    }
+
+    public List<User> getAllUsersOnProject(int projectID){
+        return userRepository.getAllOnProject(projectID);
+    }
+
+    public List<User> getAllUsersNotOnProject(int projectID){
+        return userRepository.getAllNotOnProject(projectID);
     }
 
     public boolean updateProject(Project newProject){
