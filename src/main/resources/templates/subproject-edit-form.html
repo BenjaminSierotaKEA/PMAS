@@ -15,7 +15,7 @@
 <div class="page-main">
     <div class="flex-center flex-column flex-grow">
         <h2 class="title">
-            Redigere Subprojekt: <span th:text="*{subproject.name}">[Navn]</span>
+            Edit Subproject: <span th:text="*{subproject.name}">[Name]</span>
         </h2>
 
         <div class="frame">
@@ -28,23 +28,23 @@
                 <input type="number" th:field="*{projectID}" hidden readonly/>
 
                 <!-- Editable fields -->
-                <label for="name">Navn</label>
+                <label for="name">Name:</label>
                 <input type="text" id="name" th:field="*{name}" placeholder="Subprojekt Navn" required/><br>
 
-                <label for="description">Beskrivelse</label>
+                <label for="description">Description:</label>
                 <textarea id="description" th:field="*{description}" rows="4" placeholder="Beskrivelse"></textarea><br>
 
-                <label for="timeBudget">Tidsbudget</label>
+                <label for="timeBudget">Time budget:</label>
                 <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="0.0" required step="0.1"/><br>
 
-                <label for="timeTaken">Tid brugt</label>
+                <label for="timeTaken">Time used:</label>
                 <input type="number" id="timeTaken" th:field="*{timeTaken}" step="0.1" placeholder="0.0"/><br>
 
-                <label for="completed">Fuldført</label>
+                <label for="completed">Completed:</label>
                 <input type="checkbox" id="completed" th:field="*{completed}"/><br>
 
                 <div class="button-container">
-                    <button type="submit">Opdatér</button>
+                    <button type="submit">Update</button>
                 </div>
             </form>
         </div>

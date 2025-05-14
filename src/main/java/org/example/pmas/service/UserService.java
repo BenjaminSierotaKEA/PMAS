@@ -61,7 +61,6 @@ public class UserService {
     public User getUser(int userId) {
         try {
             User user = userRepository.readSelected(userId);
-            System.out.println(user);
             List<Task> tasks = taskRepository.findAllByUserId(userId);
             List<Project> projects = projectRepository.readProjectsOfUser(userId);
 
@@ -79,8 +78,6 @@ public class UserService {
             user.setTasks(tasks);
             user.setProjects(projects);
 
-
-            System.out.println(user);
             return user;
 
         } catch (DataAccessException dataAccessException) {
@@ -126,10 +123,8 @@ public class UserService {
 
         try {
           return userRepository.update(newUser);
-        }catch (DataAccessException dataAccessException){
+        }catch (DataAccessException | IllegalArgumentException dataAccessException){
             dataAccessException.getMessage();
-        }catch (IllegalArgumentException illegalArgumentException){
-            illegalArgumentException.getMessage();
         }
         return false;
     }

@@ -143,9 +143,9 @@ public class UserRepository implements IUserRepository {
         return users.isEmpty() ? null : users.get(0);
     }
 
-@Transactional
-@Override
-public int getProjectIDOfUsersSubproject(int userID, int subprojectID) {
+    @Transactional
+    @Override
+    public int getProjectIDOfUsersSubproject(int userID, int subprojectID) {
         String sql = """
         SELECT sp.projectID
         FROM usertasks ut
@@ -160,7 +160,4 @@ public int getProjectIDOfUsersSubproject(int userID, int subprojectID) {
             return result != null ? result : 0;
 
     }
-
-
-
 }

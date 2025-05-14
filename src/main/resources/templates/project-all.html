@@ -43,7 +43,7 @@ make this according to the styled mockup later-->
         <td>
             <form method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.id})}"
                   th:object="${project}"
-                  onsubmit="return confirm('Er du sikker på, at du vil slette kategorien?');">
+                  onsubmit="return confirm('Are you sure you want to delete this project?');">
                 <button type="submit">Delete</button>
             </form>
         </td>

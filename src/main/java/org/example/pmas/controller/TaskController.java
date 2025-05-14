@@ -97,7 +97,7 @@ public class TaskController {
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId) {
         if (sessionHandler.isNotAdmin()) {
-            if (id <= 0) throw new IllegalArgumentException("Something wrong with id in URL.");
+            if (id <= 0) throw new IllegalArgumentException("Something wrong with id: " + id);
 
             taskService.delete(id);
         }

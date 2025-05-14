@@ -24,7 +24,7 @@
     <div class="flex-row flex-center normalized_padding">
         <form th:action="@{/projects/{projectId}/subprojects/new(projectId=${project.id})}"
               method="get">
-            <button>Opret</button>
+            <button>Create</button>
         </form>
 
         <a th:if="${session.user.role.name == 'Employee'}"
@@ -40,7 +40,7 @@
         <form th:unless="${session.user.role.name == 'Employee'}"
                 th:action="@{/projects/all}"
               method="get">
-            <button type="submit">Tilbage til projekter</button>
+            <button type="submit">Back to projects</button>
         </form>
     </div>
 
@@ -48,12 +48,12 @@
         <table class="task-table">
             <thead>
             <tr>
-                <th scope="col">Navn</th>
-                <th scope="col">Beskrivelse</th>
-                <th scope="col">BrugtTid</th>
-                <th scope="col">TidsBudget</th>
-                <th scope="col">Fuldført</th>
-                <th scope="col">% Færdig</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Time used</th>
+                <th scope="col">Time budget</th>
+                <th scope="col">Completed</th>
+                <th scope="col">% Done</th>
             </tr>
             </thead>
             <tbody>
@@ -70,15 +70,15 @@
                     <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
                           method="get"
                           onclick="event.stopPropagation()">
-                        <button type="submit">Opdater</button>
+                        <button type="submit">Update</button>
                     </form>
                 </td>
                 <td>
                     <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/delete(projectId=${project.id}, subprojectId=${subproject.id})}"
                           method="post"
-                          onsubmit="return confirm('Er du sikker på, at du vil slette kategorien?');"
+                          onsubmit="return confirm('Are you sure you want to delete this subproject?');"
                           onclick="event.stopPropagation()">
-                        <button type="submit">Slet</button>
+                        <button type="submit">Delete</button>
                     </form>
                 </td>
             </tr>

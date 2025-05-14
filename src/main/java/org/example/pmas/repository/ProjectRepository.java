@@ -134,7 +134,7 @@ public class ProjectRepository implements IProjectRepository {
         try {
             return jdbcTemplate.query(sql, new ProjectDTORowMapper(),userId);
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database fejl: kunne ikke hente alle subprojekter", e);
+            throw new DatabaseException("Database error: Could not get all subprojects with id: " + userId, e);
         }
     }
 

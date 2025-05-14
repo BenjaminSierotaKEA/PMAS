@@ -28,6 +28,7 @@ public class SessionController {
     public String login(@RequestParam String email,
                         @RequestParam String password,
                         Model model) {
+
         boolean loginSucceed = sessionHandler.logIn(email,password);
 
         User user = sessionHandler.getCurrentUser();
