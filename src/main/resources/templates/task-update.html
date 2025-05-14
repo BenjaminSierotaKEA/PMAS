@@ -80,10 +80,18 @@
 
             <div class="button-container">
                 <button type="submit">Opdater</button>
-                <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
-                    projectId=${projectId}, subprojectId=${subprojectId})}">
-                    <button type="button">Tilbage</button>
+
+                <a th:if="${session.user.role.name == 'Employee'}"
+                   th:href="@{/{id}/user(id=${session.user.userID})}">
+                    <button type="button">Back</button>
                 </a>
+
+                <a th:unless="${session.user.role.name == 'Employee'}"
+                        th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
+                    projectId=${projectId}, subprojectId=${subprojectId})}">
+                    <button type="button">Back</button>
+                </a>
+
             </div>
 
         </form>
