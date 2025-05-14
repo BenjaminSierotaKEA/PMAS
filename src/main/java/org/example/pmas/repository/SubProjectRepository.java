@@ -142,10 +142,10 @@ public class SubProjectRepository implements ISubProjectRepository {
                 "sp.description, " +
                 "sp.completed, " +
                 "sp.projectID, " +
+                "sp.timeBudget, " +
                 "COUNT(t.id) AS totalTasks, " +
                 "SUM(CASE WHEN t.completed = true THEN 1 ELSE 0 END) AS completedTasks, " +
-                "SUM(CASE WHEN t.completed = true THEN t.timeTaken ELSE 0 END) AS timeTaken, " +
-                "SUM(t.timeBudget) AS timeBudget " +
+                "SUM(CASE WHEN t.completed = true THEN t.timeBudget ELSE 0 END) AS timeTaken " +
                 "FROM subprojects sp " +
                 "LEFT JOIN tasks t ON sp.id = t.subProjectID " +
                 "WHERE sp.projectID = ? " +

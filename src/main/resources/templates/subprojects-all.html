@@ -36,22 +36,27 @@
         <table class="task-table">
             <thead>
             <tr>
-                <th scope="col">Navn</th>
-                <th scope="col">Beskrivelse</th>
-                <th scope="col">BrugtTid</th>
-                <th scope="col">TidsBudget</th>
-                <th scope="col">Fuldført</th>
-                <th scope="col">% Færdig</th>
+                <th scope="col">Name</th>
+                <th scope="col">Status</th>
+                <th scope="col">Description</th>
+                <th scope="col">Time Budget</th>
+                <th scope="col">Time Actual</th>
+                <th scope="col">% Done</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="subproject: ${subprojects}" class="table_row clickable-row"
                 th:onclick="'window.location.href=\'/projects/' + ${project.id} + '/subprojects/' + ${subproject.id} + '/tasks/all\''">
                 <td th:text="${subproject.name}"></td>
+                <td th:classappend="${subproject.completed} ? ' status-green' : ' status-yellow'">
+                    <div th:text="${subproject.completed ? 'Completed' : 'In Progress'}"
+                         class="status_indicator"
+                    >
+                    </div>
+                </td>
                 <td th:text="${subproject.description}"></td>
-                <td th:text="${subproject.timeTaken}"></td>
                 <td th:text="${subproject.timeBudget}"></td>
-                <td th:text="${subproject.completed}"></td>
+                <td th:text="${subproject.timeTaken}"></td>
 
                 <td th:text="${subproject.completionPercentage == 0 ? '0%' : #numbers.formatDecimal(subproject.completionPercentage, 0, 2) + '%'}"></td>
                 <td>

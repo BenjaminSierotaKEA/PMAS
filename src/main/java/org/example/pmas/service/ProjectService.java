@@ -69,7 +69,7 @@ public class ProjectService {
 
         for(ProjectDTO p : projects) {
             p.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(),p.getTotalSubProjects()));
-            p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getTimeTaken(), p.getTimeBudget()));
+            p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects()));
         }
 
         return projects;
