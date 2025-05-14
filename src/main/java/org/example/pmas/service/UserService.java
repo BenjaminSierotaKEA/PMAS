@@ -1,5 +1,6 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.Role;
@@ -111,7 +112,8 @@ public class UserService {
         var user = userRepository.readSelected(id);
         if(user == null) throw new NotFoundException(id);
 
-        userRepository.delete(id);
+        if(!userRepository.delete(id))
+            throw new DeleteObjectException("Couldn't delete user with id: " + id);
 
     }
 

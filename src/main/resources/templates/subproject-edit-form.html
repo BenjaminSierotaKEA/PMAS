@@ -1,44 +1,55 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
+    <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
     <title>Rediger Subprojekt</title>
 </head>
-<body>
-<div>
-    <h1>Rediger Subprojekt</h1>
-</div>
-<div>
-    <div>
-        <form method="post" th:action="@{/projects/{projectId}/subprojects/update(projectId=${subproject.getProjectID()})}"
-              th:object="${subproject}">
-            <input type="number" th:field="*{id}" readonly hidden>
-            <input hidden readonly type="number" th:field="*{projectID}">
+<body class="index_body page-container">
 
-            <label>Navn</label>
-            <input type="text" th:field="*{name}"/>
+<div th:replace="fragments/navbar :: navbar"></div>
 
-            <br>
-            <label>Beskrivelse</label>
-            <textarea rows="3" cols="20" th:field="*{description}"></textarea>
+<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
 
-            <br>
-            <label>TidsBudget</label>
-            <input type="text" th:field="*{timeBudget}" step="0.1" placeholder="0.0" required/>
+<div class="page-main">
+    <div class="flex-center flex-column flex-grow">
+        <h2 class="title">
+            Redigere Subprojekt: <span th:text="*{subproject.name}">[Navn]</span>
+        </h2>
 
-            <label>TidBrugt</label>
-            <input type="text" th:field="*{timeTaken}">
+        <div class="frame">
+            <form method="post"
+                  th:action="@{/projects/{projectId}/subprojects/update(projectId=${subproject.getProjectID()})}"
+                  th:object="${subproject}">
 
-            <label>Fuldført</label>
-            <input type="checkbox" th:field="*{completed}">
+                <!-- Hidden fields -->
+                <input type="number" th:field="*{id}" hidden readonly/>
+                <input type="number" th:field="*{projectID}" hidden readonly/>
+
+                <!-- Editable fields -->
+                <label for="name">Navn</label>
+                <input type="text" id="name" th:field="*{name}" placeholder="Subprojekt Navn" required/><br>
+
+                <label for="description">Beskrivelse</label>
+                <textarea id="description" th:field="*{description}" rows="4" placeholder="Beskrivelse"></textarea><br>
+
+                <label for="timeBudget">Tidsbudget</label>
+                <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="0.0" required step="0.1"/><br>
+
+                <label for="timeTaken">Tid brugt</label>
+                <input type="number" id="timeTaken" th:field="*{timeTaken}" step="0.1" placeholder="0.0"/><br>
+
+                <label for="completed">Fuldført</label>
+                <input type="checkbox" id="completed" th:field="*{completed}"/><br>
+
+                <div class="button-container">
+                    <button type="submit">Opdatér</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="button-container">
-        <button type="submit">Opdatere</button>
-    </div>
-    </form>
 </div>
-
 
 </body>
 </html>

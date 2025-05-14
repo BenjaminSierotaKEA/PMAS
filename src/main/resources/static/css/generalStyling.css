@@ -36,6 +36,7 @@
 }
 
 
+
 /* ---------------logo related stuff---------------- */
 
 .logo_container {
@@ -442,6 +443,50 @@ textarea:focus {
     border-radius: 1000px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     cursor: pointer;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.checkbox-group,
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.button-container {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
 }
 
 

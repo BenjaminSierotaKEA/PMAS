@@ -2,7 +2,6 @@ package org.example.pmas.model;
 
 
 import java.util.List;
-import java.util.Set;
 
 public class User {
 
@@ -41,6 +40,12 @@ public class User {
     public User(int userID, String name) {
         this.userID = userID;
         this.name = name;
+    }
+
+    public User(int userID, String name, Role role) {
+        this.userID = userID;
+        this.name = name;
+        this.role = role;
     }
 
     @Override

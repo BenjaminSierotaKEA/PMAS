@@ -41,7 +41,7 @@ public class ProjectController {
             projectService.createProject(project);
         }
 
-        return "redirect:/projects/all";
+        return "redirect:/projects/my-projects";
     }
 
     //TODO: ADD stuff so only the cto can see this page
@@ -96,13 +96,13 @@ public class ProjectController {
 
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project) {
-        if(project == null) throw new IllegalArgumentException("Ugyldig proj    ekt.");
+        if(project == null) throw new IllegalArgumentException("Ugyldig projekt.");
 
         if (sessionHandler.isUserProjectManager()) {
             projectService.updateProject(project);
         }
 
-        return "redirect:/projects/all";
+        return "redirect:/projects/my-projects";
     }
 
     @PostMapping("{projectId}/delete")
@@ -112,17 +112,6 @@ public class ProjectController {
         if (sessionHandler.isUserProjectManager()) {
             projectService.deleteProject(projectId);
         }
-        return "redirect:/projects/all";
+        return "redirect:/projects/my-projects";
     }
-
-//    @GetMapping("/{projectId}/subprojects")
-//    public String viewSubProjects(@PathVariable int projectId, Model model) {
-//        if(projectId >= 0) throw new IllegalArgumentException("Ugyldig ID.");
-//
-//        List<SubProject> subprojects = projectService.getSubProjectsByProjectID(projectId);
-//
-//        model.addAttribute("subprojects", subprojects);
-//        model.addAttribute("projectId", projectId);
-//        return "subprojects-all";
-//    }
 }

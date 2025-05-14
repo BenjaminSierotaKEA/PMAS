@@ -5,6 +5,7 @@ import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.service.ProjectService;
 import org.example.pmas.service.SubProjectService;
 import org.example.pmas.service.TaskService;
+import org.example.pmas.util.SessionHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +33,7 @@ class TaskControllerTest {
     private TaskService taskService;
 
     @MockitoBean
-    private SubProjectService subProjectService;
-
-    @MockitoBean
-    private ProjectService projectService;
+    private SessionHandler sessionHandler;
 
     @BeforeEach
     void setUp() {
@@ -46,6 +44,7 @@ class TaskControllerTest {
     @Test
     void readAllTaskBySubProjectID() throws Exception {
         // Arrange
+        when(sessionHandler.isNotAdmin()).thenReturn(true);
         when(taskService.getTasksBySubProjectID(1))
                 .thenReturn(tasks);
         when(taskService.getSubProject(any(Integer.class)))
@@ -55,8 +54,10 @@ class TaskControllerTest {
         mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/all", 1, 1))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task-all"))
+                .andExpect(model().attributeExists("allowAccess"))
                 .andExpect(model().attributeExists("tasks"));
 
+        verify(sessionHandler, times(1)).isNotAdmin();
         verify(taskService).getTasksBySubProjectID(1);
     }
 
@@ -65,19 +66,25 @@ class TaskControllerTest {
         // Arrange
         when(taskService.readSelected(any(Integer.class)))
                 .thenReturn(task);
+        when(sessionHandler.isNotAdmin()).thenReturn(true);
 
         // Act & Assert
         mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/{id}/edit", 1,1,1))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task-update"))
+                .andExpect(model().attributeExists("projectId"))
+                .andExpect(model().attributeExists("subprojectId"))
+                .andExpect(model().attributeExists("allowAccess"))
                 .andExpect(model().attributeExists("task"));
 
+        verify(sessionHandler, times(1)).isNotAdmin();
         verify(taskService).readSelected(any(Integer.class));
     }
 
     @Test
     void createTask() throws Exception {
         // Arrange
+        when(sessionHandler.isNotAdmin()).thenReturn(true);
 
         // Act & Assert
         mvc.perform(post("/projects/{projectId}/subprojects/{subprojectID}/tasks/create", 1,1)
@@ -93,6 +100,7 @@ class TaskControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/projects/1/subprojects/1/tasks/all"));
 
+        verify(sessionHandler, times(1)).isNotAdmin();
         verify(taskService, times(1))
                 .create(any(Task.class), any(List.class));
     }
@@ -100,6 +108,7 @@ class TaskControllerTest {
     @Test
     void deleteTask() throws Exception {
         // Arrange
+        when(sessionHandler.isNotAdmin()).thenReturn(true);
 
         // Act & Assert
         mvc.perform(post("/projects/{projectId}/subprojects/{subprojectID}/tasks/{id}/delete", 1,1,1)
@@ -107,6 +116,7 @@ class TaskControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/projects/1/subprojects/1/tasks/all"));
 
+        verify(sessionHandler, times(1)).isNotAdmin();
         verify(taskService, times(1))
                 .delete(any(Integer.class));
     }
@@ -114,6 +124,7 @@ class TaskControllerTest {
     @Test
     void updateTask() throws Exception {
         // Arrange
+        when(sessionHandler.isNotAdmin()).thenReturn(true);
 
         // Act & Assert
         mvc.perform(post("/projects/{projectId}/subprojects/{subprojectID}/tasks/update",1,1)
@@ -130,5 +141,6 @@ class TaskControllerTest {
 
         verify(taskService, times(1))
                 .update(any(Task.class), any(List.class));
+        verify(sessionHandler, times(1)).isNotAdmin();
     }
 }

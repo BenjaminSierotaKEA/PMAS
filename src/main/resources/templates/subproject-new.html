@@ -8,32 +8,34 @@
 </head>
 <body class="index_body page-container">
 
-<div th:replace="fragments/navbar :: navbar"></div>
+<h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
 
-<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
+<div th:if="${allowAccess}">
+    <div th:replace="fragments/navbar :: navbar"></div>
+    <div class="page-main">
+        <div class="flex-center flex-column flex-grow">
+            <h2 class="title">Create a New SubProject for Project: <span th:text="${project.name}"></span></h2>
 
-<div class="page-main">
-    <div class="flex-center flex-column flex-grow">
-        <h2 class="title">Create a New SubProject for Project: <span th:text="${project.name}"></span></h2>
+            <div class="frame">
+                <form th:action="@{/projects/{projectId}/subprojects/create(projectId=${project.id})}"
+                      method="post" th:object="${subproject}">
 
-        <div class="frame">
-            <form th:action="@{/projects/{projectId}/subprojects/create(projectId=${project.id})}"
-                  method="post" th:object="${subproject}">
+                    <input type="text" id="name" th:field="*{name}" placeholder="SubProject Name" required/><br>
 
-                <input type="text" id="name" th:field="*{name}" placeholder="SubProject Name" required/><br>
+                    <textarea id="description" th:field="*{description}" placeholder="Description"
+                              rows="4"></textarea><br>
 
-                <textarea id="description" th:field="*{description}" placeholder="Description" rows="4"></textarea><br>
-
-                <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Time Budget" required step="0.1"/><br>
+                    <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Time Budget" required
+                           step="0.1"/><br>
 
 
-                <div class="button-container">
-                    <button type="submit">Save SubProject</button>
-                </div>
-            </form>
+                    <div class="button-container">
+                        <button type="submit">Save SubProject</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>

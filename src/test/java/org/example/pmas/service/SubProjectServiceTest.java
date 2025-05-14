@@ -82,9 +82,7 @@ public class SubProjectServiceTest {
         when(subprojectRepository.doesSubProjectExist(1)).thenReturn(true);
         when(subprojectRepository.delete(delete.getId())).thenReturn(true);
 
-        boolean result = subprojectService.delete(delete.getId());
-
-        assertTrue(result);
+        subprojectService.delete(delete.getId());
 
         verify(subprojectRepository,times(1)).doesSubProjectExist(id);
         verify(subprojectRepository,times(1)).delete(id);
