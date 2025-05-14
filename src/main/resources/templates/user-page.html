@@ -13,8 +13,8 @@
 
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class="flex-row flex-center profile-Banner normalized_padding">
-    <div th:text="${user.name}" class="profile_title nav-section"> Name</div>
+<div class="flex-row flex-center flex-grow  profile-Banner normalized_padding">
+    <div th:text="${user.name}" class="profile_title huge_text nav-section"> Name</div>
     <div th:text="${user.email}" class="title nav-section">Email</div>
     <div th:text="${user.role}" class="title nav-section"> Role</div>
 
