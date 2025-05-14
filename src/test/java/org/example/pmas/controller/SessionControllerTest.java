@@ -1,5 +1,6 @@
 package org.example.pmas.controller;
 
+import org.example.pmas.model.Role;
 import org.example.pmas.model.User;
 import org.example.pmas.util.SessionHandler;
 import org.junit.jupiter.api.Test;
@@ -33,8 +34,11 @@ class SessionControllerTest {
     @Test
     void login_successfulRedirect() throws Exception {
         User mockUser = new User();
+        Role role = new Role();
+        role.setName("Employee");
         mockUser.setUserID(1);
         mockUser.setEmail("user@example.com");
+        mockUser.setRole(role);
 
         when(sessionHandler.logIn("Rebecca@example.com", "password123")).thenReturn(true);
         when(sessionHandler.getCurrentUser()).thenReturn(mockUser);

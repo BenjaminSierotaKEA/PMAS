@@ -9,9 +9,9 @@
     </div>
 
     <div class="nav-section">
-      <a th:if="${session.user != null and session.user.role.name == 'CTO'}"
+      <a th:if="${session.user != null and session.user.role.name == 'Project Manager'}"
          th:href="@{/projects/all}">PROJECTS</a>
-      <a th:if="${session.user != null and session.user.role.name != 'CTO'}"
+      <a th:if="${session.user != null and session.user.role.name != 'Project Manager'}"
          th:href="@{/projects/my-projects}">PROJECTS</a>
     </div>
 
