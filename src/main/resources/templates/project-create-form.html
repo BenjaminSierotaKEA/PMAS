@@ -28,10 +28,21 @@
 
                     <input type="date" id="deadline" name="deadline" th:field="*{deadline}" required/><br>
 
+                    <fieldset class="user-fieldset">
+                        <legend class="font_style user-legend">Vælg brugere</legend>
+                        <div class="user-checkboxes">
+                            <div th:each="user : ${users}" class="user-checkbox-wrapper">
+                                <label class="font_style user-checkbox">
+                                    <input type="checkbox" name="userIds" th:value="${user.userID}"/>
+                                    <span th:text="${user.name}"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+
                     <div class="button-container">
                         <button type="submit">Submit</button>
                     </div>
-
                 </form>
             </div>
         </div>

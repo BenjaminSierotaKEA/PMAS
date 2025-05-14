@@ -79,6 +79,32 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
+    public List<User> getAllOnProject(int projectID){
+        String sql = "SELECT u.*, r.id as role_id, r.name as role_name" +
+                "        FROM users u" +
+                "        JOIN roles r ON u.role = r.id" +
+                " JOIN userprojects up ON u.id = up.userid" +
+                " WHERE up.projectid = ?";
+
+        return jdbcTemplate.query(sql, new UserRowMapper(), projectID);
+    }
+
+    @Override
+    public List<User> getAllNotOnProject(int projectID){
+        String sql = "SELECT u.*, r.id as role_id, r.name as role_name" +
+                "        FROM users u" +
+                " JOIN roles r ON u.role = r.id"+
+                " WHERE u.id NOT IN (" +
+                "    SELECT pu.userid" +
+                "    FROM userprojects pu" +
+                "    WHERE pu.projectid = ?" +
+                ")";
+
+
+        return jdbcTemplate.query(sql, new UserRowMapper(), projectID);
+    }
+
+    @Override
     public boolean delete(int id) {
         String sql = "DELETE FROM users WHERE id = ?";
         return jdbcTemplate.update(sql, id) > 0;
