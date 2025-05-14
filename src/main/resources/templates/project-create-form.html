@@ -28,10 +28,17 @@
 
                     <input type="date" id="deadline" name="deadline" th:field="*{deadline}" required/><br>
 
+                    <input type="text" name="helloWorld">
                     <div class="button-container">
                         <button type="submit">Submit</button>
                     </div>
-
+                    <div>
+                        <table>
+                            <tr th:each="user: ${users}">
+                                <th th:text = "${user.name}"></th>
+                            </tr>
+                        </table>
+                    </div>
                 </form>
             </div>
         </div>

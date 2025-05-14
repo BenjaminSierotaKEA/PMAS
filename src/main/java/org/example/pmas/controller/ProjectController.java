@@ -21,6 +21,7 @@ public class ProjectController {
     private final SessionHandler sessionHandler;
 
     public ProjectController(ProjectService projectService,
+                             UserService userService,
                              SessionHandler sessionHandler) {
         this.projectService = projectService;
         this.sessionHandler = sessionHandler;
@@ -50,9 +51,11 @@ public class ProjectController {
         return "project-create-form";
     }
 
-    //TODO: add session stuff, redirect to somewhere better
     @PostMapping("/create")
-    public String createProject(@ModelAttribute Project project) {
+    public String createProject(@ModelAttribute Project project,
+                                @RequestParam(name="helloWorld", required = false) String testMessage) {
+
+        System.out.println("Hello from createProject: " + testMessage);
         if (sessionHandler.isUserProjectManager()) {
             projectService.createProject(project);
         }
@@ -60,13 +63,14 @@ public class ProjectController {
         return "redirect:/projects/all";
     }
 
-    //TODO: ADD stuff so only the cto can see this page
     @GetMapping("/all")
     public String seeAll(Model model) {
         User user = sessionHandler.getCurrentUser();
         boolean allowAccess = sessionHandler.isUserProjectManager();
         if(allowAccess) {
-            List<ProjectDTO> projects = projectService.getProjectDTOByUserID(user.getUserID());
+            //i dont know why this has been done but we need to view ALL the projects on this page
+            //List<ProjectDTO> projects = projectService.getProjectDTOByUserID(user.getUserID());
+            List<Project> projects = projectService.readAll();
             model.addAttribute("projects", projects);
         }
         model.addAttribute("allowAccess", allowAccess);

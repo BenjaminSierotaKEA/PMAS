@@ -13,4 +13,5 @@ public interface IProjectRepository extends CrudInterface<Project> {
 
     List<Project> readProjectsOfUser(int userID);
     List<ProjectDTO> getProjectDTOByUserID(int userID);
+    //List<ProjectDTO> getAllProjectDTO();
 }

@@ -131,4 +131,6 @@ public class ProjectRepository implements IProjectRepository {
             throw new DatabaseException("Database fejl: kunne ikke hente alle subprojekter", e);
         }
     }
+
+
 }

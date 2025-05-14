@@ -62,4 +62,6 @@ public class ProjectService {
         calc.calculateSubProjectCompletionPercentage(projects);
         return projects;
     }
+
+
 }
