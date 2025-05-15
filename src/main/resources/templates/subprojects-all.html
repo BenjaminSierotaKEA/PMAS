@@ -77,7 +77,7 @@
                     <form th:action="@{/projects/{projectId}/subprojects/{subprojectid}/edit(projectId=${project.id}, subprojectid=${subproject.id})}"
                           method="get"
                           onclick="event.stopPropagation()">
-                        <button type="submit">Update</button>
+                        <button th:if="${ProjectManager}" type="submit">Update</button>
                     </form>
                 </td>
                 <td>
