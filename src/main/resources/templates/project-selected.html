@@ -48,7 +48,9 @@
                 <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}" method="get" style="display:inline-block">
                     <button type="submit">Edit</button>
                 </form>
-                <form th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" method="post" style="display:inline-block">
+                <form th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" method="post" style="display:inline-block"
+                      onsubmit="return confirm('Are you sure you want to delete this subproject?');"
+                      onclick="event.stopPropagation()">
                     <input type="hidden" name="id" th:value="${project.id}">
                     <button type="submit">Delete</button>
                 </form>
