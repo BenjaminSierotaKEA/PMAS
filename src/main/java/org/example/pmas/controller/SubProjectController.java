@@ -105,7 +105,7 @@ public class SubProjectController {
             SubProject subproject = subProjectService.readSelected(subprojectId);
             model.addAttribute("subproject", subproject);
         }
-
+        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "subproject-edit-form";
     }
