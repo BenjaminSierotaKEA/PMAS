@@ -29,19 +29,16 @@
 
                 <!-- Editable fields -->
                 <label for="name">Name:</label>
-                <input type="text" id="name" th:field="*{name}" placeholder="Subprojekt Navn" required/><br>
+                <input type="text" id="name" th:field="*{name}" placeholder="Subprojekt Name" th:readonly="${!ProjectManager}" required/><br>
 
                 <label for="description">Description:</label>
-                <textarea id="description" th:field="*{description}" rows="4" placeholder="Beskrivelse"></textarea><br>
+                <textarea id="description" th:field="*{description}" rows="4" placeholder="Description" th:readonly="${!ProjectManager}"></textarea><br>
 
                 <label for="timeBudget">Time budget:</label>
-                <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="0.0" required step="0.1"/><br>
-
-                <label for="timeTaken">Time used:</label>
-                <input type="number" id="timeTaken" th:field="*{timeTaken}" step="0.1" placeholder="0.0"/><br>
+                <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="0.0" required step="0.1" th:readonly="${!ProjectManager}"/><br>
 
                 <label for="completed">Completed:</label>
-                <input type="checkbox" id="completed" th:field="*{completed}"/><br>
+                <input type="checkbox" id="completed" th:field="*{completed}" th:disabled="${!ProjectManager}"/><br>
 
                 <div class="button-container">
                     <button type="submit">Update</button>

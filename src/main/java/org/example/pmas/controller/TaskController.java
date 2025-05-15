@@ -33,7 +33,7 @@ public class TaskController {
             model.addAttribute("tasks", taskService.getTasksBySubProjectID(subprojectId));
             model.addAttribute("subproject", taskService.getSubProject(subprojectId));
         }
-
+        model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "task-all";
     }
@@ -53,7 +53,7 @@ public class TaskController {
             model.addAttribute("task", task);
             getSubProjectUsersPriority(model,projectId);
         }
-
+        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "task-update";
     }
