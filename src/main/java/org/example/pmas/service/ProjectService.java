@@ -9,6 +9,7 @@ import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.example.pmas.repository.UserRepository;
+import org.example.pmas.service.comparators.ProjectDTODeadlineComparator;
 import org.example.pmas.service.comparators.ProjectDeadlineComparator;
 import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,11 @@ import java.util.List;
 public class ProjectService {
 
     private final IProjectRepository projectRepository;
-    private final ISubProjectRepository subprojectRepository;
     private final IUserRepository userRepository;
 
 
-    public ProjectService(IProjectRepository projectRepository, ISubProjectRepository subprojectRepository, IUserRepository userRepository) {
+    public ProjectService(IProjectRepository projectRepository, IUserRepository userRepository) {
         this.projectRepository = projectRepository;
-        this.subprojectRepository = subprojectRepository;
         this.userRepository = userRepository;
 
     }
@@ -92,27 +91,34 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
+        // Returns null if no list
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
+        if(projects == null) return Collections.emptyList();
 
         for(ProjectDTO p : projects) {
             p.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(),p.getTotalSubProjects()));
             p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects()));
         }
 
-        return projects;
+        // Sort the list by deadline
+        // We copy the list so its not immutable
+        List<ProjectDTO> modifiableList = new ArrayList<>(projects);
+        modifiableList.sort(new ProjectDTODeadlineComparator().reversed());
+        return modifiableList;
     }
 
     public List<User> getAllUsers(){
         return userRepository.readAll();
     }
 
-    // Sorts the list by deadline and then priority.
+    // Sorts the list by deadline.
     // If the list is null, return an empty list. No errors
     private List<Project> sortList(List<Project> projects){
         // If the list is null, return an empty list. No errors
         if(projects == null) return Collections.emptyList();
 
-        // Sort the list by deadline and then priority.
+        // Sort the list by deadline.
+        // We copy the list so its not immutable
         List<Project> modifiableList = new ArrayList<>(projects);
         modifiableList.sort(new ProjectDeadlineComparator().reversed());
 
