@@ -9,6 +9,7 @@ import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.example.pmas.repository.UserRepository;
+import org.example.pmas.service.comparators.ProjectDTODeadlineComparator;
 import org.example.pmas.service.comparators.ProjectDeadlineComparator;
 import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
@@ -92,14 +93,19 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
+        // Returns null if no list
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
+        if(projects == null) return Collections.emptyList();
 
         for(ProjectDTO p : projects) {
             p.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(),p.getTotalSubProjects()));
             p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects()));
         }
 
-        return projects;
+        // Sort the list by deadline and then priority.
+        List<ProjectDTO> modifiableList = new ArrayList<>(projects);
+        modifiableList.sort(new ProjectDTODeadlineComparator().reversed());
+        return modifiableList;
     }
 
     public List<User> getAllUsers(){
