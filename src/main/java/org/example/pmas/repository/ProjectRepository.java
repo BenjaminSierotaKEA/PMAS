@@ -10,10 +10,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class ProjectRepository implements IProjectRepository {
@@ -136,54 +138,39 @@ public class ProjectRepository implements IProjectRepository {
         }
     }
 
+    @Transactional
     @Override
-    public void addUsersToProject(int projectID,List<Integer> userIDs){
-            //WIP
+    public void addUsersToProject(int projectID,Set<Integer> userIDs){
             String sql = "INSERT INTO userprojects(projectid, userid) VALUES (?,?)";
 
-
-            //this is a use of batchupdate, which allows us to update multiple rows of the
-            //table with a single database query. first, the sql statement is passed as the first argument,
-            //than an inline implementation of the batchpreparedstatementsetter interface, containing two functions
-            jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
-
-                //first is the setvalues function, which  sets the values of the question marks in the
-                //sql statement for each insertion. i is the index of the iteration through the batch
-                @Override
-                public void setValues(PreparedStatement ps, int i) throws SQLException {
-
-                    //ps.setInt sets the value of one of the question marks in the statement. the first
-                    //argument is which question mark in the statement is being set, the second is its value
-                    ps.setInt(1, projectID);
-                    ps.setInt(2, userIDs.get(i));
+            for(Integer i : userIDs){
+                try{
+                    jdbcTemplate.update(sql, projectID, i);
+                }catch(DataAccessException e){
+                    throw new DatabaseException("Database error: could not insert userid associated with Project.", e);
                 }
+            }
 
-                //This specifies the size of the batch.
-                @Override
-                public int getBatchSize() {
-                    return userIDs.size();
-                }
-            });
+
+
     }
 
+    @Transactional
     @Override
-    public void removeUsersFromProject(int projectID, List<Integer> userIDs){
+    public void removeUsersFromProject(int projectID, Set<Integer> userIDs){
         //see addUsersToProject for an explanation of what is going on here
 
         String sql = "DELETE FROM userprojects WHERE projectid = ? AND userid = ?";
 
-        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setInt(1, projectID);
-                ps.setInt(2, userIDs.get(i));
+
+        for(Integer i : userIDs){
+            try {
+                jdbcTemplate.update(sql, projectID, i);
+            }catch (DataAccessException e){
+                throw new DatabaseException("Database error: could not remove userID associated with project");
             }
 
-            @Override
-            public int getBatchSize() {
-                return userIDs.size();
-            }
-        });
+        }
 
 
     }

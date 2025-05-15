@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/projects")
@@ -40,7 +41,7 @@ public class ProjectController {
 
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project,
-                                @RequestParam(name="userIds", required = false) List<Integer> userIDs) {
+                                @RequestParam(name="userIds", required = false) Set<Integer> userIDs) {
         if(project == null) throw new IllegalArgumentException("Something wrong with project.");
 
         if (sessionHandler.isUserProjectManager()) {
@@ -109,8 +110,8 @@ public class ProjectController {
 
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project,
-                                @RequestParam(name="usersToAddID", required = false) List<Integer> usersToAddID,
-                                @RequestParam(name="usersToRemoveID", required = false) List<Integer> usersToRemoveID) {
+                                @RequestParam(name="usersToAddID", required = false) Set<Integer> usersToAddID,
+                                @RequestParam(name="usersToRemoveID", required = false) Set<Integer> usersToRemoveID) {
         if(project == null) throw new IllegalArgumentException("Something wrong with project");
 
         if (sessionHandler.isUserProjectManager()) {
