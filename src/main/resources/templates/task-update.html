@@ -13,7 +13,7 @@
 <h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
 
 <div th:if="${allowAccess}">
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <div class="normalized_padding">
         <h3 th:text="'Opdater: ' + ${task.name}" class="profile_title flex-center"></h3>

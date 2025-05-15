@@ -8,6 +8,10 @@
 <body>
 <h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
 <div th:if="${allowAccess}">
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+
     <div>
         <h1>Edit Subprojekt</h1>
     </div>

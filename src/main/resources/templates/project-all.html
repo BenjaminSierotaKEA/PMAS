@@ -9,10 +9,13 @@
 <body>
 <!--This is the ugly test version of the page,
 make this according to the styled mockup later-->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
 <h1 th:unless="${allowAccess}">You are not a project manager. Access Denied!</h1>
 <div th:if="${allowAccess}">
     <a th:href="@{/projects/new}">Create</a>
 </div>
+
 <table th:if="${allowAccess}">
     <thead>
     <tr>

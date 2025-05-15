@@ -12,7 +12,7 @@
 <body class="page-container font_style">
 <h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
 <div th:if="${allowAccess}">
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <h1 class="profile_title flex-center normalized_padding"
         th:text="'Tasks for: ' + ${subproject.name}">

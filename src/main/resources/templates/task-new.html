@@ -11,7 +11,7 @@
 <h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
 
 <div th:if="${allowAccess}">
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <div class="page-main">
         <div class="flex-center flex-column flex-grow">
