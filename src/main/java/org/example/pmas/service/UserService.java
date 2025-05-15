@@ -94,7 +94,7 @@ public class UserService {
             var user = userRepository.getByEmail(email);
 
             // checks if password matches
-            if (user.getPassword().equals(password)) {
+            if (user != null && user.getPassword().equals(password)) {
                 return user;
             } else {
                 return null;
