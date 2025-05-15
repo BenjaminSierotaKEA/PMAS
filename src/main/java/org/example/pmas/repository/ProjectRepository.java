@@ -138,32 +138,12 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public void addUsersToProject(int projectID,List<Integer> userIDs){
-            //WIP
             String sql = "INSERT INTO userprojects(projectid, userid) VALUES (?,?)";
 
+            for(Integer i : userIDs){
+                jdbcTemplate.update(sql, projectID, i);
+            }
 
-            //this is a use of batchupdate, which allows us to update multiple rows of the
-            //table with a single database query. first, the sql statement is passed as the first argument,
-            //than an inline implementation of the batchpreparedstatementsetter interface, containing two functions
-            jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
-
-                //first is the setvalues function, which  sets the values of the question marks in the
-                //sql statement for each insertion. i is the index of the iteration through the batch
-                @Override
-                public void setValues(PreparedStatement ps, int i) throws SQLException {
-
-                    //ps.setInt sets the value of one of the question marks in the statement. the first
-                    //argument is which question mark in the statement is being set, the second is its value
-                    ps.setInt(1, projectID);
-                    ps.setInt(2, userIDs.get(i));
-                }
-
-                //This specifies the size of the batch.
-                @Override
-                public int getBatchSize() {
-                    return userIDs.size();
-                }
-            });
     }
 
     @Override
@@ -172,18 +152,9 @@ public class ProjectRepository implements IProjectRepository {
 
         String sql = "DELETE FROM userprojects WHERE projectid = ? AND userid = ?";
 
-        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                ps.setInt(1, projectID);
-                ps.setInt(2, userIDs.get(i));
-            }
-
-            @Override
-            public int getBatchSize() {
-                return userIDs.size();
-            }
-        });
+        for(Integer i : userIDs){
+            jdbcTemplate.update(sql, projectID, i);
+        }
 
 
     }
