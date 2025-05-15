@@ -38,11 +38,17 @@ public class ProjectService {
     }
 
     public void addUsersToProject(int projectID, Set<Integer> userIDs){
-        projectRepository.addUsersToProject(projectID, userIDs);
+        if(userIDs != null){
+            projectRepository.addUsersToProject(projectID, userIDs);
+        }
+
     }
 
     public void removeUsersFromProject(int projectID, Set<Integer> userIds){
-        projectRepository.removeUsersFromProject(projectID, userIds);
+        if(userIds != null){
+            projectRepository.removeUsersFromProject(projectID, userIds);
+        }
+
     }
 
     public List<Project> readAll(){

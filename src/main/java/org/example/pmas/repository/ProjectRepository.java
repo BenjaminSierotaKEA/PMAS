@@ -10,6 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -137,24 +138,38 @@ public class ProjectRepository implements IProjectRepository {
         }
     }
 
+    @Transactional
     @Override
     public void addUsersToProject(int projectID,Set<Integer> userIDs){
             String sql = "INSERT INTO userprojects(projectid, userid) VALUES (?,?)";
 
             for(Integer i : userIDs){
-                jdbcTemplate.update(sql, projectID, i);
+                try{
+                    jdbcTemplate.update(sql, projectID, i);
+                }catch(DataAccessException e){
+                    throw new DatabaseException("Database error: could not insert userid associated with Project.", e);
+                }
             }
+
+
 
     }
 
+    @Transactional
     @Override
     public void removeUsersFromProject(int projectID, Set<Integer> userIDs){
         //see addUsersToProject for an explanation of what is going on here
 
         String sql = "DELETE FROM userprojects WHERE projectid = ? AND userid = ?";
 
+
         for(Integer i : userIDs){
-            jdbcTemplate.update(sql, projectID, i);
+            try {
+                jdbcTemplate.update(sql, projectID, i);
+            }catch (DataAccessException e){
+                throw new DatabaseException("Database error: could not remove userID associated with project");
+            }
+
         }
 
 
