@@ -129,6 +129,7 @@ public class TaskService {
         if (taskList == null) return Collections.emptyList();
 
         // Sort the list by deadline and then priority.
+        // We copy the list so its not immutable
         List<Task> modifiableList = new ArrayList<>(taskList);
         modifiableList.sort(new TaskDeadlineComparator().reversed()
                         .thenComparing(new TaskPriorityComparator())

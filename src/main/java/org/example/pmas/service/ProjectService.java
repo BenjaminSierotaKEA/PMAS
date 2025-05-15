@@ -22,13 +22,11 @@ import java.util.List;
 public class ProjectService {
 
     private final IProjectRepository projectRepository;
-    private final ISubProjectRepository subprojectRepository;
     private final IUserRepository userRepository;
 
 
-    public ProjectService(IProjectRepository projectRepository, ISubProjectRepository subprojectRepository, IUserRepository userRepository) {
+    public ProjectService(IProjectRepository projectRepository, IUserRepository userRepository) {
         this.projectRepository = projectRepository;
-        this.subprojectRepository = subprojectRepository;
         this.userRepository = userRepository;
 
     }
@@ -102,7 +100,8 @@ public class ProjectService {
             p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects()));
         }
 
-        // Sort the list by deadline and then priority.
+        // Sort the list by deadline
+        // We copy the list so its not immutable
         List<ProjectDTO> modifiableList = new ArrayList<>(projects);
         modifiableList.sort(new ProjectDTODeadlineComparator().reversed());
         return modifiableList;
@@ -112,13 +111,14 @@ public class ProjectService {
         return userRepository.readAll();
     }
 
-    // Sorts the list by deadline and then priority.
+    // Sorts the list by deadline.
     // If the list is null, return an empty list. No errors
     private List<Project> sortList(List<Project> projects){
         // If the list is null, return an empty list. No errors
         if(projects == null) return Collections.emptyList();
 
-        // Sort the list by deadline and then priority.
+        // Sort the list by deadline.
+        // We copy the list so its not immutable
         List<Project> modifiableList = new ArrayList<>(projects);
         modifiableList.sort(new ProjectDeadlineComparator().reversed());
 
