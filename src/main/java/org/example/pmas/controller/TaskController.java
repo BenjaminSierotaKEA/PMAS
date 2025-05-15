@@ -33,7 +33,7 @@ public class TaskController {
             model.addAttribute("tasks", taskService.getTasksBySubProjectID(subprojectId));
             model.addAttribute("subproject", taskService.getSubProject(subprojectId));
         }
-        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
+        model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "task-all";
     }

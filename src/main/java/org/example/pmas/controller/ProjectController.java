@@ -54,12 +54,12 @@ public class ProjectController {
 
     @GetMapping("/all")
     public String seeAll(Model model) {
-        User user = sessionHandler.getCurrentUser();
-        boolean allowAccess = sessionHandler.isUserProjectManager();
+        boolean allowAccess = sessionHandler.isNotAdmin();
         if(allowAccess) {
             List<Project> projects = projectService.readAll();
             model.addAttribute("projects", projects);
         }
+        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", allowAccess);
         return "project-all";
     }
@@ -76,7 +76,7 @@ public class ProjectController {
         } else {
             model.addAttribute("username", "logged out");
         }
-
+        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("loggedIn", loggedIn);
         return "project-selected";
     }

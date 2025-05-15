@@ -18,7 +18,7 @@
 
 <div class="flex-row flex-center normalized_padding">
     <form th:action="@{/projects/new}"
-          method="get">
+          method="get" th:if="${ProjectManager}">
         <button>Create</button>
     </form>
 </div>
@@ -34,7 +34,6 @@
             <th class="title">Time Actual</th>
             <th class="title">Deadline</th>
             <th class="title">% Complete</th>
-            <th class="title">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -57,11 +56,11 @@
             <td th:text="${project.completionPercentage}">% Complete</td>
             <td>
                 <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}" method="get" style="display:inline-block">
-                    <button type="submit">Edit</button>
+                    <button type="submit" th:if="${ProjectManager}">Edit</button>
                 </form>
                 <form th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" method="post" style="display:inline-block">
                     <input type="hidden" name="id" th:value="${project.id}">
-                    <button type="submit">Delete</button>
+                    <button type="submit" th:if="${ProjectManager}">Delete</button>
                 </form>
             </td>
         </tr>
