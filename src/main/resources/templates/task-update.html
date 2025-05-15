@@ -35,7 +35,7 @@
                           required></textarea>
             </div>
 
-            <fieldset class="checkbox-group" th:disabled="${!ProjectManager}">
+            <fieldset class="checkbox-group" th:if="${ProjectManager}">
                 <legend>Pick users:</legend>
                 <div th:each="user : ${users}" class="user-checkbox-wrapper">
                     <label class="user-checkbox">
