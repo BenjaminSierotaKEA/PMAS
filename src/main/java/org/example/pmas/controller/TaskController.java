@@ -53,7 +53,7 @@ public class TaskController {
             model.addAttribute("task", task);
             getSubProjectUsersPriority(model,projectId);
         }
-
+        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "task-update";
     }
