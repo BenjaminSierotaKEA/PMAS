@@ -13,7 +13,7 @@
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div class="flex-row flex-center flex-grow  profile-Banner normalized_padding">
+<div class="flex-row flex-center   profile-Banner normalized_padding">
     <div th:text="${user.name}" class="profile_title huge_text nav-section"> Name</div>
     <div th:text="${user.email}" class="title nav-section">Email</div>
     <div th:text="${user.role}" class="title nav-section"> Role</div>
@@ -25,9 +25,10 @@
 <div th:if="${user.tasks == null or user.tasks.isEmpty()}">
     <p>No tasks currently waiting for you!</p>
 </div>
-<div class="dashboard-wrapper">
-    <div class="dashboard-left">
-        <div th:if="${user.tasks != null and !user.tasks.isEmpty()}" class="dark_frame  normalized_padding">
+
+<div class="dashboard-wrapper flex-grow">
+    <div class="dashboard-left dark_frame normalized_padding ">
+        <div th:if="${user.tasks != null and !user.tasks.isEmpty()}">
            <div>
                 <h2 class="profile_title">Your Tasks</h2>
            </div>
@@ -73,8 +74,8 @@
         </div>
     </div>
 
-<div class="dashboard-right">
-    <div th:if="${user.projects != null and !user.projects.isEmpty()}" class="dark_frame normalized_padding">
+<div class="dashboard-right flex-grow dark_frame normalized_padding">
+    <div th:if="${user.projects != null and !user.projects.isEmpty()}" >
         <h2 class="profile_title">Your Projects</h2>
         <table class="task-table">
             <thead>
