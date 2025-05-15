@@ -39,7 +39,6 @@
                 <th class="title">Status</th>
                 <th class="title">Description</th>
                 <th class="title">Time Budget</th>
-                <th class="title">Time Taken</th>
                 <th class="title">Deadline</th>
                 <th class="title">Assigned</th>
                 <th class="title">Priority</th>
@@ -58,7 +57,6 @@
                 </td>
                 <td th:text="${task.description}">Description</td>
                 <td th:text="${task.timeBudget}">0</td>
-                <td th:text="${task.timeTaken}">0</td>
                 <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}">Date</td>
                 <td>
                 <span th:each="user, iterStat : ${task.users}">

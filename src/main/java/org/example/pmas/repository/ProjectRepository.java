@@ -120,12 +120,10 @@ public class ProjectRepository implements IProjectRepository {
                 "p.description, " +
                 "p.timeBudget, " +
                 "p.completed, " +
-                "p.timeTaken    , " +
                 "p.deadline, " +
                 "COUNT(sp.id) AS totalSubProjects, " +
                 "SUM(CASE WHEN sp.completed = true THEN 1 ELSE 0 END) AS completedSubProjects, " +
-                "SUM(CASE WHEN sp.completed = true THEN sp.timeTaken ELSE 0 END) AS timeTaken, " +
-                "SUM(sp.timeBudget) AS timeBudget " +
+                "SUM(CASE WHEN sp.completed = true THEN sp.timeBudget ELSE 0 END) AS timeTaken " +
                 "FROM userprojects up " +
                 "JOIN projects p ON up.projectid = p.id " +
                 "LEFT JOIN subprojects sp ON sp.projectID = p.id " +

@@ -96,7 +96,6 @@
 .dark_frame {
     background-color: rgba(23, 23, 23, 0.87);
     padding: 2vh;
-    height: 60vh;
     border-radius: 30px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);

@@ -9,7 +9,7 @@ public class CompletionStatCalculator{
         return total == 0 ? 0 : (completed * 100.0) / total;
     }
 
-    public static boolean isJobCompleted(double timeTaken, double timeBudget) {
-        return Double.compare(timeTaken, timeBudget) == 0;
+    public static boolean isJobCompleted(int completed, int total) {
+        return completed == total;
     }
 }

@@ -64,7 +64,7 @@ public class SubProjectService {
 
         for(SubProjectDTO s : subprojects) {
             s.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(s.getCompletedTasks(),s.getTotalTasks()));
-            s.setCompleted(CompletionStatCalculator.isJobCompleted(s.getTimeTaken(), s.getTimeBudget()));
+            s.setCompleted(CompletionStatCalculator.isJobCompleted(s.getCompletedTasks(), s.getTotalTasks()));
         }
 
         return subprojects;
