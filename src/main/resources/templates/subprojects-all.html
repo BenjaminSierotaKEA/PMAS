@@ -24,7 +24,7 @@
     <div class="flex-row flex-center normalized_padding">
         <form th:action="@{/projects/{projectId}/subprojects/new(projectId=${project.id})}"
               method="get">
-            <button>Create</button>
+            <button th:if="${ProjectManager}">Create</button>
         </form>
 
         <a th:if="${session.user.role.name == 'Employee'}"
