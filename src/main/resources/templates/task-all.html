@@ -20,7 +20,7 @@
     <div class="flex-row flex-center normalized_padding">
         <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(projectId=${projectId}, subprojectId=${subprojectId})}"
               method="get" style="margin-right: 1rem;">
-            <button type="submit">Create Task</button>
+            <button th:if="${ProjectManager}" type="submit">Create Task</button>
         </form>
         <form th:action="@{/projects/{projectId}/subprojects/all(projectId=${projectId})}"
               method="get">
