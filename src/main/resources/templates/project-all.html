@@ -6,49 +6,63 @@
     <link rel="stylesheet" th:href="@{/css/layoutStyling.css}">
     <link rel="stylesheet" th:href="@{/css/generalStyling.css}">
 </head>
-<body>
-<!--This is the ugly test version of the page,
-make this according to the styled mockup later-->
-<h1 th:unless="${allowAccess}">You are not a project manager. Access Denied!</h1>
+
+<body class="page-container font_style">
+<h1 th:unless="${allowAccess}">Access Denied! You are not a project manager.</h1>
+
 <div th:if="${allowAccess}">
-    <a th:href="@{/projects/new}">Create</a>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <h1 class="profile_title flex-center normalized_padding">
+        Project Overview
+    </h1>
+
+    <div class="flex-row flex-center normalized_padding">
+        <form th:action="@{/projects/new}" method="get" style="margin-right: 1rem;">
+            <button type="submit">Create Project</button>
+        </form>
+    </div>
+
+    <div class="dark_frame normalized_padding">
+        <table class="task-table">
+            <thead>
+            <tr>
+                <th class="title">Project</th>
+                <th class="title">Description</th>
+                <th class="title">Time Budget</th>
+                <th class="title">Deadline</th>
+                <th class="title">Edit</th>
+                <th class="title">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="project : ${projects}" class="table_row clickable-row"
+                th:onclick="'window.location.href=\'/projects/' + ${project.id} + '/subprojects/all\''">
+                <td th:text="${project.name}">Project Name</td>
+                <td th:text="${project.description}">Description</td>
+                <td th:text="${project.timeBudget}">0</td>
+                <td th:text="${#temporals.format(project.deadline, 'dd-MM-yyyy')}">Date</td>
+
+                <td>
+                    <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}"
+                          method="get" onclick="event.stopPropagation()">
+                        <button type="submit">Edit</button>
+                    </form>
+                </td>
+
+                <td>
+                    <form method="post"
+                          th:action="@{/projects/{projectId}/delete(projectId=${project.id})}"
+                          onsubmit="return confirm('Are you sure you want to delete this project?');"
+                          onclick="event.stopPropagation()">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-<table th:if="${allowAccess}">
-    <thead>
-    <tr>
-        <th>Project</th>
-        <th>Description</th>
-        <th>Time budget</th>
-        <th>Deadline</th>
-        <th>%</th>
-        <th>Update</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="project :${projects}">
-        <td>
-            <a th:href="@{/projects/{projectId}/subprojects/all(projectId=${project.id})}"
-               th:text="${project.name}"></a></td>
-        <td th:text="${project.description}"></td>
-        <td th:text="${project.timeBudget}"></td>
-        <td th:text="${project.deadline}"></td>
-        <!-- <td th:text="${project.completionPercentage}"></td> -->
-        <td>
-            <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}"
-            method="get">
-                <button type="submit">Update</button>
-            </form>
-        </td>
-        <td>
-            <form method="post" th:action="@{/projects/{projectId}/delete(projectId=${project.id})}"
-                  th:object="${project}"
-                  onsubmit="return confirm('Are you sure you want to delete this project?');">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
 </body>
 </html>

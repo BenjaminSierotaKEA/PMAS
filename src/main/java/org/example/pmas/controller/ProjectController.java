@@ -56,8 +56,6 @@ public class ProjectController {
         User user = sessionHandler.getCurrentUser();
         boolean allowAccess = sessionHandler.isUserProjectManager();
         if(allowAccess) {
-            //i dont know why this has been done but we need to view ALL the projects on this page
-            //List<ProjectDTO> projects = projectService.getProjectDTOByUserID(user.getUserID());
             List<Project> projects = projectService.readAll();
             model.addAttribute("projects", projects);
         }
@@ -70,19 +68,16 @@ public class ProjectController {
         User user = sessionHandler.getCurrentUser();
         boolean loggedIn = (user != null);
 
-        List<Project> projects = null;
         if (loggedIn) {
-            projects = projectService.readProjectsOfUser(user.getUserID());
+            List<ProjectDTO> projects = projectService.getProjectDTOByUserID(user.getUserID());
             model.addAttribute("username", user.getName());
+            model.addAttribute("projects", projects);
         } else {
             model.addAttribute("username", "logged out");
         }
 
-        model.addAttribute("projects", projects);
         model.addAttribute("loggedIn", loggedIn);
-
         return "project-selected";
-
     }
 
 

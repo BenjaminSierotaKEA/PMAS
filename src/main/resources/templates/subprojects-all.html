@@ -38,7 +38,7 @@
         </a>
 
         <form th:unless="${session.user.role.name == 'Employee'}"
-                th:action="@{/projects/all}"
+                th:action="@{/projects/my-projects}"
               method="get">
             <button type="submit">Back to projects</button>
         </form>
@@ -49,6 +49,7 @@
             <thead>
             <tr>
                 <th scope="col">Name</th>
+                <th scope="col">Status</th>
                 <th scope="col">Description</th>
                 <th scope="col">Time used</th>
                 <th scope="col">Time budget</th>
@@ -60,6 +61,12 @@
             <tr th:each="subproject: ${subprojects}" class="table_row clickable-row"
                 th:onclick="'window.location.href=\'/projects/' + ${project.id} + '/subprojects/' + ${subproject.id} + '/tasks/all\''">
                 <td th:text="${subproject.name}"></td>
+                <td th:classappend="${subproject.completed} ? ' status-green' : ' status-yellow'">
+                    <div th:text="${subproject.completed ? 'Completed' : 'In Progress'}"
+                         class="status_indicator"
+                    >
+                    </div>
+                </td>
                 <td th:text="${subproject.description}"></td>
                 <td th:text="${subproject.timeTaken}"></td>
                 <td th:text="${subproject.timeBudget}"></td>

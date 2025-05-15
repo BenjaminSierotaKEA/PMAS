@@ -13,7 +13,7 @@ public class SubProjectDTORowMapper implements RowMapper<SubProjectDTO> {
         dto.setId(rs.getInt("id"));
         dto.setName(rs.getString("name"));
         dto.setDescription(rs.getString("description"));
-        dto.setTimeBudget(rs.getDouble("timeBudget"));
+        dto.setTimeBudget(rs.getInt("timeBudget"));
         dto.setTimeTaken(rs.getDouble("timeTaken"));
         dto.setCompleted(rs.getBoolean("completed"));
         dto.setProjectID(rs.getInt("projectID"));
