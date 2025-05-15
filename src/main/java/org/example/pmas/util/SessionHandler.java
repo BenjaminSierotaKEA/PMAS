@@ -46,6 +46,7 @@ public class SessionHandler {
         var userExists = userService.logIn(email, password);
 
         if (userExists != null) {
+            // Only saves userId, name and roll in session
             User user = new User(userExists.getUserID(), userExists.getName(), userExists.getRole());
             session.setAttribute("user", user);
             session.setMaxInactiveInterval(MAX_SESSION_LENGTH);
