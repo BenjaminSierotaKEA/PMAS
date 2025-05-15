@@ -11,6 +11,7 @@ import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.example.pmas.service.comparators.TaskDeadlineComparator;
 import org.example.pmas.service.comparators.TaskPriorityComparator;
+import org.example.pmas.util.SortTaskList;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -44,7 +45,7 @@ public class TaskService {
     public List<Task> readAll() {
         List<Task> allTask = taskRepository.readAll();
 
-        return sortList(allTask);
+        return SortTaskList.sortList(allTask);
     }
 
     public Task readSelected(int id) {
@@ -80,7 +81,7 @@ public class TaskService {
     public List<Task> getTasksBySubProjectID(int subProjectId) {
         List<Task> taskList = taskRepository.getTasksBySubProjectID(subProjectId);
 
-        return sortList(taskList);
+        return SortTaskList.sortList(taskList);
     }
 
     // This handle the junction table relation
@@ -110,8 +111,8 @@ public class TaskService {
         return result;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.readAll();
+    public List<User> getAllUsersOnProject(int projectId) {
+        return userRepository.getAllOnProject(projectId);
     }
 
     public SubProject getSubProject(int id) {
@@ -122,18 +123,5 @@ public class TaskService {
         return subproject;
     }
 
-    // Sorts the list by deadline and then priority.
-    // If the list is null, return an empty list. No errors
-    private List<Task> sortList(List<Task> taskList) {
-        // If the list is null, return an empty list. No errors
-        if (taskList == null) return Collections.emptyList();
-
-        // Sort the list by deadline and then priority.
-        List<Task> modifiableList = new ArrayList<>(taskList);
-        modifiableList.sort(new TaskDeadlineComparator().reversed()
-                        .thenComparing(new TaskPriorityComparator())
-        );
-        return modifiableList;
-    }
 
 }

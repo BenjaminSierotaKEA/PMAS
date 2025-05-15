@@ -8,9 +8,12 @@ import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
+import org.example.pmas.service.comparators.SubProjectNameComparator;
 import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -61,13 +64,19 @@ public class SubProjectService {
 
     public List<SubProjectDTO> getSubProjectDTOByProjectId(int id) {
         List<SubProjectDTO> subprojects = subprojectRepository.getSubProjectDTOByProjectID(id);
+        if(subprojects == null) return Collections.emptyList();
 
         for(SubProjectDTO s : subprojects) {
             s.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(s.getCompletedTasks(),s.getTotalTasks()));
             s.setCompleted(CompletionStatCalculator.isJobCompleted(s.getCompletedTasks(), s.getTotalTasks()));
         }
 
-        return subprojects;
+        // We sort the list on name
+        // We copy the list, so it's not immutable
+        List<SubProjectDTO> modifiableList = new ArrayList<>(subprojects);
+        modifiableList.sort(new SubProjectNameComparator());
+
+        return modifiableList;
     }
 
     public Project getProjectById(int projectId){

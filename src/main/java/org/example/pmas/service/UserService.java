@@ -10,6 +10,7 @@ import org.example.pmas.repository.Interfaces.IRoleRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.example.pmas.repository.ProjectRepository;
 import org.example.pmas.repository.TaskRepository;
+import org.example.pmas.util.SortTaskList;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,7 @@ public class UserService {
         try {
             User user = userRepository.readSelected(userId);
             List<Task> tasks = taskRepository.findAllByUserId(userId);
+            tasks = SortTaskList.sortList(tasks);
             List<Project> projects = projectRepository.readProjectsOfUser(userId);
 
 
@@ -92,7 +94,7 @@ public class UserService {
             var user = userRepository.getByEmail(email);
 
             // checks if password matches
-            if (user.getPassword().equals(password)) {
+            if (user != null && user.getPassword().equals(password)) {
                 return user;
             } else {
                 return null;
