@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ProjectService {
@@ -36,11 +37,11 @@ public class ProjectService {
         return projectRepository.create(project);
     }
 
-    public void addUsersToProject(int projectID, List<Integer> userIDs){
+    public void addUsersToProject(int projectID, Set<Integer> userIDs){
         projectRepository.addUsersToProject(projectID, userIDs);
     }
 
-    public void removeUsersFromProject(int projectID, List<Integer> userIds){
+    public void removeUsersFromProject(int projectID, Set<Integer> userIds){
         projectRepository.removeUsersFromProject(projectID, userIds);
     }
 

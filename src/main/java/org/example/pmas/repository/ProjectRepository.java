@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class ProjectRepository implements IProjectRepository {
@@ -137,7 +138,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public void addUsersToProject(int projectID,List<Integer> userIDs){
+    public void addUsersToProject(int projectID,Set<Integer> userIDs){
             String sql = "INSERT INTO userprojects(projectid, userid) VALUES (?,?)";
 
             for(Integer i : userIDs){
@@ -147,7 +148,7 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public void removeUsersFromProject(int projectID, List<Integer> userIDs){
+    public void removeUsersFromProject(int projectID, Set<Integer> userIDs){
         //see addUsersToProject for an explanation of what is going on here
 
         String sql = "DELETE FROM userprojects WHERE projectid = ? AND userid = ?";
