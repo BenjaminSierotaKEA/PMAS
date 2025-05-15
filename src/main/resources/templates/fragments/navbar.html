@@ -16,6 +16,15 @@
     </div>
 
     <div class="nav-section">
+    <a th:if="${session.user != null and session.user.role.name == 'Project Manager'}"
+       th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/globalTasks(
+              projectId=${1}, subprojectId=${1})}">
+      TASKS
+    </a>
+    </div>
+
+
+    <div class="nav-section">
       <a th:if="${session.user != null}"
          th:href="@{/{id}/user(id=${session.user.userID})}">USERPAGE</a>
     </div>

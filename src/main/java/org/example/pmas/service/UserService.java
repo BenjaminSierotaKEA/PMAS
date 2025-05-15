@@ -61,11 +61,13 @@ public class UserService {
     public User getUser(int userId) {
         try {
             User user = userRepository.readSelected(userId);
+
+            //Filling out variables for user:
             List<Task> tasks = taskRepository.findAllByUserId(userId);
             List<Project> projects = projectRepository.readProjectsOfUser(userId);
 
 
-
+            //Making sure tasks subprojects foreign key is not empty:
             for(Task task : tasks){
                 if(task.getSubProject() != null){
                     int subprojectID = task.getSubProject().getId();

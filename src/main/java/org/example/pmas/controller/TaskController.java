@@ -39,6 +39,25 @@ public class TaskController {
         return "task-all";
     }
 
+    //Page for ALL tasks in the database
+    @GetMapping("/globalTasks")
+    public String getGlobalTasks(@PathVariable(value = "projectId") int projectId,
+                                 @PathVariable(value = "subprojectId") int subprojectId,
+                                 Model model) {
+
+        boolean loggedIn = sessionHandler.isNotAdmin();
+        if (loggedIn) {
+            // Adds all task to HTML
+            model.addAttribute("tasks", taskService.readAll());
+
+
+        }
+
+        model.addAttribute("allowAccess", loggedIn);
+        return "task-all";
+
+    }
+
     @GetMapping("{id}/edit")
     public String readSelected(@PathVariable(value = "id") int id,
                                @PathVariable(value = "projectId") int projectId,
