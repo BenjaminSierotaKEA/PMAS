@@ -85,7 +85,7 @@
                           method="post"
                           onsubmit="return confirm('Are you sure you want to delete this subproject?');"
                           onclick="event.stopPropagation()">
-                        <button type="submit">Delete</button>
+                        <button th:if="${ProjectManager}" type="submit">Delete</button>
                     </form>
                 </td>
             </tr>
