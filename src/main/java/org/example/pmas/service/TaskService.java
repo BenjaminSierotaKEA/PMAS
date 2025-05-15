@@ -110,8 +110,8 @@ public class TaskService {
         return result;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.readAll();
+    public List<User> getAllUsersOnProject(int projectId) {
+        return userRepository.getAllOnProject(projectId);
     }
 
     public SubProject getSubProject(int id) {
