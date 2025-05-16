@@ -29,7 +29,7 @@ INSERT INTO tasks (name, description, priorityLevel, timeBudget, completed, time
 VALUES ('Create Mockups', 'Create mockup screens for new website design.', 'LOW', 40, false, NULL, '2023-11-17', 1),
        ('Implement Login API', 'Develop authentication endpoints.', 'MEDIUM', 60, false, NULL, '2021-04-05', 2),
        ('Build Profile Screen', 'Create profile page design for app.', 'HIGH', 50, false, NULL, '2024-08-29', 3),
-        ('Create Structure for backend', 'Make packages ready', 'NONE', 30, true, NULL, '2024-08-29', 3);
+        ('Create Structure for backend', 'Make packages ready', 'HIGH', 30, true, NULL, '2024-08-29', 3);
 
 -- Populate userprojects
 INSERT INTO userprojects (projectid, userid)

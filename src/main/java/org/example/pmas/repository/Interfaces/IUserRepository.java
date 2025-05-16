@@ -7,6 +7,7 @@ import java.util.List;
 public interface IUserRepository extends CrudInterface<User> {
 
     User getByEmail(String email);
+    List<User> readAll();
 
     List<User> getAllOnProject(int projectID);
     List<User> getAllNotOnProject(int projectID);

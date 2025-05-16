@@ -1,5 +1,7 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.DeleteObjectException;
+import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.dto.ProjectDTO;
 
 import org.example.pmas.exception.NotFoundException;
@@ -9,13 +11,10 @@ import org.example.pmas.repository.Interfaces.IProjectRepository;
 
 import org.example.pmas.repository.Interfaces.IUserRepository;
 
-import org.example.pmas.service.comparators.ProjectDTODeadlineComparator;
-import org.example.pmas.service.comparators.ProjectDeadlineComparator;
 import org.example.pmas.util.CompletionStatCalculator;
+import org.example.pmas.util.SortList;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -40,26 +39,24 @@ public class ProjectService {
         if(userIDs != null){
             projectRepository.addUsersToProject(projectID, userIDs);
         }
-
     }
 
     public void removeUsersFromProject(int projectID, Set<Integer> userIds){
         if(userIds != null){
             projectRepository.removeUsersFromProject(projectID, userIds);
         }
-
     }
 
     public List<Project> readAll(){
          List<Project> projects = projectRepository.readAll();
 
-         return sortList(projects);
+         return SortList.projectsDeadline(projects);
     }
 
     public Project readSelected(int id){
         Project project = projectRepository.readSelected(id);
         if (project == null) {
-            throw new NotFoundException("Project with id " + id + " does not exist");
+            throw new NotFoundException(id);
         }
 
         return project;
@@ -73,58 +70,34 @@ public class ProjectService {
         return userRepository.getAllNotOnProject(projectID);
     }
 
-    public boolean updateProject(Project newProject){
+    public void updateProject(Project newProject){
         if(!projectRepository.doesProjectExist(newProject.getId()))
-            throw new NotFoundException("Project with id " + newProject.getId() + " does not exist");
+            throw new NotFoundException(newProject.getId());
 
-        return projectRepository.update(newProject);
+        if(!projectRepository.update(newProject))
+            throw new UpdateObjectException(newProject.getId());
     }
 
-    public boolean deleteProject(int id){
+    public void deleteProject(int id){
         if(!projectRepository.doesProjectExist(id))
-            throw new NotFoundException("Project with id " + id + " does not exist");
+            throw new NotFoundException(id);
 
-        return projectRepository.delete(id);
-    }
-
-    public boolean doesProjectExist(int id){
-        return projectRepository.doesProjectExist(id);
+        if(!projectRepository.delete(id))
+            throw new DeleteObjectException(id);
     }
 
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
         // Returns null if no list
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
-        if(projects == null) return Collections.emptyList();
 
         for(ProjectDTO p : projects) {
             p.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(),p.getTotalSubProjects()));
             p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects()));
         }
-
-        // Sort the list by deadline
-        // We copy the list so its not immutable
-        List<ProjectDTO> modifiableList = new ArrayList<>(projects);
-        modifiableList.sort(new ProjectDTODeadlineComparator().reversed());
-        return modifiableList;
+        return SortList.projectsDTODeadline(projects);
     }
 
     public List<User> getAllUsers(){
         return userRepository.readAll();
     }
-
-    // Sorts the list by deadline.
-    // If the list is null, return an empty list. No errors
-    private List<Project> sortList(List<Project> projects){
-        // If the list is null, return an empty list. No errors
-        if(projects == null) return Collections.emptyList();
-
-        // Sort the list by deadline.
-        // We copy the list so its not immutable
-        List<Project> modifiableList = new ArrayList<>(projects);
-        modifiableList.sort(new ProjectDeadlineComparator().reversed());
-
-        return modifiableList;
-    }
-
-
 }
