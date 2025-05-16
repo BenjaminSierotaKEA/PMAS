@@ -76,12 +76,23 @@
 
             <div class="form-group">
                 <label for="priorityLevel">Priority:</label>
-                <select name="priority" id="priorityLevel" th:field="*{priorityLevel}" th:readonly="${!ProjectManager}">
+
+                <!-- Editable select for Project Managers -->
+                <select th:if="${ProjectManager}" th:field="*{priorityLevel}" id="priorityLevel">
                     <option value="">Please choose</option>
-                    <option th:each="priority : ${priorities}" th:value="${priority}"
-                            th:text="${priority.displayName}"></option>
+                    <option th:each="priority : ${priorities}"
+                            th:value="${priority}"
+                            th:text="${priority.displayName}">
+                    </option>
                 </select>
+
+                <!-- Read-only display with hidden input for others -->
+                <div th:unless="${ProjectManager}">
+                    <input type="text" readonly th:value="*{priorityLevel.displayName}" class="readonly-field" />
+                    <input type="hidden" th:field="*{priorityLevel}" />
+                </div>
             </div>
+
 
             <div class="button-container">
                 <button type="submit">Update</button>
