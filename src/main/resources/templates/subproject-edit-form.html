@@ -8,7 +8,7 @@
 </head>
 <body class="index_body page-container">
 
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
 

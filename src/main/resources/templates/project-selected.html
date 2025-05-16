@@ -10,7 +10,7 @@
 
 <body class="page-container font_style">
 
-<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
 
     <h1 th:if="${loggedIn}" th:text="'Hello, ' + ${username} + ', here are the projects you are part of:'" class="profile_title flex-center normalized_padding"></h1>
@@ -58,7 +58,9 @@
                 <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}" method="get" style="display:inline-block">
                     <button type="submit" th:if="${ProjectManager}">Edit</button>
                 </form>
-                <form th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" method="post" style="display:inline-block">
+                <form th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" method="post" style="display:inline-block"
+                      onsubmit="return confirm('Are you sure you want to delete this subproject?');"
+                      onclick="event.stopPropagation()">
                     <input type="hidden" name="id" th:value="${project.id}">
                     <button type="submit" th:if="${ProjectManager}">Delete</button>
                 </form>

@@ -5,8 +5,8 @@ import org.example.pmas.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class SessionHandlerTest {
 
-    @MockBean
+    @MockitoBean
     private UserService userService;
 
     private SessionHandler sessionHandler;
@@ -68,15 +68,7 @@ class SessionHandlerTest {
         assertEquals(1800, session.getMaxInactiveInterval());
     }
 
-//    @Test
-//    void logIn_shouldReturnFalseWhenUserServiceReturnsNull() {
-//        when(userService.logIn("wrong@example.com", "badpass")).thenReturn(null);
-//
-//        boolean result = sessionHandler.logIn("wrong@example.com", "badpass");
-//
-//        assertFalse(result);
-//        assertNull(session.getAttribute("user"));
-//    }
+
 
     @Test
     void logOut_shouldRemoveUserFromSession() {

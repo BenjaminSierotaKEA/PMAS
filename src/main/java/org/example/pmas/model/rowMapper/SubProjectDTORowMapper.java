@@ -1,6 +1,6 @@
 package org.example.pmas.model.rowMapper;
 
-import org.example.pmas.dto.SubProjectDTO;
+import org.example.pmas.model.dto.SubProjectDTO;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

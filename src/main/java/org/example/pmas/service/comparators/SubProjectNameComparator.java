@@ -1,6 +1,6 @@
 package org.example.pmas.service.comparators;
 
-import org.example.pmas.dto.SubProjectDTO;
+import org.example.pmas.model.dto.SubProjectDTO;
 
 import java.util.Comparator;
 

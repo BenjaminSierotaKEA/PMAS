@@ -73,8 +73,8 @@ public class UserController {
     @PostMapping("/{id}/delete")
     public String deleteUser(@PathVariable("id") int id) {
         if (id <= 0) throw new IllegalArgumentException("Id not correct.");
-
         userService.delete(id);
+
         return "redirect:/user-overview";
 
     }

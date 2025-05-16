@@ -38,7 +38,9 @@
     <td th:text="${user.password}">password</td>
     <td th:text="${user.getRole().name}">ADMIN</td>
     <td class="options-column">
-      <form th:action="@{/{id}/delete(id=${user.userID})}" method="post">
+      <form th:action="@{/{id}/delete(id=${user.userID})}" method="post"
+            onsubmit="return confirm('Are you sure you want to delete this user?');"
+            onclick="event.stopPropagation()">
         <button type="submit">Delete</button>
       </form>
 
