@@ -7,10 +7,10 @@ import org.example.pmas.model.Project;
 import org.example.pmas.model.Role;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
+import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.IRoleRepository;
+import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
-import org.example.pmas.repository.ProjectRepository;
-import org.example.pmas.repository.TaskRepository;
 import org.example.pmas.util.SortList;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -22,25 +22,22 @@ public class UserService {
 
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
+    private final ITaskRepository taskRepository;
+    private final IProjectRepository projectRepository;
 
 
-    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, TaskRepository taskRepository, ProjectRepository projectRepository) {
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ITaskRepository taskRepository, IProjectRepository projectRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
     }
 
-    public User createUser(User newUser){
+    public void createUser(User newUser){
         try {
             //checks the return results of the method
             var user = userRepository.create(newUser);
             if (user == null) throw new NotFoundException(newUser.getUserID());
-            //returns the method
-            return userRepository.create(newUser);
-
             //error handling, if failing to reach DB
         }catch (DataAccessException dataAccessException){
             throw new DatabaseException("Database error: could not create new user in database.");

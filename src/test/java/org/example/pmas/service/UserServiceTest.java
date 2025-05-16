@@ -1,8 +1,11 @@
 package org.example.pmas.service;
 
+import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.modelBuilder.MockDataModel;
-import org.example.pmas.repository.UserRepository;
+import org.example.pmas.repository.Interfaces.IProjectRepository;
+import org.example.pmas.repository.Interfaces.ITaskRepository;
+import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,12 +23,14 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Mock
-    private UserRepository userRepository;
-
-
     @InjectMocks
     private UserService userService;
+    @Mock
+    private IUserRepository userRepository;
+    @Mock
+    private ITaskRepository taskRepository;
+    @Mock
+    private IProjectRepository projectRepository;
 
     private List<User> users;
     private User user;
@@ -59,7 +64,11 @@ class UserServiceTest {
     @Test
     void getUser() {
         // Arrange
+        List<Task> task = MockDataModel.tasksWithValues();
         when(userRepository.readSelected(1)).thenReturn(user);
+        when(taskRepository.findAllByUserId(1)).thenReturn(task);
+        when(projectRepository.readProjectsOfUser(1)).thenReturn(any(List.class));
+
 
         // Act
         User result = userService.getUser(1);
