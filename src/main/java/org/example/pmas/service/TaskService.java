@@ -9,9 +9,7 @@ import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
-import org.example.pmas.service.comparators.TaskDeadlineComparator;
-import org.example.pmas.service.comparators.TaskPriorityComparator;
-import org.example.pmas.util.SortTaskList;
+import org.example.pmas.util.SortList;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -45,7 +43,7 @@ public class TaskService {
     public List<Task> readAll() {
         List<Task> allTask = taskRepository.readAll();
 
-        return SortTaskList.sortList(allTask);
+        return SortList.task(allTask);
     }
 
     public Task readSelected(int id) {
@@ -81,7 +79,7 @@ public class TaskService {
     public List<Task> getTasksBySubProjectID(int subProjectId) {
         List<Task> taskList = taskRepository.getTasksBySubProjectID(subProjectId);
 
-        return SortTaskList.sortList(taskList);
+        return SortList.task(taskList);
     }
 
     // This handle the junction table relation

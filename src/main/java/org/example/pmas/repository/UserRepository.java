@@ -1,9 +1,6 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.exception.DatabaseException;
-import org.example.pmas.exception.DeleteObjectException;
-import org.example.pmas.exception.NotFoundException;
-import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.User;
 
 import org.example.pmas.model.rowMapper.UserRowMapper;
@@ -15,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -23,9 +21,8 @@ public class UserRepository implements IUserRepository {
     private final JdbcTemplate jdbcTemplate;
 
 
-
-    public UserRepository(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate=jdbcTemplate;
+    public UserRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
 
     }
 
@@ -40,7 +37,7 @@ public class UserRepository implements IUserRepository {
 
         //updating the DB
         jdbcTemplate.update(connection -> {
-            var ps = connection.prepareStatement(sql, new String[]{"id"}); //id is the generated column
+            var ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, newUser.getName());
             ps.setString(2, newUser.getEmail());
             ps.setString(3, newUser.getPassword());
@@ -50,9 +47,9 @@ public class UserRepository implements IUserRepository {
 
         //checks for a generated key, and if it finds it, sets it to the user we return
         Number key = keyHolder.getKey();
-        if(key != null){
-            newUser.setUserID(key.intValue());
-        }
+        if (key == null) return null;
+
+        newUser.setUserID(key.intValue());
 
         return newUser;
     }
@@ -61,11 +58,11 @@ public class UserRepository implements IUserRepository {
     @Transactional
     public List<User> readAll() throws DatabaseException {
         String sql = """
-        SELECT u.*, r.id as role_id, r.name as role_name
-        FROM users u
-        JOIN roles r ON u.role = r.id
-        """;
-        return jdbcTemplate.query(sql,new UserRowMapper());
+                SELECT u.*, r.id as role_id, r.name as role_name
+                FROM users u
+                JOIN roles r ON u.role = r.id
+                """;
+        return jdbcTemplate.query(sql, new UserRowMapper());
     }
 
 
@@ -96,13 +93,12 @@ public class UserRepository implements IUserRepository {
     }
 
 
-
     @Override
     @Transactional
-    public List<User> getAllNotOnProject(int projectID) throws DataAccessException{
+    public List<User> getAllNotOnProject(int projectID) throws DataAccessException {
         String sql = "SELECT u.*, r.id as role_id, r.name as role_name" +
                 "        FROM users u" +
-                " JOIN roles r ON u.role = r.id"+
+                " JOIN roles r ON u.role = r.id" +
                 " WHERE u.id NOT IN (" +
                 "    SELECT pu.userid" +
                 "    FROM userprojects pu" +
@@ -142,11 +138,11 @@ public class UserRepository implements IUserRepository {
     @Transactional
     public User getByEmail(String email) throws DataAccessException {
         String sql = """
-        SELECT u.*, r.id AS role_id, r.name AS role_name
-        FROM users u
-        JOIN roles r ON u.role = r.id
-        WHERE LOWER(u.email) = LOWER(?)
-    """;
+                    SELECT u.*, r.id AS role_id, r.name AS role_name
+                    FROM users u
+                    JOIN roles r ON u.role = r.id
+                    WHERE LOWER(u.email) = LOWER(?)
+                """;
 
         List<User> users = jdbcTemplate.query(sql, new UserRowMapper(), email);
 
@@ -157,17 +153,17 @@ public class UserRepository implements IUserRepository {
     @Override
     public int getProjectIDOfUsersSubproject(int userID, int subprojectID) throws DataAccessException {
         String sql = """
-        SELECT sp.projectID
-        FROM usertasks ut
-        JOIN tasks t ON ut.taskID = t.id
-        JOIN subprojects sp ON t.subProjectID = sp.id
-        WHERE ut.userID = ? AND sp.id = ?
-        LIMIT 1
-    """;
+                    SELECT sp.projectID
+                    FROM usertasks ut
+                    JOIN tasks t ON ut.taskID = t.id
+                    JOIN subprojects sp ON t.subProjectID = sp.id
+                    WHERE ut.userID = ? AND sp.id = ?
+                    LIMIT 1
+                """;
 
-            Integer result = jdbcTemplate.queryForObject(sql, Integer.class, userID, subprojectID);
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class, userID, subprojectID);
 
-            return result != null ? result : 0;
+        return result != null ? result : 0;
 
     }
 }

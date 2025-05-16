@@ -1,7 +1,6 @@
 package org.example.pmas.service.comparators;
 
 import org.example.pmas.model.Task;
-import org.example.pmas.model.enums.PriorityLevel;
 
 import java.time.LocalDate;
 import java.util.Comparator;

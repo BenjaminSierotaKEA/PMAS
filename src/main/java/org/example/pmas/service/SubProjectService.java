@@ -26,10 +26,6 @@ public class SubProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public List<SubProject> readAll() {
-        return subprojectRepository.readAll();
-    }
-
     public SubProject readSelected(int id) {
         SubProject sub = subprojectRepository.readSelected(id);
         if(sub == null) {

@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SortTaskList {
+public class SortList {
 
 
     // Sorts the list by deadline and then priority.
     // If the list is null, return an empty list. No errors
-    public static List<Task> sortList(List<Task> taskList) {
+    public static List<Task> task(List<Task> taskList) {
         // If the list is null, return an empty list. No errors
         if (taskList == null) return Collections.emptyList();
 

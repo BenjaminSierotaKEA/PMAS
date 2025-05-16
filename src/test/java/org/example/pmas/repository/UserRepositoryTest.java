@@ -2,7 +2,6 @@ package org.example.pmas.repository;
 
 import org.example.pmas.model.Role;
 import org.example.pmas.model.User;
-import org.example.pmas.modelBuilder.MockDataModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -48,8 +48,6 @@ public class TaskController {
         if (loggedIn) {
             // Adds all task to HTML
             model.addAttribute("tasks", taskService.readAll());
-
-
         }
 
         model.addAttribute("allowAccess", loggedIn);
