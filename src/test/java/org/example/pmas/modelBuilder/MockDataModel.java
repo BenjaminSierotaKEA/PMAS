@@ -1,9 +1,6 @@
 package org.example.pmas.modelBuilder;
 
-import org.example.pmas.model.Role;
-import org.example.pmas.model.SubProject;
-import org.example.pmas.model.Task;
-import org.example.pmas.model.User;
+import org.example.pmas.model.*;
 import org.example.pmas.model.enums.PriorityLevel;
 
 import java.time.LocalDate;
@@ -87,6 +84,13 @@ public class MockDataModel {
                 new SubProject(2,"SubProject2", "SubProject2Desc"),
                 new SubProject(3,"SubProject3", "SubProject3Desc")
         );
+    }
+
+    //projects
+
+    public static Project projectWithValues(){
+        Project project =  new Project(1,"Test Project", "A Project used for code testing", 1111, LocalDate.now());
+        return project;
     }
 
 
