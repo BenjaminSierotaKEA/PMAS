@@ -56,7 +56,7 @@ class ProjectControllerTest {
     }
 
     //WIP
-    /*
+
     @Test
     void createProject() throws Exception {
         //Arrange
@@ -77,7 +77,7 @@ class ProjectControllerTest {
         verify(projectService, times(1))
                 .createProject(any(Project.class));
     }
- */
+
     @Test
     void seeAll() {
         //Arrange
