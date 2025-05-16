@@ -1,5 +1,7 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.DeleteObjectException;
+import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.dto.ProjectDTO;
 
 import org.example.pmas.exception.NotFoundException;
@@ -40,14 +42,12 @@ public class ProjectService {
         if(userIDs != null){
             projectRepository.addUsersToProject(projectID, userIDs);
         }
-
     }
 
     public void removeUsersFromProject(int projectID, Set<Integer> userIds){
         if(userIds != null){
             projectRepository.removeUsersFromProject(projectID, userIds);
         }
-
     }
 
     public List<Project> readAll(){
@@ -59,7 +59,7 @@ public class ProjectService {
     public Project readSelected(int id){
         Project project = projectRepository.readSelected(id);
         if (project == null) {
-            throw new NotFoundException("Project with id " + id + " does not exist");
+            throw new NotFoundException(id);
         }
 
         return project;
@@ -73,22 +73,20 @@ public class ProjectService {
         return userRepository.getAllNotOnProject(projectID);
     }
 
-    public boolean updateProject(Project newProject){
+    public void updateProject(Project newProject){
         if(!projectRepository.doesProjectExist(newProject.getId()))
-            throw new NotFoundException("Project with id " + newProject.getId() + " does not exist");
+            throw new NotFoundException(newProject.getId());
 
-        return projectRepository.update(newProject);
+        if(!projectRepository.update(newProject))
+            throw new UpdateObjectException(newProject.getId());
     }
 
-    public boolean deleteProject(int id){
+    public void deleteProject(int id){
         if(!projectRepository.doesProjectExist(id))
-            throw new NotFoundException("Project with id " + id + " does not exist");
+            throw new NotFoundException(id);
 
-        return projectRepository.delete(id);
-    }
-
-    public boolean doesProjectExist(int id){
-        return projectRepository.doesProjectExist(id);
+        if(!projectRepository.delete(id))
+            throw new DeleteObjectException(id);
     }
 
     public List<ProjectDTO> getProjectDTOByUserID(int userID){

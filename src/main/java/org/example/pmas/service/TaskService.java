@@ -30,7 +30,7 @@ public class TaskService {
 
     public void create(Task task, List<Integer> userIDs) {
         if(!subProjectRepository.doesSubProjectExist(task.getSubProject().getId()))
-            throw new NotFoundException("Subproject doesn't exist: " + task.getSubProject().getId());
+            throw new NotFoundException(task.getSubProject().getId());
 
         Task createdTask = taskRepository.create(task);
         if (createdTask == null) throw new NotFoundException(task.getId());
@@ -57,11 +57,11 @@ public class TaskService {
     public void delete(int id) {
         // check if id exist.
         var task = taskRepository.readSelected(id);
-        if (task == null) throw new NotFoundException("Task didnt exist with id: " + id);
+        if (task == null) throw new NotFoundException(id);
 
         // Skal tænkes igennem igen
         if (!taskRepository.delete(id))
-            throw new DeleteObjectException("Id:" + id + " could not be deleted from database.");
+            throw new DeleteObjectException(id);
     }
 
     public void update(Task task, List<Integer> userIDs) {
@@ -70,7 +70,7 @@ public class TaskService {
         if (old == null) throw new NotFoundException(task.getId());
 
         if (!taskRepository.update(task))
-            throw new UpdateObjectException("Id:" + task.getId() + " could not be updated in database.");
+            throw new UpdateObjectException(task.getId());
 
         // Adds users to the junction table if any
         addUserToTask(task.getId(), userIDs);

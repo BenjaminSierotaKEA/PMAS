@@ -1,5 +1,6 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.CreateObjectException;
 import org.example.pmas.model.dto.SubProjectDTO;
 import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
@@ -34,11 +35,13 @@ public class SubProjectService {
         return sub;
     }
 
-    public SubProject create(SubProject subproject) {
+    public void create(SubProject subproject) {
         if(!projectRepository.doesProjectExist(subproject.getProjectID())) {
             throw new NotFoundException(subproject.getProjectID());
         }
-        return subprojectRepository.create(subproject);
+
+        if(subprojectRepository.create(subproject) == null)
+            throw new CreateObjectException(subproject.getId());
     }
 
     public void delete(int id) {
@@ -46,7 +49,7 @@ public class SubProjectService {
             throw new NotFoundException(id);
         }
         if(!subprojectRepository.delete(id))
-            throw new DeleteObjectException("Couldn't delete subproject with id: " + id);
+            throw new DeleteObjectException(id);
     }
 
     public void updateSubProject(SubProject subproject) {
@@ -55,7 +58,7 @@ public class SubProjectService {
         }
 
         if(!subprojectRepository.update(subproject))
-            throw new UpdateObjectException("Couldn't update subproject with id: " + subproject.getId());
+            throw new UpdateObjectException(subproject.getId());
     }
 
     public List<SubProjectDTO> getSubProjectDTOByProjectId(int id) {
@@ -76,7 +79,9 @@ public class SubProjectService {
     }
 
     public Project getProjectById(int projectId){
-        if(!projectRepository.doesProjectExist(projectId)) throw new NotFoundException("Something wrong with project id");
+        if(!projectRepository.doesProjectExist(projectId))
+            throw new NotFoundException(projectId);
+
         return projectRepository.readSelected(projectId);
     }
 }

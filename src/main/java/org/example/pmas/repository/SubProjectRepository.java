@@ -27,13 +27,32 @@ public class SubProjectRepository implements ISubProjectRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //    public List<SubProject> getSubProjectsByProjectID(int projectId) {
+//        String sql = "SELECT * FROM subprojects WHERE projectID = ?";
+//        try {
+//            return jdbcTemplate.query(sql, new SubProjectRowMapper(), projectId);
+//        } catch (DataAccessException e) {
+//            throw new DatabaseException("Database error: couldn't get all task with associated project id: " + projectId, e);
+//        }
+//    }
+
+//    public int getProjectIDBySubProjectID(int subprojectID) {
+//        String sql = "SELECT projectID FROM subprojects WHERE id = ?";
+//        try {
+//            Integer result = jdbcTemplate.queryForObject(sql, new Object[]{subprojectID}, Integer.class);
+//            return result != null ? result : 0;
+//        } catch (DataAccessException e) {
+//            throw new DatabaseException("Database error: " + new NotFoundException(subprojectID));
+//        }
+//    }
+
     @Override
     public List<SubProject> readAll() {
         String sql = "SELECT * from subprojects";
         try {
             return jdbcTemplate.query(sql, new SubProjectRowMapper());
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't get all subprojects", e);
+            throw new DatabaseException(e);
         }
     }
 
@@ -44,15 +63,6 @@ public class SubProjectRepository implements ISubProjectRepository {
             return jdbcTemplate.queryForObject(sql, new SubProjectRowMapper(), id);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("Database error: " + new NotFoundException(id));
-        }
-    }
-
-    public List<SubProject> getSubProjectsByProjectID(int projectId) {
-        String sql = "SELECT * FROM subprojects WHERE projectID = ?";
-        try {
-            return jdbcTemplate.query(sql, new SubProjectRowMapper(), projectId);
-        } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't get all task with associated project id: " + projectId, e);
         }
     }
 
@@ -74,7 +84,7 @@ public class SubProjectRepository implements ISubProjectRepository {
                 return ps;
             }, keyHolder);
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't insert subproject", e);
+            throw new DatabaseException(e);
         }
 
         Number generatedKey = keyHolder.getKey();
@@ -95,7 +105,7 @@ public class SubProjectRepository implements ISubProjectRepository {
             //jdbc returns number of rows affected.
             return rows > 0;
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: " + new NotFoundException(id));
+            throw new DatabaseException("Database error: " + new NotFoundException(id), e);
         }
     }
 
@@ -111,17 +121,7 @@ public class SubProjectRepository implements ISubProjectRepository {
                     subproject.isCompleted(),
                     subproject.getId()) > 0;
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't update subproject with id: " + subproject.getId(), e);
-        }
-    }
-
-    public int getProjectIDBySubProjectID(int subprojectID) {
-        String sql = "SELECT projectID FROM subprojects WHERE id = ?";
-        try {
-            Integer result = jdbcTemplate.queryForObject(sql, new Object[]{subprojectID}, Integer.class);
-            return result != null ? result : 0;
-        } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: " + new NotFoundException(subprojectID));
+            throw new DatabaseException(e);
         }
     }
 
@@ -131,7 +131,7 @@ public class SubProjectRepository implements ISubProjectRepository {
         try {
             return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't check if subproject exists with ID " + id, e);
+            throw new DatabaseException(e);
         }
     }
 
@@ -153,7 +153,7 @@ public class SubProjectRepository implements ISubProjectRepository {
         try {
             return jdbcTemplate.query(sql, new SubProjectDTORowMapper(), projectID);
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't get all subprojects", e);
+            throw new DatabaseException(e);
         }
     }
 }
