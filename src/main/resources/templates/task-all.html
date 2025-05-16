@@ -14,8 +14,8 @@
 <div th:if="${allowAccess}">
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div th:if="${subproject != null}" th:text="${subproject.name}">
-    <h1 class="profile_title flex-center normalized_padding"
+<div th:if="${subproject != null}" th:text="${subproject.name}" class="profile_title flex-center normalized_padding">
+    <h1
         th:text="'Tasks for: ' + ${subproject.name}">
     </h1>
 </div>
@@ -73,14 +73,16 @@
                         <button type="submit">Edit</button>
                     </form>
                 </td>
+                <div th:if="${ProjectManager == true}">
                 <td>
                     <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/delete(
                     projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}"
                           method="post"
                           onsubmit="return confirm('Are you sure you want to delete this task?');">
-                        <button th:if="${ProjectManager}" type="submit">Delete</button>
+                        <button type="submit">Delete</button>
                     </form>
                 </td>
+                </div>
             </tr>
             </tbody>
         </table>
