@@ -39,8 +39,8 @@ public class UserService {
             var user = userRepository.create(newUser);
             if (user == null) throw new NotFoundException(newUser.getUserID());
             //error handling, if failing to reach DB
-        }catch (DataAccessException dataAccessException){
-            throw new DatabaseException("Database error: could not create new user in database.");
+        }catch (DataAccessException e){
+            throw new DatabaseException(e);
         }
 
     }
@@ -48,8 +48,8 @@ public class UserService {
     public List<User> getAll(){
         try{
             return userRepository.readAll();
-        }catch (DataAccessException dataAccessException) {
-            throw new DatabaseException("Database error: could not retrieve users from database.");
+        }catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
     }
 
@@ -61,7 +61,7 @@ public class UserService {
 
             //Filling out variables for user:
             List<Task> tasks = taskRepository.findAllByUserId(userId);
-            tasks = SortList.task(tasks);
+            tasks = SortList.tasksDeadlinePriority(tasks);
             List<Project> projects = projectRepository.readProjectsOfUser(userId);
 
 
@@ -80,8 +80,8 @@ public class UserService {
 
             return user;
 
-        } catch (DataAccessException dataAccessException) {
-            throw new NotFoundException("Database error: could not find user in database.");
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
     }
 
@@ -99,7 +99,7 @@ public class UserService {
             }
 
 
-        } catch (DataAccessException dataAccessException) {
+        } catch (NotFoundException e) {
             throw new NotFoundException("Database error: could not find user in database.");
         }
     }
@@ -110,7 +110,7 @@ public class UserService {
         if(user == null) throw new NotFoundException(id);
 
         if(!userRepository.delete(id))
-            throw new DeleteObjectException("Couldn't delete user with id: " + id);
+            throw new DeleteObjectException(id);
 
     }
 
@@ -123,8 +123,8 @@ public class UserService {
 
         try {
           return userRepository.update(newUser);
-        }catch (DataAccessException | IllegalArgumentException dataAccessException){
-            throw new DatabaseException("Database error: could not update task.");
+        }catch (DataAccessException e){
+            throw new DatabaseException(e);
         }
     }
 
@@ -132,7 +132,7 @@ public class UserService {
         try {
             return userRepository.getByEmail(email);
         }catch (DataAccessException e){
-            throw new NotFoundException("Database error: could not find user.");
+            throw new DatabaseException(e);
         }
     }
 
@@ -140,7 +140,7 @@ public class UserService {
         try {
             return roleRepository.readAll();
         } catch ( DataAccessException e) {
-            throw new DatabaseException("Database error: could not retrieve roles.");
+            throw new DatabaseException(e);
         }
 
     }

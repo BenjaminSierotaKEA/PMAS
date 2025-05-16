@@ -1,5 +1,6 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.CreateObjectException;
 import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.exception.UpdateObjectException;
@@ -30,10 +31,10 @@ public class TaskService {
 
     public void create(Task task, List<Integer> userIDs) {
         if(!subProjectRepository.doesSubProjectExist(task.getSubProject().getId()))
-            throw new NotFoundException("Subproject doesn't exist: " + task.getSubProject().getId());
+            throw new NotFoundException(task.getSubProject().getId());
 
         Task createdTask = taskRepository.create(task);
-        if (createdTask == null) throw new NotFoundException(task.getId());
+        if (createdTask == null) throw new CreateObjectException(task.getId());
 
         // Adds user and task to the junction table if any
         if (userIDs != null)
@@ -43,7 +44,7 @@ public class TaskService {
     public List<Task> readAll() {
         List<Task> allTask = taskRepository.readAll();
 
-        return SortList.task(allTask);
+        return SortList.tasksDeadlinePriority(allTask);
     }
 
     public Task readSelected(int id) {
@@ -57,11 +58,11 @@ public class TaskService {
     public void delete(int id) {
         // check if id exist.
         var task = taskRepository.readSelected(id);
-        if (task == null) throw new NotFoundException("Task didnt exist with id: " + id);
+        if (task == null) throw new NotFoundException(id);
 
         // Skal tænkes igennem igen
         if (!taskRepository.delete(id))
-            throw new DeleteObjectException("Id:" + id + " could not be deleted from database.");
+            throw new DeleteObjectException(id);
     }
 
     public void update(Task task, List<Integer> userIDs) {
@@ -70,7 +71,7 @@ public class TaskService {
         if (old == null) throw new NotFoundException(task.getId());
 
         if (!taskRepository.update(task))
-            throw new UpdateObjectException("Id:" + task.getId() + " could not be updated in database.");
+            throw new UpdateObjectException(task.getId());
 
         // Adds users to the junction table if any
         addUserToTask(task.getId(), userIDs);
@@ -79,7 +80,7 @@ public class TaskService {
     public List<Task> getTasksBySubProjectID(int subProjectId) {
         List<Task> taskList = taskRepository.getTasksBySubProjectID(subProjectId);
 
-        return SortList.task(taskList);
+        return SortList.tasksDeadlinePriority(taskList);
     }
 
     // This handle the junction table relation

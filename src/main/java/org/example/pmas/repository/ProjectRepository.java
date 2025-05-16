@@ -20,8 +20,8 @@ public class ProjectRepository implements IProjectRepository {
     private final JdbcTemplate jdbcTemplate;
 
 
-    public ProjectRepository(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate=jdbcTemplate;
+    public ProjectRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 
@@ -30,11 +30,11 @@ public class ProjectRepository implements IProjectRepository {
         String sql = "INSERT INTO projects(name, description, timeBudget, deadline) VALUES(?,?,?,?)";
         String retrievalSql = "SELECT * FROM projects WHERE name = ?";
         Project returnProject = null;
-        try{
+        try {
             jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getTimeBudget(), project.getDeadline());
             returnProject = jdbcTemplate.query(retrievalSql, new ProjectRowMapper(), project.getName()).get(0);
-        }catch(DataAccessException e){
-            throw new DatabaseException("Couldnt add " + project.getName(), e);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
         return returnProject;
     }
@@ -42,74 +42,73 @@ public class ProjectRepository implements IProjectRepository {
     @Override
     public List<Project> readAll() {
         String sql = "SELECT * FROM projects";
-        try{
+        try {
             return jdbcTemplate.query(sql, new ProjectRowMapper());
-        }catch (DataAccessException e){
-            throw new DatabaseException("Couldnt read all projects", e);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
 
     }
 
     @Override
-    public List<Project> readProjectsOfUser(int userID){
-        String sql ="SELECT p.*\n" +
+    public List<Project> readProjectsOfUser(int userID) {
+        String sql = "SELECT p.*\n" +
                 "FROM projects p\n" +
                 "JOIN userprojects up ON p.id = up.projectid\n" +
                 "WHERE up.userid = ?;";
-        try{
+        try {
             return jdbcTemplate.query(sql, new ProjectRowMapper(), userID);
-        }catch(DataAccessException e){
-            throw new DatabaseException("Couldnt read projects for user id " + userID);
+        } catch (DataAccessException e) {
+            throw new DatabaseException("Database error: Couldn't read projects for user id " + userID, e);
         }
     }
 
     @Override
     public Project readSelected(int id) {
         String sql = "SELECT * FROM projects WHERE projects.id=?";
-        try{
+        try {
             //query returns a list, we get the zeroth item on it to return as a single project
             return jdbcTemplate.query(sql, new ProjectRowMapper(), id).get(0);
-        }catch(DataAccessException e){
-            throw new DatabaseException("couldnt find project where id=" + id, e);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
     }
 
     @Override
     public boolean delete(int id) {
         String sql = "DELETE FROM projects where projects.id = ?";
-        try{
+        try {
             jdbcTemplate.update(sql, id);
             return true;
-        }catch(DataAccessException e){
-            throw new DatabaseException("Could not delete project: ID=" + id, e);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
 
     }
 
     @Override
     public boolean update(Project newProject) {
-
-
         String sql = "UPDATE projects SET name = ?, description = ?, timebudget = ?, deadline = ? WHERE id=?";
-        try{
-            jdbcTemplate.update(sql,
+        try {
+            return jdbcTemplate.update(sql,
                     newProject.getName(),
                     newProject.getDescription(),
                     newProject.getTimeBudget(),
                     newProject.getDeadline(),
-                    newProject.getId());
-        }catch(DataAccessException e){
-            throw new DatabaseException("Could not update project: " + newProject.getName(), e);
+                    newProject.getId()) > 0;
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
-
-
-        return false;
     }
 
     public boolean doesProjectExist(int id) {
         String sql = "SELECT EXISTS (SELECT 1 FROM projects WHERE id = ?)";
         //null safe way to check if result is true. Uses boolean object(true) to compare.
-        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
+        try {
+            return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
+        }
     }
 
     public List<ProjectDTO> getProjectDTOByUserID(int userId) {
@@ -129,7 +128,7 @@ public class ProjectRepository implements IProjectRepository {
                 "WHERE up.userid = ? " +
                 "GROUP BY  p.id, p.name, p.description, p.timeBudget, p.timeTaken, p.completed";
         try {
-            return jdbcTemplate.query(sql, new ProjectDTORowMapper(),userId);
+            return jdbcTemplate.query(sql, new ProjectDTORowMapper(), userId);
         } catch (DataAccessException e) {
             throw new DatabaseException("Database error: Could not get all subprojects with id: " + userId, e);
         }
@@ -137,40 +136,34 @@ public class ProjectRepository implements IProjectRepository {
 
     @Transactional
     @Override
-    public void addUsersToProject(int projectID,Set<Integer> userIDs){
-            String sql = "INSERT INTO userprojects(projectid, userid) VALUES (?,?)";
+    public void addUsersToProject(int projectID, Set<Integer> userIDs) {
+        String sql = "INSERT INTO userprojects(projectid, userid) VALUES (?,?)";
 
-            for(Integer i : userIDs){
-                try{
-                    jdbcTemplate.update(sql, projectID, i);
-                }catch(DataAccessException e){
-                    throw new DatabaseException("Database error: could not insert userid associated with Project.", e);
-                }
+        for (Integer i : userIDs) {
+            try {
+                jdbcTemplate.update(sql, projectID, i);
+            } catch (DataAccessException e) {
+                throw new DatabaseException("Database error: could not insert userid associated with Project.", e);
             }
-
+        }
 
 
     }
 
     @Transactional
     @Override
-    public void removeUsersFromProject(int projectID, Set<Integer> userIDs){
+    public void removeUsersFromProject(int projectID, Set<Integer> userIDs) {
         //see addUsersToProject for an explanation of what is going on here
 
         String sql = "DELETE FROM userprojects WHERE projectid = ? AND userid = ?";
 
 
-        for(Integer i : userIDs){
+        for (Integer i : userIDs) {
             try {
                 jdbcTemplate.update(sql, projectID, i);
-            }catch (DataAccessException e){
-                throw new DatabaseException("Database error: could not remove userID associated with project");
+            } catch (DataAccessException e) {
+                throw new DatabaseException("Database error: could not remove userID associated with project", e);
             }
-
         }
-
-
     }
-
-
 }

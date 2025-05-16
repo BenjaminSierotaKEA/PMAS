@@ -163,6 +163,7 @@ class TaskServiceTest {
     void delete_notvalid_id() {
         // Arrange
         int taskId = 1;
+        String expectedErrorMessage = "Service error: id " + 1 + " does not exist";
         when(taskRepository.readSelected(taskId)).thenReturn(null);
 
         // Act
@@ -175,7 +176,7 @@ class TaskServiceTest {
 
         // Assert
         var result = assertThrows(NotFoundException.class, executable);
-        assertEquals(null, result.getMessage());
+        assertEquals(expectedErrorMessage, result.getMessage());
         verify(taskRepository, times(1)).readSelected(taskId);
         verify(taskRepository, never()).delete(anyInt());
     }
