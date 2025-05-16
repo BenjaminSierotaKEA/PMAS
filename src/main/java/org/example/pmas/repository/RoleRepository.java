@@ -3,7 +3,6 @@ package org.example.pmas.repository;
 import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.Role;
 import org.example.pmas.model.rowMapper.RoleRowMapper;
-import org.example.pmas.repository.Interfaces.CrudInterface;
 import org.example.pmas.repository.Interfaces.IRoleRepository;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
