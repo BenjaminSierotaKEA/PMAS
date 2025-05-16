@@ -1,9 +1,6 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.exception.DatabaseException;
-import org.example.pmas.exception.DeleteObjectException;
-import org.example.pmas.exception.NotFoundException;
-import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.User;
 
 import org.example.pmas.model.rowMapper.UserRowMapper;

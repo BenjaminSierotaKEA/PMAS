@@ -7,13 +7,10 @@ import org.example.pmas.model.rowMapper.ProjectDTORowMapper;
 import org.example.pmas.model.rowMapper.ProjectRowMapper;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 

@@ -2,8 +2,6 @@ package org.example.pmas.service;
 
 import org.example.pmas.model.User;
 import org.example.pmas.modelBuilder.MockDataModel;
-import org.example.pmas.repository.ProjectRepository;
-import org.example.pmas.repository.TaskRepository;
 import org.example.pmas.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,16 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
@@ -30,12 +22,6 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private TaskRepository taskRepository;
-
-    @Mock
-    private ProjectRepository projectRepository;
 
 
     @InjectMocks

@@ -7,7 +7,6 @@ import org.example.pmas.model.User;
 import org.example.pmas.model.enums.PriorityLevel;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 

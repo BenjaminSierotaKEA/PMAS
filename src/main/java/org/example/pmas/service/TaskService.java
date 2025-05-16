@@ -9,8 +9,6 @@ import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
-import org.example.pmas.service.comparators.TaskDeadlineComparator;
-import org.example.pmas.service.comparators.TaskPriorityComparator;
 import org.example.pmas.util.SortTaskList;
 import org.springframework.stereotype.Service;
 
