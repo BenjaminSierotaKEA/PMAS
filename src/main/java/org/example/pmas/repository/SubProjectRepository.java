@@ -1,6 +1,6 @@
 package org.example.pmas.repository;
 
-import org.example.pmas.dto.SubProjectDTO;
+import org.example.pmas.model.dto.SubProjectDTO;
 import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;

@@ -1,7 +1,7 @@
 package org.example.pmas.repository.Interfaces;
 
 
-import org.example.pmas.dto.SubProjectDTO;
+import org.example.pmas.model.dto.SubProjectDTO;
 import org.example.pmas.model.SubProject;
 
 import java.util.List;

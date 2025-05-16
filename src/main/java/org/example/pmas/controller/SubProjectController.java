@@ -1,6 +1,6 @@
 package org.example.pmas.controller;
 
-import org.example.pmas.dto.SubProjectDTO;
+import org.example.pmas.model.dto.SubProjectDTO;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.service.SubProjectService;

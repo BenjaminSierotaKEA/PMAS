@@ -1,14 +1,12 @@
 package org.example.pmas.service;
 
-import org.example.pmas.dto.ProjectDTO;
-import org.example.pmas.dto.SubProjectDTO;
+import org.example.pmas.model.dto.ProjectDTO;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Project;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
-import org.example.pmas.repository.UserRepository;
 import org.example.pmas.service.comparators.ProjectDeadlineComparator;
 import org.example.pmas.util.CompletionStatCalculator;
 import org.springframework.stereotype.Service;
