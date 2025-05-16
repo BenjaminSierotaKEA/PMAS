@@ -88,7 +88,6 @@ public class SubProjectControllerTest {
     void createSubProject_shouldRedirectToProjectList() throws Exception {
         int projetId = 1;
         SubProject newSubProject = new SubProject(4,"SubProject4","SubProject4Desc");
-        when(subprojectService.create(newSubProject)).thenReturn(newSubProject);
         when(sessionHandler.isNotAdmin()).thenReturn(true);
 
         mvc.perform(post("/projects/{projectId}/subprojects/create", projetId)

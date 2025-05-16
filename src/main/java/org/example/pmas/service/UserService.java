@@ -61,7 +61,7 @@ public class UserService {
 
             //Filling out variables for user:
             List<Task> tasks = taskRepository.findAllByUserId(userId);
-            tasks = SortList.task(tasks);
+            tasks = SortList.tasksDeadlinePriority(tasks);
             List<Project> projects = projectRepository.readProjectsOfUser(userId);
 
 

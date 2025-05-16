@@ -54,10 +54,7 @@ public class SubProjectServiceTest {
         when(projectRepository.doesProjectExist(1)).thenReturn(true);
         when(subprojectRepository.create(test)).thenReturn(test);
 
-        SubProject result = subprojectService.create(test);
-
-        assertNotNull(result);
-        assertEquals(test, result);
+        subprojectService.create(test);
 
         verify(subprojectRepository).create(test);
     }

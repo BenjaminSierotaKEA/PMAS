@@ -79,20 +79,14 @@
             <div class="button-container">
                 <button type="submit">Update</button>
 
-                <a th:if="${session.user.role.name == 'Employee'}"
-                   >
+                <a th:if="${session.user.role.name == 'Employee'}">
                     <button type="button" onclick="history.back()">Back</button>
                 </a>
 
-                <!-- th:href="@{/{id}/user(id=${session.user.userID})}" -->
 
-                <a th:unless="${session.user.role.name == 'Employee'}"
-                   >
+                <a th:unless="${session.user.role.name == 'Employee'}">
                     <button type="button"  onclick="history.back()">Back</button>
                 </a>
-                <!-- th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
-                    projectId=${projectId}, subprojectId=${subprojectId})}"  -->
-
             </div>
 
         </form>

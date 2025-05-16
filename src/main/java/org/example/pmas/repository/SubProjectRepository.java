@@ -46,7 +46,6 @@ public class SubProjectRepository implements ISubProjectRepository {
 //        }
 //    }
 
-    @Override
     public List<SubProject> readAll() {
         String sql = "SELECT * from subprojects";
         try {

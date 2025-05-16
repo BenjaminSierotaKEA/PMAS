@@ -11,13 +11,10 @@ import org.example.pmas.repository.Interfaces.IProjectRepository;
 
 import org.example.pmas.repository.Interfaces.IUserRepository;
 
-import org.example.pmas.service.comparators.ProjectDTODeadlineComparator;
-import org.example.pmas.service.comparators.ProjectDeadlineComparator;
 import org.example.pmas.util.CompletionStatCalculator;
+import org.example.pmas.util.SortList;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -53,7 +50,7 @@ public class ProjectService {
     public List<Project> readAll(){
          List<Project> projects = projectRepository.readAll();
 
-         return sortList(projects);
+         return SortList.projectsDeadline(projects);
     }
 
     public Project readSelected(int id){
@@ -92,37 +89,15 @@ public class ProjectService {
     public List<ProjectDTO> getProjectDTOByUserID(int userID){
         // Returns null if no list
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
-        if(projects == null) return Collections.emptyList();
 
         for(ProjectDTO p : projects) {
             p.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(),p.getTotalSubProjects()));
             p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects()));
         }
-
-        // Sort the list by deadline
-        // We copy the list so its not immutable
-        List<ProjectDTO> modifiableList = new ArrayList<>(projects);
-        modifiableList.sort(new ProjectDTODeadlineComparator().reversed());
-        return modifiableList;
+        return SortList.projectsDTODeadline(projects);
     }
 
     public List<User> getAllUsers(){
         return userRepository.readAll();
     }
-
-    // Sorts the list by deadline.
-    // If the list is null, return an empty list. No errors
-    private List<Project> sortList(List<Project> projects){
-        // If the list is null, return an empty list. No errors
-        if(projects == null) return Collections.emptyList();
-
-        // Sort the list by deadline.
-        // We copy the list so its not immutable
-        List<Project> modifiableList = new ArrayList<>(projects);
-        modifiableList.sort(new ProjectDeadlineComparator().reversed());
-
-        return modifiableList;
-    }
-
-
 }

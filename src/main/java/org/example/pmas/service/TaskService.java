@@ -1,5 +1,6 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.CreateObjectException;
 import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.exception.UpdateObjectException;
@@ -33,7 +34,7 @@ public class TaskService {
             throw new NotFoundException(task.getSubProject().getId());
 
         Task createdTask = taskRepository.create(task);
-        if (createdTask == null) throw new NotFoundException(task.getId());
+        if (createdTask == null) throw new CreateObjectException(task.getId());
 
         // Adds user and task to the junction table if any
         if (userIDs != null)
@@ -43,7 +44,7 @@ public class TaskService {
     public List<Task> readAll() {
         List<Task> allTask = taskRepository.readAll();
 
-        return SortList.task(allTask);
+        return SortList.tasksDeadlinePriority(allTask);
     }
 
     public Task readSelected(int id) {
@@ -79,7 +80,7 @@ public class TaskService {
     public List<Task> getTasksBySubProjectID(int subProjectId) {
         List<Task> taskList = taskRepository.getTasksBySubProjectID(subProjectId);
 
-        return SortList.task(taskList);
+        return SortList.tasksDeadlinePriority(taskList);
     }
 
     // This handle the junction table relation
