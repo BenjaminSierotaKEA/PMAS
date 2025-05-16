@@ -25,7 +25,6 @@ public class ProjectController {
         this.sessionHandler = sessionHandler;
     }
 
-    //TODO: add session stuff
     @GetMapping("/new")
     public String getCreateProjectForm(Model model) {
         Project project = new Project();
@@ -86,26 +85,24 @@ public class ProjectController {
     public String updateForm(@PathVariable int projectId, Model model) {
         if(projectId <= 0) throw new IllegalArgumentException("Something wrong with id: " + projectId);
 
-        if(!projectService.doesProjectExist(projectId)){
-            return "errorpage";
-        }else{
+        Project project;
 
-            Project project = projectService.readSelected(projectId);
+        boolean allowAccess = sessionHandler.isUserProjectManager();
+        //getting a list of users if we are allowed access:
+        List<User> usersOnProject = new ArrayList<>();
+        List<User> usersNotOnProject = new ArrayList<>();
+        if(allowAccess) {
+            project = projectService.readSelected(projectId);
             model.addAttribute("project", project);
-            boolean allowAccess = sessionHandler.isUserProjectManager();
-            //getting a list of users if we are allowed access:
-            List<User> usersOnProject = new ArrayList<>();
-            List<User> usersNotOnProject = new ArrayList<>();
-            if(allowAccess){
-                usersOnProject = projectService.getAllUsersOnProject(projectId);
-                usersNotOnProject = projectService.getAllUsersNotOnProject(projectId);
-            }
+            usersOnProject = projectService.getAllUsersOnProject(projectId);
+            usersNotOnProject = projectService.getAllUsersNotOnProject(projectId);
 
-            model.addAttribute("allowAccess",allowAccess);
-            model.addAttribute("usersOnProject", usersOnProject);
-            model.addAttribute("usersNotOnProject", usersNotOnProject);
-            return "project-update-form";
         }
+
+        model.addAttribute("allowAccess",allowAccess);
+        model.addAttribute("usersOnProject", usersOnProject);
+        model.addAttribute("usersNotOnProject", usersNotOnProject);
+        return "project-update-form";
     }
 
     @PostMapping("update")
