@@ -16,6 +16,13 @@ public class SubProjectDTO {
     public SubProjectDTO() {
     }
 
+    public SubProjectDTO(int id, String name, String description, int projectID) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.projectID = projectID;
+    }
+
     public int getId() {
         return id;
     }

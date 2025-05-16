@@ -35,17 +35,24 @@
                           required></textarea>
             </div>
 
-            <fieldset class="checkbox-group" th:if="${ProjectManager}">
+            <fieldset class="checkbox-group">
                 <legend>Pick users:</legend>
                 <div th:each="user : ${users}" class="user-checkbox-wrapper">
                     <label class="user-checkbox">
                         <input type="checkbox" name="userIds"
                                th:checked="${task.users != null and task.users.contains(user)}"
-                               th:value="${user.userID}"/>
+                               th:value="${user.userID}"
+                               th:disabled="${session.user != null and session.user.role.name != 'Project Manager'}" />
                         <span th:text="${user.name}"></span>
                     </label>
+
+                    <!-- Hidden input for regular users to submit checked users despite disabled checkboxes -->
+                    <input type="hidden" name="userIds"
+                           th:if="${session.user != null and session.user.role.name != 'Project Manager' and task.users.contains(user)}"
+                           th:value="${user.userID}" />
                 </div>
             </fieldset>
+
 
             <fieldset class="radio-group" >
                 <legend>Assignment status</legend>
@@ -69,7 +76,7 @@
 
             <div class="form-group">
                 <label for="priorityLevel">Priority:</label>
-                <select name="priority" id="priorityLevel" th:field="*{priorityLevel}" th:disabled="${!ProjectManager}">
+                <select name="priority" id="priorityLevel" th:field="*{priorityLevel}" th:readonly="${!ProjectManager}">
                     <option value="">Please choose</option>
                     <option th:each="priority : ${priorities}" th:value="${priority}"
                             th:text="${priority.displayName}"></option>
@@ -79,10 +86,10 @@
             <div class="button-container">
                 <button type="submit">Update</button>
 
-                <a th:if="${session.user.role.name == 'Employee'}"
-                   >
-                    <button type="button" onclick="history.back()">Back</button>
-                </a>
+<!--                <a th:if="${session.user.role.name == 'Employee'}"-->
+<!--                   >-->
+<!--                    <button type="button" onclick="history.back()">Back</button>-->
+<!--                </a>-->
 
                 <!-- th:href="@{/{id}/user(id=${session.user.userID})}" -->
 
