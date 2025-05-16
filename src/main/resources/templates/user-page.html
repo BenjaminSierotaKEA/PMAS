@@ -22,12 +22,17 @@
 </div>
 
 
-<div th:if="${user.tasks == null or user.tasks.isEmpty()}">
-    <p>No tasks currently waiting for you!</p>
-</div>
+
 
 <div class="dashboard-wrapper flex-grow">
     <div class="dashboard-left dark_frame normalized_padding ">
+
+        <div class="flex-center profile_title">
+            <div th:if="${user.tasks == null or user.tasks.isEmpty()}">
+                <p>No tasks currently waiting for you!</p>
+            </div>
+        </div>
+
         <div th:if="${user.tasks != null and !user.tasks.isEmpty()}">
            <div>
                 <h2 class="profile_title">Your Tasks</h2>

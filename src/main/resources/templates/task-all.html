@@ -14,8 +14,8 @@
 <div th:if="${allowAccess}">
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<div th:if="${subproject != null}" th:text="${subproject.name}">
-    <h1 class="profile_title flex-center normalized_padding"
+<div th:if="${subproject != null}" th:text="${subproject.name}" class="profile_title flex-center normalized_padding">
+    <h1
         th:text="'Tasks for: ' + ${subproject.name}">
     </h1>
 </div>
