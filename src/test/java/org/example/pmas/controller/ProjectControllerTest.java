@@ -56,6 +56,7 @@ class ProjectControllerTest {
     }
 
     //WIP
+    /*
     @Test
     void createProject() throws Exception {
         //Arrange
@@ -63,12 +64,20 @@ class ProjectControllerTest {
         when(sessionHandler.isUserProjectManager()).thenReturn(true);
 
         //Act
-        mvc.perform(post("projects/create", 1,1)
+        mvc.perform(post("/projects/create", 1,1)
                 .param("id", String.valueOf(1))
-                .param("name", project.getName()).param("description", project.getDescription()));
+                .param("name", project.getName())
+                .param("description", project.getDescription())
+                .param("timeBudget", String.valueOf(project.getTimeBudget()))
+                .param("deadline", String.valueOf(project.getDeadline())))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/projects/my-projects"));
         //Assert
+        verify(sessionHandler, times(1)).isNotAdmin();
+        verify(projectService, times(1))
+                .createProject(any(Project.class));
     }
-
+ */
     @Test
     void seeAll() {
         //Arrange
