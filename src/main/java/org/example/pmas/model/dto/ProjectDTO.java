@@ -1,6 +1,6 @@
 package org.example.pmas.model.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class ProjectDTO {
     private int id;
@@ -9,13 +9,13 @@ public class ProjectDTO {
     private double timeBudget;
     private double timeTaken;
     private boolean completed;
-    private Date deadline;
+    private LocalDate deadline;
 
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 

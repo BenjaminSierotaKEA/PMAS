@@ -33,7 +33,7 @@ public class SubProjectController {
             List<SubProjectDTO> subprojects = subProjectService.getSubProjectDTOByProjectId(projectId);
             model.addAttribute("subprojects", subprojects);
         }
-
+        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "subprojects-all";
     }
@@ -105,7 +105,7 @@ public class SubProjectController {
             SubProject subproject = subProjectService.readSelected(subprojectId);
             model.addAttribute("subproject", subproject);
         }
-
+        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "subproject-edit-form";
     }

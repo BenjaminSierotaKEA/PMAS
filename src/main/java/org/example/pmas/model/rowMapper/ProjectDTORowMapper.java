@@ -16,7 +16,7 @@ public class ProjectDTORowMapper implements RowMapper<ProjectDTO> {
         dto.setTimeBudget(rs.getDouble("timeBudget"));
         dto.setTimeTaken(rs.getDouble("timeTaken"));
         dto.setCompleted(rs.getBoolean("completed"));
-        dto.setDeadline(rs.getDate("deadline"));
+        dto.setDeadline(rs.getDate("deadline").toLocalDate());
         dto.setTotalSubProjects(rs.getInt("totalSubProjects"));
         dto.setCompletedSubProjects(rs.getInt("completedSubProjects"));
         return dto;

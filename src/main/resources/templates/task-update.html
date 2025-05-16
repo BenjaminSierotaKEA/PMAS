@@ -16,7 +16,7 @@
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <div class="normalized_padding">
-        <h3 th:text="'Opdater: ' + ${task.name}" class="profile_title flex-center"></h3>
+        <h3 th:text="'Update Task: ' + ${task.name}" class="profile_title flex-center"></h3>
 
         <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/update(
                     projectId=${projectId}, subprojectId=${subprojectId})}"
@@ -25,17 +25,17 @@
             <input type="hidden" name="id" th:field="*{id}"/>
 
             <div class="form-group">
-                <label for="name">Navn:</label>
-                <input type="text" id="name" name="name" th:field="*{name}" required/>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" th:field="*{name}" th:readonly="${!ProjectManager}" required/>
             </div>
 
             <div class="form-group">
-                <label for="description">Beskrivelse:</label>
-                <textarea id="description" name="description" rows="4" th:field="*{description}" class="text-field"
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" th:field="*{description}" th:readonly="${!ProjectManager}"class="text-field"
                           required></textarea>
             </div>
 
-            <fieldset class="checkbox-group">
+            <fieldset class="checkbox-group" th:if="${ProjectManager}">
                 <legend>Pick users:</legend>
                 <div th:each="user : ${users}" class="user-checkbox-wrapper">
                     <label class="user-checkbox">
@@ -47,9 +47,9 @@
                 </div>
             </fieldset>
 
-            <fieldset class="radio-group">
+            <fieldset class="radio-group" >
                 <legend>Assignment status</legend>
-                <label for="yes">Færdig</label>
+                <label for="yes">Done</label>
                 <input type="radio" id="yes" name="completed" th:field="*{completed}" value="true"/>
 
                 <label for="no">Not done</label>
@@ -59,22 +59,17 @@
             <div class="form-group">
                 <label for="timeBudget">Time budget:</label>
                 <input type="number" id="timeBudget" name="timeBudget" step="0.1" min="0.1" th:field="*{timeBudget}"
-                       required/>
-            </div>
-
-            <div class="form-group">
-                <label for="timeTaken">Time used:</label>
-                <input type="number" id="timeTaken" name="timeTaken" step="0.1" th:field="*{timeTaken}"/>
+                       th:readonly="${!ProjectManager}" required/>
             </div>
 
             <div class="form-group">
                 <label for="deadline">Deadline:</label>
-                <input type="date" id="deadline" name="deadline" th:field="*{deadline}" required/>
+                <input type="date" id="deadline" name="deadline" th:field="*{deadline}" th:readonly="${!ProjectManager}"required/>
             </div>
 
             <div class="form-group">
                 <label for="priorityLevel">Priority:</label>
-                <select name="priority" id="priorityLevel" th:field="*{priorityLevel}">
+                <select name="priority" id="priorityLevel" th:field="*{priorityLevel}" th:disabled="${!ProjectManager}">
                     <option value="">Please choose</option>
                     <option th:each="priority : ${priorities}" th:value="${priority}"
                             th:text="${priority.displayName}"></option>
@@ -82,7 +77,7 @@
             </div>
 
             <div class="button-container">
-                <button type="submit">Opdater</button>
+                <button type="submit">Update</button>
 
                 <a th:if="${session.user.role.name == 'Employee'}"
                    >

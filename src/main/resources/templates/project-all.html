@@ -22,7 +22,7 @@
 
     <div class="flex-row flex-center normalized_padding">
         <form th:action="@{/projects/new}" method="get" style="margin-right: 1rem;">
-            <button type="submit">Create Project</button>
+            <button th:if="${ProjectManager}" type="submit">Create Project</button>
         </form>
     </div>
 
@@ -49,7 +49,7 @@
                 <td>
                     <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}"
                           method="get" onclick="event.stopPropagation()">
-                        <button type="submit">Edit</button>
+                        <button th:if="${ProjectManager}" type="submit">Edit</button>
                     </form>
                 </td>
 
@@ -58,7 +58,7 @@
                           th:action="@{/projects/{projectId}/delete(projectId=${project.id})}"
                           onsubmit="return confirm('Are you sure you want to delete this project?');"
                           onclick="event.stopPropagation()">
-                        <button type="submit">Delete</button>
+                        <button th:if="${ProjectManager}" type="submit">Delete</button>
                     </form>
                 </td>
             </tr>
