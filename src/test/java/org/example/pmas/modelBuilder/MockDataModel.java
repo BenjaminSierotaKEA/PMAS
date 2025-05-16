@@ -7,6 +7,7 @@ import org.example.pmas.model.Role;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
+import org.example.pmas.model.*;
 import org.example.pmas.model.enums.PriorityLevel;
 
 import java.time.LocalDate;
