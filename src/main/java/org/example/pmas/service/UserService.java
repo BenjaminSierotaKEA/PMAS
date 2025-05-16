@@ -1,5 +1,6 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.Project;
@@ -43,7 +44,7 @@ public class UserService {
 
             //error handling, if failing to reach DB
         }catch (DataAccessException dataAccessException){
-            return null;
+            throw new DatabaseException("Database error: could not create new user in database.");
         }
 
     }
@@ -52,7 +53,7 @@ public class UserService {
         try{
             return userRepository.readAll();
         }catch (DataAccessException dataAccessException) {
-            return null;
+            throw new DatabaseException("Database error: could not retrieve users from database.");
         }
     }
 
@@ -83,7 +84,7 @@ public class UserService {
             return user;
 
         } catch (DataAccessException dataAccessException) {
-            return null;
+            throw new NotFoundException("Database error: could not find user in database.");
         }
     }
 
@@ -102,7 +103,7 @@ public class UserService {
 
 
         } catch (DataAccessException dataAccessException) {
-            return null;
+            throw new NotFoundException("Database error: could not find user in database.");
         }
     }
 
@@ -126,17 +127,24 @@ public class UserService {
         try {
           return userRepository.update(newUser);
         }catch (DataAccessException | IllegalArgumentException dataAccessException){
-            dataAccessException.getMessage();
+            throw new DatabaseException("Database error: could not update task.");
         }
-        return false;
     }
 
     public User checkEmail(String email) {
-        return userRepository.getByEmail(email);
+        try {
+            return userRepository.getByEmail(email);
+        }catch (DataAccessException e){
+            throw new NotFoundException("Database error: could not find user.");
+        }
     }
 
     public List<Role> getAllRoles(){
-        return roleRepository.readAll();
+        try {
+            return roleRepository.readAll();
+        } catch ( DataAccessException e) {
+            throw new DatabaseException("Database error: could not retrieve roles.");
+        }
 
     }
 
