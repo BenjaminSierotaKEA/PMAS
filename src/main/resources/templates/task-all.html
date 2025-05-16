@@ -73,7 +73,7 @@
                         <button type="submit">Edit</button>
                     </form>
                 </td>
-                <div th:if="${session.user.role.name == 'Project Manager'}">
+                <div th:if="${ProjectManager == true}">
                 <td>
                     <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/{taskId}/delete(
                     projectId=${projectId}, subprojectId=${subprojectId}, taskId=${task.id})}"
