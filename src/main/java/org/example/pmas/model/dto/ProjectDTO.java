@@ -1,4 +1,4 @@
-package org.example.pmas.dto;
+package org.example.pmas.model.dto;
 
 import java.time.LocalDate;
 

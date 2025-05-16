@@ -12,11 +12,14 @@
 <body class="page-container font_style">
 <h1 th:unless="${allowAccess}">Access Denied! Wrong user</h1>
 <div th:if="${allowAccess}">
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
+<div th:if="${subproject != null}" th:text="${subproject.name}">
     <h1 class="profile_title flex-center normalized_padding"
         th:text="'Tasks for: ' + ${subproject.name}">
     </h1>
+</div>
+
     <div class="flex-row flex-center normalized_padding">
         <form th:action="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/new(projectId=${projectId}, subprojectId=${subprojectId})}"
               method="get" style="margin-right: 1rem;">

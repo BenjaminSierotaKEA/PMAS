@@ -1,6 +1,9 @@
 package org.example.pmas.repository;
 
 import org.example.pmas.exception.DatabaseException;
+import org.example.pmas.exception.DeleteObjectException;
+import org.example.pmas.exception.NotFoundException;
+import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.User;
 
 import org.example.pmas.model.rowMapper.UserRowMapper;
@@ -65,7 +68,9 @@ public class UserRepository implements IUserRepository {
         return jdbcTemplate.query(sql,new UserRowMapper());
     }
 
+
     @Override
+    @Transactional
     public User readSelected(int id) throws DatabaseException {
         String sql = """
                     SELECT u.id, u.name, u.email, u.password, u.picture, 
@@ -78,8 +83,9 @@ public class UserRepository implements IUserRepository {
         return jdbcTemplate.queryForObject(sql, new UserRowMapper(), id);
     }
 
+    @Transactional
     @Override
-    public List<User> getAllOnProject(int projectID){
+    public List<User> getAllOnProject(int projectID) throws DataAccessException {
         String sql = "SELECT u.*, r.id as role_id, r.name as role_name" +
                 "        FROM users u" +
                 "        JOIN roles r ON u.role = r.id" +
@@ -89,8 +95,11 @@ public class UserRepository implements IUserRepository {
         return jdbcTemplate.query(sql, new UserRowMapper(), projectID);
     }
 
+
+
     @Override
-    public List<User> getAllNotOnProject(int projectID){
+    @Transactional
+    public List<User> getAllNotOnProject(int projectID) throws DataAccessException{
         String sql = "SELECT u.*, r.id as role_id, r.name as role_name" +
                 "        FROM users u" +
                 " JOIN roles r ON u.role = r.id"+
@@ -104,15 +113,16 @@ public class UserRepository implements IUserRepository {
         return jdbcTemplate.query(sql, new UserRowMapper(), projectID);
     }
 
+    @Transactional
     @Override
-    public boolean delete(int id) {
+    public boolean delete(int id) throws DataAccessException {
         String sql = "DELETE FROM users WHERE id = ?";
         return jdbcTemplate.update(sql, id) > 0;
     }
 
     @Override
     @Transactional
-    public boolean update(User newUser) throws DatabaseException {
+    public boolean update(User newUser) throws DataAccessException {
 
         String sql = "UPDATE users SET name = ?, email = ?, password = ?, role = ? WHERE id = ?";
 
@@ -145,7 +155,7 @@ public class UserRepository implements IUserRepository {
 
     @Transactional
     @Override
-    public int getProjectIDOfUsersSubproject(int userID, int subprojectID) {
+    public int getProjectIDOfUsersSubproject(int userID, int subprojectID) throws DataAccessException {
         String sql = """
         SELECT sp.projectID
         FROM usertasks ut

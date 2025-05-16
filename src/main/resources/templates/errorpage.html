@@ -8,6 +8,6 @@ xmlns:th="http://www.thymeleaf.org">
 <body>
 <h1>An error occurred.</h1>
 <p th:text="${message}"></p>
-<a th:href="@{/projects/all}">Go back</a>
+<a><button type="button"  onclick="history.back()">Back</button></a>
 </body>
 </html>

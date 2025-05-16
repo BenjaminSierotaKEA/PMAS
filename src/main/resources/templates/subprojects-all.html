@@ -14,7 +14,7 @@
 
 <div th:if="${allowAccess}">
     <div>
-        <div th:replace="fragments/navbar :: navbar"></div>
+        <div th:replace="~{fragments/navbar :: navbar}"></div>
     </div>
 
     <h1 class="profile_title flex-center normalized_padding"

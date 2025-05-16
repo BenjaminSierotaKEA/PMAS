@@ -1,6 +1,6 @@
 package org.example.pmas.service.comparators;
 
-import org.example.pmas.dto.ProjectDTO;
+import org.example.pmas.model.dto.ProjectDTO;
 
 import java.time.LocalDate;
 import java.util.Comparator;
