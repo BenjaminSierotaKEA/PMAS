@@ -36,19 +36,6 @@ public class SubProjectServiceTest {
     }
 
     @Test
-    void getAllSubProjects() {
-        when(subprojectRepository.readAll()).thenReturn(subprojects);
-
-        List<SubProject> actualSubProjects = subprojectService.readAll();
-
-        assertNotNull(actualSubProjects);
-        assertEquals(subprojects, actualSubProjects);
-        assertEquals(actualSubProjects.size(), subprojects.size());
-
-        verify(subprojectRepository).readAll();
-    }
-
-    @Test
     void getSubProject() {
         when(subprojectRepository.readSelected(1)).thenReturn(subprojects.getFirst());
 

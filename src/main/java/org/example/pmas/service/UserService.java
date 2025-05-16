@@ -11,7 +11,7 @@ import org.example.pmas.repository.Interfaces.IRoleRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.example.pmas.repository.ProjectRepository;
 import org.example.pmas.repository.TaskRepository;
-import org.example.pmas.util.SortTaskList;
+import org.example.pmas.util.SortList;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +64,7 @@ public class UserService {
 
             //Filling out variables for user:
             List<Task> tasks = taskRepository.findAllByUserId(userId);
-            tasks = SortTaskList.sortList(tasks);
+            tasks = SortList.task(tasks);
             List<Project> projects = projectRepository.readProjectsOfUser(userId);
 
 

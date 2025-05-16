@@ -56,12 +56,6 @@ public class ProjectService {
          return sortList(projects);
     }
 
-    public List<Project> readProjectsOfUser(int userID){
-        List<Project> projects = projectRepository.readProjectsOfUser(userID);
-
-        return sortList(projects);
-    }
-
     public Project readSelected(int id){
         Project project = projectRepository.readSelected(id);
         if (project == null) {
