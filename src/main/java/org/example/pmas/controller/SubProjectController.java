@@ -29,10 +29,11 @@ public class SubProjectController {
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
             validateId(projectId);
-            model.addAttribute("project", subProjectService.getProjectById(projectId));
+
             List<SubProjectDTO> subprojects = subProjectService.getSubProjectDTOByProjectId(projectId);
             model.addAttribute("subprojects", subprojects);
         }
+        model.addAttribute("project", subProjectService.getProjectById(projectId));
         model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "subprojects-all";

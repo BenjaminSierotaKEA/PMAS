@@ -1,5 +1,8 @@
 package org.example.pmas.modelBuilder;
 
+import org.example.pmas.model.*;
+import org.example.pmas.model.*;
+import org.example.pmas.model.dto.SubProjectDTO;
 import org.example.pmas.model.Role;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
@@ -88,6 +91,24 @@ public class MockDataModel {
                 new SubProject(2,"SubProject2", "SubProject2Desc"),
                 new SubProject(3,"SubProject3", "SubProject3Desc")
         );
+    }
+
+
+    public static List<SubProjectDTO> subprojectsDTOWithValues() {
+        return List.of(
+                new SubProjectDTO(1, "UI Overhaul", "Update the UI/UX of the website.", 1),
+                new SubProjectDTO(2, "Backend API", "Develop new APIs for the app.", 2)
+        );
+    }
+
+    public static Project projectWithValues() {
+        Project p = new Project();
+        p.setId(2);
+        p.setName("Mobile App");
+        p.setDescription("Developing the new company mobile app.");
+        p.setTimeBudget(800);
+        p.setDeadline(LocalDate.of(2022, 3, 9));
+        return p;
     }
 
 

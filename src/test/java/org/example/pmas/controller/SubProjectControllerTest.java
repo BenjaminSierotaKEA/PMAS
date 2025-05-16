@@ -1,7 +1,10 @@
 package org.example.pmas.controller;
 
 import org.example.pmas.model.Project;
+import org.example.pmas.model.Role;
 import org.example.pmas.model.SubProject;
+import org.example.pmas.model.User;
+import org.example.pmas.model.dto.SubProjectDTO;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.service.SubProjectService;
 import org.example.pmas.util.SessionHandler;
@@ -9,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SubProjectControllerTest {
 
     private List<SubProject> subprojects;
+    private List<SubProjectDTO> subprojectsDTO;
+    private Project project;
 
     @Autowired
     private MockMvc mvc;
@@ -36,19 +42,35 @@ public class SubProjectControllerTest {
     @BeforeEach
     void setUp() {
         subprojects = MockDataModel.subprojectsWithValues();
+        subprojectsDTO = MockDataModel.subprojectsDTOWithValues();
+        project = MockDataModel.projectWithValues();
+        when(sessionHandler.isNotAdmin()).thenReturn(true);
+        when(sessionHandler.isUserProjectManager()).thenReturn(true);
     }
 
-//    @Test
-//    void shouldReturnAllSubProjects() throws Exception {
-//        when(subprojectService.getSubProjectDTOByProjectId(2)).thenReturn(subprojects);
-//
-//        mvc.perform(get("/projects/2/subprojects/all"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("subprojects-all"))
-//                .andExpect(model().attributeExists("subprojects"));
-//
-//        verify(subprojectService).getSubProjectDTOByProjectId(2);
-//    }
+    @Test
+    void shouldReturnAllSubProjects() throws Exception {
+        User user = new User();
+        Role role = new Role();
+        role.setName("Employee");
+        user.setRole(role);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("user", user);
+        when(subprojectService.getSubProjectDTOByProjectId(2)).thenReturn(subprojectsDTO);
+        when(subprojectService.getProjectById(2)).thenReturn(project);
+        when(sessionHandler.isNotAdmin()).thenReturn(true);
+
+        mvc.perform(get("/projects/2/subprojects/all").session(session))
+                .andExpect(status().isOk())
+                .andExpect(view().name("subprojects-all"))
+                .andExpect(model().attributeExists("subprojects"))
+                .andExpect(model().attributeExists("project"));
+
+        verify(subprojectService).getSubProjectDTOByProjectId(2);
+        verify(subprojectService).getProjectById(2);
+        verify(sessionHandler, times(1)).isNotAdmin();
+    }
 
 //    @Test
 //    void shouldReturnSelectedSubProject() throws Exception {

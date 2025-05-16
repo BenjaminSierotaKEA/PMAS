@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS subprojects;
 CREATE TABLE subprojects
 (
     id          INT AUTO_INCREMENT,
-    name        VARCHAR(200) UNIQUE NOT NULL,
+    name        VARCHAR(200)        NOT NULL,
     description VARCHAR(200),
     timeBudget  INT                 NOT NULL,
     completed   BOOL,
