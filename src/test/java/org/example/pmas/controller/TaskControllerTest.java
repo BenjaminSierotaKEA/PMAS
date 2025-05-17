@@ -45,6 +45,7 @@ class TaskControllerTest {
     void readAllTaskBySubProjectID() throws Exception {
         // Arrange
         when(sessionHandler.isNotAdmin()).thenReturn(true);
+        when(sessionHandler.isUserProjectManager()).thenReturn(true);
         when(taskService.getTasksBySubProjectID(1))
                 .thenReturn(tasks);
 
@@ -53,6 +54,7 @@ class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("task-all"))
                 .andExpect(model().attributeExists("allowAccess"))
+                .andExpect(model().attributeExists("ProjectManager"))
                 .andExpect(model().attributeExists("tasks"));
 
         verify(sessionHandler, times(1)).isNotAdmin();
