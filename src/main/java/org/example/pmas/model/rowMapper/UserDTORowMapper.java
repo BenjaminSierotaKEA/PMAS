@@ -13,7 +13,8 @@ import java.util.*;
 public class UserDTORowMapper implements RowMapper<User> {
 
 
-    //we're using this Map, to ensure we will only get back one
+    //we're using this Map, to ensure we will only get back one user.
+    //this was to avoid making a million group concats and splitting many String arrays and assigning them individually to the task attributes
     private final Map<Integer, User> userMap;
 
     // prevents duplicate Task instances when the result set contains multiple rows for the same task
