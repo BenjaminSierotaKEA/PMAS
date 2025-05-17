@@ -3,6 +3,7 @@ package org.example.pmas.repository;
 import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.User;
 
+import org.example.pmas.model.rowMapper.UserDTORowMapper;
 import org.example.pmas.model.rowMapper.UserRowMapper;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.dao.DataAccessException;
@@ -13,7 +14,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Statement;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserRepository implements IUserRepository {
@@ -166,4 +169,73 @@ public class UserRepository implements IUserRepository {
         return result != null ? result : 0;
 
     }
+
+
+    @Transactional
+    @Override
+    public User readUserWithDetails(int userId) throws DataAccessException {
+        String sql = """
+                    SELECT
+                            u.id AS user_id,
+                            u.name AS user_name,
+                            u.email,
+                            u.password,
+                            u.picture,
+                
+                            r.id AS role_id,
+                            r.name AS role_name,
+                
+                            -- Task data
+                            t.id AS task_id,
+                            t.name AS task_name,
+                            t.description AS description,
+                            t.priorityLevel AS priorityLevel,
+                            t.timeBudget AS timeBudget,
+                            t.timeTaken AS timeTaken,
+                            t.completed AS completed,
+                            t.deadline AS deadline,
+                
+                            -- SubProject + Project
+                            sp.id AS subproject_id,
+                            sp.name AS subproject_name,
+                            p.id AS project_id,
+                            p.name AS project_name,
+                
+                            -- User-task relationships
+                            GROUP_CONCAT(DISTINCT ut2.userid) AS task_user_ids,
+                            GROUP_CONCAT(DISTINCT CONCAT(u2.id, ':', u2.name)) AS task_user_pairs
+                
+                        FROM users u
+                
+                        JOIN roles r ON u.role = r.id
+                
+                        LEFT JOIN usertasks ut ON u.id = ut.userid
+                        LEFT JOIN tasks t ON ut.taskid = t.id
+                        LEFT JOIN subprojects sp ON t.subprojectID = sp.id
+                        LEFT JOIN projects p ON sp.projectID = p.id
+                
+                        LEFT JOIN usertasks ut2 ON t.id = ut2.taskid
+                        LEFT JOIN users u2 ON ut2.userid = u2.id
+                
+                        WHERE u.id = ?
+                
+                        GROUP BY
+                            u.id,
+                            r.id,
+                            t.id,
+                            sp.id,
+                            p.id
+                """;
+
+
+        Map<Integer, User> userMap = new LinkedHashMap<>();
+        jdbcTemplate.query(sql, rs -> {
+            new UserDTORowMapper(userMap).mapRow(rs, 0);
+        }, userId);
+        return userMap.values().stream().findFirst().orElse(null);
+
+    }
 }
+
+
+
