@@ -13,6 +13,7 @@ public class Project {
     private final int descriptionMaxLength = 200;
     private Double timeBudget;
     private LocalDate deadline;
+    private boolean completed;
     private Set<User> users;
 
     public Set<User> getUsers() {
@@ -38,8 +39,6 @@ public class Project {
         setDescription(description);
         this.timeBudget = timeBudget;
         this.deadline = deadline;
-
-
     }
 
     public Project(){}
@@ -107,5 +106,13 @@ public class Project {
     @Override
     public int hashCode() {
         return Integer.hashCode(id);
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }

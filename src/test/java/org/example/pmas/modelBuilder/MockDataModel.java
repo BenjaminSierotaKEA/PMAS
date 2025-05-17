@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-// This class can be used if the same model is used in multiple classes
+// This class can be used to mock data for testing purposes.
 public class MockDataModel {
 
     public static Task taskWithValue(){
@@ -24,7 +24,6 @@ public class MockDataModel {
                 "Create mockup screens for new website design.",
                 PriorityLevel.LOW,
                 40.0,
-                0.0,
                 false,
                 LocalDate.of(2023, 11, 17),
                 new SubProject(1, "UI Overhaul"),
@@ -40,7 +39,6 @@ public class MockDataModel {
                         "Create mockup screens for new website design.",
                         PriorityLevel.LOW,
                         40.0,
-                        0.0,
                         false,
                         LocalDate.of(2023, 11, 17),
                         new SubProject(1, "UI Overhaul"),
@@ -52,7 +50,6 @@ public class MockDataModel {
                         "Develop authentication endpoints.",
                         PriorityLevel.MEDIUM,
                         60.0,
-                        0.0,
                         false,
                         LocalDate.of(2021, 4, 5),
                         new SubProject(2, "Backend API"),
@@ -64,7 +61,6 @@ public class MockDataModel {
                         "Create profile page design for app.",
                         PriorityLevel.HIGH,
                         50.0,
-                        0.0,
                         false,
                         LocalDate.of(2024, 8, 29),
                         new SubProject(3, "App UI Design"),

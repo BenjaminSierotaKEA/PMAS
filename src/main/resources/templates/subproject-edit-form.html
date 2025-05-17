@@ -37,8 +37,17 @@
                 <label for="timeBudget">Time budget:</label>
                 <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="0.0" required step="0.1" th:readonly="${!ProjectManager}"/><br>
 
-                <label for="completed">Completed:</label>
-                <input type="checkbox" id="completed" th:field="*{completed}" th:disabled="${!ProjectManager}"/><br>
+               <!-- <label for="completed">Completed:</label>
+                <input type="checkbox" id="completed" th:field="*{completed}" th:disabled="${!ProjectManager}"/><br> -->
+
+                <!--<fieldset class="radio-group" th:disabled="${!ProjectManager}">
+                    <legend>Assignment status</legend>
+                    <label for="yes">Done</label>
+                    <input type="radio" id="yes" name="completed" th:field="*{completed}" value="true"/>
+
+                    <label for="no">Not done</label>
+                    <input type="radio" id="no" name="completed" th:field="*{completed}" value="false"/>
+                </fieldset>-->
 
                 <div class="button-container">
                     <button type="submit">Update</button>

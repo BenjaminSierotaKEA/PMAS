@@ -88,7 +88,6 @@ class TaskRepositoryTest {
         // Arrange
         var task = new Task("test","test",
                 PriorityLevel.LOW,
-                40.0,
                 0.0,
                 false,
                 LocalDate.of(2021, 1, 1),
