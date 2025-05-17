@@ -177,4 +177,15 @@ public class ProjectRepository implements IProjectRepository {
             throw new DatabaseException(e);
         }
     }
+
+    @Override
+    public boolean checkProjectName(String name){
+        String sql = "SELECT EXISTS (SELECT 1 FROM projects WHERE name = ?)";
+
+        try{
+            return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{name}, Boolean.class));
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
+        }
+    }
 }
