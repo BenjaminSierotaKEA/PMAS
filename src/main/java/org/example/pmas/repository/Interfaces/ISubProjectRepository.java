@@ -9,8 +9,6 @@ import java.util.List;
 public interface ISubProjectRepository extends CrudInterface<SubProject> {
     boolean doesSubProjectExist(int projectId);
 
-    List<SubProject> readAll();
-
     List<SubProjectDTO> getSubProjectDTOByProjectID(int id);
 
     void updateSubProjectCompleted(int subProjectID, boolean completed);
