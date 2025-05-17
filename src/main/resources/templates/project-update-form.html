@@ -11,9 +11,6 @@
 <!-- Navbar -->
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<!-- Error Message (if any) -->
-<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
-
 <!-- Access Check -->
 <main th:if="${allowAccess}">
     <div class="page-main">
@@ -30,6 +27,7 @@
                     <!-- Editable Fields -->
                     <label for="name">Name:</label>
                     <input type="text" id="name" th:field="*{name}" placeholder="Projektnavn" required/><br>
+                    <p th:if="${errorName}" th:text="${errorName}" style="color:red;"></p>
 
                     <label for="description">Description:</label>
                     <textarea id="description" th:field="*{description}" rows="4" placeholder="Beskrivelse"></textarea><br>

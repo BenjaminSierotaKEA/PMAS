@@ -116,4 +116,8 @@ public class ProjectService {
     public List<User> getAllUsers() {
         return userRepository.readAll();
     }
+
+    public boolean checkProjectName(String name){
+        return projectRepository.checkProjectName(name);
+    }
 }
