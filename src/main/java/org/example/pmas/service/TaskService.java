@@ -86,23 +86,6 @@ public class TaskService {
         return SortList.tasksDeadlinePriority(taskList);
     }
 
-    public List<Task> getTasksByUserId(int userId, int subProjectId) {
-        if(!subProjectRepository.doesSubProjectExist(subProjectId) || userRepository.readSelected(userId) == null)
-            throw new NotFoundException("Something wrong with subprojectID or userID");
-
-        // Check if user is in subproject
-        List<Task> userTasks = taskRepository.findAllByUserId(userId);
-        List<Task> subProjectTasks = new ArrayList<>();
-
-        for(Task task : userTasks){
-            if(task.getSubProject().getId() == subProjectId){
-                subProjectTasks.add(task);
-            }
-        }
-
-        return SortList.tasksDeadlinePriority(subProjectTasks);
-    }
-
     // Handle the junction table relation
     private void addUserToTask(int taskId, List<Integer> newUserIds) {
         // Get users for comparison
@@ -131,7 +114,9 @@ public class TaskService {
     }
 
     public List<User> getAllUsersOnProject(int projectId) {
-        return userRepository.getAllOnProject(projectId);
+        List<User> users = userRepository.getAllOnProject(projectId);
+
+        return SortList.userName(users);
     }
 
     public SubProject getSubProject(int id) {
