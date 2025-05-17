@@ -40,6 +40,9 @@ public class ProjectController {
         return "project-create-form";
     }
 
+    // RedirectAttribute explained
+    // stores the attributes in a flashmap (which is internally maintained in the users session and
+    // removed once the next redirected request gets fulfilled)
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project,
                                 @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
@@ -115,6 +118,9 @@ public class ProjectController {
         return "project-update-form";
     }
 
+    // RedirectAttribute explained
+    // stores the attributes in a flashmap (which is internally maintained in the users session and
+    // removed once the next redirected request gets fulfilled)
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project,
                                 @RequestParam(name = "usersToAddID", required = false) Set<Integer> usersToAddID,
