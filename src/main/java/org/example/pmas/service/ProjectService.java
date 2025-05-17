@@ -101,8 +101,6 @@ public class ProjectService {
                     CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects())
             );
 
-            // Only on the last iteration update completed in the database.
-
             projectRepository.updateProjectCompleted(
                     p.getId(),
                     p.isCompleted()
