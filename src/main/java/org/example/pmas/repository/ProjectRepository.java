@@ -27,11 +27,11 @@ public class ProjectRepository implements IProjectRepository {
 
     @Override
     public Project create(Project project) {
-        String sql = "INSERT INTO projects(name, description, timeBudget, deadline) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO projects(name, description, timeBudget, deadline, completed) VALUES(?,?,?,?,?)";
         String retrievalSql = "SELECT * FROM projects WHERE name = ?";
         Project returnProject = null;
         try {
-            jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getTimeBudget(), project.getDeadline());
+            jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getTimeBudget(), project.getDeadline(), project.isCompleted());
             returnProject = jdbcTemplate.query(retrievalSql, new ProjectRowMapper(), project.getName()).get(0);
         } catch (DataAccessException e) {
             throw new DatabaseException(e);
@@ -120,13 +120,13 @@ public class ProjectRepository implements IProjectRepository {
                 "p.completed, " +
                 "p.deadline, " +
                 "COUNT(sp.id) AS totalSubProjects, " +
-                "SUM(IF(sp.completed = true, 1, 0)) AS completedSubProjects, " +
+                "SUM(IF(sp.completed IS TRUE, 1, 0)) AS completedSubProjects, " +
                 "SUM(IF(sp.completed = true, sp.timeBudget, 0)) AS timeTaken " +
                 "FROM userprojects up " +
                 "JOIN projects p ON up.projectid = p.id " +
                 "LEFT JOIN subprojects sp ON sp.projectID = p.id " +
                 "WHERE up.userid = ? " +
-                "GROUP BY  p.id, p.name, p.description, p.timeBudget, p.timeTaken, p.completed";
+                "GROUP BY  p.id, p.name, p.description, p.timeBudget, p.completed";
         try {
             return jdbcTemplate.query(sql, new ProjectDTORowMapper(), userId);
         } catch (DataAccessException e) {
@@ -164,6 +164,17 @@ public class ProjectRepository implements IProjectRepository {
             } catch (DataAccessException e) {
                 throw new DatabaseException("Database error: could not remove userID associated with project", e);
             }
+        }
+    }
+
+    @Override
+    public void updateProjectCompleted(int projectID, boolean completed) {
+        String sql = "UPDATE projects SET completed = ? " +
+                "WHERE id = ?";
+        try {
+            jdbcTemplate.update(sql, completed, projectID);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
     }
 }

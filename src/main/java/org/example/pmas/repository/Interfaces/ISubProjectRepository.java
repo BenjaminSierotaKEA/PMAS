@@ -12,4 +12,6 @@ public interface ISubProjectRepository extends CrudInterface<SubProject> {
     List<SubProject> readAll();
 
     List<SubProjectDTO> getSubProjectDTOByProjectID(int id);
+
+    void updateSubProjectCompleted(int subProjectID, boolean completed);
 }

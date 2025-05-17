@@ -30,8 +30,8 @@
             <th class="title">Name</th>
             <th class="title">Status</th>
             <th class="title">Description</th>
-            <th class="title">Time Budget</th>
             <th class="title">Time Actual</th>
+            <th class="title">Time Budget</th>
             <th class="title">Deadline</th>
             <th class="title">% Complete</th>
         </tr>
@@ -43,15 +43,15 @@
             class="table_row clickable-row">
 
         <td th:text="${project.name}">Project Name</td>
-            <td th:classappend="${project.completed} ? ' status-green' : ' status-yellow'">
+            <td th:classappend="${project.completed ? ' status-green' : ' status-yellow'}">
                 <div th:text="${project.completed ? 'Completed' : 'In Progress'}"
                      class="status_indicator"
                 >
                 </div>
             </td>
             <td th:text="${project.description}">Project Description</td>
-            <td th:text="${project.timeBudget}">Time Budget</td>
             <td th:text="${project.timeTaken}">Time Actual</td>
+            <td th:text="${project.timeBudget}">Time Budget</td>
             <td th:text="${#temporals.format(project.deadline, 'dd-MM-yyyy')}">YYYY-MM-DD</td>
             <td th:text="${project.completionPercentage}">% Complete</td>
             <td>
