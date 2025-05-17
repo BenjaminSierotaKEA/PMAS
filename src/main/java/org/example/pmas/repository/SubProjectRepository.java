@@ -126,8 +126,8 @@ public class SubProjectRepository implements ISubProjectRepository {
 
     public boolean doesSubProjectExist(int id) {
         String sql = "SELECT EXISTS (SELECT 1 FROM subprojects WHERE id = ?)";
-        //null safe way to check if result is true. Uses boolean object(true) to compare.
         try {
+            //null safe way to check if result is true. Uses boolean object(true) to compare.
             return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
         } catch (DataAccessException e) {
             throw new DatabaseException(e);
@@ -143,8 +143,8 @@ public class SubProjectRepository implements ISubProjectRepository {
                 "sp.projectID, " +
                 "sp.timeBudget, " +
                 "COUNT(t.id) AS totalTasks, " +
-                "SUM(CASE WHEN t.completed = true THEN 1 ELSE 0 END) AS completedTasks, " +
-                "SUM(CASE WHEN t.completed = true THEN t.timeBudget ELSE 0 END) AS timeTaken " +
+                "SUM(IF(t.completed = true, 1, 0)) AS completedTasks, " +
+                "SUM(IF(t.completed = true, t.timeBudget, 0)) AS timeTaken " +
                 "FROM subprojects sp " +
                 "LEFT JOIN tasks t ON sp.id = t.subProjectID " +
                 "WHERE sp.projectID = ? " +
