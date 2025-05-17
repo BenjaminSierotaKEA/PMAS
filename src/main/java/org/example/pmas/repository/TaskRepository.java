@@ -30,8 +30,8 @@ public class TaskRepository implements ITaskRepository {
     @Override
     public Task create(Task task) {
         String sql = "INSERT INTO tasks " +
-                "(name, description, priorityLevel, timeBudget, timeTaken, completed, deadline, subprojectID) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "(name, description, priorityLevel, timeBudget, completed, deadline, subprojectID) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         // Object for id
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -44,10 +44,9 @@ public class TaskRepository implements ITaskRepository {
                 // Vi sætter priority til null ellers vil det crashe, når vi henter dem.
                 ps.setString(3, task.getPriorityLevel() != null ? task.getPriorityLevel().name() : null);
                 ps.setDouble(4, task.getTimeBudget());
-                ps.setDouble(5, task.getTimeTaken());
-                ps.setBoolean(6, task.isCompleted());
-                ps.setObject(7, task.getDeadline());
-                ps.setInt(8, task.getSubProject().getId());
+                ps.setBoolean(5, task.isCompleted());
+                ps.setObject(6, task.getDeadline());
+                ps.setInt(7, task.getSubProject().getId());
                 return ps;
             }, keyHolder);
         } catch (DataAccessException e) {
@@ -129,7 +128,6 @@ public class TaskRepository implements ITaskRepository {
                 "description = ?, " +
                 "priorityLevel = ?, " +
                 "timeBudget = ?, " +
-                "timeTaken = ?, " +
                 "completed = ?, " +
                 "deadline = ?, " +
                 "subprojectID = ? " +
@@ -141,7 +139,6 @@ public class TaskRepository implements ITaskRepository {
                     newObject.getDescription(),
                     newObject.getPriorityLevel().name(),
                     newObject.getTimeBudget(),
-                    newObject.getTimeTaken(),
                     newObject.isCompleted(),
                     newObject.getDeadline(),
                     newObject.getSubProject().getId(),

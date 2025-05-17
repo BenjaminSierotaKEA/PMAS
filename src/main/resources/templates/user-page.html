@@ -41,7 +41,6 @@
                     <th>Name</th>
                     <th>Priority</th>
                     <th>Time Budget (hrs)</th>
-                    <th>Time Taken (hrs)</th>
                     <th>Deadline</th>
                     <th>Status</th>
                     <th>Subproject</th>
@@ -62,7 +61,6 @@
                             </div>
                         </td>
                         <td th:text="${task.timeBudget}">0</td>
-                        <td th:text="${task.timeTaken}">0</td>
                         <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}">YYYY-MM-DD</td>
                         <td th:classappend="${task.completed} ? 'status-green' : 'status-yellow'">
                             <div th:text="${task.completed ? 'Completed' : 'In Progress'}" class="status_indicator"
@@ -84,7 +82,6 @@
                             </div>
                         </td>
                         <td th:text="${task.timeBudget}">0</td>
-                        <td th:text="${task.timeTaken}">0</td>
                         <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}">YYYY-MM-DD</td>
                         <td th:classappend="${task.completed} ? 'status-green' : 'status-yellow'">
                             <div th:text="${task.completed ? 'Completed' : 'In Progress'}" class="status_indicator"

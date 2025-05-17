@@ -15,6 +15,7 @@ import org.example.pmas.util.CompletionStatCalculator;
 import org.example.pmas.util.SortList;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -31,29 +32,29 @@ public class ProjectService {
 
     }
 
-    public Project createProject(Project project){
+    public Project createProject(Project project) {
         return projectRepository.create(project);
     }
 
-    public void addUsersToProject(int projectID, Set<Integer> userIDs){
-        if(userIDs != null){
+    public void addUsersToProject(int projectID, Set<Integer> userIDs) {
+        if (userIDs != null) {
             projectRepository.addUsersToProject(projectID, userIDs);
         }
     }
 
-    public void removeUsersFromProject(int projectID, Set<Integer> userIds){
-        if(userIds != null){
+    public void removeUsersFromProject(int projectID, Set<Integer> userIds) {
+        if (userIds != null) {
             projectRepository.removeUsersFromProject(projectID, userIds);
         }
     }
 
-    public List<Project> readAll(){
-         List<Project> projects = projectRepository.readAll();
+    public List<Project> readAll() {
+        List<Project> projects = projectRepository.readAll();
 
-         return SortList.projectsDeadline(projects);
+        return SortList.projectsDeadline(projects);
     }
 
-    public Project readSelected(int id){
+    public Project readSelected(int id) {
         Project project = projectRepository.readSelected(id);
         if (project == null) {
             throw new NotFoundException(id);
@@ -62,42 +63,57 @@ public class ProjectService {
         return project;
     }
 
-    public List<User> getAllUsersOnProject(int projectID){
+    public List<User> getAllUsersOnProject(int projectID) {
         return userRepository.getAllOnProject(projectID);
     }
 
-    public List<User> getAllUsersNotOnProject(int projectID){
+    public List<User> getAllUsersNotOnProject(int projectID) {
         return userRepository.getAllNotOnProject(projectID);
     }
 
-    public void updateProject(Project newProject){
-        if(!projectRepository.doesProjectExist(newProject.getId()))
+    public void updateProject(Project newProject) {
+        if (!projectRepository.doesProjectExist(newProject.getId()))
             throw new NotFoundException(newProject.getId());
 
-        if(!projectRepository.update(newProject))
+        if (!projectRepository.update(newProject))
             throw new UpdateObjectException(newProject.getId());
     }
 
-    public void deleteProject(int id){
-        if(!projectRepository.doesProjectExist(id))
+    public void deleteProject(int id) {
+        if (!projectRepository.doesProjectExist(id))
             throw new NotFoundException(id);
 
-        if(!projectRepository.delete(id))
+        if (!projectRepository.delete(id))
             throw new DeleteObjectException(id);
     }
 
-    public List<ProjectDTO> getProjectDTOByUserID(int userID){
+    public List<ProjectDTO> getProjectDTOByUserID(int userID) {
         // Returns null if no list
         List<ProjectDTO> projects = projectRepository.getProjectDTOByUserID(userID);
+        // if no list is returned, return an empty list.
+        if (projects == null) return Collections.emptyList();
 
-        for(ProjectDTO p : projects) {
-            p.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(),p.getTotalSubProjects()));
-            p.setCompleted(CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects()));
+        for (ProjectDTO p : projects) {
+            p.setCompletionPercentage(
+                    CompletionStatCalculator.calculatePercentage(p.getCompletedSubProjects(), p.getTotalSubProjects())
+            );
+            p.setCompleted(
+                    CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects())
+            );
+
+            // Only on the last iteration update completed in the database.
+
+            projectRepository.updateProjectCompleted(
+                    p.getId(),
+                    p.isCompleted()
+            );
+
         }
+
         return SortList.projectsDTODeadline(projects);
     }
 
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.readAll();
     }
 }

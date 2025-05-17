@@ -26,7 +26,6 @@ public class TaskRowMapper implements RowMapper<Task> {
             task.setPriorityLevel(PriorityLevel.valueOf(rs.getString("priorityLevel")));
         task.setDescription(rs.getString("description"));
         task.setTimeBudget(rs.getDouble("timeBudget"));
-        task.setTimeTaken(rs.getDouble("timeTaken"));
         task.setCompleted(rs.getBoolean("completed"));
         if (hasColumn(rs, "deadline"))
             task.setDeadline(rs.getDate("deadline").toLocalDate());
