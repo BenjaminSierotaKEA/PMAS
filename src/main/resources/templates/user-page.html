@@ -22,8 +22,6 @@
 </div>
 
 
-
-
 <div class="dashboard-wrapper flex-grow">
     <div class="dashboard-left dark_frame normalized_padding ">
 
@@ -34,9 +32,9 @@
         </div>
 
         <div th:if="${user.tasks != null and !user.tasks.isEmpty()}">
-           <div>
+            <div>
                 <h2 class="profile_title">Your Tasks</h2>
-           </div>
+            </div>
             <table class="task-table">
                 <thead>
                 <tr>
@@ -51,58 +49,86 @@
                 </thead>
                 <tbody>
 
-                <tr th:each="task : ${user.tasks}"
-                    th:onclick="'window.location.href=\'/projects/' + ${task.subProject.projectID} + '/subprojects/' + ${task.subProject.id} + '/tasks/' + ${task.id} + '/edit\''"
-                    class="table_row clickable-row">
+                <div th:if="${session.user != null and session.user.role.name != 'Admin'}">
+                    <tr th:each="task : ${user.tasks}"
+                        th:onclick="'window.location.href=\'/projects/' + ${task.subProject.projectID} + '/subprojects/' + ${task.subProject.id} + '/tasks/' + ${task.id} + '/edit\''"
+                        class="table_row clickable-row">
 
 
+                        <td th:text="${task.name}" class="task_label">Task Name</td>
+                        <td th:classappend="'priority-' + ${task.priorityLevel.displayName}">
+                            <div th:text="${task.priorityLevel}" class="priority-bar"
+                            >Priority
+                            </div>
+                        </td>
+                        <td th:text="${task.timeBudget}">0</td>
+                        <td th:text="${task.timeTaken}">0</td>
+                        <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}">YYYY-MM-DD</td>
+                        <td th:classappend="${task.completed} ? 'status-green' : 'status-yellow'">
+                            <div th:text="${task.completed ? 'Completed' : 'In Progress'}" class="status_indicator"
+                            >Status
+                            </div>
+                        </td>
+                        <td th:text="${task.subProject.name}">Subproject Name</td>
+                    </tr>
+                </div>
+                <div th:if="${session.user != null and session.user.role.name == 'Admin'}">
+                    <tr th:each="task : ${user.tasks}"
+                        class="table_row clickable-row">
 
-                <td th:text="${task.name}" class="task_label">Task Name</td>
-                    <td th:classappend="'priority-' + ${task.priorityLevel.displayName}">
-                        <div th:text="${task.priorityLevel}" class="priority-bar"
-                             >Priority
+
+                        <td th:text="${task.name}" class="task_label">Task Name</td>
+                        <td th:classappend="'priority-' + ${task.priorityLevel.displayName}">
+                            <div th:text="${task.priorityLevel}" class="priority-bar"
+                            >Priority
+                            </div>
+                        </td>
+                        <td th:text="${task.timeBudget}">0</td>
+                        <td th:text="${task.timeTaken}">0</td>
+                        <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}">YYYY-MM-DD</td>
+                        <td th:classappend="${task.completed} ? 'status-green' : 'status-yellow'">
+                            <div th:text="${task.completed ? 'Completed' : 'In Progress'}" class="status_indicator"
+                            >Status
+                            </div>
+                        </td>
+                        <td th:text="${task.subProject.name}">Subproject Name</td>
+                    </tr>
+                </div>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="dashboard-right flex-grow dark_frame normalized_padding">
+        <div th:if="${user.projects != null and !user.projects.isEmpty()}">
+            <h2 class="profile_title">Your Projects</h2>
+            <table class="task-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="project : ${user.projects}">
+                    <td class="table_row">
+
+                        <div th:text="${project.name}"
+                           class="project-button" th:if="${session.user != null and session.user.role.name == 'Admin'}">
                         </div>
+
+                        <a th:href="@{/projects/{id}/subprojects/all(id=${project.id})}"
+                           th:text="${project.name}"
+                           class="project-button" th:if="${session.user != null and session.user.role.name != 'Admin'}">
+                        </a>
+
                     </td>
-                    <td th:text="${task.timeBudget}">0</td>
-                    <td th:text="${task.timeTaken}">0</td>
-                    <td th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}">YYYY-MM-DD</td>
-                    <td th:classappend="${task.completed} ? 'status-green' : 'status-yellow'">
-                        <div th:text="${task.completed ? 'Completed' : 'In Progress'}" class="status_indicator"
-                             >Status
-                        </div>
-                    </td>
-                    <td th:text="${task.subProject.name}">Subproject Name</td>
+                    ...
                 </tr>
 
                 </tbody>
             </table>
         </div>
     </div>
-
-<div class="dashboard-right flex-grow dark_frame normalized_padding">
-    <div th:if="${user.projects != null and !user.projects.isEmpty()}" >
-        <h2 class="profile_title">Your Projects</h2>
-        <table class="task-table">
-            <thead>
-            <tr>
-                <th>Name</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="project : ${user.projects}">
-                <td class="table_row">
-                    <a th:href="@{/projects/{id}/subprojects/all(id=${project.id})}"
-                       th:text="${project.name}"
-                       class="project-button">
-                    </a>
-                </td>
-                ...
-            </tr>
-
-            </tbody>
-        </table>
-    </div>
-</div>
 </div>
 </body>
 </html>
