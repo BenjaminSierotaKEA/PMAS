@@ -2,7 +2,7 @@ package org.example.pmas.service.comparators;
 
 import java.time.LocalDate;
 
-public class checkAttribute {
+public class compareAttributes {
     public static int localDate(LocalDate date1, LocalDate date2){
         // if both dates are null, put last
         if (date1 == null && date2 == null) return 0;

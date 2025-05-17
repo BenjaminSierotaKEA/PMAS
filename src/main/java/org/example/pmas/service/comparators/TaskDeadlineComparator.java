@@ -12,6 +12,6 @@ public class TaskDeadlineComparator implements Comparator<Task> {
         LocalDate date1 = o1.getDeadline();
         LocalDate date2 = o2.getDeadline();
 
-        return checkAttribute.localDate(date1, date2);
+        return compareAttributes.localDate(date1, date2);
     }
 }
