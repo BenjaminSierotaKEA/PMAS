@@ -6,6 +6,7 @@ CREATE TABLE PROJECTS
     description VARCHAR(200),
     timeBudget  INT                 NOT NULL,
     deadline    DATE                NOT NULL,
+    completed   BOOL,
     PRIMARY KEY (id)
 
 );
