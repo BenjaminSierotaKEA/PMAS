@@ -47,8 +47,6 @@ class TaskControllerTest {
         when(sessionHandler.isNotAdmin()).thenReturn(true);
         when(taskService.getTasksBySubProjectID(1))
                 .thenReturn(tasks);
-        when(taskService.getSubProject(any(Integer.class)))
-                .thenReturn(MockDataModel.subprojectsWithValues().getFirst());
 
         // Act & Assert
         mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/all", 1, 1))

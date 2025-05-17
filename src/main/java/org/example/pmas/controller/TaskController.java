@@ -31,9 +31,10 @@ public class TaskController {
         if (loggedIn) {
             // Adds tasks to HTML
             model.addAttribute("tasks", taskService.getTasksBySubProjectID(subprojectId));
-            model.addAttribute("subproject", taskService.getSubProject(subprojectId));
         }
+
         model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
+        model.addAttribute("user",sessionHandler.getCurrentUser());
         model.addAttribute("allowAccess", loggedIn);
         return "task-all";
     }
