@@ -118,14 +118,4 @@ public class TaskService {
 
         return SortList.userName(users);
     }
-
-    public SubProject getSubProject(int id) {
-        var subproject = subProjectRepository.readSelected(id);
-        if (subproject == null) {
-            throw new NotFoundException(id);
-        }
-        return subproject;
-    }
-
-
 }
