@@ -87,7 +87,6 @@ public class UserDTORowMapper implements RowMapper<User> {
 
             //filling out more stuff, about time
             task.setTimeBudget(rs.getDouble("timeBudget"));
-            task.setTimeTaken(rs.getDouble("timeTaken"));
             task.setCompleted(rs.getBoolean("completed"));
             if (rs.getDate("deadline") != null) {
                 task.setDeadline(rs.getDate("deadline").toLocalDate());

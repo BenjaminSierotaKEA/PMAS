@@ -191,7 +191,6 @@ public class UserRepository implements IUserRepository {
                             t.description AS description,
                             t.priorityLevel AS priorityLevel,
                             t.timeBudget AS timeBudget,
-                            t.timeTaken AS timeTaken,
                             t.completed AS completed,
                             t.deadline AS deadline,
                 
