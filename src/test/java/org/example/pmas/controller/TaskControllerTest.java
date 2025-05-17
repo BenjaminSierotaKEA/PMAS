@@ -45,16 +45,16 @@ class TaskControllerTest {
     void readAllTaskBySubProjectID() throws Exception {
         // Arrange
         when(sessionHandler.isNotAdmin()).thenReturn(true);
+        when(sessionHandler.isUserProjectManager()).thenReturn(true);
         when(taskService.getTasksBySubProjectID(1))
                 .thenReturn(tasks);
-        when(taskService.getSubProject(any(Integer.class)))
-                .thenReturn(MockDataModel.subprojectsWithValues().getFirst());
 
         // Act & Assert
         mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/all", 1, 1))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task-all"))
                 .andExpect(model().attributeExists("allowAccess"))
+                .andExpect(model().attributeExists("ProjectManager"))
                 .andExpect(model().attributeExists("tasks"));
 
         verify(sessionHandler, times(1)).isNotAdmin();

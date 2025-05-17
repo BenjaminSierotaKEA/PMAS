@@ -64,11 +64,15 @@ public class ProjectService {
     }
 
     public List<User> getAllUsersOnProject(int projectID) {
-        return userRepository.getAllOnProject(projectID);
+        List<User> users = userRepository.getAllOnProject(projectID);
+
+        return SortList.userName(users);
     }
 
     public List<User> getAllUsersNotOnProject(int projectID) {
-        return userRepository.getAllNotOnProject(projectID);
+        List<User> users = userRepository.getAllNotOnProject(projectID);
+
+        return SortList.userName(users);
     }
 
     public void updateProject(Project newProject) {
@@ -101,13 +105,10 @@ public class ProjectService {
                     CompletionStatCalculator.isJobCompleted(p.getCompletedSubProjects(), p.getTotalSubProjects())
             );
 
-            // Only on the last iteration update completed in the database.
-
             projectRepository.updateProjectCompleted(
                     p.getId(),
                     p.isCompleted()
             );
-
         }
 
         return SortList.projectsDTODeadline(projects);

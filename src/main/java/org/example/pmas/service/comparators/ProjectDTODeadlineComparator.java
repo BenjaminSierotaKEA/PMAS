@@ -12,6 +12,6 @@ public class ProjectDTODeadlineComparator implements Comparator<ProjectDTO> {
         LocalDate date1 = o1.getDeadline();
         LocalDate date2 = o2.getDeadline();
 
-        return checkLocalDate.checkDate(date1, date2);
+        return checkAttribute.localDate(date1, date2);
     }
 }
