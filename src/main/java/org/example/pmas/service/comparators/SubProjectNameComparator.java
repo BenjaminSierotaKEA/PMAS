@@ -7,7 +7,7 @@ import java.util.Comparator;
 public class SubProjectNameComparator implements Comparator<SubProjectDTO> {
     @Override
     public int compare(SubProjectDTO o1, SubProjectDTO o2) {
-        // It's casesensitive. 'A' and 'a' are compared different.
-        return checkAttribute.string(o1.getName(), o2.getName());
+        var compare = new CompareAttributes();
+        return compare.string(o1.getName(), o2.getName());
     }
 }

@@ -73,15 +73,12 @@ public class SubProjectService {
                     CompletionStatCalculator.isJobCompleted(s.getCompletedTasks(), s.getTotalTasks())
             );
 
-            // Only on the last iteration update the completed in database.
-
             subprojectRepository.updateSubProjectCompleted(
                     s.getId(),
                     s.isCompleted());
         }
         return SortList.subProjectDTOName(subprojects);
     }
-
 
     public Project getProjectById(int projectId) {
         if (!projectRepository.doesProjectExist(projectId))

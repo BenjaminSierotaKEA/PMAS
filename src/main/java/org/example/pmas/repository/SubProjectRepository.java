@@ -47,7 +47,7 @@ public class SubProjectRepository implements ISubProjectRepository {
 //    }
 
     // Used for test
-    // Implementet for further development. Ready to go.
+    // Implementet for further development.
     @Override
     public List<SubProject> readAll() {
         String sql = "SELECT * from subprojects";
