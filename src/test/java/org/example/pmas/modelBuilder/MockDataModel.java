@@ -75,9 +75,9 @@ public class MockDataModel {
 
     public static List<User> usersWithValues(){
         return List.of(
-                new User(1,"jacob", "email", "password", new Role(), "jacob.jpg" ),
-                new User(1,"Peter", "email", "password", new Role(), "peter.jpg" ),
-                new User(1,"Sune", "email", "password", new Role(), "sune.jpg" )
+                new User(1,"jacob", "email", "password", new Role(1, "Admin"), "jacob.jpg" ),
+                new User(2,"Peter", "email", "password", new Role(1, "Admin"), "peter.jpg" ),
+                new User(3,"Sune", "email", "password", new Role(1, "Admin"), "sune.jpg" )
         );
     }
 
