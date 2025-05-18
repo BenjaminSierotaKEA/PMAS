@@ -96,14 +96,7 @@
 
             <div class="button-container">
                 <button type="submit">Update</button>
-
-<!--                <a th:if="${session.user.role.name == 'Employee'}"-->
-<!--                   >-->
-<!--                    <button type="button" onclick="history.back()">Back</button>-->
-<!--                </a>-->
-
-
-                <a th:unless="${session.user.role.name == 'Employee'}">
+                <a>
                     <button type="button"  onclick="history.back()">Back</button>
                 </a>
             </div>

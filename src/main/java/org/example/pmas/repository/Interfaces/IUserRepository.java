@@ -13,4 +13,5 @@ public interface IUserRepository extends CrudInterface<User> {
 
     int getProjectIDOfUsersSubproject(int userID, int subprojectID);
 
+    User readUserWithDetails(int userId);
 }
