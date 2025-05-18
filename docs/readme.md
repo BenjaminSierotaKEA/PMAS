@@ -1,5 +1,14 @@
 # Project Manager for Alpha Solutions (PMAS)
 
+## Indholdsfortegnelse
+- [Oversigt](#oversigt)
+- [Funktionalitet](#funktionalitet)
+- [Teknologier](#teknologier)
+- [Kom I Gang](#kom-i-gang)
+- [Kontakt](#kontakt)
+
+
+
 ## Oversigt
 PMAS er udviklet af fire studerence fra Københavns Ervhevs Akademis (KEA), som et eksamensprojekt for deres 
 2 semester.
@@ -56,7 +65,7 @@ Programmet anvender de følgende teknologier og platforme, og er essentielle for
 
 
 ### Installering 
-1. Klon det følgende repository GitHub:
+1. Klon dette [GitHub Repository](https://github.com/BenjaminSierotaKEA/PMAS)
 2. Opret database ved at køre DDL fra: src/main/resources/database 
 Kør eventuelt DML for at oprette en af hver tybe bruger.
 3. Opret Environment Variables, for både Development og Production. Disse Environment variabler bruger følgende navnekonvention:
