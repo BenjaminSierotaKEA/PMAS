@@ -128,10 +128,14 @@ class UserRepositoryTest {
         assertFalse(user.getTasks().isEmpty());
 
         //take a task from the list and see if it was assigned information
-        Task task = user.getTasks().get(0);
-        assertNotNull(task.getName());
-        assertNotNull(task.getUsers());
-
+        Boolean taskHasContents = false;
+        for (Task task : user.getTasks()){
+            if(task.getName() != null && !task.getUsers().isEmpty()){
+                taskHasContents = true;
+                break;
+            }
+        }
+        assertTrue(taskHasContents);
 
         // Assert
         //checking same for projects:
