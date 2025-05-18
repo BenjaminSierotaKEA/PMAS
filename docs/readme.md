@@ -4,7 +4,7 @@
 
 ## Indholdsfortegnelse
 - [Oversigt](#oversigt)
-- [Funktionalitet](#funktionalitet)
+- [Funktionalitet](#funtionalitet)
 - [Teknologier](#teknologier)
 - [Kom I Gang](#kom-i-gang)
 - [Kontakt](#kontakt)
@@ -47,7 +47,7 @@ Nedstsående er et link til den deployede version af programmet:
 * **Back-end** : SpringBoot
 * **Front-end** : Thymeleaf
 * **Database Oprettelse** : MySQL
-* **CI/CD** : Github Actions
+* **CI/CD** : GitHub Actions
 * **Deployment** : Microsoft Azure
 * **Statisk kodetest** : Qodana Cloud
 
@@ -94,9 +94,9 @@ På Github Secrets Sættes environment variables for production Spring Profile:
 ## Kontakt
 
 Yderligere information og spørgsmål kan findes ved at kontakte os på:
-[Besi0002@stud.kea.dk](Besi0002@stud.kea.dk),
-[Jajo0004@stud.kea.dk](Jajo0004@stud.kea.dk),
-[Macl0001@stud.kea.dk](Macl0001@stud.kea.dk) eller
-[Joha0005@stud.kea.dk](Jajo0004@stud.kea.dk).
+[Besi0002@stud.kea.dk](mailto:Besi0002@stud.kea.dk),
+[Jajo0004@stud.kea.dk](mailto:Jajo0004@stud.kea.dk),
+[Macl0001@stud.kea.dk](mailto:Macl0001@stud.kea.dk) eller
+[Joha0005@stud.kea.dk](mailto:Jajo0004@stud.kea.dk).
 
 
