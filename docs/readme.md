@@ -1,5 +1,7 @@
 # Project Manager for Alpha Solutions (PMAS)
 
+---
+
 ## Indholdsfortegnelse
 - [Oversigt](#oversigt)
 - [Funktionalitet](#funktionalitet)
@@ -7,7 +9,7 @@
 - [Kom I Gang](#kom-i-gang)
 - [Kontakt](#kontakt)
 
-
+---
 
 ## Oversigt
 PMAS er udviklet af fire studerende fra Københavns Erhvervsakademi (KEA) som et eksamensprojekt i 2. semester.
@@ -19,7 +21,7 @@ Programmet skulle yderligere kunne bruges til at danne overblik over projekter v
 beregne arbejdsbyrder og regne op med tidsbudgeter.
 Programmet er yderligere blevet sat det krav at det skal have en intuitiv og brugervenlig brugerflade.
 
-
+---
 
 ## Funtionalitet
 For at kunne udnytte programmets funktionalitet, skal en Admin bruger tilføje dig til databasen. 
@@ -38,7 +40,7 @@ Brugere med Project Manager rollen har derfor også flere muligheder for at se o
 
 Nedstsående er et link til den deployede version af programmet:
 
-
+---
 
 ## Teknologier
 #### Programmet er blevet udviklet med følgende teknologier:
@@ -49,6 +51,7 @@ Nedstsående er et link til den deployede version af programmet:
 * **Deployment** : Microsoft Azure
 * **Statisk kodetest** : Qodana Cloud
 
+---
 
 ## Kom I Gang
 For at få programmet til at køre på jeres makskine, er det vigtigt at gennemgå den nedstående information:
@@ -86,6 +89,7 @@ På Github Secrets Sættes environment variables for production Spring Profile:
 
 4. Programmet kan nu køres lokalt of fungere med CD Continues Deployment.
 
+---
 
 ## Kontakt
 

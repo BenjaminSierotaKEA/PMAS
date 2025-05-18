@@ -32,12 +32,15 @@ Velkommen til Projektet!
 ### Spørgsmål
 Hvis du er i tvivl om noget, så spørg! Det er bedre at få afklaring end at gætte.
 
+
 ### Opret en Issue
-Har du fundet en fejl, en forbedringsidé, eller noget andet?  
-Opret en **Issue** med en kort titel og en beskrivelse. Tag det gerne med labels som `bug`, `enhancement` eller `question`.
+Har du fundet en fejl, en ide til en feature, eller noget andet?  
+Opret en **Issue** med en kort titel og en beskrivelse.
+
 
 ### Pull Requests
-Hvis du har lavet en forbedring eller rettelse, så lav en pull request. Beskriv tydeligt hvad du har ændret og hvorfor.
+Hvis du har lavet ændringer, så lav en pull request. Beskriv tydeligt hvad du har ændret og hvorfor.
+
 
 ### Beskyttet Main Branch
 Vi har Github Rules slået til, der gør at man ikke kan merge in pull request uden at få mindst et review.
@@ -47,19 +50,16 @@ Hold øje med pull request og kig koden igennem før du merger.
 
 ## Branches og Konventioner
 
-- Brug feature branches: `feature/mit-feature-navn`
+- Brug navne der beskriver hvad du ahr arbejdet på: `user-feature-taksDuplicate`
 - Følg eksisterende pakkestruktur (`controller`, `model`, `repository`, `service`, `util`)
 - Brug camelCase til variabler og metoder
-- 4-space indryk
-
 ---
 
 ## Test og CI/CD
-
-- Vi skriver tests til det vi laver – både unit og integration hvor det giver mening.
-- Brug `@Transactional` i tests hvor det kræves.
-- Når du laver en pull request, vil GitHub Actions automatisk tjekke at byg og tests virker.
-- Qodana bruges til statisk analyse af kodekvalitet. Den fortæller dig hvis noget går galt eller skal forbedres.
+* Vi skriver tests løbende til de metoder vi opretter, UnitTests og Integrationstests
+* Brug `@Transactional` i tests hvor det kræves.
+* Når du laver en pull request, vil GitHub Actions automatisk tjekke at byg og tests virker, det er vigtigt at tjekke om dine tests består.
+* Qodana bruges til statisk analyse af kodekvalitet. Den fortæller dig hvis noget går galt eller skal forbedres.
 
 ---
 
@@ -67,19 +67,18 @@ Hold øje med pull request og kig koden igennem før du merger.
 
 Før du laver en PR, så dobbelttjek gerne:
 
-- [ ] Har du skrevet tests?
-- [ ] Har du skrevet kommentarer?
-- [ ] Har du ikke ødelagt noget der virkede før?
-- [ ] Har du beskrevet ændringerne?
-- [ ] Har du brugt en fornuftig branch?
+* [ ] Har du skrevet tests?
+*[ ] Har du skrevet kommentarer?
+*[ ] Har du ikke ødelagt noget der virkede før?
+*[ ] Har du beskrevet ændringerne?
+*[ ] Har du brugt en fornuftig branch?
+
 
 ---
 
 ## Licens
-
 Dette projekt er udviklet som en del af et eksamensprojekt på KEA og må ikke bruges kommercielt uden tilladelse.
 
 ---
-
 ## No Brown Eminems
 Hvis du læser dette, så godt gået! og tak fordi du faktisk læste vores dokumentation :)
