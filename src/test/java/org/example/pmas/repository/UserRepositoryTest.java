@@ -117,7 +117,7 @@ class UserRepositoryTest {
 
         //Assert
         //checking the user:
-        assertNotNull(user);
+        assertNotNull(user, "Expected user to be found, but got null.");
         assertEquals("Rebecca Black", user.getName());
         assertNotNull(user.getRole());
         assertEquals("Admin", user.getRole().getName());

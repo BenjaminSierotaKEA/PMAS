@@ -58,6 +58,10 @@ public class UserService {
         try {
             User user = userRepository.readUserWithDetails(userId);
 
+            if (user == null) {
+                throw new NotFoundException("Database not containing User, not found for id " + userId);
+            }
+
             //Filling out variables for user:
              List<Task> sortedTasks = SortList.tasksDeadlinePriority(user.getTasks());
              user.setTasks(sortedTasks);
@@ -65,7 +69,7 @@ public class UserService {
             return user;
 
         } catch (DataAccessException e) {
-            throw new DatabaseException("Could not fetch user with full details.",e);
+            throw new DatabaseException("Could not access database, or sql failed.",e);
         }
     }
 
