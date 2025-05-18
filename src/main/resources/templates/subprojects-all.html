@@ -34,7 +34,7 @@
 
         <a th:if="${session.user.role.name == 'Employee'}"
            th:href="@{/projects/my-projects}">
-            <button type="button">Projects</button>
+            <button type="button">All Projects</button>
         </a>
 
         <form th:unless="${session.user.role.name == 'Employee'}"
