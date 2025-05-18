@@ -10,9 +10,9 @@
 
 
 ## Oversigt
-PMAS er udviklet af fire studerence fra Københavns Ervhevs Akademis (KEA), som et eksamensprojekt for deres 
-2 semester.
-Projektet er blevet formidlet til de studerende som om de er et konsulent firma der er blevet hyret til at lave et internt 
+PMAS er udviklet af fire studerende fra Københavns Erhvervsakademi (KEA) som et eksamensprojekt i 2. semester.
+
+Projektet er blevet formidlet til de studerende som et eksternt udviklingsteam der er blevet hyret til at lave et internt 
 projektstyringsprogram for Alpha Solutions, som i denne kontekst er klienten.
 Alpha Solutions har efterspurgt at værktøjet skal understøtte funktionalitet for agile arbejdsmetoder. 
 Programmet skulle yderligere kunne bruges til at danne overblik over projekter ved at kategorisere dem ned i "Subprojekts" og "Tasks", og videre 
