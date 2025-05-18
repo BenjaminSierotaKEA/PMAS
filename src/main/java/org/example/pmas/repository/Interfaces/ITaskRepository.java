@@ -9,7 +9,6 @@ public interface ITaskRepository extends CrudInterface<Task> {
     void removeUsersFromUserTasks(int taskId, Set<Integer> userIds);
     void addUsersToUserTasks(int taskId, Set<Integer> userIds);
     List<Integer> getCurrentUserIdsFromUserTasks(int taskId);
-    List<Task> readAll();
 
     List<Task> getTasksBySubProjectID(int subProjectId);
 

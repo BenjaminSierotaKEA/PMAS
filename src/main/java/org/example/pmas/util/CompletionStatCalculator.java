@@ -10,7 +10,7 @@ public class CompletionStatCalculator{
     }
 
     public static boolean isJobCompleted(int completed, int total) {
-        // If total is 0, we can't be sure if the job is completed.
+        // If the total is 0, we can't be sure if the job is completed.
         return completed == total && total > 0;
     }
 }

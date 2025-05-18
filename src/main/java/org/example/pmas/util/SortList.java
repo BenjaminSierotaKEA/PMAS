@@ -2,6 +2,7 @@ package org.example.pmas.util;
 
 import org.example.pmas.model.Project;
 import org.example.pmas.model.Task;
+import org.example.pmas.model.User;
 import org.example.pmas.model.dto.ProjectDTO;
 import org.example.pmas.model.dto.SubProjectDTO;
 import org.example.pmas.service.comparators.*;
@@ -62,11 +63,25 @@ public class SortList {
     public static List<SubProjectDTO> subProjectDTOName(List<SubProjectDTO> subprojects){
         // If the list is null, return an empty list. No errors
         if(subprojects == null) return Collections.emptyList();
+
         // We sort the list on name
         // We copy the list, so it's not immutable
         List<SubProjectDTO> modifiableList = new ArrayList<>(subprojects);
         modifiableList.sort(new SubProjectNameComparator());
 
+        return modifiableList;
+    }
+
+    // Sorts the list by name.
+    // If the list is null, return an empty list. No errors.
+    public static List<User> userName(List<User> userList) {
+        // If the list is null, return an empty list. No errors
+        if (userList == null) return Collections.emptyList();
+
+        // We sort the list on name
+        // We copy the list, so it's not immutable
+        List<User> modifiableList = new ArrayList<>(userList);
+        modifiableList.sort(new UserNameComparator());
         return modifiableList;
     }
 }
