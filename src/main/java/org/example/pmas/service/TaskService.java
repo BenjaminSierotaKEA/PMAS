@@ -4,7 +4,6 @@ import org.example.pmas.exception.CreateObjectException;
 import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.exception.UpdateObjectException;
-import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
@@ -118,14 +117,4 @@ public class TaskService {
 
         return SortList.userName(users);
     }
-
-    public SubProject getSubProject(int id) {
-        var subproject = subProjectRepository.readSelected(id);
-        if (subproject == null) {
-            throw new NotFoundException(id);
-        }
-        return subproject;
-    }
-
-
 }
