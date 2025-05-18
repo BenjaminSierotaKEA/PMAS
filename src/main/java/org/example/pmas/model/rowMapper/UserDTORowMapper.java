@@ -33,7 +33,7 @@ public class UserDTORowMapper implements RowMapper<User> {
         //here we fint the User objects field attributes:
         int userId = rs.getInt("user_id");
 
-        // Reuse user if we've already created it
+        // Reuse user if we've already created it, and add start adding tasks to it
         User user = userMap.get(userId);
         //if we havent:
         if (user == null) {
@@ -147,6 +147,8 @@ public class UserDTORowMapper implements RowMapper<User> {
             user.getProjects().add(p);
         }
 
+
+        //returns Map object of user:
         return user;
     }
 }

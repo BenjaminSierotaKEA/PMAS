@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -227,11 +228,15 @@ public class UserRepository implements IUserRepository {
                 """;
 
 
-        Map<Integer, User> userMap = new LinkedHashMap<>();
-        jdbcTemplate.query(sql, rs -> {
-            new UserDTORowMapper(userMap).mapRow(rs, 0);
-        }, userId);
-        return userMap.values().stream().findFirst().orElse(null);
+        Map<Integer, User> userMap = new HashMap<>();
+        List<User> results = jdbcTemplate.query(sql, new UserDTORowMapper(userMap), userId);
+
+        //if we got more results than one, something went wrong in the rowMapper
+        if (!results.isEmpty()) {
+            return results.getFirst();
+        } else {
+            return null;
+        }
 
     }
 }
