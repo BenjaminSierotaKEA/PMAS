@@ -1,6 +1,8 @@
 package org.example.pmas.repository;
 
+import org.example.pmas.model.Project;
 import org.example.pmas.model.Role;
+import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,4 +106,55 @@ class UserRepositoryTest {
         // Assert
         assertEquals("Rebecca Black", actual.getName());
     }
+
+    @Test
+    void readUserWithDetails_returnsUserWithTasksAndProjects() {
+        // Arrange
+        int userId = 1;
+
+        // Act
+        User user = userRepository.readUserWithDetails(userId);
+
+        //Assert
+        //checking the user:
+        assertNotNull(user, "Expected user to be found, but got null.");
+        assertEquals("Rebecca Black", user.getName());
+        assertNotNull(user.getRole());
+        assertEquals("Admin", user.getRole().getName());
+
+        //Assert
+        // checking if task list was read:
+        assertNotNull(user.getTasks());
+        assertFalse(user.getTasks().isEmpty());
+
+        //take a task from the list and see if it was assigned information
+        Boolean taskHasContents = false;
+        for (Task task : user.getTasks()){
+            if(task.getName() != null && !task.getUsers().isEmpty()){
+                taskHasContents = true;
+                break;
+            }
+        }
+        assertTrue(taskHasContents);
+
+        // Assert
+        //checking same for projects:
+        assertNotNull(user.getProjects());
+        assertFalse(user.getProjects().isEmpty());
+
+        //cross referencing the user's projects field values and the project's assigned user:
+        boolean hasRelevantProject = false;
+        for (Project p : user.getProjects()) {
+            String name = p.getName();
+            if (name != null && (name.contains("Website") || name.contains("Mobile"))) {
+                hasRelevantProject = true;
+                break;
+            }
+        }
+        assertTrue(hasRelevantProject);
+    }
+
+
+
+
 }

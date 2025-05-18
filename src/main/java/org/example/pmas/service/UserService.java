@@ -15,6 +15,7 @@ import org.example.pmas.util.SortList;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,15 +23,13 @@ public class UserService {
 
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
-    private final ITaskRepository taskRepository;
-    private final IProjectRepository projectRepository;
 
 
-    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ITaskRepository taskRepository, IProjectRepository projectRepository) {
+
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
+
     }
 
     public void createUser(User newUser){
@@ -57,31 +56,20 @@ public class UserService {
 
     public User getUser(int userId) {
         try {
-            User user = userRepository.readSelected(userId);
+            User user = userRepository.readUserWithDetails(userId);
 
-            //Filling out variables for user:
-            List<Task> tasks = taskRepository.findAllByUserId(userId);
-            tasks = SortList.tasksDeadlinePriority(tasks);
-            List<Project> projects = projectRepository.readProjectsOfUser(userId);
-
-
-            //Making sure tasks subprojects foreign key is not empty:
-            for(Task task : tasks){
-                if(task.getSubProject() != null){
-                    int subprojectID = task.getSubProject().getId();
-                    int projectID = userRepository.getProjectIDOfUsersSubproject(userId, subprojectID);
-                    task.getSubProject().setProjectID(projectID);
-                }
+            if (user == null) {
+                throw new NotFoundException("Database not containing User, not found for id " + userId);
             }
 
-
-            user.setTasks(tasks);
-            user.setProjects(projects);
+            //Filling out variables for user:
+             List<Task> sortedTasks = SortList.tasksDeadlinePriority(user.getTasks());
+             user.setTasks(sortedTasks);
 
             return user;
 
         } catch (DataAccessException e) {
-            throw new DatabaseException(e);
+            throw new DatabaseException("Could not access database, or sql failed.",e);
         }
     }
 

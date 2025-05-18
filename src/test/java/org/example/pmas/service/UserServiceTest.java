@@ -65,10 +65,8 @@ class UserServiceTest {
     void getUser() {
         // Arrange
         List<Task> task = MockDataModel.tasksWithValues();
-        when(userRepository.readSelected(1)).thenReturn(user);
-        when(taskRepository.findAllByUserId(1)).thenReturn(task);
-        when(projectRepository.readProjectsOfUser(1)).thenReturn(any(List.class));
-
+        user.setTasks(task);
+        when(userRepository.readUserWithDetails(1)).thenReturn(user);
 
         // Act
         User result = userService.getUser(1);
@@ -76,7 +74,7 @@ class UserServiceTest {
         // Assert
         assertNotNull(result);
         assertEquals(user, result);
-        verify(userRepository, times(1)).readSelected(1);
+        verify(userRepository, times(1)).readUserWithDetails(1);
     }
 
     @Test
