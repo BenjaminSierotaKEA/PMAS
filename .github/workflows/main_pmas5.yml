@@ -5,14 +5,17 @@ name: Build and deploy JAR app to Azure Web App - PMAS5
 
 on:
   pull_request:
+  push: # For safety. If somehow you can push to main.
     branches:
       - main
   workflow_dispatch:
 
 jobs:
   build:
+    name: build and test
     runs-on: ubuntu-latest
     permissions:
+      checks: write
       contents: read #This is required for actions/checkout
 
     steps:
@@ -25,7 +28,20 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
-        run: mvn clean install
+          #env:
+          #DEV_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+          #DEV_USERNAME: ${{ secrets.PROD_USERNAME }}
+          #DEV_PASSWORD: ${{ secrets.PROD_PASSWORD }}
+        run: mvn clean install -DskipTests
+
+      - name: Run Tests
+        run: mvn test
+
+          #- name: Publish Test Report
+          #if: success() #|| failure()
+          #uses: scacap/action-surefire-report@v1
+
+
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
