@@ -2,10 +2,9 @@ name: Qodana
 on:
   workflow_dispatch:
   pull_request:
-  push:
+  push: # For safety. If somehow you can push to main.
     branches: # Specify your branches here
       - main # The 'main' branch
-      - 'releases/*' # The release branches
 
 jobs:
   build:
@@ -25,16 +24,16 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
-        #env:
+          #env:
           #DEV_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
           #DEV_USERNAME: ${{ secrets.PROD_USERNAME }}
-          #DEV_PASSWORD: ${{ secrets.PROD_PASSWORD }}
+        #DEV_PASSWORD: ${{ secrets.PROD_PASSWORD }}
         run: mvn clean install -DskipTests
 
       - name: Run Tests
         run: mvn test
 
-      #- name: Publish Test Report
+        #- name: Publish Test Report
         #if: success() #|| failure()
         #uses: scacap/action-surefire-report@v1
 
@@ -45,3 +44,21 @@ jobs:
           name: java-app
           path: '${{ github.workspace }}/target/*.jar'
 
+  qodana:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
+          fetch-depth: 0  # a full history is required for pull request analysis
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v2025.1
+        with:
+          pr-mode: false
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_788285330 }}
+          QODANA_ENDPOINT: 'https://qodana.cloud'

@@ -1,5 +1,6 @@
 package org.example.pmas.service;
 
+import org.example.pmas.exception.CreateObjectException;
 import org.example.pmas.model.dto.SubProjectDTO;
 import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
@@ -8,11 +9,10 @@ import org.example.pmas.model.Project;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
-import org.example.pmas.service.comparators.SubProjectNameComparator;
 import org.example.pmas.util.CompletionStatCalculator;
+import org.example.pmas.util.SortList;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -26,61 +26,64 @@ public class SubProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public List<SubProject> readAll() {
-        return subprojectRepository.readAll();
-    }
-
     public SubProject readSelected(int id) {
         SubProject sub = subprojectRepository.readSelected(id);
-        if(sub == null) {
+        if (sub == null) {
             throw new NotFoundException(id);
         }
         return sub;
     }
 
-    public SubProject create(SubProject subproject) {
-        if(!projectRepository.doesProjectExist(subproject.getProjectID())) {
+    public void create(SubProject subproject) {
+        if (!projectRepository.doesProjectExist(subproject.getProjectID())) {
             throw new NotFoundException(subproject.getProjectID());
         }
-        return subprojectRepository.create(subproject);
+
+        if (subprojectRepository.create(subproject) == null)
+            throw new CreateObjectException(subproject.getId());
     }
 
     public void delete(int id) {
-        if(!subprojectRepository.doesSubProjectExist(id)) {
+        if (!subprojectRepository.doesSubProjectExist(id)) {
             throw new NotFoundException(id);
         }
-        if(!subprojectRepository.delete(id))
-            throw new DeleteObjectException("Couldn't delete subproject with id: " + id);
+        if (!subprojectRepository.delete(id))
+            throw new DeleteObjectException(id);
     }
 
     public void updateSubProject(SubProject subproject) {
-        if(!subprojectRepository.doesSubProjectExist(subproject.getId())) {
+        if (!subprojectRepository.doesSubProjectExist(subproject.getId())) {
             throw new NotFoundException(subproject.getId());
         }
 
-        if(!subprojectRepository.update(subproject))
-            throw new UpdateObjectException("Couldn't update subproject with id: " + subproject.getId());
+        if (!subprojectRepository.update(subproject))
+            throw new UpdateObjectException(subproject.getId());
     }
 
     public List<SubProjectDTO> getSubProjectDTOByProjectId(int id) {
         List<SubProjectDTO> subprojects = subprojectRepository.getSubProjectDTOByProjectID(id);
-        if(subprojects == null) return Collections.emptyList();
+        // if no list is returned, return empty list.
+        if (subprojects == null) return Collections.emptyList();
 
-        for(SubProjectDTO s : subprojects) {
-            s.setCompletionPercentage(CompletionStatCalculator.calculatePercentage(s.getCompletedTasks(),s.getTotalTasks()));
-            s.setCompleted(CompletionStatCalculator.isJobCompleted(s.getCompletedTasks(), s.getTotalTasks()));
+        for (SubProjectDTO s : subprojects) {
+            s.setCompletionPercentage(
+                    CompletionStatCalculator.calculatePercentage(s.getCompletedTasks(), s.getTotalTasks())
+            );
+            s.setCompleted(
+                    CompletionStatCalculator.isJobCompleted(s.getCompletedTasks(), s.getTotalTasks())
+            );
+
+            subprojectRepository.updateSubProjectCompleted(
+                    s.getId(),
+                    s.isCompleted());
         }
-
-        // We sort the list on name
-        // We copy the list, so it's not immutable
-        List<SubProjectDTO> modifiableList = new ArrayList<>(subprojects);
-        modifiableList.sort(new SubProjectNameComparator());
-
-        return modifiableList;
+        return SortList.subProjectDTOName(subprojects);
     }
 
-    public Project getProjectById(int projectId){
-        if(!projectRepository.doesProjectExist(projectId)) throw new NotFoundException("Something wrong with project id");
+    public Project getProjectById(int projectId) {
+        if (!projectRepository.doesProjectExist(projectId))
+            throw new NotFoundException(projectId);
+
         return projectRepository.readSelected(projectId);
     }
 }

@@ -35,20 +35,27 @@
                           required></textarea>
             </div>
 
-            <fieldset class="checkbox-group" th:if="${ProjectManager}">
+            <fieldset class="checkbox-group">
                 <legend>Pick users:</legend>
                 <div th:each="user : ${users}" class="user-checkbox-wrapper">
                     <label class="user-checkbox">
                         <input type="checkbox" name="userIds"
                                th:checked="${task.users != null and task.users.contains(user)}"
-                               th:value="${user.userID}"/>
+                               th:value="${user.userID}"
+                               th:disabled="${session.user != null and session.user.role.name != 'Project Manager'}" />
                         <span th:text="${user.name}"></span>
                     </label>
+
+                    <!-- Hidden input for regular users to submit checked users despite disabled checkboxes -->
+                    <input type="hidden" name="userIds"
+                           th:if="${session.user != null and session.user.role.name != 'Project Manager' and task.users.contains(user)}"
+                           th:value="${user.userID}" />
                 </div>
             </fieldset>
 
+
             <fieldset class="radio-group" >
-                <legend>Assignment status</legend>
+                <legend>Completed:</legend>
                 <label for="yes">Done</label>
                 <input type="radio" id="yes" name="completed" th:field="*{completed}" value="true"/>
 
@@ -69,30 +76,29 @@
 
             <div class="form-group">
                 <label for="priorityLevel">Priority:</label>
-                <select name="priority" id="priorityLevel" th:field="*{priorityLevel}" th:disabled="${!ProjectManager}">
+
+                <!-- Editable select for Project Managers -->
+                <select th:if="${ProjectManager}" th:field="*{priorityLevel}" id="priorityLevel">
                     <option value="">Please choose</option>
-                    <option th:each="priority : ${priorities}" th:value="${priority}"
-                            th:text="${priority.displayName}"></option>
+                    <option th:each="priority : ${priorities}"
+                            th:value="${priority}"
+                            th:text="${priority.displayName}">
+                    </option>
                 </select>
+
+                <!-- Read-only display with hidden input for others -->
+                <div th:unless="${ProjectManager}">
+                    <input type="text" readonly th:value="*{priorityLevel.displayName}" class="readonly-field" />
+                    <input type="hidden" th:field="*{priorityLevel}" />
+                </div>
             </div>
+
 
             <div class="button-container">
                 <button type="submit">Update</button>
-
-                <a th:if="${session.user.role.name == 'Employee'}"
-                   >
-                    <button type="button" onclick="history.back()">Back</button>
-                </a>
-
-                <!-- th:href="@{/{id}/user(id=${session.user.userID})}" -->
-
-                <a th:unless="${session.user.role.name == 'Employee'}"
-                   >
+                <a>
                     <button type="button"  onclick="history.back()">Back</button>
                 </a>
-                <!-- th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
-                    projectId=${projectId}, subprojectId=${subprojectId})}"  -->
-
             </div>
 
         </form>

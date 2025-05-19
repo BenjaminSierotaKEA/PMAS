@@ -8,6 +8,7 @@ import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +33,29 @@ public class ProjectController {
 
 
         model.addAttribute("allowAccess", allowAccess);
-        model.addAttribute("project", project);
+        if (!model.containsAttribute("project"))
+            model.addAttribute("project", project);
         model.addAttribute("users", projectService.getAllUsers());
 
         return "project-create-form";
     }
 
+    // RedirectAttribute explained
+    // stores the attributes in a flashmap (which is internally maintained in the users session and
+    // removed once the next redirected request gets fulfilled)
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project,
-                                @RequestParam(name="userIds", required = false) Set<Integer> userIDs) {
-        if(project == null) throw new IllegalArgumentException("Something wrong with project.");
+                                @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
+                                RedirectAttributes redirectAttributes) {
+        if (project == null) throw new IllegalArgumentException("Something wrong with project.");
 
         if (sessionHandler.isUserProjectManager()) {
+            if (projectService.checkProjectName(project.getName())) {
+                redirectAttributes.addFlashAttribute("project", project);
+                redirectAttributes.addFlashAttribute("errorName", "Project name already exists. Please choose another name.");
+                return "redirect:/projects/new";
+            }
+
             Project resultProject = projectService.createProject(project);
             projectService.addUsersToProject(resultProject.getId(), userIDs); //replace 1 with ID of newly created project
         }
@@ -54,11 +66,11 @@ public class ProjectController {
     @GetMapping("/all")
     public String seeAll(Model model) {
         boolean allowAccess = sessionHandler.isNotAdmin();
-        if(allowAccess) {
+        if (allowAccess) {
             List<Project> projects = projectService.readAll();
             model.addAttribute("projects", projects);
         }
-        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
+        model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", allowAccess);
         return "project-all";
     }
@@ -75,7 +87,7 @@ public class ProjectController {
         } else {
             model.addAttribute("username", "logged out");
         }
-        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
+        model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         model.addAttribute("loggedIn", loggedIn);
         return "project-selected";
     }
@@ -83,7 +95,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/edit")
     public String updateForm(@PathVariable int projectId, Model model) {
-        if(projectId <= 0) throw new IllegalArgumentException("Something wrong with id: " + projectId);
+        if (projectId <= 0) throw new IllegalArgumentException("Something wrong with id: " + projectId);
 
         Project project;
 
@@ -91,32 +103,43 @@ public class ProjectController {
         //getting a list of users if we are allowed access:
         List<User> usersOnProject = new ArrayList<>();
         List<User> usersNotOnProject = new ArrayList<>();
-        if(allowAccess) {
+        if (allowAccess) {
             project = projectService.readSelected(projectId);
-            model.addAttribute("project", project);
+            if (!model.containsAttribute("project"))
+                model.addAttribute("project", project);
             usersOnProject = projectService.getAllUsersOnProject(projectId);
             usersNotOnProject = projectService.getAllUsersNotOnProject(projectId);
 
         }
 
-        model.addAttribute("allowAccess",allowAccess);
+        model.addAttribute("allowAccess", allowAccess);
         model.addAttribute("usersOnProject", usersOnProject);
         model.addAttribute("usersNotOnProject", usersNotOnProject);
         return "project-update-form";
     }
 
+    // RedirectAttribute explained
+    // stores the attributes in a flashmap (which is internally maintained in the users session and
+    // removed once the next redirected request gets fulfilled)
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project,
-                                @RequestParam(name="usersToAddID", required = false) Set<Integer> usersToAddID,
-                                @RequestParam(name="usersToRemoveID", required = false) Set<Integer> usersToRemoveID) {
-        if(project == null) throw new IllegalArgumentException("Something wrong with project");
+                                @RequestParam(name = "usersToAddID", required = false) Set<Integer> usersToAddID,
+                                @RequestParam(name = "usersToRemoveID", required = false) Set<Integer> usersToRemoveID,
+                                RedirectAttributes redirectAttributes) {
+        if (project == null) throw new IllegalArgumentException("Something wrong with project");
 
         if (sessionHandler.isUserProjectManager()) {
+            if (projectService.checkProjectName(project.getName())) {
+                redirectAttributes.addFlashAttribute("project", project);
+                redirectAttributes.addFlashAttribute("errorName", "Project name already exists. Please choose another name.");
+                return "redirect:/projects/" + project.getId() + "/edit";
+            }
+
             projectService.updateProject(project);
-            if(usersToAddID != null){
+            if (usersToAddID != null) {
                 projectService.addUsersToProject(project.getId(), usersToAddID);
             }
-            if(usersToRemoveID != null){
+            if (usersToRemoveID != null) {
                 projectService.removeUsersFromProject(project.getId(), usersToRemoveID);
             }
 
@@ -127,7 +150,7 @@ public class ProjectController {
 
     @PostMapping("{projectId}/delete")
     public String deleteProject(@PathVariable int projectId) {
-        if(projectId <= 0) throw new IllegalArgumentException("Something wrong with id: " + projectId);
+        if (projectId <= 0) throw new IllegalArgumentException("Something wrong with id: " + projectId);
 
         if (sessionHandler.isUserProjectManager()) {
             projectService.deleteProject(projectId);

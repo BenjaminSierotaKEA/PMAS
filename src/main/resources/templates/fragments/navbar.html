@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="navbar">
+<div th:if="${session.user != null and session.user.role.name != 'Admin'}"   th:fragment="navbar">
   <nav class="navbar">
 
-    <div class="nav-section">
+    <div  class="nav-section">
       <img th:src="@{/images/logoWithText.png}" alt="Logo" class="navbar-logo">
     </div>
 

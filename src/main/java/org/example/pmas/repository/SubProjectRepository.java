@@ -27,13 +27,34 @@ public class SubProjectRepository implements ISubProjectRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    //    public List<SubProject> getSubProjectsByProjectID(int projectId) {
+//        String sql = "SELECT * FROM subprojects WHERE projectID = ?";
+//        try {
+//            return jdbcTemplate.query(sql, new SubProjectRowMapper(), projectId);
+//        } catch (DataAccessException e) {
+//            throw new DatabaseException("Database error: couldn't get all task with associated project id: " + projectId, e);
+//        }
+//    }
+
+//    public int getProjectIDBySubProjectID(int subprojectID) {
+//        String sql = "SELECT projectID FROM subprojects WHERE id = ?";
+//        try {
+//            Integer result = jdbcTemplate.queryForObject(sql, new Object[]{subprojectID}, Integer.class);
+//            return result != null ? result : 0;
+//        } catch (DataAccessException e) {
+//            throw new DatabaseException("Database error: " + new NotFoundException(subprojectID));
+//        }
+//    }
+
+    // Used for test
+    // Implementet for further development.
     @Override
     public List<SubProject> readAll() {
         String sql = "SELECT * from subprojects";
         try {
             return jdbcTemplate.query(sql, new SubProjectRowMapper());
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't get all subprojects", e);
+            throw new DatabaseException(e);
         }
     }
 
@@ -47,18 +68,9 @@ public class SubProjectRepository implements ISubProjectRepository {
         }
     }
 
-    public List<SubProject> getSubProjectsByProjectID(int projectId) {
-        String sql = "SELECT * FROM subprojects WHERE projectID = ?";
-        try {
-            return jdbcTemplate.query(sql, new SubProjectRowMapper(), projectId);
-        } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't get all task with associated project id: " + projectId, e);
-        }
-    }
-
     @Override
     public SubProject create(SubProject subProject) {
-        String sql = "INSERT INTO subprojects (name, description, timeBudget, timeTaken, completed, projectID) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO subprojects (name, description, timeBudget, completed, projectID) VALUES (?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -68,13 +80,12 @@ public class SubProjectRepository implements ISubProjectRepository {
                 ps.setString(1, subProject.getName());
                 ps.setString(2, subProject.getDescription());
                 ps.setObject(3, subProject.getTimeBudget(), java.sql.Types.DOUBLE);
-                ps.setDouble(4, subProject.getTimeTaken());
-                ps.setBoolean(5, subProject.isCompleted());
-                ps.setInt(6, subProject.getProjectID());
+                ps.setBoolean(4, subProject.isCompleted());
+                ps.setInt(5, subProject.getProjectID());
                 return ps;
             }, keyHolder);
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't insert subproject", e);
+            throw new DatabaseException(e);
         }
 
         Number generatedKey = keyHolder.getKey();
@@ -95,46 +106,37 @@ public class SubProjectRepository implements ISubProjectRepository {
             //jdbc returns number of rows affected.
             return rows > 0;
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: " + new NotFoundException(id));
+            throw new DatabaseException("Database error: " + new NotFoundException(id), e);
         }
     }
 
     @Override
     public boolean update(SubProject subproject) {
-        String sql = "UPDATE subprojects SET name = ?, description = ?, timeBudget = ?, timeTaken = ?, completed = ? WHERE id = ?";
+        String sql = "UPDATE subprojects SET name = ?, description = ?, timeBudget = ?, completed = ? WHERE id = ?";
         try {
             return jdbcTemplate.update(sql,
                     subproject.getName(),
                     subproject.getDescription(),
                     subproject.getTimeBudget(),
-                    subproject.getTimeTaken(),
                     subproject.isCompleted(),
                     subproject.getId()) > 0;
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't update subproject with id: " + subproject.getId(), e);
+            throw new DatabaseException(e);
         }
     }
 
-    public int getProjectIDBySubProjectID(int subprojectID) {
-        String sql = "SELECT projectID FROM subprojects WHERE id = ?";
-        try {
-            Integer result = jdbcTemplate.queryForObject(sql, new Object[]{subprojectID}, Integer.class);
-            return result != null ? result : 0;
-        } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: " + new NotFoundException(subprojectID));
-        }
-    }
-
+    @Override
     public boolean doesSubProjectExist(int id) {
         String sql = "SELECT EXISTS (SELECT 1 FROM subprojects WHERE id = ?)";
-        //null safe way to check if result is true. Uses boolean object(true) to compare.
         try {
+            //null safe way to check if result is true. Uses boolean object(true) to compare.
             return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{id}, Boolean.class));
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't check if subproject exists with ID " + id, e);
+            throw new DatabaseException(e);
         }
     }
 
+    @Override
     public List<SubProjectDTO> getSubProjectDTOByProjectID(int projectID) {
         String sql = "SELECT " +
                 "sp.id, " +
@@ -144,8 +146,8 @@ public class SubProjectRepository implements ISubProjectRepository {
                 "sp.projectID, " +
                 "sp.timeBudget, " +
                 "COUNT(t.id) AS totalTasks, " +
-                "SUM(CASE WHEN t.completed = true THEN 1 ELSE 0 END) AS completedTasks, " +
-                "SUM(CASE WHEN t.completed = true THEN t.timeBudget ELSE 0 END) AS timeTaken " +
+                "SUM(IF(t.completed = true, 1, 0)) AS completedTasks, " +
+                "SUM(IF(t.completed = true, t.timeBudget, 0)) AS timeTaken " +
                 "FROM subprojects sp " +
                 "LEFT JOIN tasks t ON sp.id = t.subProjectID " +
                 "WHERE sp.projectID = ? " +
@@ -153,7 +155,18 @@ public class SubProjectRepository implements ISubProjectRepository {
         try {
             return jdbcTemplate.query(sql, new SubProjectDTORowMapper(), projectID);
         } catch (DataAccessException e) {
-            throw new DatabaseException("Database error: couldn't get all subprojects", e);
+            throw new DatabaseException(e);
+        }
+    }
+
+    @Override
+    public void updateSubProjectCompleted(int subProjectID, boolean completed) {
+        String sql = "UPDATE subprojects SET completed = ? " +
+                "WHERE id = ?";
+        try {
+            jdbcTemplate.update(sql, completed, subProjectID);
+        } catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
     }
 }

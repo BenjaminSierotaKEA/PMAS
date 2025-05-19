@@ -7,45 +7,39 @@ import org.example.pmas.model.Project;
 import org.example.pmas.model.Role;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
+import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.example.pmas.repository.Interfaces.IRoleRepository;
+import org.example.pmas.repository.Interfaces.ITaskRepository;
 import org.example.pmas.repository.Interfaces.IUserRepository;
-import org.example.pmas.repository.ProjectRepository;
-import org.example.pmas.repository.TaskRepository;
-import org.example.pmas.util.SortTaskList;
+import org.example.pmas.util.SortList;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserService {
 
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
-    private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
 
 
-    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, TaskRepository taskRepository, ProjectRepository projectRepository) {
+
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
+
     }
 
-    public User createUser(User newUser){
+    public void createUser(User newUser){
         try {
             //checks the return results of the method
             var user = userRepository.create(newUser);
             if (user == null) throw new NotFoundException(newUser.getUserID());
-            //returns the method
-            return userRepository.create(newUser);
-
             //error handling, if failing to reach DB
-        }catch (DataAccessException dataAccessException){
-            throw new DatabaseException("Database error: could not create new user in database.");
+        }catch (DataAccessException e){
+            throw new DatabaseException(e);
         }
 
     }
@@ -53,8 +47,8 @@ public class UserService {
     public List<User> getAll(){
         try{
             return userRepository.readAll();
-        }catch (DataAccessException dataAccessException) {
-            throw new DatabaseException("Database error: could not retrieve users from database.");
+        }catch (DataAccessException e) {
+            throw new DatabaseException(e);
         }
     }
 
@@ -62,31 +56,20 @@ public class UserService {
 
     public User getUser(int userId) {
         try {
-            User user = userRepository.readSelected(userId);
+            User user = userRepository.readUserWithDetails(userId);
 
-            //Filling out variables for user:
-            List<Task> tasks = taskRepository.findAllByUserId(userId);
-            tasks = SortTaskList.sortList(tasks);
-            List<Project> projects = projectRepository.readProjectsOfUser(userId);
-
-
-            //Making sure tasks subprojects foreign key is not empty:
-            for(Task task : tasks){
-                if(task.getSubProject() != null){
-                    int subprojectID = task.getSubProject().getId();
-                    int projectID = userRepository.getProjectIDOfUsersSubproject(userId, subprojectID);
-                    task.getSubProject().setProjectID(projectID);
-                }
+            if (user == null) {
+                throw new NotFoundException("Database not containing User, not found for id " + userId);
             }
 
-
-            user.setTasks(tasks);
-            user.setProjects(projects);
+            //Filling out variables for user:
+             List<Task> sortedTasks = SortList.tasksDeadlinePriority(user.getTasks());
+             user.setTasks(sortedTasks);
 
             return user;
 
-        } catch (DataAccessException dataAccessException) {
-            throw new NotFoundException("Database error: could not find user in database.");
+        } catch (DataAccessException e) {
+            throw new DatabaseException("Could not access database, or sql failed.",e);
         }
     }
 
@@ -104,7 +87,7 @@ public class UserService {
             }
 
 
-        } catch (DataAccessException dataAccessException) {
+        } catch (NotFoundException e) {
             throw new NotFoundException("Database error: could not find user in database.");
         }
     }
@@ -115,7 +98,7 @@ public class UserService {
         if(user == null) throw new NotFoundException(id);
 
         if(!userRepository.delete(id))
-            throw new DeleteObjectException("Couldn't delete user with id: " + id);
+            throw new DeleteObjectException(id);
 
     }
 
@@ -128,8 +111,8 @@ public class UserService {
 
         try {
           return userRepository.update(newUser);
-        }catch (DataAccessException | IllegalArgumentException dataAccessException){
-            throw new DatabaseException("Database error: could not update task.");
+        }catch (DataAccessException e){
+            throw new DatabaseException(e);
         }
     }
 
@@ -137,7 +120,7 @@ public class UserService {
         try {
             return userRepository.getByEmail(email);
         }catch (DataAccessException e){
-            throw new NotFoundException("Database error: could not find user.");
+            throw new DatabaseException(e);
         }
     }
 
@@ -145,7 +128,7 @@ public class UserService {
         try {
             return roleRepository.readAll();
         } catch ( DataAccessException e) {
-            throw new DatabaseException("Database error: could not retrieve roles.");
+            throw new DatabaseException(e);
         }
 
     }

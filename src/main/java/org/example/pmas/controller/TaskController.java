@@ -8,6 +8,7 @@ import org.example.pmas.util.SessionHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -31,9 +32,10 @@ public class TaskController {
         if (loggedIn) {
             // Adds tasks to HTML
             model.addAttribute("tasks", taskService.getTasksBySubProjectID(subprojectId));
-            model.addAttribute("subproject", taskService.getSubProject(subprojectId));
         }
+
         model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
+        model.addAttribute("user",sessionHandler.getCurrentUser());
         model.addAttribute("allowAccess", loggedIn);
         return "task-all";
     }
@@ -48,8 +50,7 @@ public class TaskController {
         if (loggedIn) {
             // Adds all task to HTML
             model.addAttribute("tasks", taskService.readAll());
-
-
+            model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         }
 
         model.addAttribute("allowAccess", loggedIn);
@@ -64,13 +65,11 @@ public class TaskController {
                                Model model) {
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
-            if (id < 0) throw new IllegalArgumentException("Something wrong with id");
+            if (id < 0) throw new IllegalArgumentException("Something wrong with taskid");
 
             Task task = taskService.readSelected(id);
-            model.addAttribute("subprojectId", subprojectId);
-            model.addAttribute("projectId", projectId);
             model.addAttribute("task", task);
-            getSubProjectUsersPriority(model,projectId);
+            getSubProjectUsersPriority(model,projectId, subprojectId);
         }
         model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
@@ -84,9 +83,7 @@ public class TaskController {
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
             model.addAttribute("task", new Task());
-            model.addAttribute("subprojectId", subprojectId);
-            model.addAttribute("projectId", projectId);
-            getSubProjectUsersPriority(model, projectId);
+            getSubProjectUsersPriority(model, projectId, subprojectId);
         }
 
         model.addAttribute("allowAccess", loggedIn);
@@ -113,7 +110,7 @@ public class TaskController {
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId) {
         if (sessionHandler.isNotAdmin()) {
-            if (id <= 0) throw new IllegalArgumentException("Something wrong with id: " + id);
+            if (id <= 0) throw new IllegalArgumentException("Something wrong with taskid: " + id);
 
             taskService.delete(id);
         }
@@ -125,13 +122,14 @@ public class TaskController {
                              @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId,
-                             Model model) {
+                             RedirectAttributes redirectAttributes) {
         if (sessionHandler.isNotAdmin()) {
             if (task == null) throw new IllegalArgumentException("Something wrong with task.");
             // Checks if subproject is set, if not, redirect to subproject page
             if (task.getId() <= 0) {
-                getSubProjectUsersPriority(model, projectId);
-                model.addAttribute("task", task);
+                redirectAttributes.addAttribute("users", taskService.getAllUsersOnProject(projectId));
+                redirectAttributes.addAttribute("priorities", PriorityLevel.values());
+                redirectAttributes.addFlashAttribute("task", task);
                 return "redirect:/tasks/" + task.getId() + "/task";
             }
 
@@ -141,7 +139,9 @@ public class TaskController {
         return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/all";
     }
 
-    private void getSubProjectUsersPriority(Model model, int projectId) {
+    private void getSubProjectUsersPriority(Model model, int projectId, int subprojectId) {
+        model.addAttribute("subprojectId", subprojectId);
+        model.addAttribute("projectId", projectId);
         model.addAttribute("users", taskService.getAllUsersOnProject(projectId));
         model.addAttribute("priorities", PriorityLevel.values());
     }

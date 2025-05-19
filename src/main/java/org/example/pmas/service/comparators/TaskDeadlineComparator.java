@@ -1,7 +1,6 @@
 package org.example.pmas.service.comparators;
 
 import org.example.pmas.model.Task;
-import org.example.pmas.model.enums.PriorityLevel;
 
 import java.time.LocalDate;
 import java.util.Comparator;
@@ -13,6 +12,7 @@ public class TaskDeadlineComparator implements Comparator<Task> {
         LocalDate date1 = o1.getDeadline();
         LocalDate date2 = o2.getDeadline();
 
-        return LocalDateCheck.checkDate(date1, date2);
+        var compare = new CompareAttributes();
+        return compare.localDate(date1, date2);
     }
 }

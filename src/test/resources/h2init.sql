@@ -6,6 +6,7 @@ CREATE TABLE PROJECTS
     description VARCHAR(200),
     timeBudget  INT                 NOT NULL,
     deadline    DATETIME            NOT NULL,
+    completed   BOOL,
     PRIMARY KEY (id)
 
 );
@@ -18,7 +19,6 @@ CREATE TABLE SUBPROJECTS
     description VARCHAR(200),
     timeBudget  INT                 NOT NULL,
     completed   BOOL,
-    timeTaken   INT,
     projectID   INT                 NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (projectID) REFERENCES projects (id) ON DELETE CASCADE
@@ -34,7 +34,6 @@ CREATE TABLE TASKS
     priorityLevel VARCHAR(30),
     timeBudget    INT          NOT NULL,
     completed     BOOL,
-    timeTaken     INT,
     deadline      DATE,
     subProjectID  INT          NOT NULL,
     PRIMARY KEY (id),
@@ -102,16 +101,16 @@ VALUES ('Website Redesign', 'Redesigning the company website.', 500, '2021-07-14
        ('Mobile App', 'Developing the new company mobile app.', 800, '2022-03-09');
 
 -- Insert Subprojects
-INSERT INTO SUBPROJECTS (name, description, timeBudget, completed, timeTaken, projectID)
-VALUES ('UI Overhaul', 'Update the UI/UX of the website.', 200, false, NULL, 1),
-       ('Backend API', 'Develop new APIs for the app.', 300, false, NULL, 2),
-       ('App UI Design', 'Create new design layouts for the app.', 250, false, NULL, 2);
+INSERT INTO SUBPROJECTS (name, description, timeBudget, completed, projectID)
+VALUES ('UI Overhaul', 'Update the UI/UX of the website.', 200, false,  1),
+       ('Backend API', 'Develop new APIs for the app.', 300, false, 2),
+       ('App UI Design', 'Create new design layouts for the app.', 250, false, 2);
 
 -- Insert Tasks
-INSERT INTO TASKS (name, description, priorityLevel, timeBudget, completed, timeTaken, deadline, subProjectID)
-VALUES ('Create Mockups', 'Create mockup screens for new website design.', 'LOW', 40, false, NULL, '2023-11-17', 1),
-       ('Implement Login API', 'Develop authentication endpoints.', 'MEDIUM', 60, false, NULL, '2021-04-05', 2),
-       ('Build Profile Screen', 'Create profile page design for app.', 'HIGH', 50, false, NULL, '2024-08-29', 3);
+INSERT INTO TASKS (name, description, priorityLevel, timeBudget, completed, deadline, subProjectID)
+VALUES ('Create Mockups', 'Create mockup screens for new website design.', 'LOW', 40, false, '2023-11-17', 1),
+       ('Implement Login API', 'Develop authentication endpoints.', 'MEDIUM', 60, false, '2021-04-05', 2),
+       ('Build Profile Screen', 'Create profile page design for app.', 'HIGH', 50, false, '2024-08-29', 3);
 
 -- Populate userprojects
 INSERT INTO USERPROJECTS (projectid, userid)

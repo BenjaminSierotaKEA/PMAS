@@ -4,8 +4,6 @@ import org.example.pmas.model.Role;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.modelBuilder.MockDataModel;
-import org.example.pmas.service.ProjectService;
-import org.example.pmas.service.SubProjectService;
 import org.example.pmas.service.TaskService;
 import org.example.pmas.util.SessionHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,16 +45,16 @@ class TaskControllerTest {
     void readAllTaskBySubProjectID() throws Exception {
         // Arrange
         when(sessionHandler.isNotAdmin()).thenReturn(true);
+        when(sessionHandler.isUserProjectManager()).thenReturn(true);
         when(taskService.getTasksBySubProjectID(1))
                 .thenReturn(tasks);
-        when(taskService.getSubProject(any(Integer.class)))
-                .thenReturn(MockDataModel.subprojectsWithValues().getFirst());
 
         // Act & Assert
         mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/all", 1, 1))
                 .andExpect(status().isOk())
                 .andExpect(view().name("task-all"))
                 .andExpect(model().attributeExists("allowAccess"))
+                .andExpect(model().attributeExists("ProjectManager"))
                 .andExpect(model().attributeExists("tasks"));
 
         verify(sessionHandler, times(1)).isNotAdmin();
@@ -107,7 +105,6 @@ class TaskControllerTest {
                         .param("name", task.getName())
                         .param("description", task.getDescription())
                         .param("timeBudget", String.valueOf(task.getTimeBudget()))
-                        .param("timeTaken", String.valueOf(task.getTimeTaken()))
                         .param("completed", String.valueOf(task.isCompleted()))
                         .param("deadline", String.valueOf(task.getDeadline()))
                         .param("subProject.id", "1")
@@ -147,7 +144,6 @@ class TaskControllerTest {
                         .param("name", task.getName())
                         .param("description", task.getDescription())
                         .param("timeBudget", String.valueOf(task.getTimeBudget()))
-                        .param("timeTaken", String.valueOf(task.getTimeTaken()))
                         .param("completed", String.valueOf(task.isCompleted()))
                         .param("subProject.id", "1")
                         .param("userIds", "1", "2"))

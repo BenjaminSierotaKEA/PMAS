@@ -10,7 +10,6 @@ public class Task {
     private String name, description;
     private PriorityLevel priorityLevel;
     private Double timeBudget;
-    private double timeTaken;
     private boolean completed;
     private LocalDate deadline;
     private SubProject subProject;
@@ -19,14 +18,13 @@ public class Task {
     public Task() {}
 
     public Task(int id, String name, String description, PriorityLevel priorityLevel, double timeBudget,
-                double timeTaken, boolean completed, LocalDate deadline, SubProject subProject,
+                boolean completed, LocalDate deadline, SubProject subProject,
                 Set<User> users) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.priorityLevel = priorityLevel;
         this.timeBudget = timeBudget;
-        this.timeTaken = timeTaken;
         this.completed = completed;
         this.deadline = deadline;
         this.subProject = subProject;
@@ -34,13 +32,12 @@ public class Task {
     }
 
     public Task(String name, String description, PriorityLevel priorityLevel, double timeBudget,
-                double timeTaken, boolean completed, LocalDate deadline, SubProject subProject,
+                boolean completed, LocalDate deadline, SubProject subProject,
                 Set<User> users) {
         this.name = name;
         this.description = description;
         this.priorityLevel = priorityLevel;
         this.timeBudget = timeBudget;
-        this.timeTaken = timeTaken;
         this.completed = completed;
         this.deadline = deadline;
         this.subProject = subProject;
@@ -77,10 +74,6 @@ public class Task {
         return timeBudget;
     }
 
-    public double getTimeTaken() {
-        return timeTaken;
-    }
-
     public boolean isCompleted() {
         return completed;
     }
@@ -107,10 +100,6 @@ public class Task {
 
     public void setTimeBudget(double timeBudget) {
         this.timeBudget = timeBudget;
-    }
-
-    public void setTimeTaken(double timeTaken) {
-        this.timeTaken = timeTaken;
     }
 
     public void setCompleted(boolean completed) {

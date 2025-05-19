@@ -18,5 +18,8 @@ public interface IProjectRepository extends CrudInterface<Project> {
 
     void removeUsersFromProject(int projectID, Set<Integer> userIDs);
     List<ProjectDTO> getProjectDTOByUserID(int userID);
-    //List<ProjectDTO> getAllProjectDTO();
+
+    void updateProjectCompleted(int projectID, boolean completed);
+
+    boolean checkProjectName(String name);
 }

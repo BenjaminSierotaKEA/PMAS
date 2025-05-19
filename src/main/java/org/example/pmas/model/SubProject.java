@@ -7,7 +7,6 @@ public class SubProject {
     private String name;
     private String description;
     private Double timeBudget;
-    private double timeTaken;
     private boolean completed;
     private Project project;
     private int projectID;
@@ -20,11 +19,10 @@ public class SubProject {
         this.name = name;
     }
 
-    public SubProject(String name, String description, Double timeBudget, double timeTaken, boolean completed, int projectID) {
+    public SubProject(String name, String description, Double timeBudget, boolean completed, int projectID) {
         this.name = name;
         this.description = description;
         this.timeBudget = timeBudget;
-        this.timeTaken = timeTaken;
         this.completed = completed;
         this.projectID = projectID;
     }
@@ -74,14 +72,6 @@ public class SubProject {
 
     public void setTimeBudget(double timeBudget) {
         this.timeBudget = timeBudget;
-    }
-
-    public double getTimeTaken() {
-        return timeTaken;
-    }
-
-    public void setTimeTaken(double timeTaken) {
-        this.timeTaken = timeTaken;
     }
 
     public boolean isCompleted() {
