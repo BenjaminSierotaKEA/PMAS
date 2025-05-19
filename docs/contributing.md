@@ -50,7 +50,7 @@ Hold øje med pull request og om de består. Kig koden igennem før du merger.
 
 ## Branches og Konventioner
 
-- Brug navne der beskriver hvad du ahr arbejdet på: `user-feature-taksDuplicate`
+- Brug navne der beskriver hvad du  har arbejdet på: `user-feature-taksDuplicate`
 - Følge eksisterende pakkestruktr (`controller`, `model`, `repository`, `service`, `util`)
 - Brug camelCase til variabler og metoder
 ---

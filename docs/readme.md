@@ -39,6 +39,7 @@ En bruger kan også komme i form af at "Project Manager", med udvidede rettighed
 Brugere med Project Manager rollen har derfor også flere muligheder for at se oversigter over projekter, subprojekter og tasks.
 
 Nedstsående er et link til den deployede version af programmet:
+[Link](https://pmas5-dfcxeqekc2awech2.francecentral-01.azurewebsites.net/)
 
 ---
 
@@ -70,7 +71,7 @@ Programmet anvender de følgende teknologier og platforme, og er essentielle for
 ### Installering 
 1. Klon dette [GitHub Repository](https://github.com/BenjaminSierotaKEA/PMAS)
 2. Opret database ved at køre DDL fra: src/main/resources/database 
-Kør eventuelt DML for at oprette en af hver tybe bruger.
+Kør eventuelt DML for at oprette en af hver type bruger.
 3. Opret Environment Variables, for både Development og Production. Disse Environment variabler bruger følgende navnekonvention:
 
 Lokalt, på jeres IDE sættes environment variables for development Spring Profile:
