@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("projects/{projectId}/subprojects/{subprojectId}/tasks")
@@ -92,7 +93,7 @@ public class TaskController {
 
     @PostMapping("create")
     public String createTask(@ModelAttribute Task task,
-                             @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
+                             @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId,
                              Model model) {
@@ -119,7 +120,7 @@ public class TaskController {
 
     @PostMapping("update")
     public String updateTask(@ModelAttribute Task task,
-                             @RequestParam(name = "userIds", required = false) List<Integer> userIDs,
+                             @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId,
                              RedirectAttributes redirectAttributes) {

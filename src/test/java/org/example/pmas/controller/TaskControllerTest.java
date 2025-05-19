@@ -14,6 +14,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -114,7 +115,7 @@ class TaskControllerTest {
 
         verify(sessionHandler, times(1)).isNotAdmin();
         verify(taskService, times(1))
-                .create(any(Task.class), any(List.class));
+                .create(any(Task.class), any(Set.class));
     }
 
     @Test
@@ -151,7 +152,7 @@ class TaskControllerTest {
                 .andExpect(redirectedUrl("/projects/1/subprojects/1/tasks/all"));
 
         verify(taskService, times(1))
-                .update(any(Task.class), any(List.class));
+                .update(any(Task.class), any(Set.class));
         verify(sessionHandler, times(1)).isNotAdmin();
     }
 }

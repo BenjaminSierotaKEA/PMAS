@@ -28,7 +28,7 @@ public class TaskService {
         this.subProjectRepository = subProjectService;
     }
 
-    public void create(Task task, List<Integer> userIDs) {
+    public void create(Task task, Set<Integer> userIDs) {
         if(!subProjectRepository.doesSubProjectExist(task.getSubProject().getId()))
             throw new NotFoundException(task.getSubProject().getId());
 
@@ -64,7 +64,7 @@ public class TaskService {
             throw new DeleteObjectException(id);
     }
 
-    public void update(Task task, List<Integer> userIDs) {
+    public void update(Task task, Set<Integer> userIDs) {
         // Check if id exist.
         var old = taskRepository.readSelected(task.getId());
         if (old == null) throw new NotFoundException(task.getId());
@@ -86,13 +86,13 @@ public class TaskService {
     }
 
     // Handle the junction table relation
-    private void addUserToTask(int taskId, List<Integer> newUserIds) {
+    private void addUserToTask(int taskId, Set<Integer> newUserIds) {
         // Get users for comparison
         List<Integer> currentUserIds = taskRepository.getCurrentUserIdsFromUserTasks(taskId);
 
         // Check differences for add or remove user from a task
         Set<Integer> toAdd = differenceOrEmpty(newUserIds, currentUserIds);
-        Set<Integer> toRemove = differenceOrEmpty(currentUserIds, newUserIds);
+        Set<Integer> toRemove = differenceOrEmpty(new HashSet<>(currentUserIds), newUserIds);
 
         // Add/Remove if needed
         taskRepository.addUsersToUserTasks(taskId, toAdd);
@@ -100,15 +100,15 @@ public class TaskService {
     }
 
     // Filter users who've been deleted or added
-    private Set<Integer> differenceOrEmpty(List<Integer> baseList, List<Integer> subtractList) {
+    private Set<Integer> differenceOrEmpty(Set<Integer> baseSet, Collection<Integer> subtractCollection) {
         // We've to check null and isEmpty or else either update or create won't work. If a list is empty
-        if (subtractList == null || subtractList.isEmpty()) subtractList = Collections.emptyList();
-        if (baseList == null || baseList.isEmpty()) baseList = Collections.emptyList();
+        if (subtractCollection == null || subtractCollection.isEmpty()) subtractCollection = Collections.emptySet();
+        if (baseSet == null || baseSet.isEmpty()) baseSet = Collections.emptySet();
 
         // Adds the list with values
-        Set<Integer> result = new HashSet<>(baseList);
+        Set<Integer> result = new HashSet<>(baseSet);
         // Removes duplicates and returns
-        result.removeAll(subtractList);
+        result.removeAll(subtractCollection);
         return result;
     }
 
