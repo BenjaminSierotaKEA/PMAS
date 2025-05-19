@@ -61,7 +61,7 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users
 (
     id       INT AUTO_INCREMENT,
-    name     VARCHAR(200) UNIQUE NOT NULL,
+    name     VARCHAR(200) NOT NULL,
     email    VARCHAR(200) UNIQUE NOT NULL,
     password VARCHAR(30)         NOT NULL,
     role     INT                 NOT NULL,
