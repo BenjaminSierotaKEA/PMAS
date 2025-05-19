@@ -1,4 +1,4 @@
-package org.example.pmas.model.rowMapper;
+package org.example.pmas.model.dto.rowMapperDTO;
 
 import org.example.pmas.model.dto.ProjectDTO;
 import org.springframework.jdbc.core.RowMapper;

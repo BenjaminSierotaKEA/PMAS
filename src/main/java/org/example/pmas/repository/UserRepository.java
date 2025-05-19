@@ -3,7 +3,7 @@ package org.example.pmas.repository;
 import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.User;
 
-import org.example.pmas.model.rowMapper.UserDTORowMapper;
+import org.example.pmas.model.dto.rowMapperDTO.UserDTORowMapper;
 import org.example.pmas.model.rowMapper.UserRowMapper;
 import org.example.pmas.repository.Interfaces.IUserRepository;
 import org.springframework.dao.DataAccessException;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Statement;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 

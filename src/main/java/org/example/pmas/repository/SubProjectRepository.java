@@ -4,7 +4,7 @@ import org.example.pmas.model.dto.SubProjectDTO;
 import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.exception.NotFoundException;
 import org.example.pmas.model.SubProject;
-import org.example.pmas.model.rowMapper.SubProjectDTORowMapper;
+import org.example.pmas.model.dto.rowMapperDTO.SubProjectDTORowMapper;
 import org.example.pmas.model.rowMapper.SubProjectRowMapper;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.springframework.dao.DataAccessException;
