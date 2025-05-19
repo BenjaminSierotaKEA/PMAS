@@ -67,7 +67,7 @@ public class SortList {
         // We sort the list on name
         // We copy the list, so it's not immutable
         List<SubProjectDTO> modifiableList = new ArrayList<>(subprojects);
-        modifiableList.sort(new SubProjectNameComparator());
+        modifiableList.sort(new SubProjectDTONameComparator());
 
         return modifiableList;
     }
