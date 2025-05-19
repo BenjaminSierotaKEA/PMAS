@@ -1,6 +1,6 @@
 package org.example.pmas.util;
 
-public class CompletionStatCalculator{
+public class    CompletionStatCalculator{
 
     public CompletionStatCalculator() {
     }

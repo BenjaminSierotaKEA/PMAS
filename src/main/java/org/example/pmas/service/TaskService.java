@@ -22,10 +22,10 @@ public class TaskService {
 
     public TaskService(ITaskRepository taskRepository,
                        IUserRepository userRepository,
-                       ISubProjectRepository subProjectService) {
+                       ISubProjectRepository subProjectRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
-        this.subProjectRepository = subProjectService;
+        this.subProjectRepository = subProjectRepository;
     }
 
     public void create(Task task, Set<Integer> userIDs) {
