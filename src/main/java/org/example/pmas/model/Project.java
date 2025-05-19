@@ -4,7 +4,7 @@ package org.example.pmas.model;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
-
+//s
 public class Project {
     private int id;
     private String name;
