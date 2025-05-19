@@ -45,6 +45,8 @@ class ProjectControllerTest {
     @BeforeEach
     void setup(){
         project = MockDataModel.projectWithValues();
+        System.out.println(project.getId());
+        System.out.println(project.getName());
     }
 
 
@@ -64,7 +66,7 @@ class ProjectControllerTest {
         when(sessionHandler.isUserProjectManager()).thenReturn(true);
 
         //Act
-        mvc.perform(post("/projects/create", 1,1)
+        mvc.perform(post("/projects/create")
                 .param("id", String.valueOf(1))
                 .param("name", project.getName())
                 .param("description", project.getDescription())
