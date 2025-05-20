@@ -5,7 +5,7 @@ import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.model.dto.ProjectDTO;
 import org.example.pmas.model.dto.SubProjectDTO;
-import org.example.pmas.service.comparators.*;
+import org.example.pmas.util.comparators.*;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package org.example.pmas.service.comparators;
+package org.example.pmas.util.comparators;
 
 import org.example.pmas.model.Task;
 import org.example.pmas.model.enums.PriorityLevel;

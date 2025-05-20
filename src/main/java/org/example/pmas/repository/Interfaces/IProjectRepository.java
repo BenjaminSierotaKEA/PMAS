@@ -10,6 +10,7 @@ import java.util.Set;
 
 @Repository
 public interface IProjectRepository extends CrudInterface<Project> {
+
     boolean doesProjectExist(int id);
 
     List<Project> readProjectsOfUser(int userID);
