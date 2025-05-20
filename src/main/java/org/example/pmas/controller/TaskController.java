@@ -35,7 +35,7 @@ public class TaskController {
         }
 
         model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
-        model.addAttribute("user",sessionHandler.getCurrentUser());
+        model.addAttribute("user", sessionHandler.getCurrentUser());
         model.addAttribute("allowAccess", loggedIn);
         return "task-all";
     }
@@ -63,15 +63,16 @@ public class TaskController {
                                @PathVariable(value = "projectId") int projectId,
                                @PathVariable(value = "subprojectId") int subprojectId,
                                Model model) {
+        if (id < 0) throw new IllegalArgumentException("Something wrong with taskid");
+
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
-            if (id < 0) throw new IllegalArgumentException("Something wrong with taskid");
 
             Task task = taskService.readSelected(id);
             model.addAttribute("task", task);
-            getUsersOnProjectPriority(model,projectId, subprojectId);
+            getUsersOnProjectPriority(model, projectId, subprojectId);
         }
-        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
+        model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "task-update";
     }
@@ -95,8 +96,8 @@ public class TaskController {
                              @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId) {
+        if (task == null) throw new IllegalArgumentException("Something wrong with task.");
         if (sessionHandler.isNotAdmin()) {
-            if (task == null) throw new IllegalArgumentException("Something wrong with task.");
             task.setSubProject(new SubProject(subprojectId));
             taskService.create(task, userIDs);
         }
@@ -108,8 +109,8 @@ public class TaskController {
     public String deleteTask(@PathVariable(value = "id") int id,
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId) {
+        if (id <= 0) throw new IllegalArgumentException("Something wrong with taskid: " + id);
         if (sessionHandler.isNotAdmin()) {
-            if (id <= 0) throw new IllegalArgumentException("Something wrong with taskid: " + id);
 
             taskService.delete(id);
         }
@@ -125,8 +126,8 @@ public class TaskController {
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId,
                              RedirectAttributes redirectAttributes) {
+        if (task == null) throw new IllegalArgumentException("Something wrong with task.");
         if (sessionHandler.isNotAdmin()) {
-            if (task == null) throw new IllegalArgumentException("Something wrong with task.");
             // Checks if subproject is set, if not, redirect to subproject page
             if (task.getId() <= 0) {
                 redirectAttributes.addAttribute("users", taskService.getAllUsersOnProject(projectId));
