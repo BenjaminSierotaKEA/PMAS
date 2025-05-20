@@ -23,18 +23,18 @@
                       th:method="post" th:object="${task}">
 
                     <label for="name">Name:</label>
-                    <input type="text" id="name" th:field="*{name}" placeholder="Navn" required/><br>
+                    <input type="text" id="name" th:field="*{name}" placeholder="Name" required/><br>
 
                     <label for="description">Description:</label>
-                    <textarea id="description" th:field="*{description}" placeholder="Beskrivelse"
+                    <textarea id="description" th:field="*{description}" placeholder="Description"
                               rows="4"></textarea><br>
 
                     <label for="timeBudget">Time budget:</label>
-                    <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Tidsallokering"
+                    <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Time budget"
                            step="0.1" required/><br>
 
                     <label for="deadline">Deadline:</label>
-                    <input type="date" id="deadline" th:field="*{deadline}"/><br>
+                    <input type="date" id="deadline" th:field="*{deadline}" required/><br>
 
                     <label for="priorityLevel">Priority:</label>
                     <select id="priorityLevel" th:field="*{priorityLevel}">
