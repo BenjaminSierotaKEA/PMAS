@@ -30,12 +30,11 @@ public class SubProjectController {
 
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
-
             List<SubProjectDTO> subprojects = subProjectService.getSubProjectDTOByProjectId(projectId);
             model.addAttribute("subprojects", subprojects);
+            model.addAttribute("project", subProjectService.getProjectById(projectId));
+            model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         }
-        model.addAttribute("project", subProjectService.getProjectById(projectId));
-        model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "subprojects-all";
     }
@@ -90,7 +89,8 @@ public class SubProjectController {
     @PostMapping("/create")
     public String saveSubProject(@PathVariable(value = "projectId") int projectId,
                                  @ModelAttribute SubProject subproject) {
-        if (subproject == null) throw new IllegalArgumentException("Controller error: Something wrong with subproject.");
+        if (subproject == null)
+            throw new IllegalArgumentException("Controller error: Something wrong with subproject.");
 
         if (sessionHandler.isNotAdmin()) {
 
@@ -111,8 +111,8 @@ public class SubProjectController {
         if (loggedIn) {
             SubProject subproject = subProjectService.readSelected(subprojectId);
             model.addAttribute("subproject", subproject);
+            model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         }
-        model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "subproject-edit-form";
     }
@@ -120,7 +120,8 @@ public class SubProjectController {
     @PostMapping("/update")
     public String updateSubProject(@ModelAttribute SubProject subproject,
                                    @PathVariable(value = "projectId") int projectId) {
-        if (subproject == null) throw new IllegalArgumentException("Controller error: Something wrong with subproject.");
+        if (subproject == null)
+            throw new IllegalArgumentException("Controller error: Something wrong with subproject.");
 
         if (sessionHandler.isNotAdmin()) {
 
