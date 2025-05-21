@@ -107,7 +107,7 @@ public class TaskController {
     public String deleteTask(@PathVariable(value = "id") int id,
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId) {
-        if (id <= 0) throw new IllegalArgumentException("Controller error:  Something wrong with taskid: " + id);
+        if (id <= 0) throw new IllegalArgumentException("Controller error: Something wrong with taskid: " + id);
         if (sessionHandler.isNotAdmin()) {
 
             taskService.delete(id);
