@@ -34,12 +34,14 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String createUser(@ModelAttribute User newUser, Model errorMessage) {
+    public String createUser(@ModelAttribute User newUser, Model model) {
         if(newUser == null) throw new IllegalArgumentException("Something wrong with user.");
 
 
         if (userService.checkEmail(newUser.getEmail()) != null) {
-            errorMessage.addAttribute("emailTaken", true);
+            model.addAttribute("user", newUser);
+            model.addAttribute("roles", userService.getAllRoles());
+            model.addAttribute("emailTaken", true);
             return "user-form";
         }
 

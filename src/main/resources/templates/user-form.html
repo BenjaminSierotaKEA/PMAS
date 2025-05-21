@@ -10,7 +10,6 @@
 <body class="index_body page-container">
 
 
-<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></p>
 
 <div class="page-main">
     <div class="flex-center flex-column flex-grow">
@@ -30,6 +29,7 @@
                 <label for="name">Name:</label>
                 <input type="text" id="name" th:field="*{name}" placeholder="Name" required/><br>
 
+                <p th:if="${emailTaken}" style="color:red;">This email is already in use.</p>
                 <label for="email">Email:</label>
                 <input type="email" id="email" th:field="*{email}" placeholder="Email" required/><br>
 
