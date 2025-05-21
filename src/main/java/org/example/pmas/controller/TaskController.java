@@ -115,9 +115,6 @@ public class TaskController {
         return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/all";
     }
 
-    // RedirectAttribute explained
-    // stores the attributes in a flashmap (which is internally maintained in the users session and
-    // removed once the next redirected request gets fulfilled)
     @PostMapping("update")
     public String updateTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
