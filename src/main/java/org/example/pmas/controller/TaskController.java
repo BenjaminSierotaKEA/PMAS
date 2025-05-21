@@ -122,15 +122,8 @@ public class TaskController {
     public String updateTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
                              @PathVariable(value = "projectId") int projectId,
-                             @PathVariable(value = "subprojectId") int subprojectId,
-                             RedirectAttributes redirectAttributes) {
-        // Checks if subproject is set, if not, redirect to subproject page
-        if (task.getId() <= 0) {
-            redirectAttributes.addAttribute("users", taskService.getAllUsersOnProject(projectId));
-            redirectAttributes.addAttribute("priorities", PriorityLevel.values());
-            redirectAttributes.addFlashAttribute("task", task);
-            return "redirect:/tasks/" + task.getId() + "/task";
-        }
+                             @PathVariable(value = "subprojectId") int subprojectId) {
+        if (task == null) throw new IllegalArgumentException("Controller error: Something wrong with task.");
 
         if (sessionHandler.isNotAdmin()) {
             task.setSubProject(new SubProject(subprojectId));
