@@ -28,19 +28,18 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
-          #env:
-          #DEV_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
-          #DEV_USERNAME: ${{ secrets.PROD_USERNAME }}
-          #DEV_PASSWORD: ${{ secrets.PROD_PASSWORD }}
+        env:
+          DEV_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+          DEV_USERNAME: ${{ secrets.PROD_USERNAME }}
+          DEV_PASSWORD: ${{ secrets.PROD_PASSWORD }}
         run: mvn clean install -DskipTests
 
       - name: Run Tests
         run: mvn test
 
-          #- name: Publish Test Report
-          #if: success() #|| failure()
-          #uses: scacap/action-surefire-report@v1
-
+      - name: Publish Test Report
+        if: success()
+        uses: scacap/action-surefire-report@v1
 
 
       - name: Upload artifact for deployment job
