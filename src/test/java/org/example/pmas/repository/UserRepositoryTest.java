@@ -26,11 +26,11 @@ class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-    /*
+
     @Test
     void create() {
         // Arrange
-        var user = new User("Jane Doe", "jane@example.com", "password123", new Role(), "picture.jpg");
+        var user = new User("Jane Doe", "jane@example.com", "password123", new Role(1,"Admin"), "picture.jpg");
 
         // Act
         var actual = userRepository.create(user);
@@ -39,7 +39,7 @@ class UserRepositoryTest {
         // Assert
         assertEquals(expected, actual);
     }
-     */
+
 
     @Test
     void readAll() {
@@ -52,7 +52,7 @@ class UserRepositoryTest {
         assertEquals(expectedSize, actual.size());
     }
 
-    /*
+
     @Test
     void readSelected() {
         // Arrange
@@ -66,7 +66,7 @@ class UserRepositoryTest {
 
     }
 
-     */
+
 
     @Test
     void delete() {
