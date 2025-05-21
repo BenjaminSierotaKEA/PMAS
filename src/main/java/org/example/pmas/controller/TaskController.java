@@ -124,7 +124,6 @@ public class TaskController {
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId,
                              RedirectAttributes redirectAttributes) {
-        if (task == null) throw new IllegalArgumentException("Controller error: Something wrong with task.");
         // Checks if subproject is set, if not, redirect to subproject page
         if (task.getId() <= 0) {
             redirectAttributes.addAttribute("users", taskService.getAllUsersOnProject(projectId));
