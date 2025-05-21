@@ -53,7 +53,7 @@
             <td th:text="${project.timeTaken}">Time used</td>
             <td th:text="${project.timeBudget}">Time Budget</td>
             <td th:text="${#temporals.format(project.deadline, 'dd-MM-yyyy')}">YYYY-MM-DD</td>
-            <td th:text="${project.completionPercentage}">% Complete</td>
+            <td th:text="${#numbers.formatDecimal(project.completionPercentage, 1, 2)} + '%'"> % Complete</td>
             <td>
                 <form th:action="@{/projects/{projectId}/edit(projectId=${project.id})}" method="get" style="display:inline-block">
                     <button type="submit" th:if="${ProjectManager}">Edit</button>
