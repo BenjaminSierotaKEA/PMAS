@@ -1,10 +1,10 @@
-package org.example.pmas.service.comparators;
+package org.example.pmas.util.comparators;
 
 import org.example.pmas.model.dto.SubProjectDTO;
 
 import java.util.Comparator;
 
-public class SubProjectNameComparator implements Comparator<SubProjectDTO> {
+public class SubProjectDTONameComparator implements Comparator<SubProjectDTO> {
     @Override
     public int compare(SubProjectDTO o1, SubProjectDTO o2) {
         var compare = new CompareAttributes();

@@ -20,7 +20,7 @@ public class GlobalException {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public String handleProjectNotFoundException(NotFoundException e, Model model) {
+    public String handleNotFoundException(NotFoundException e, Model model) {
         model.addAttribute("message", e.getMessage());
         return "errorpage";
     }

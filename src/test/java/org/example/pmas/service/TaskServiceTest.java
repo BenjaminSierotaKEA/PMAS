@@ -6,8 +6,8 @@ import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
 import org.example.pmas.repository.Interfaces.ITaskRepository;
-import org.example.pmas.service.comparators.TaskDeadlineComparator;
-import org.example.pmas.service.comparators.TaskPriorityComparator;
+import org.example.pmas.util.comparators.TaskDeadlineComparator;
+import org.example.pmas.util.comparators.TaskPriorityComparator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,13 +38,13 @@ class TaskServiceTest {
 
     private List<Task> tasks;
     private Task task;
-    List<Integer> userIDs;
+    Set<Integer> userIDs;
 
     @BeforeEach
     void setUp() {
         tasks = MockDataModel.tasksWithValues();
         task = MockDataModel.taskWithValue();
-        userIDs = new ArrayList<>(List.of(1, 2, 3));
+        userIDs = new HashSet<>(List.of(1, 2, 3));
     }
 
     @Test
@@ -190,7 +192,7 @@ class TaskServiceTest {
         when(taskRepository.update(task)).thenReturn(true);
 
         // Act
-        taskService.update(task, List.of(2, 3));
+        taskService.update(task, Set.of(2, 3));
 
         // Assert
         verify(taskRepository).readSelected(1);
@@ -210,7 +212,7 @@ class TaskServiceTest {
         Executable executable = new Executable() {
             @Override
             public void execute() throws Throwable {
-                taskService.update(task, List.of(2, 3));
+                taskService.update(task, Set.of(2, 3));
             }
         };
 

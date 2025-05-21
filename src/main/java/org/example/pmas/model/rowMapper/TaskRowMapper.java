@@ -14,7 +14,6 @@ import java.util.Set;
 
 // We need information about different tables when we use TaskRowMapper.
 // You need to join users and subproject when making a query.
-// You need to give
 public class TaskRowMapper implements RowMapper<Task> {
 
     @Override

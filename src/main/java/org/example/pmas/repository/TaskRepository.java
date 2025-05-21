@@ -150,7 +150,7 @@ public class TaskRepository implements ITaskRepository {
 
     @Transactional
     @Override
-    public List<Integer> getCurrentUserIdsFromUserTasks(int taskId) {
+        public List<Integer> getCurrentUserIdsFromUserTasks(int taskId) {
         try {
             return jdbcTemplate.queryForList("SELECT userid " +
                             "FROM usertasks " +

@@ -3,7 +3,7 @@ package org.example.pmas.repository;
 import org.example.pmas.model.dto.ProjectDTO;
 import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.Project;
-import org.example.pmas.model.rowMapper.ProjectDTORowMapper;
+import org.example.pmas.model.dto.rowMapperDTO.ProjectDTORowMapper;
 import org.example.pmas.model.rowMapper.ProjectRowMapper;
 import org.example.pmas.repository.Interfaces.IProjectRepository;
 import org.springframework.dao.DataAccessException;
