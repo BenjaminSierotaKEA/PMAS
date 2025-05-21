@@ -67,7 +67,7 @@ public class TaskController {
 
             Task task = taskService.readSelected(id);
             model.addAttribute("task", task);
-            getUsersOnProjectPriority(model, projectId, subprojectId);
+            getUsersOnProjectAndPriority(model, projectId, subprojectId);
             model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         }
         model.addAttribute("allowAccess", loggedIn);
@@ -81,7 +81,7 @@ public class TaskController {
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
             model.addAttribute("task", new Task());
-            getUsersOnProjectPriority(model, projectId, subprojectId);
+            getUsersOnProjectAndPriority(model, projectId, subprojectId);
         }
 
         model.addAttribute("allowAccess", loggedIn);
@@ -128,7 +128,7 @@ public class TaskController {
         return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/all";
     }
 
-    private void getUsersOnProjectPriority(Model model, int projectId, int subprojectId) {
+    private void getUsersOnProjectAndPriority(Model model, int projectId, int subprojectId) {
         model.addAttribute("subprojectId", subprojectId);
         model.addAttribute("projectId", projectId);
         model.addAttribute("users", taskService.getAllUsersOnProject(projectId));
