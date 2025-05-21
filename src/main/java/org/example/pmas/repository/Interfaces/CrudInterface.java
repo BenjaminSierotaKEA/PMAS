@@ -1,7 +1,5 @@
 package org.example.pmas.repository.Interfaces;
 
-import org.example.pmas.model.Task;
-
 import java.util.List;
 
 public interface CrudInterface<T> {
