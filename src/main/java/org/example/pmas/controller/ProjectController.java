@@ -47,7 +47,7 @@ public class ProjectController {
     public String createProject(@ModelAttribute Project project,
                                 @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
                                 RedirectAttributes redirectAttributes) {
-        if (project == null) throw new IllegalArgumentException("Something wrong with project.");
+        if (project == null) throw new IllegalArgumentException("Controller error: Something wrong with project.");
 
         if (sessionHandler.isUserProjectManager()) {
             if (projectService.checkProjectName(project.getName())) {
@@ -95,7 +95,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/edit")
     public String updateForm(@PathVariable int projectId, Model model) {
-        if (projectId <= 0) throw new IllegalArgumentException("Something wrong with id: " + projectId);
+        if (projectId <= 0) throw new IllegalArgumentException("Controller error: Something wrong with id: " + projectId);
 
         Project project;
 
@@ -126,7 +126,7 @@ public class ProjectController {
                                 @RequestParam(name = "usersToAddID", required = false) Set<Integer> usersToAddID,
                                 @RequestParam(name = "usersToRemoveID", required = false) Set<Integer> usersToRemoveID,
                                 RedirectAttributes redirectAttributes) {
-        if (project == null) throw new IllegalArgumentException("Something wrong with project");
+        if (project == null) throw new IllegalArgumentException("Controller error: Something wrong with project");
 
         if (sessionHandler.isUserProjectManager()) {
             if (projectService.checkProjectName(project.getName())) {
@@ -150,7 +150,7 @@ public class ProjectController {
 
     @PostMapping("{projectId}/delete")
     public String deleteProject(@PathVariable int projectId) {
-        if (projectId <= 0) throw new IllegalArgumentException("Something wrong with id: " + projectId);
+        if (projectId <= 0) throw new IllegalArgumentException("Controller error: Something wrong with id: " + projectId);
 
         if (sessionHandler.isUserProjectManager()) {
             projectService.deleteProject(projectId);

@@ -26,15 +26,15 @@ public class SubProjectController {
     @GetMapping("/all")
     public String readAll(@PathVariable(value = "projectId") int projectId,
                           Model model) {
+        validateId(projectId);
+
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
-            validateId(projectId);
-
             List<SubProjectDTO> subprojects = subProjectService.getSubProjectDTOByProjectId(projectId);
             model.addAttribute("subprojects", subprojects);
+            model.addAttribute("project", subProjectService.getProjectById(projectId));
+            model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         }
-        model.addAttribute("project", subProjectService.getProjectById(projectId));
-        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "subprojects-all";
     }
@@ -43,9 +43,10 @@ public class SubProjectController {
     public String getSubProject(@PathVariable(value = "projectId") int projectId,
                                 @PathVariable(value = "subprojectId") int subprojectId,
                                 Model model) {
+        validateId(subprojectId);
+
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
-            validateId(subprojectId);
             SubProject subproject = subProjectService.readSelected(subprojectId);
             model.addAttribute("subproject", subproject);
         }
@@ -57,8 +58,9 @@ public class SubProjectController {
     @PostMapping("/{subprojectId}/delete")
     public String deleteSubProject(@PathVariable(value = "projectId") int projectId,
                                    @PathVariable(value = "subprojectId") int subprojectId) {
+        validateId(subprojectId);
+
         if (sessionHandler.isNotAdmin()) {
-            validateId(subprojectId);
             subProjectService.delete(subprojectId);
         }
 
@@ -68,9 +70,10 @@ public class SubProjectController {
     @GetMapping("/new")
     public String createSubProject(@PathVariable(value = "projectId") int projectId,
                                    Model model) {
+        validateId(projectId);
+
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
-            validateId(projectId);
             SubProject subproject = new SubProject();
             subproject.setProjectID(projectId);
             Project project = subProjectService.getProjectById(projectId);
@@ -86,8 +89,10 @@ public class SubProjectController {
     @PostMapping("/create")
     public String saveSubProject(@PathVariable(value = "projectId") int projectId,
                                  @ModelAttribute SubProject subproject) {
+        if (subproject == null)
+            throw new IllegalArgumentException("Controller error: Something wrong with subproject.");
+
         if (sessionHandler.isNotAdmin()) {
-            if (subproject == null) throw new IllegalArgumentException("Something wrong with subproject.");
 
             subproject.setProjectID(projectId);
             subProjectService.create(subproject);
@@ -100,13 +105,14 @@ public class SubProjectController {
     public String editSubProject(@PathVariable(value = "projectId") int projectId,
                                  @PathVariable(value = "subprojectId") int subprojectId,
                                  Model model) {
+        validateId(subprojectId);
+
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
-            validateId(subprojectId);
             SubProject subproject = subProjectService.readSelected(subprojectId);
             model.addAttribute("subproject", subproject);
+            model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
         }
-        model.addAttribute("ProjectManager",sessionHandler.isUserProjectManager());
         model.addAttribute("allowAccess", loggedIn);
         return "subproject-edit-form";
     }
@@ -114,8 +120,10 @@ public class SubProjectController {
     @PostMapping("/update")
     public String updateSubProject(@ModelAttribute SubProject subproject,
                                    @PathVariable(value = "projectId") int projectId) {
+        if (subproject == null)
+            throw new IllegalArgumentException("Controller error: Something wrong with subproject.");
+
         if (sessionHandler.isNotAdmin()) {
-            if (subproject == null) throw new IllegalArgumentException("Something wrong with subproject.");
 
             subProjectService.updateSubProject(subproject);
         }
@@ -123,6 +131,6 @@ public class SubProjectController {
     }
 
     private void validateId(int id) {
-        if (id <= 0) throw new IllegalArgumentException("Something wrong with id: " + id);
+        if (id <= 0) throw new IllegalArgumentException("Controller error: Something wrong with id: " + id);
     }
 }
