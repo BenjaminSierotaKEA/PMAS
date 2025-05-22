@@ -10,6 +10,10 @@ public class ProjectDTO {
     private double timeTaken;
     private boolean completed;
     private LocalDate deadline;
+    private int projectID;
+    private int totalSubProjects;
+    private int completedSubProjects;
+    private double completionPercentage;
 
     public LocalDate getDeadline() {
         return deadline;
@@ -18,11 +22,6 @@ public class ProjectDTO {
     public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
-
-    private int projectID;
-    private int totalSubProjects;
-    private int completedSubProjects;
-    private double completionPercentage;
 
     public ProjectDTO() {
 
