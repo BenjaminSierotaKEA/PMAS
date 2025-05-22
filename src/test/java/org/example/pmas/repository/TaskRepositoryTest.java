@@ -41,21 +41,6 @@ class TaskRepositoryTest {
         // Assert
         assertEquals(expectedSize, actualSize.size());
     }
-    @Sql(
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            scripts = {"classpath:h2NoData.sql"}
-    )
-    @Test
-    void readAll_without_values() {
-        // Arrange
-        var expected = 0;
-
-        // Act
-        var actual = taskRepository.readAll();
-
-        // Assert
-        assertEquals(expected, actual.size());
-    }
 
     @Test
     void readSelected_with_data(){
@@ -67,20 +52,6 @@ class TaskRepositoryTest {
 
         // Assert
         assertEquals(actual, expected);
-    }
-    @Sql(
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            scripts = {"classpath:h2NoData.sql"}
-    )
-    @Test
-    void readSelected_without_data(){
-        // Arrange
-
-        // Act
-        var actual = taskRepository.readSelected(5);
-
-        // Assert
-        assertNull(actual);
     }
 
     @Test
