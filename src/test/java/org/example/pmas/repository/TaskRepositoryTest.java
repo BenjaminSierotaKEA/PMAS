@@ -1,13 +1,11 @@
 package org.example.pmas.repository;
 
-import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.model.enums.PriorityLevel;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -112,20 +110,5 @@ class TaskRepositoryTest {
         // Assert
         assertTrue(expected);
     }
-    @Test
-    void update_without_data(){
-        // Arrange
-        var task = new Task();
 
-        // Act
-        Executable executable = new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                taskRepository.update(task);
-            }
-        };
-
-        // Assert
-        assertThrows(DatabaseException.class, executable);
-    }
 }

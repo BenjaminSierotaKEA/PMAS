@@ -1,7 +1,5 @@
 package org.example.pmas.service;
 
-import org.example.pmas.exception.NotFoundException;
-import org.example.pmas.exception.UpdateObjectException;
 import org.example.pmas.model.Task;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.example.pmas.repository.Interfaces.ISubProjectRepository;
@@ -11,7 +9,6 @@ import org.example.pmas.util.comparators.TaskPriorityComparator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
