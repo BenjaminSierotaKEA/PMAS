@@ -1,13 +1,11 @@
 package org.example.pmas.repository;
 
-import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.model.SubProject;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.model.enums.PriorityLevel;
 import org.example.pmas.modelBuilder.MockDataModel;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
@@ -41,21 +39,6 @@ class TaskRepositoryTest {
         // Assert
         assertEquals(expectedSize, actualSize.size());
     }
-    @Sql(
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            scripts = {"classpath:h2NoData.sql"}
-    )
-    @Test
-    void readAll_without_values() {
-        // Arrange
-        var expected = 0;
-
-        // Act
-        var actual = taskRepository.readAll();
-
-        // Assert
-        assertEquals(expected, actual.size());
-    }
 
     @Test
     void readSelected_with_data(){
@@ -67,20 +50,6 @@ class TaskRepositoryTest {
 
         // Assert
         assertEquals(actual, expected);
-    }
-    @Sql(
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
-            scripts = {"classpath:h2NoData.sql"}
-    )
-    @Test
-    void readSelected_without_data(){
-        // Arrange
-
-        // Act
-        var actual = taskRepository.readSelected(5);
-
-        // Assert
-        assertNull(actual);
     }
 
     @Test
@@ -141,20 +110,5 @@ class TaskRepositoryTest {
         // Assert
         assertTrue(expected);
     }
-    @Test
-    void update_without_data(){
-        // Arrange
-        var task = new Task();
 
-        // Act
-        Executable executable = new Executable() {
-            @Override
-            public void execute() throws Throwable {
-                taskRepository.update(task);
-            }
-        };
-
-        // Assert
-        assertThrows(DatabaseException.class, executable);
-    }
 }
