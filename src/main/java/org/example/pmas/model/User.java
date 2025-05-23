@@ -1,7 +1,10 @@
 package org.example.pmas.model;
 
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class User {
 
@@ -14,6 +17,7 @@ public class User {
     private List<Task> tasks;
     private List<Project> projects;
 
+
     public User(int userID, String name, String email, String password, Role role, String picture) {
         this.userID = userID;
         this.name = name;
@@ -22,7 +26,7 @@ public class User {
         this.picture = picture;
     }
 
-    public User( String name, String email, String password, Role role, String picture) {
+    public User(String name, String email, String password, Role role, String picture) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -52,7 +56,7 @@ public class User {
     public boolean equals(Object other) {
         if (this == other) return true;
 
-        if(!(other instanceof User)) return false;
+        if (!(other instanceof User)) return false;
 
         return userID == ((User) other).userID;
     }
@@ -62,10 +66,10 @@ public class User {
         return Integer.hashCode(userID);
     }
 
-    public User(int userID,String name, String email, String password, String picture, Role role) {
+    public User(int userID, String name, String email, String password, String picture, Role role) {
         this.userID = userID;
         this.name = name;
-        this.email=email;
+        this.email = email;
         this.password = password;
         this.picture = picture;
         this.role = role;
@@ -142,8 +146,10 @@ public class User {
     }
 
 
+
     @Override
-    public String toString(){
-      return  "userID" + " " + userID + " " + "name" + name;
+    public String toString() {
+        return "userID" + " " + userID + " " + "name" + name;
     }
+
 }
