@@ -203,6 +203,7 @@ public class UserRepository implements IUserRepository {
                             -- User-task relationships
                             GROUP_CONCAT(DISTINCT ut2.userid) AS task_user_ids,
                             GROUP_CONCAT(DISTINCT CONCAT(u2.id, ':', u2.name)) AS task_user_pairs
+                            
                 
                         FROM users u
                 

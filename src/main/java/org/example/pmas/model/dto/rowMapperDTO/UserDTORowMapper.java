@@ -20,10 +20,14 @@ public class UserDTORowMapper implements RowMapper<User> {
     // prevents duplicate Task instances when the result set contains multiple rows for the same task
     //(may up for change, since tasks do not have unique contraints in the db)
     private final Map<Integer, Task> taskMap = new HashMap<>();
+    private final Set<Project> projects = new HashSet<>();
+
+
 
     public UserDTORowMapper(Map <Integer, User> userMap) {
         this.userMap = userMap;
     }
+
 
 
     @Override
@@ -45,19 +49,19 @@ public class UserDTORowMapper implements RowMapper<User> {
             user.setPicture(rs.getString("picture"));
 
 
-        //here we set the Role object, based on the values of the user in the DB
-        Role role = new Role();
-        role.setId(rs.getInt("role_id"));
-        role.setName(rs.getString("role_name"));
-        user.setRole(role);
+            //here we set the Role object, based on the values of the user in the DB
+            Role role = new Role();
+            role.setId(rs.getInt("role_id"));
+            role.setName(rs.getString("role_name"));
+            user.setRole(role);
 
-        //initialize list objects:
-        user.setTasks(new ArrayList<>());
-        user.setProjects(new ArrayList<>());
+            //initialize list objects:
+            user.setTasks(new ArrayList<>());
+            user.setProjects(new ArrayList<>());
 
 
-        //putting out newly parsed information here:
-        userMap.put(userId,user);
+            //putting out newly parsed information here:
+            userMap.put(userId, user);
         }
 
         // ----------------- TASK ---------------------
@@ -140,13 +144,23 @@ public class UserDTORowMapper implements RowMapper<User> {
         // --- PROJECT ---
         //if the user is assigned to a project, we set it here:
         Integer projectId = (Integer) rs.getObject("project_id");
-        if (projectId != null && user.getProjects().stream().noneMatch(p -> p.getId() == projectId)) {
-            Project p = new Project();
-            p.setId(projectId);
-            p.setName(rs.getString("project_name"));
-            user.getProjects().add(p);
+        String projectName = rs.getString("project_name");
+
+
+        //adding project data to set field set in this rowmapper, to ensure we don't get duplicates
+        if (projectId != null && projectName != null) {
+                Project p = new Project();
+                p.setId(projectId);
+                p.setName(projectName);
+
+                projects.add(p);
         }
 
+
+        //sort through set and add it so the users list of projects
+        for(Project p : projects){
+            user.getProjects().add(p);
+        }
 
         //returns Map object of user:
         return user;

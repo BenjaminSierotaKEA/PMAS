@@ -45,12 +45,20 @@ Nedstsående er et link til den deployede version af programmet:
 
 ## Teknologier
 #### Programmet er blevet udviklet med følgende teknologier:
-* **Back-end** : SpringBoot
-* **Front-end** : Thymeleaf
-* **Database Oprettelse** : MySQL
-* **CI/CD** : GitHub Actions
-* **Deployment** : Microsoft Azure
-* **Statisk kodetest** : Qodana Cloud
+
+* **Java (JDK 21)** - Det primære programmeringssprog.
+* **IntelliJ IDEA 2024.2.5** (Ultimate Edition) - Den anvendte IDE.
+* **Spring Boot Framework 3.4.5** - Framework anvendt til backend og applikationsarkitektur
+* **Spring DevTools 3.4.5** - Bruges til live reload.
+* **Apache Maven Wrapper 3.3.2** -  Til håndtering af afhængigheder og build-processen.
+* **MySQL 9.2 + MySQL Workbench 8.0 CE** - Databaseløsning til produktion og udvikling.
+* **MySQL Connector** - JDBC-driver til MySQL-integration.
+* **h2Database 2.3.232** - In-memory database til integrationstest.
+* **Thymeleaf Template Engine 3.1.3** - Til dynamisk HTML rendering.
+* **Mockito 5.17.0** - Til test af applikationen.
+* **Qodana Cloud** - Til statisk kodeanalyse.
+* **Microsoft Azure** - Anvendt til deloyment af applikationen.
+* **GitHub Actions** - CI/CD
 
 ---
 
