@@ -64,14 +64,22 @@
 .navbar {
     background-color: #333333;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    padding: 10px 20px; /* top/bottom, left/right */
+    gap: 20px; /* spacing between nav sections */
+    flex-wrap: wrap; /* allows wrapping if screen is small */
 }
 
 
 .nav-section a {
     text-decoration: none;
     color: white;
-    font-weight: Lighter;
+    font-weight: lighter;
     font-family: "Bahnschrift", sans-serif;
+    padding: 8px 12px;
+    display: inline-block;
+    transition: background-color 0.3s;
 }
 
 
