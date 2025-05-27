@@ -59,7 +59,7 @@
                     <button type="submit" th:if="${ProjectManager}">Edit</button>
                 </form>
                 <form th:action="@{/projects/{projectId}/delete(projectId=${project.id})}" method="post" style="display:inline-block"
-                      onsubmit="return confirm('Are you sure you want to delete this subproject?');"
+                      onsubmit="return confirm('Are you sure you want to delete this project?');"
                       onclick="event.stopPropagation()">
                     <input type="hidden" name="id" th:value="${project.id}">
                     <button type="submit" th:if="${ProjectManager}">Delete</button>
