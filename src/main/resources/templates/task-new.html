@@ -48,9 +48,9 @@
                     <fieldset class="user-fieldset">
                         <legend class="font_style user-legend">Pick users:</legend>
                         <div class="user-checkboxes">
-                            <div th:each="user : ${users}" class="user-checkbox-wrapper">
+                            <div th:each="user, iter : ${users}" class="user-checkbox-wrapper">
                                 <label class="font_style user-checkbox">
-                                    <input type="checkbox" name="userIds" th:value="${user.userID}"/>
+                                    <input type="checkbox" name="userIds" th:value="${user.userID}" th:attr="required=${iter.index == 0}"/>
                                     <span th:text="${user.name}"></span>
                                 </label>
                             </div>
@@ -60,9 +60,8 @@
 
                     <div class="button-container">
                         <button type="submit">Save</button>
-                        <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
-                            projectId=${projectId}, subprojectId=${subprojectId})}">
-                            <button type="button">Back</button>
+                        <a>
+                            <button type="button"  onclick="history.back()">Back</button>
                         </a>
                     </div>
 

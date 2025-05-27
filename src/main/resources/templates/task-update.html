@@ -31,8 +31,8 @@
 
             <div class="form-group">
                 <label for="description">Description:</label>
-                <textarea id="description" name="description" rows="4" th:field="*{description}" th:readonly="${!ProjectManager}"class="text-field"
-                          required maxlength="200"></textarea>
+                <textarea id="description" name="description" rows="4" th:field="*{description}" th:readonly="${!ProjectManager}" class="text-field"
+                          required></textarea>
             </div>
 
             <fieldset class="checkbox-group">
@@ -52,6 +52,7 @@
                            th:value="${user.userID}" />
                 </div>
             </fieldset>
+            <p th:if="${errorName}" th:text="${errorName}" style="color:red;"></p>
 
 
             <fieldset class="radio-group" >
@@ -71,7 +72,7 @@
 
             <div class="form-group">
                 <label for="deadline">Deadline:</label>
-                <input type="date" id="deadline" name="deadline" th:field="*{deadline}" th:readonly="${!ProjectManager}"required/>
+                <input type="date" id="deadline" name="deadline" th:field="*{deadline}" th:readonly="${!ProjectManager}" required/>
             </div>
 
             <div class="form-group">

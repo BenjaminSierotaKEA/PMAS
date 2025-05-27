@@ -53,8 +53,6 @@ public class UserService {
         }
     }
 
-
-
     public User getUser(int userId) {
         try {
             User user = userRepository.readSelected(userId);

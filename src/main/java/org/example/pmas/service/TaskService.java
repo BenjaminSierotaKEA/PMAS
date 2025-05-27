@@ -40,11 +40,6 @@ public class TaskService {
             addUserToTask(createdTask.getId(), userIDs);
     }
 
-    public List<Task> readAll() {
-        List<Task> allTask = taskRepository.readAll();
-
-        return SortList.tasksDeadlinePriority(allTask);
-    }
 
     public Task readSelected(int id) {
         // gets the task and check if it exists.

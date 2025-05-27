@@ -11,6 +11,9 @@
 </head>
 <body class="page-container font_style">
 
+<a class="flex-center normalized_padding" th:if="${user.role.name == 'Admin'}">
+    <button type="button"  onclick="history.back()">Back</button>
+</a>
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="flex-row flex-center   profile-Banner normalized_padding">

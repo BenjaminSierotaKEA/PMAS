@@ -35,15 +35,20 @@
                         <div class="user-checkboxes">
                             <div th:each="user : ${users}" class="user-checkbox-wrapper">
                                 <label class="font_style user-checkbox">
-                                    <input type="checkbox" name="userIds" th:value="${user.userID}"/>
+                                    <input type="checkbox" name="userIds" th:value="${user.userID}"
+                                           th:checked="${selectedUserIds != null and selectedUserIds.contains(user.userID)}"/>
                                     <span th:text="${user.name}"></span>
                                 </label>
                             </div>
                         </div>
                     </fieldset>
+                    <p th:if="${errorUser}" th:text="${errorUser}" style="color:red;"></p>
 
                     <div class="button-container">
                         <button type="submit">Submit</button>
+                        <a>
+                            <button type="button"  onclick="history.back()">Back</button>
+                        </a>
                     </div>
                 </form>
             </div>
