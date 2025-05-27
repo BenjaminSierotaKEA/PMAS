@@ -23,11 +23,11 @@
                       th:method="post" th:object="${task}">
 
                     <label for="name">Name:</label>
-                    <input type="text" id="name" th:field="*{name}" placeholder="Name" required/><br>
+                    <input type="text" id="name" th:field="*{name}" placeholder="Name" required maxlength="200"/><br>
 
                     <label for="description">Description:</label>
                     <textarea id="description" th:field="*{description}" placeholder="Description"
-                              rows="4"></textarea><br>
+                              rows="4" maxlength="200"></textarea><br>
 
                     <label for="timeBudget">Time budget:</label>
                     <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="Numbers only"

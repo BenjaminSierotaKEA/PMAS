@@ -55,7 +55,12 @@ public class SubProject {
     }
 
     public void setName(String name) {
-        this.name = name;
+        final int maxNameLength = 200;
+        if(name.length() > maxNameLength){
+            this.name = name.substring(0, maxNameLength-1);
+        }else{
+            this.name = name;
+        }
     }
 
     public String getDescription() {
@@ -63,7 +68,12 @@ public class SubProject {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        final int maxDescriptionLength = 200;
+        if(description.length() > maxDescriptionLength){
+            this.description = description.substring(0, maxDescriptionLength-1);
+        }else{
+            this.description = description;
+        }
     }
 
     public Double getTimeBudget() {
