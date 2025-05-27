@@ -27,7 +27,6 @@ public class SubProjectRepository implements ISubProjectRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
     // Used for test
     // Implementet for further development.
     @Override
