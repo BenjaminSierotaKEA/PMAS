@@ -118,9 +118,7 @@ public class ProjectController {
         return "project-update-form";
     }
 
-    // RedirectAttribute explained
-    // stores the attributes in a flashmap (which is internally maintained in the users session and
-    // removed once the next redirected request gets fulfilled)
+
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project,
                                 @RequestParam(name = "usersToAddID", required = false) Set<Integer> usersToAddID,
