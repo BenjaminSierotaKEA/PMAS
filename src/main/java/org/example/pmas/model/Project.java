@@ -8,9 +8,7 @@ import java.util.Set;
 public class Project {
     private int id;
     private String name;
-    private final int nameMaxLength = 200;
     private String description;
-    private final int descriptionMaxLength = 200;
     private Double timeBudget;
     private LocalDate deadline;
     private boolean completed;
@@ -57,6 +55,7 @@ public class Project {
     }
 
     public void setName(String name) {
+        final int nameMaxLength = 200;
         //trims the length of the name to the max of what the database allows
         if(name.length() > nameMaxLength){
             this.name = name.substring(0, nameMaxLength-1);
@@ -70,6 +69,7 @@ public class Project {
     }
 
     public void setDescription(String description) {
+        final int descriptionMaxLength = 200;
         //trims the length of the description to  the max of wha t the database allows
         if(description.length() > descriptionMaxLength){
             this.description = description.substring(0, descriptionMaxLength-1);

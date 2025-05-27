@@ -27,17 +27,17 @@
                 <input type="hidden" th:field="*{userID}"/>
 
                 <label for="name">Name:</label>
-                <input type="text" id="name" th:field="*{name}" placeholder="Name" required/><br>
+                <input type="text" id="name" th:field="*{name}" placeholder="Name" required maxlength="200"/><br>
 
                 <p th:if="${emailTaken}" style="color:red;">This email is already in use.</p>
                 <label for="email">Email:</label>
                 <input type="email" id="email" th:field="*{email}" placeholder="Email" required/><br>
 
                 <label for="password">Password:</label>
-                <input type="password" id="password" th:field="*{password}" placeholder="Password" required/><br>
+                <input type="password" id="password" th:field="*{password}" placeholder="Password" required maxlength="30"/><br>
 
                 <label for="picture">Picture:</label>
-                <input type="text" id="picture" th:field="*{picture}" placeholder="File path or URL"/><br>
+                <input type="text" id="picture" th:field="*{picture}" placeholder="File path or URL" maxlength="200"/><br>
 
                 <label for="role">Role:</label>
                 <select id="role" th:field="*{role.id}" required>
