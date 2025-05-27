@@ -43,7 +43,6 @@
                     <th>Time Budget (hrs)</th>
                     <th>Deadline</th>
                     <th>Status</th>
-                    <th>Subproject</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -67,7 +66,6 @@
                             >Status
                             </div>
                         </td>
-                        <td th:text="${task.subProject.name}">Subproject Name</td>
                     </tr>
                 </div>
                 <div th:if="${session.user != null and session.user.role.name == 'Admin'}">
@@ -88,7 +86,6 @@
                             >Status
                             </div>
                         </td>
-                        <td th:text="${task.subProject.name}">Subproject Name</td>
                     </tr>
                 </div>
                 </tbody>
