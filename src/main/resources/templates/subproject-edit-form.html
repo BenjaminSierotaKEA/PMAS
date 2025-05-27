@@ -35,7 +35,7 @@
                 <textarea id="description" th:field="*{description}" rows="4" placeholder="Description" th:readonly="${!ProjectManager}"></textarea><br>
 
                 <label for="timeBudget">Time budget:</label>
-                <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="0.0" required step="0.1" th:readonly="${!ProjectManager}"/><br>
+                <input type="number" id="timeBudget" th:field="*{timeBudget}" placeholder="0.0" required step="0.1" min="0" max="1000000" th:readonly="${!ProjectManager}"/><br>
 
                <!-- <label for="completed">Completed:</label>
                 <input type="checkbox" id="completed" th:field="*{completed}" th:disabled="${!ProjectManager}"/><br> -->
