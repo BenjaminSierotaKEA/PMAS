@@ -33,9 +33,9 @@
                     <fieldset class="user-fieldset">
                         <legend class="font_style user-legend">Vælg brugere</legend>
                         <div class="user-checkboxes">
-                            <div th:each="user : ${users}" class="user-checkbox-wrapper">
+                            <div th:each="user, iter : ${users}" class="user-checkbox-wrapper">
                                 <label class="font_style user-checkbox">
-                                    <input type="checkbox" name="userIds" th:value="${user.userID}"/>
+                                    <input type="checkbox" name="userIds" th:value="${user.userID}" th:attr="required=${iter.index == 0}"/>
                                     <span th:text="${user.name}"></span>
                                 </label>
                             </div>

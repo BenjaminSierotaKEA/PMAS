@@ -45,7 +45,7 @@ public class ProjectController {
     // removed once the next redirected request gets fulfilled)
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project,
-                                @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
+                                @RequestParam(name = "userIds") Set<Integer> userIDs,
                                 RedirectAttributes redirectAttributes) {
         if (project == null) throw new IllegalArgumentException("Controller error: Something wrong with project.");
 

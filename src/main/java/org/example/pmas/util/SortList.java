@@ -24,7 +24,7 @@ public class SortList {
         // Sort the list by deadline and then priority.
         // We copy the list, so it's not immutable
         List<Task> modifiableList = new ArrayList<>(taskList);
-        modifiableList.sort(new TaskDeadlineComparator().reversed()
+        modifiableList.sort(new TaskDeadlineComparator()
                 .thenComparing(new TaskPriorityComparator())
         );
         return modifiableList;
@@ -39,7 +39,7 @@ public class SortList {
         // Sort the list by deadline.
         // We copy the list, so it's not immutable
         List<Project> modifiableList = new ArrayList<>(projects);
-        modifiableList.sort(new ProjectDeadlineComparator().reversed());
+        modifiableList.sort(new ProjectDeadlineComparator());
 
         return modifiableList;
     }
@@ -53,7 +53,7 @@ public class SortList {
         // Sort the list by deadline
         // We copy the list, so it's not immutable
         List<ProjectDTO> modifiableList = new ArrayList<>(projects);
-        modifiableList.sort(new ProjectDTODeadlineComparator().reversed());
+        modifiableList.sort(new ProjectDTODeadlineComparator());
 
         return modifiableList;
     }
