@@ -122,10 +122,18 @@ public class ProjectController {
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project,
                                 @RequestParam(name = "usersToAddID", required = false) Set<Integer> usersToAddID,
-                                @RequestParam(name = "usersToRemoveID", required = false) Set<Integer> usersToRemoveID) {
+                                @RequestParam(name = "usersToRemoveID", required = false) Set<Integer> usersToRemoveID,
+                                @RequestParam(name="originalName") String originalName,
+                                RedirectAttributes redirectAttributes) {
         if (project == null) throw new IllegalArgumentException("Controller error: Something wrong with project");
 
         if (sessionHandler.isUserProjectManager()) {
+            if (projectService.checkProjectName(project.getName()) && !project.getName().equals(originalName)) {
+                redirectAttributes.addFlashAttribute("project", project);
+                redirectAttributes.addFlashAttribute("errorName", "Project name already exists. Please choose another name.");
+                return "redirect:/projects/" + project.getId() + "/edit";
+            }
+
             projectService.updateProject(project);
             if (usersToAddID != null) {
                 projectService.addUsersToProject(project.getId(), usersToAddID);
