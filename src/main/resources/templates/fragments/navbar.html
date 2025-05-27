@@ -7,11 +7,11 @@
             <img th:src="@{/images/logoWithText.png}" alt="Logo" class="navbar-logo">
         </div>
 
-        <div th:if="${session.user != null and session.user.role.name == 'Project Manager'}">
-            <div class="nav-section">
-                <a th:href="@{/projects/all}">ALL PROJECTS</a>
-            </div>
+
+        <div class="nav-section" th:if="${session.user != null and session.user.role.name == 'Project Manager'}">
+            <a th:href="@{/projects/all}">ALL PROJECTS</a>
         </div>
+
 
         <div class="nav-section">
             <a th:href="@{/projects/my-projects}">MY PROJECTS</a>
