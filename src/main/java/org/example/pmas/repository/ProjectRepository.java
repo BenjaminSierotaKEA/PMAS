@@ -179,13 +179,28 @@ public class ProjectRepository implements IProjectRepository {
     }
 
     @Override
-    public boolean checkProjectName(String name){
+    public boolean checkProjectName(String name) {
         String sql = "SELECT EXISTS (SELECT 1 FROM projects WHERE name = ?)";
 
-        try{
+        try {
             return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, new Object[]{name}, Boolean.class));
         } catch (DataAccessException e) {
             throw new DatabaseException(e);
         }
     }
+
+    @Override
+    public int getProjectIDOfUsersSubproject(int userID, int subprojectID) {
+        String sql = """        
+                SELECT sp.projectID        
+                FROM usertasks ut        
+                JOIN tasks t ON ut.taskID = t.id        
+                JOIN subprojects sp ON t.subProjectID = sp.id        
+                WHERE ut.userID = ? AND sp.id = ?        
+                LIMIT 1    """;
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class, userID, subprojectID);
+        return result != null ? result : 0;
+    }
+
+
 }

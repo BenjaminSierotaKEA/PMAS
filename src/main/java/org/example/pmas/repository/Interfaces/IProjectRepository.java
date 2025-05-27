@@ -23,4 +23,6 @@ public interface IProjectRepository extends CrudInterface<Project> {
     void updateProjectCompleted(int projectID, boolean completed);
 
     boolean checkProjectName(String name);
+
+    int getProjectIDOfUsersSubproject(int userID, int subprojectID);
 }
