@@ -3,7 +3,6 @@ package org.example.pmas.service;
 import org.example.pmas.exception.DatabaseException;
 import org.example.pmas.exception.DeleteObjectException;
 import org.example.pmas.exception.NotFoundException;
-import org.example.pmas.model.Project;
 import org.example.pmas.model.Role;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
@@ -15,9 +14,7 @@ import org.example.pmas.util.SortList;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserService {
