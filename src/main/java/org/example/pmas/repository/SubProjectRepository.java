@@ -27,24 +27,6 @@ public class SubProjectRepository implements ISubProjectRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    //    public List<SubProject> getSubProjectsByProjectID(int projectId) {
-//        String sql = "SELECT * FROM subprojects WHERE projectID = ?";
-//        try {
-//            return jdbcTemplate.query(sql, new SubProjectRowMapper(), projectId);
-//        } catch (DataAccessException e) {
-//            throw new DatabaseException("Database error: couldn't get all task with associated project id: " + projectId, e);
-//        }
-//    }
-
-//    public int getProjectIDBySubProjectID(int subprojectID) {
-//        String sql = "SELECT projectID FROM subprojects WHERE id = ?";
-//        try {
-//            Integer result = jdbcTemplate.queryForObject(sql, new Object[]{subprojectID}, Integer.class);
-//            return result != null ? result : 0;
-//        } catch (DataAccessException e) {
-//            throw new DatabaseException("Database error: " + new NotFoundException(subprojectID));
-//        }
-//    }
 
     // Used for test
     // Implementet for further development.
