@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:if="${session.user != null and session.user.role.name != 'Admin'}"   th:fragment="navbar">
-  <nav class="navbar">
+<div th:if="${session.user != null and session.user.role.name != 'Admin'}" th:fragment="navbar">
+    <nav class="navbar">
+        <div class="nav-section">
+            <img th:src="@{/images/logoWithText.png}" alt="Logo" class="navbar-logo">
+        </div>
 
-    <div  class="nav-section">
-      <img th:src="@{/images/logoWithText.png}" alt="Logo" class="navbar-logo">
-    </div>
+        <div th:if="${session.user != null and session.user.role.name == 'Project Manager'}">
+            <div class="nav-section">
+                <a th:href="@{/projects/all}">ALL PROJECTS</a>
+            </div>
+        </div>
 
-    <div th:if="${session.user != null and session.user.role.name == 'Project Manager'}">
-    <div class="nav-section">
-      <a th:href="@{/projects/all}">ALL PROJECTS</a>
-    </div>
-    </div>
+        <div class="nav-section">
+            <a th:href="@{/projects/my-projects}">MY PROJECTS</a>
+        </div>
 
-    <div class="nav-section">
-      <a th:href="@{/projects/my-projects}">MY PROJECTS</a>
-    </div>
+        <div class="nav-section">
+            <a th:if="${session.user != null}"
+               th:href="@{/{id}/user(id=${session.user.userID})}">USERPAGE</a>
+        </div>
 
-    <div class="nav-section">
-      <a th:if="${session.user != null}"
-         th:href="@{/{id}/user(id=${session.user.userID})}">USERPAGE</a>
-    </div>
-
-    <div class="nav-section">
-      <a th:if="${session.user != null}" th:href="@{/logout}">LOG OUT</a>
-    </div>
-  </nav>
+        <div class="nav-section">
+            <a th:if="${session.user != null}" th:href="@{/logout}">LOG OUT</a>
+        </div>
+    </nav>
 </div>
 </body>
 </html>

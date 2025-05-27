@@ -60,9 +60,8 @@
 
                     <div class="button-container">
                         <button type="submit">Save</button>
-                        <a th:href="@{/projects/{projectId}/subprojects/{subprojectId}/tasks/all(
-                            projectId=${projectId}, subprojectId=${subprojectId})}">
-                            <button type="button">Back</button>
+                        <a>
+                            <button type="button"  onclick="history.back()">Back</button>
                         </a>
                     </div>
 
