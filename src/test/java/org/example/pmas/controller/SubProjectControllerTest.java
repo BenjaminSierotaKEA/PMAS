@@ -72,21 +72,6 @@ public class SubProjectControllerTest {
         verify(sessionHandler, times(1)).isNotAdmin();
     }
 
-//    @Test
-//    void shouldReturnSelectedSubProject() throws Exception {
-//        SubProject subproject = subprojects.getFirst();
-//        when(subprojectService.readSelected(1)).thenReturn(subproject);
-//
-//        mvc.perform(get("/projects/1/subprojects/selected"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("subproject-selected"))
-//                .andExpect(model().attributeExists("subproject"))
-//                .andExpect(model().attribute("subproject",subproject));
-//
-//        verify(subprojectService).readSelected(1);
-//    }
-
-
     @Test
     void createSubProject_shouldRenderCreateSubProjectForm() throws Exception {
         int projectID = 1;
@@ -105,11 +90,9 @@ public class SubProjectControllerTest {
         verify(sessionHandler, times(1)).isNotAdmin();
     }
 
-    //needs to be updated to redirect to projectlist when projectlist is added
     @Test
     void createSubProject_shouldRedirectToProjectList() throws Exception {
         int projetId = 1;
-        SubProject newSubProject = new SubProject(4,"SubProject4","SubProject4Desc");
         when(sessionHandler.isNotAdmin()).thenReturn(true);
 
         mvc.perform(post("/projects/{projectId}/subprojects/create", projetId)

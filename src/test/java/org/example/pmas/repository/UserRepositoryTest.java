@@ -1,9 +1,8 @@
 package org.example.pmas.repository;
 
-import org.example.pmas.model.Project;
 import org.example.pmas.model.Role;
-import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
+import org.example.pmas.modelBuilder.MockDataModel;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,17 +55,14 @@ class UserRepositoryTest {
     @Test
     void readSelected() {
         // Arrange
-        var expected = new User(1, "Rebecca Black", "email", "password",new Role(),"picture");
+        var expected = MockDataModel.userWithValues();
 
         // Act
         var actual = userRepository.readSelected(1);
 
         // Assert
         assertEquals(expected, actual);
-
     }
-
-
 
     @Test
     void delete() {
@@ -106,10 +102,4 @@ class UserRepositoryTest {
         // Assert
         assertEquals("Rebecca Black", actual.getName());
     }
-
-
-
-
-
-
 }
