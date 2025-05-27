@@ -27,18 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TaskRepositoryTest {
     @Autowired
     TaskRepository taskRepository;
-
-    @Test
-    void readAll_with_values() {
-        // Arrange
-        int expectedSize = 3;
-
-        // Act
-        var actualSize = taskRepository.readAll();
-
-        // Assert
-        assertEquals(expectedSize, actualSize.size());
-    }
+    
 
     @Test
     void readSelected_with_data(){

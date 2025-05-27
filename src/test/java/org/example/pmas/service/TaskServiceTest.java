@@ -43,39 +43,6 @@ class TaskServiceTest {
         userIDs = new HashSet<>(List.of(1, 2, 3));
     }
 
-    @Test
-    void readAll_with_values() {
-        // Arrange
-        when(taskRepository.readAll()).thenReturn(tasks);
-        List<Task> expected = new ArrayList<>(tasks);
-        expected.sort(
-                new TaskDeadlineComparator().reversed()
-                        .thenComparing(new TaskPriorityComparator())
-        );
-
-        // Act
-        var actual = taskService.readAll();
-
-        // Assert
-        assertNotNull(actual);
-        assertEquals(expected, actual);
-        verify(taskRepository, times(1)).readAll();
-    }
-
-
-    @Test
-    void readAll_without_values() {
-        // Arrange
-        when(taskRepository.readAll()).thenReturn(null);
-        List<Task> actual = new ArrayList<>();
-
-        // Act
-        var expected = taskService.readAll();
-
-        // Assert
-        assertEquals(actual,expected);
-        verify(taskRepository, times(1)).readAll();
-    }
 
     @Test
     void readSelected_with_values() {

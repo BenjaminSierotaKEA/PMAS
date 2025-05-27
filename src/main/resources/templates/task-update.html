@@ -37,9 +37,9 @@
 
             <fieldset class="checkbox-group">
                 <legend>Pick users:</legend>
-                <div th:each="user : ${users}" class="user-checkbox-wrapper">
+                <div th:each="user, iter : ${users}" class="user-checkbox-wrapper">
                     <label class="user-checkbox">
-                        <input type="checkbox" name="userIds"
+                        <input type="checkbox" name="userIds" th:attr="required=${iter.index == 0}"
                                th:checked="${task.users != null and task.users.contains(user)}"
                                th:value="${user.userID}"
                                th:disabled="${session.user != null and session.user.role.name != 'Project Manager'}" />

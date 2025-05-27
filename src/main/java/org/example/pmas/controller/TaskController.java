@@ -39,22 +39,6 @@ public class TaskController {
         return "task-all";
     }
 
-    //Page for ALL tasks in the database
-    @GetMapping("/globalTasks")
-    public String getGlobalTasks(@PathVariable(value = "projectId") int projectId,
-                                 @PathVariable(value = "subprojectId") int subprojectId,
-                                 Model model) {
-        boolean loggedIn = sessionHandler.isNotAdmin();
-        if (loggedIn) {
-            // Adds all task to HTML
-            model.addAttribute("tasks", taskService.readAll());
-            model.addAttribute("ProjectManager", sessionHandler.isUserProjectManager());
-        }
-
-        model.addAttribute("allowAccess", loggedIn);
-        return "task-all";
-    }
-
     @GetMapping("{id}/edit")
     public String readSelected(@PathVariable(value = "id") int id,
                                @PathVariable(value = "projectId") int projectId,
@@ -90,7 +74,7 @@ public class TaskController {
 
     @PostMapping("create")
     public String createTask(@ModelAttribute Task task,
-                             @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
+                             @RequestParam(name = "userIds") Set<Integer> userIDs,
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId) {
         if (task == null) throw new IllegalArgumentException("Controller error: Something wrong with task.");
@@ -116,7 +100,7 @@ public class TaskController {
 
     @PostMapping("update")
     public String updateTask(@ModelAttribute Task task,
-                             @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
+                             @RequestParam(name = "userIds") Set<Integer> userIDs,
                              @PathVariable(value = "projectId") int projectId,
                              @PathVariable(value = "subprojectId") int subprojectId) {
         if (task == null) throw new IllegalArgumentException("Controller error: Something wrong with task.");
