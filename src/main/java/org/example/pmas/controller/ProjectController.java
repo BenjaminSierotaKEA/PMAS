@@ -129,8 +129,6 @@ public class ProjectController {
                                 RedirectAttributes redirectAttributes) {
         if (project == null) throw new IllegalArgumentException("Controller error: Something wrong with project");
 
-        System.out.println("Hello from the update function");
-
         if (sessionHandler.isUserProjectManager()) {
             if (projectService.checkProjectName(project.getName()) && !project.getName().equals(originalName)) {
                 redirectAttributes.addFlashAttribute("project", project);
