@@ -99,6 +99,9 @@ public class TaskController {
         return "task-update";
     }
 
+    // RedirectAttribute explained
+    // stores the attributes in a flashmap (which is internally maintained in the users session and
+    // removed once the next redirected request gets fulfilled)
     @PostMapping("update")
     public String updateTask(@ModelAttribute Task task,
                              @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
@@ -106,7 +109,7 @@ public class TaskController {
                              @PathVariable(value = "subprojectId") int subprojectId,
                              RedirectAttributes redirectAttributes) {
         if (task == null) throw new IllegalArgumentException("Controller error: Something wrong with task.");
-        if(userIDs == null || userIDs.isEmpty()) {
+        if (userIDs == null || userIDs.isEmpty()) {
             redirectAttributes.addFlashAttribute("task", task);
             redirectAttributes.addFlashAttribute("errorName", "Please choose at least one user to assign the task to.");
             return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/" + task.getId() + "/edit";

@@ -45,22 +45,35 @@ public class ProjectController {
     // removed once the next redirected request gets fulfilled)
     @PostMapping("/create")
     public String createProject(@ModelAttribute Project project,
-                                @RequestParam(name = "userIds") Set<Integer> userIDs,
+                                @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
                                 RedirectAttributes redirectAttributes) {
         if (project == null) throw new IllegalArgumentException("Controller error: Something wrong with project.");
+        if (checkNameAndUsers(userIDs, project, redirectAttributes)) {
+            return "redirect:/projects/new";
+        }
 
         if (sessionHandler.isUserProjectManager()) {
-            if (projectService.checkProjectName(project.getName())) {
-                redirectAttributes.addFlashAttribute("project", project);
-                redirectAttributes.addFlashAttribute("errorName", "Project name already exists. Please choose another name.");
-                return "redirect:/projects/new";
-            }
-
             Project resultProject = projectService.createProject(project);
             projectService.addUsersToProject(resultProject.getId(), userIDs); //replace 1 with ID of newly created project
         }
 
         return "redirect:/projects/my-projects";
+    }
+
+    // Checks for name and users
+    private boolean checkNameAndUsers(Set<Integer> userIDs, Project project, RedirectAttributes redirectAttributes) {
+        boolean nameExists = projectService.checkProjectName(project.getName());
+        if (nameExists) {
+            redirectAttributes.addFlashAttribute("project", project);
+            redirectAttributes.addFlashAttribute("selectedUserIds", userIDs);
+            redirectAttributes.addFlashAttribute("errorName", "Project name already exists. Please choose another name.");
+        }
+        if (userIDs == null || userIDs.isEmpty()) {
+            redirectAttributes.addFlashAttribute("project", project);
+            redirectAttributes.addFlashAttribute("errorUser", "Please choose at least one user to assign the project to.");
+        }
+
+        return nameExists || userIDs == null || userIDs.isEmpty();
     }
 
     @GetMapping("/all")
@@ -119,6 +132,9 @@ public class ProjectController {
     }
 
 
+    // RedirectAttribute explained
+    // stores the attributes in a flashmap (which is internally maintained in the users session and
+    // removed once the next redirected request gets fulfilled)
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project,
                                 @RequestParam(name = "usersToAddID", required = false) Set<Integer> usersToAddID,
@@ -126,13 +142,13 @@ public class ProjectController {
                                 @RequestParam(name="originalName") String originalName,
                                 RedirectAttributes redirectAttributes) {
         if (project == null) throw new IllegalArgumentException("Controller error: Something wrong with project");
+        if (projectService.checkProjectName(project.getName()) && !project.getName().equals(originalName)) {
+            redirectAttributes.addFlashAttribute("project", project);
+            redirectAttributes.addFlashAttribute("errorName", "Project name already exists. Please choose another name.");
+            return "redirect:/projects/" + project.getId() + "/edit";
+        }
 
         if (sessionHandler.isUserProjectManager()) {
-            if (projectService.checkProjectName(project.getName()) && !project.getName().equals(originalName)) {
-                redirectAttributes.addFlashAttribute("project", project);
-                redirectAttributes.addFlashAttribute("errorName", "Project name already exists. Please choose another name.");
-                return "redirect:/projects/" + project.getId() + "/edit";
-            }
 
             projectService.updateProject(project);
             if (usersToAddID != null) {
