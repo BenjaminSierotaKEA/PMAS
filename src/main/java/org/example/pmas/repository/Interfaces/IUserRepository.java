@@ -11,7 +11,4 @@ public interface IUserRepository extends CrudInterface<User> {
     List<User> getAllOnProject(int projectID);
 
     List<User> getAllNotOnProject(int projectID);
-
-    int getProjectIDOfUsersSubproject(int userID, int subprojectID);
-
 }

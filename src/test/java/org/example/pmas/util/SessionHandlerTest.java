@@ -29,7 +29,6 @@ class SessionHandlerTest {
         mockUser.setName("Jane Doe");
         mockUser.setEmail("jane@example.com");
 
-
         sessionHandler = new SessionHandler(userService, session);
     }
 
@@ -67,8 +66,6 @@ class SessionHandlerTest {
         assertEquals(mockUser, session.getAttribute("user"));
         assertEquals(1800, session.getMaxInactiveInterval());
     }
-
-
 
     @Test
     void logOut_shouldRemoveUserFromSession() {

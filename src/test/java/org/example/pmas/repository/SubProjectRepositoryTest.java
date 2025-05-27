@@ -4,7 +4,6 @@ import org.example.pmas.model.SubProject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,15 +23,9 @@ public class SubProjectRepositoryTest {
     @Autowired
     private SubProjectRepository subProjectRepository;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     @Test
     public void shouldReturnAllSubProjects() {
-        //Use Integer(Object) to check if a null value is returned. Even though jdbc.query returns an empty list
-        //if null, a null value can be given in the rowmapper if NOT NULL.
-        Integer expected = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM subprojects", Integer.class);
-        int expectedValue = (expected == null) ? 0 : expected;
+        int expectedValue = 3;
 
         int actual = subProjectRepository.readAll().size();
 
