@@ -17,18 +17,23 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
 
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
+    private final ITaskRepository taskRepository;
+    private final IProjectRepository projectRepository;
 
 
 
-    public UserService(IUserRepository userRepository, IRoleRepository roleRepository) {
+    public UserService(IUserRepository userRepository, IRoleRepository roleRepository, ITaskRepository taskRepository, IProjectRepository projectRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.taskRepository = taskRepository;
+        this.projectRepository = projectRepository;
 
     }
 
@@ -56,15 +61,16 @@ public class UserService {
 
     public User getUser(int userId) {
         try {
-            User user = userRepository.readUserWithDetails(userId);
+            User user = userRepository.readSelected(userId);
 
             if (user == null) {
                 throw new NotFoundException("Database not containing User, not found for id " + userId);
             }
 
             //Filling out variables for user:
-             List<Task> sortedTasks = SortList.tasksDeadlinePriority(user.getTasks());
+             List<Task> sortedTasks = SortList.tasksDeadlinePriority(taskRepository.findAllByUserId(userId));
              user.setTasks(sortedTasks);
+             user.setProjects(projectRepository.readProjectsOfUser(userId));
 
             return user;
 
