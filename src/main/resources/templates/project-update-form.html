@@ -16,13 +16,14 @@
     <div class="page-main">
         <div class="flex-center flex-column flex-grow">
             <h2 class="title">
-                Edit Project: <span th:text="*{name}">[Project name]</span>
+                Edit Project: <span th:text="${project.name}">[Project name]</span>
             </h2>
 
             <div class="frame">
                 <form method="post" th:action="@{/projects/update}" th:object="${project}">
                     <!-- Hidden Fields -->
                     <input type="number" th:field="*{id}" hidden readonly/>
+                    <input type="text" th:value="*{name}" name="originalName" hidden readonly/>
 
                     <!-- Editable Fields -->
                     <label for="name">Name:</label>
