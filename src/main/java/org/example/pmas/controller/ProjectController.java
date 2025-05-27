@@ -118,23 +118,14 @@ public class ProjectController {
         return "project-update-form";
     }
 
-    // RedirectAttribute explained
-    // stores the attributes in a flashmap (which is internally maintained in the users session and
-    // removed once the next redirected request gets fulfilled)
+
     @PostMapping("update")
     public String updateProject(@ModelAttribute Project project,
                                 @RequestParam(name = "usersToAddID", required = false) Set<Integer> usersToAddID,
-                                @RequestParam(name = "usersToRemoveID", required = false) Set<Integer> usersToRemoveID,
-                                RedirectAttributes redirectAttributes) {
+                                @RequestParam(name = "usersToRemoveID", required = false) Set<Integer> usersToRemoveID) {
         if (project == null) throw new IllegalArgumentException("Controller error: Something wrong with project");
 
         if (sessionHandler.isUserProjectManager()) {
-            if (projectService.checkProjectName(project.getName())) {
-                redirectAttributes.addFlashAttribute("project", project);
-                redirectAttributes.addFlashAttribute("errorName", "Project name already exists. Please choose another name.");
-                return "redirect:/projects/" + project.getId() + "/edit";
-            }
-
             projectService.updateProject(project);
             if (usersToAddID != null) {
                 projectService.addUsersToProject(project.getId(), usersToAddID);
