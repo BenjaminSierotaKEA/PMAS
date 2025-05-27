@@ -46,7 +46,8 @@ public class TaskController {
                                     Model model) {
         boolean loggedIn = sessionHandler.isNotAdmin();
         if (loggedIn) {
-            model.addAttribute("task", new Task());
+            if (!model.containsAttribute("task"))
+                model.addAttribute("task", new Task());
             getUsersOnProjectAndPriority(model, projectId, subprojectId);
         }
 
@@ -54,12 +55,21 @@ public class TaskController {
         return "task-new";
     }
 
+    // RedirectAttribute explained
+    // stores the attributes in a flashmap (which is internally maintained in the users session and
+    // removed once the next redirected request gets fulfilled)
     @PostMapping("create")
     public String createTask(@ModelAttribute Task task,
-                             @RequestParam(name = "userIds") Set<Integer> userIDs,
+                             @RequestParam(name = "userIds", required = false) Set<Integer> userIDs,
                              @PathVariable(value = "projectId") int projectId,
-                             @PathVariable(value = "subprojectId") int subprojectId) {
+                             @PathVariable(value = "subprojectId") int subprojectId,
+                             RedirectAttributes redirectAttributes) {
         if (task == null) throw new IllegalArgumentException("Controller error: Something wrong with task.");
+        if (userIDs == null || userIDs.isEmpty()) {
+            redirectAttributes.addFlashAttribute("task", task);
+            redirectAttributes.addFlashAttribute("errorUser", "Please choose at least one user to assign the task to.");
+            return "redirect:/projects/" + projectId + "/subprojects/" + subprojectId + "/tasks/new";
+        }
         if (sessionHandler.isNotAdmin()) {
             task.setSubProject(new SubProject(subprojectId));
             taskService.create(task, userIDs);
