@@ -18,11 +18,11 @@
                 <form method="post" th:action="@{/projects/create}" th:object="${project}">
 
                     <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" th:field="*{name}" placeholder="Name" required/><br>
+                    <input type="text" id="name" name="name" th:field="*{name}" placeholder="Name" required maxlength="200"/><br>
                     <p th:if="${errorName}" th:text="${errorName}" style="color:red;"></p>
 
                     <label for="description">Description:</label>
-                    <textarea id="description" name="description" th:field="*{description}" placeholder="Description" rows="4"></textarea><br>
+                    <textarea id="description" name="description" th:field="*{description}" placeholder="Description" rows="4" maxlength="200"></textarea><br>
 
                     <label for="timeBudget">Time budget:</label>
                     <input type="number" id="timeBudget" name="timeBudget" th:field="*{timeBudget}" placeholder="0.0" required step="0.1" min="0" max="1000000"/><br>

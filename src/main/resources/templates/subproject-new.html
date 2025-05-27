@@ -21,11 +21,11 @@
                       method="post" th:object="${subproject}">
 
                     <label for="name">Name:</label>
-                    <input type="text" id="name" th:field="*{name}" placeholder="SubProject Name" required/><br>
+                    <input type="text" id="name" th:field="*{name}" placeholder="SubProject Name" required maxlength="200"/><br>
 
                     <label for="description">Description:</label>
                     <textarea id="description" th:field="*{description}" placeholder="Description"
-                              rows="4"></textarea><br>
+                              rows="4" maxlength="200"></textarea><br>
 
                     <label for="timeBudget">Time budget:</label>
                     <input type="number" id="timeBudget" th:field="*{timeBudget}" min="0" max="1000000" placeholder="Time Budget" required
