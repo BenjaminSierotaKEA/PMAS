@@ -69,17 +69,9 @@ class TaskControllerTest {
                 .thenReturn(task);
         when(sessionHandler.isNotAdmin()).thenReturn(true);
 
-        Role role = new Role();
-        role.setName("Employee");
-
-        User user = new User();
-        user.setUserID(1);
-        user.setName("Test User");
-        user.setRole(role);
+        User user = MockDataModel.userWithValues();
 
         when(sessionHandler.getCurrentUser()).thenReturn(user);
-
-
 
         // Act & Assert
         mvc.perform(get("/projects/{projectId}/subprojects/{subprojectID}/tasks/{id}/edit", 1,1,1)

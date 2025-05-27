@@ -30,19 +30,10 @@ class ProjectRepositoryTest {
 
     @Autowired
     private ProjectRepository repository;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-    @BeforeEach
-    void setUp() {
-        //Populating the database with stuff
-        String sql = "INSERT INTO projects (name, description, timeBudget, deadline)" +
-                " VALUES ('Website Redesign', 'Redesigning the company website.', 500, '2021-07-14'), " +
-                "('Mobile App', 'Developing the new company mobile app.', 800, '2022-03-09')";
-        //jdbcTemplate.update(sql);
-
-    }
 
     @Test
     void create() {
