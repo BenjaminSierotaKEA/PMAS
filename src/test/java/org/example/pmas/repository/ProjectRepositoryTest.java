@@ -2,7 +2,6 @@ package org.example.pmas.repository;
 
 import org.example.pmas.model.Project;
 import org.example.pmas.model.rowMapper.ProjectRowMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,7 +47,7 @@ class ProjectRepositoryTest {
         List<Project> projectsFound = jdbcTemplate.query(checkSql,new ProjectRowMapper());
 
         assertEquals(1, projectsFound.size());
-        Project foundProject = projectsFound.get(0);
+        Project foundProject = projectsFound.getFirst();
         assertEquals(foundProject.getName(), testProject.getName());
         assertEquals(foundProject.getDescription(), testProject.getDescription());
         assertEquals(foundProject.getTimeBudget(), testProject.getTimeBudget());
@@ -133,7 +132,7 @@ class ProjectRepositoryTest {
         //Act
         boolean result = repository.doesProjectExist(1);
         //Assert
-        assertEquals(true, result);
+        assertTrue(result);
     }
 
 

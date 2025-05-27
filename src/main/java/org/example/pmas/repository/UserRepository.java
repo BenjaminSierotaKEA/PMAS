@@ -67,12 +67,12 @@ public class UserRepository implements IUserRepository {
     @Transactional
     public User readSelected(int id) throws DatabaseException {
         String sql = """
-                    SELECT u.id, u.name, u.email, u.password, u.picture, 
+                    SELECT u.id, u.name, u.email, u.password, u.picture,
                     r.id AS role_id, r.name AS role_name
                     FROM users u
                     JOIN roles r ON u.role = r.id
                     WHERE u.id = ?
-                """;
+               \s""";
 
         return jdbcTemplate.queryForObject(sql, new UserRowMapper(), id);
     }
@@ -143,7 +143,7 @@ public class UserRepository implements IUserRepository {
 
         List<User> users = jdbcTemplate.query(sql, new UserRowMapper(), email);
 
-        return users.isEmpty() ? null : users.get(0);
+        return users.isEmpty() ? null : users.getFirst();
     }
 }
 

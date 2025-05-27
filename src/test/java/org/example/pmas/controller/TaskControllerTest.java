@@ -1,6 +1,5 @@
 package org.example.pmas.controller;
 
-import org.example.pmas.model.Role;
 import org.example.pmas.model.Task;
 import org.example.pmas.model.User;
 import org.example.pmas.modelBuilder.MockDataModel;
