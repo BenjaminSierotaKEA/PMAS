@@ -7,6 +7,8 @@ import java.util.Set;
 
 public class Task {
     private int id;
+    private final int maxNameLength = 200;
+    private final int maxDescriptionLength = 200;
     private String name, description;
     private PriorityLevel priorityLevel;
     private Double timeBudget;
@@ -91,11 +93,19 @@ public class Task {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if(name.length() > maxNameLength){
+            this.name = name.substring(0, maxNameLength - 1);
+        }else{
+            this.name = name;
+        }
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if(description.length() > maxDescriptionLength){
+            this.description = description.substring(0, maxDescriptionLength-1);
+        }else{
+            this.description = description;
+        }
     }
 
     public void setTimeBudget(double timeBudget) {

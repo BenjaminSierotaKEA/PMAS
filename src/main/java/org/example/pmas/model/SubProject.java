@@ -4,8 +4,10 @@ import java.util.List;
 
 public class SubProject {
     private int id;
+    private final int maxNameLength = 200;
     private String name;
     private String description;
+    private final int maxDescriptionLength = 200;
     private Double timeBudget;
     private boolean completed;
     private Project project;
@@ -55,7 +57,11 @@ public class SubProject {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if(name.length() > maxNameLength){
+            this.name = name.substring(0, maxNameLength-1);
+        }else{
+            this.name = name;
+        }
     }
 
     public String getDescription() {
@@ -63,7 +69,11 @@ public class SubProject {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if(description.length() > maxDescriptionLength){
+            this.description = description.substring(0, maxDescriptionLength-1);
+        }else{
+            this.description = description;
+        }
     }
 
     public Double getTimeBudget() {
