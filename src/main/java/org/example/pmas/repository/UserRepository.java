@@ -24,7 +24,6 @@ public class UserRepository implements IUserRepository {
 
     }
 
-
     @Override
     @Transactional
     public User create(User newUser) throws DatabaseException {
@@ -68,12 +67,12 @@ public class UserRepository implements IUserRepository {
     @Transactional
     public User readSelected(int id) throws DatabaseException {
         String sql = """
-                    SELECT u.id, u.name, u.email, u.password, u.picture, 
+                    SELECT u.id, u.name, u.email, u.password, u.picture,
                     r.id AS role_id, r.name AS role_name
                     FROM users u
                     JOIN roles r ON u.role = r.id
                     WHERE u.id = ?
-                """;
+               \s""";
 
         return jdbcTemplate.queryForObject(sql, new UserRowMapper(), id);
     }
@@ -144,27 +143,8 @@ public class UserRepository implements IUserRepository {
 
         List<User> users = jdbcTemplate.query(sql, new UserRowMapper(), email);
 
-        return users.isEmpty() ? null : users.get(0);
+        return users.isEmpty() ? null : users.getFirst();
     }
-
-    @Transactional
-    @Override
-    public int getProjectIDOfUsersSubproject(int userID, int subprojectID) throws DataAccessException {
-        String sql = """
-                    SELECT sp.projectID
-                    FROM usertasks ut
-                    JOIN tasks t ON ut.taskID = t.id
-                    JOIN subprojects sp ON t.subProjectID = sp.id
-                    WHERE ut.userID = ? AND sp.id = ?
-                    LIMIT 1
-                """;
-
-        Integer result = jdbcTemplate.queryForObject(sql, Integer.class, userID, subprojectID);
-
-        return result != null ? result : 0;
-
-    }
-
 }
 
 

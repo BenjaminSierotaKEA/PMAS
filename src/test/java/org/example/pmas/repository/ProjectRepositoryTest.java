@@ -2,7 +2,6 @@ package org.example.pmas.repository;
 
 import org.example.pmas.model.Project;
 import org.example.pmas.model.rowMapper.ProjectRowMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,19 +29,10 @@ class ProjectRepositoryTest {
 
     @Autowired
     private ProjectRepository repository;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-    @BeforeEach
-    void setUp() {
-        //Populating the database with stuff
-        String sql = "INSERT INTO projects (name, description, timeBudget, deadline)" +
-                " VALUES ('Website Redesign', 'Redesigning the company website.', 500, '2021-07-14'), " +
-                "('Mobile App', 'Developing the new company mobile app.', 800, '2022-03-09')";
-        //jdbcTemplate.update(sql);
-
-    }
 
     @Test
     void create() {
@@ -57,7 +47,7 @@ class ProjectRepositoryTest {
         List<Project> projectsFound = jdbcTemplate.query(checkSql,new ProjectRowMapper());
 
         assertEquals(1, projectsFound.size());
-        Project foundProject = projectsFound.get(0);
+        Project foundProject = projectsFound.getFirst();
         assertEquals(foundProject.getName(), testProject.getName());
         assertEquals(foundProject.getDescription(), testProject.getDescription());
         assertEquals(foundProject.getTimeBudget(), testProject.getTimeBudget());
@@ -142,7 +132,7 @@ class ProjectRepositoryTest {
         //Act
         boolean result = repository.doesProjectExist(1);
         //Assert
-        assertEquals(true, result);
+        assertTrue(result);
     }
 
 
